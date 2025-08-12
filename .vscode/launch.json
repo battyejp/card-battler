@@ -11,6 +11,12 @@
             "type": "dart"
         },
         {
+            "name": "card_battler (Android)",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "4A111FDJH001X2"
+        },
+        {
             "name": "card_battler (profile mode)",
             "request": "launch",
             "type": "dart",
