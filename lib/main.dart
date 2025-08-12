@@ -1,19 +1,13 @@
-import 'package:flame/game.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'card_battler_app.dart';
 
 void main() async {
-  // Force landscape orientation for mobile
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
   ]);
-  // Hide status bar for immersive experience
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-  runApp(
-    GameWidget(
-      game: FlameGame(),
-    ),
-  );
+  runApp(const CardBattlerApp());
 }
