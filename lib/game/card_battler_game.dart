@@ -6,7 +6,7 @@ class CardBattlerGame extends FlameGame {
   static const double margin = 20.0;
 
   @override
-  Future<void> onLoad() async {
+  onLoad() {
     //Set camera viewfinder properties
     camera.viewfinder.visibleGameSize = size;
     camera.viewfinder.position = Vector2.zero();
