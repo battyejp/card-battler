@@ -5,11 +5,20 @@ import 'package:flame/game.dart';
 import 'components/player.dart';
 
 class CardBattlerGame extends FlameGame {
+  CardBattlerGame();
+  Vector2? _testSize;
+
+  // Test-only constructor to set size before onLoad
+  CardBattlerGame.withSize(Vector2 testSize) : _testSize = testSize;
+
   static const double margin = 20.0;
   static const double topLayoutHeightFactor = 0.6;
 
   @override
-  onLoad() { 
+  onLoad() {
+    if (_testSize != null) {
+      onGameResize(_testSize!);
+    }
     final availableHeight = size.y - (margin * 2);
     final availableWidth = size.x - (margin * 2);
     final topLayoutHeight = availableHeight * topLayoutHeightFactor;
