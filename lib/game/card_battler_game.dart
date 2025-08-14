@@ -1,9 +1,9 @@
-import 'package:card_battler/game/components/enemies.dart';
-import 'package:card_battler/game/components/shop.dart';
-import 'package:card_battler/game/components/team.dart';
-import 'package:card_battler/game/models/enemies_model.dart';
+import 'package:card_battler/game/components/enemy/enemies.dart';
+import 'package:card_battler/game/components/ui/shop.dart';
+import 'package:card_battler/game/components/team/team.dart';
+import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:flame/game.dart';
-import 'components/player.dart';
+import 'components/player/player.dart';
 
 class CardBattlerGame extends FlameGame {
   CardBattlerGame();
