@@ -1,27 +1,26 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/player_stats_model.dart';
+import 'package:card_battler/game/models/health_model.dart';
 import 'package:card_battler/game/game_constants.dart';
 
 void main() {
-  group('PlayerStatsModel', () {
+  group('Health', () {
     group('constructor and initialization', () {
       test('creates with required parameters', () {
-        final model = PlayerStatsModel(name: 'Test Player', maxHealth: 100);
+        final model = HealthModel(maxHealth: 100);
         
-        expect(model.name, equals('Test Player'));
         expect(model.maxHealth, equals(100));
         expect(model.currentHealth, equals(100));
       });
 
       test('initializes current health to max health', () {
-        final model = PlayerStatsModel(name: 'Player', maxHealth: 50);
+        final model = HealthModel(maxHealth: 50);
         expect(model.currentHealth, equals(50));
       });
 
       test('uses default max health from GameConstants', () {
-        final model = PlayerStatsModel(name: 'Default Player');
-        expect(model.maxHealth, equals(GameConstants.defaultMaxHealth));
-        expect(model.currentHealth, equals(GameConstants.defaultMaxHealth));
+        final model = HealthModel();
+        expect(model.maxHealth, equals(GameConstants.defaultPlayerMaxHealth));
+        expect(model.currentHealth, equals(GameConstants.defaultPlayerMaxHealth));
       });
     });
 
@@ -37,7 +36,7 @@ void main() {
 
       for (final testCase in testCases) {
         test(testCase['description'] as String, () {
-          final model = PlayerStatsModel(name: 'Test Player', maxHealth: 100);
+          final model = HealthModel(maxHealth: 100);
           final changes = testCase['changes'] as List<int>;
           
           for (final change in changes) {
@@ -51,11 +50,11 @@ void main() {
 
     group('health status helpers', () {
       test('healthDisplay returns correct format', () {
-        final model = PlayerStatsModel(name: 'Test Player', maxHealth: 100);
-        expect(model.healthDisplay, equals('Test Player: 100/100'));
+        final model = HealthModel(maxHealth: 100);
+        expect(model.healthDisplay, equals('100/100'));
         
         model.changeHealth(-25);
-        expect(model.healthDisplay, equals('Test Player: 75/100'));
+        expect(model.healthDisplay, equals('75/100'));
       });
     });
   });
