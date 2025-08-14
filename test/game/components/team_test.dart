@@ -28,7 +28,7 @@ void main() {
   ];
   for (final testCase in testCases) {
     testWithFlameGame('Team children sizes and positions for team size ${testCase['teamSize']}', (game) async {
-      final team = Team()..size = testCase['teamSize'] as Vector2;
+      final team = Team(names: ['Player1', 'Player2', 'Player3'])..size = testCase['teamSize'] as Vector2;
 
       await game.ensureAdd(team);
 

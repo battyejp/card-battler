@@ -1,20 +1,23 @@
 import 'package:card_battler/game/components/base.dart';
 import 'package:card_battler/game/components/player_stats.dart';
+import 'package:card_battler/game/game_constants.dart';
 import 'package:flame/components.dart';
 
 class Team extends PositionComponent {
-  static const playerStatsHeightFactor = 0.15;
+  final List<String> names;
+
+  Team({required this.names});
 
   @override
   bool get debugMode => true;
 
   @override
   void onLoad() {
-    final statsCount = 3;
-    final statsHeight = size.y * playerStatsHeightFactor;
+    final statsCount = names.length;
+    final statsHeight = size.y * GameConstants.playerStatsHeightFactor;
     double currentY = 0;
     for (int i = 0; i < statsCount; i++) {
-      final playerStats = PlayerStats()
+      final playerStats = PlayerStats(name: names[i])
         ..size = Vector2(size.x, statsHeight)
         ..position = Vector2(0, currentY);
       add(playerStats);
