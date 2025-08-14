@@ -1,4 +1,4 @@
-import 'package:card_battler/game/components/base.dart';
+import 'package:card_battler/game/components/bases.dart';
 import 'package:card_battler/game/components/player_stats.dart';
 import 'package:card_battler/game/game_constants.dart';
 import 'package:flame/components.dart';
@@ -24,7 +24,7 @@ class Team extends PositionComponent {
       currentY += statsHeight;
     }
 
-    final base = Base()
+    final base = Bases()
       ..size = Vector2(size.x, size.y - currentY)
       ..position = Vector2(0, currentY);
     add(base);

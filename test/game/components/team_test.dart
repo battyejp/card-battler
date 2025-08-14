@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/team.dart';
 import 'package:card_battler/game/components/player_stats.dart';
-import 'package:card_battler/game/components/base.dart';
+import 'package:card_battler/game/components/bases.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 
@@ -33,9 +33,9 @@ void main() {
       await game.ensureAdd(team);
 
       final stats = team.children.whereType<PlayerStats>().toList();
-      final base = team.children.whereType<Base>().first;
+      final base = team.children.whereType<Bases>().first;
       expect(stats.length, 3);
-      expect(team.children.whereType<Base>().length, 1);
+      expect(team.children.whereType<Bases>().length, 1);
       final playerStats = testCase['playerStats'] as List<Map<String, Vector2>>;
       for (int i = 0; i < 3; i++) {
         expect(stats[i].size, playerStats[i]['size']);
