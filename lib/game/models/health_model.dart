@@ -1,11 +1,10 @@
 import 'package:card_battler/game/game_constants.dart';
 
-class PlayerStatsModel {
-  final String name;
+class HealthModel {
   final int maxHealth;
   int _currentHealth;
 
-  PlayerStatsModel({required this.name, this.maxHealth = GameConstants.defaultMaxHealth}) 
+  HealthModel({this.maxHealth = GameConstants.defaultPlayerMaxHealth}) 
       : _currentHealth = maxHealth;
 
   int get currentHealth => _currentHealth;
@@ -18,5 +17,5 @@ class PlayerStatsModel {
   }
 
   /// Returns a formatted string representation of current health status
-  String get healthDisplay => '$name: $_currentHealth/$maxHealth';
+  String get healthDisplay => '$_currentHealth/$maxHealth';
 }
