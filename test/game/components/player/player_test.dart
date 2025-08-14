@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/components/player.dart';
-import 'package:card_battler/game/components/deck.dart';
-import 'package:card_battler/game/components/hand.dart';
-import 'package:card_battler/game/components/discard.dart';
+import 'package:card_battler/game/components/player/player.dart';
+import 'package:card_battler/game/components/player/deck.dart';
+import 'package:card_battler/game/components/player/hand.dart';
+import 'package:card_battler/game/components/player/discard.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 

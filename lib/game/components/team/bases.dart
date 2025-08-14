@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'package:card_battler/game/components/base.dart';
-import 'package:card_battler/game/models/bases_model.dart';
+import 'package:card_battler/game/components/team/base.dart';
+import 'package:card_battler/game/models/team/bases_model.dart';
 
 class Bases extends PositionComponent {
   final BasesModel _model;

@@ -1,10 +1,10 @@
 import 'package:flame/game.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/card_battler_game.dart';
-import 'package:card_battler/game/components/player.dart';
-import 'package:card_battler/game/components/enemies.dart';
-import 'package:card_battler/game/components/shop.dart';
-import 'package:card_battler/game/components/team.dart';
+import 'package:card_battler/game/components/player/player.dart';
+import 'package:card_battler/game/components/enemy/enemies.dart';
+import 'package:card_battler/game/components/ui/shop.dart';
+import 'package:card_battler/game/components/team/team.dart';
 import 'package:flame_test/flame_test.dart';
 
 void main() {

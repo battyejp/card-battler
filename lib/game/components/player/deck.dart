@@ -1,5 +1,5 @@
 import 'package:flame/components.dart';
-import 'card.dart';
+import 'package:card_battler/game/components/shared/card.dart';
 
 class Deck extends PositionComponent {
   @override

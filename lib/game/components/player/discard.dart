@@ -1,4 +1,4 @@
-import 'package:card_battler/game/components/card.dart';
+import 'package:card_battler/game/components/shared/card.dart';
 import 'package:flame/components.dart';
 
 class Discard extends PositionComponent {

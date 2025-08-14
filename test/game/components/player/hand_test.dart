@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/components/hand.dart';
+import 'package:card_battler/game/components/player/hand.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 

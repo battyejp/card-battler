@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/components/team.dart';
-import 'package:card_battler/game/components/player_stats.dart';
-import 'package:card_battler/game/components/bases.dart';
+import 'package:card_battler/game/components/team/team.dart';
+import 'package:card_battler/game/components/team/player_stats.dart';
+import 'package:card_battler/game/components/team/bases.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 

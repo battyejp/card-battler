@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/base_model.dart';
+import 'package:card_battler/game/models/team/base_model.dart';
 
 void main() {
   group('BaseModel', () {

@@ -1,4 +1,4 @@
-import 'package:card_battler/game/models/base_model.dart';
+import 'package:card_battler/game/models/team/base_model.dart';
 
 /// Pure game logic for managing a stack of bases
 /// Contains no UI dependencies - only manages state and rules

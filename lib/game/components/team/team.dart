@@ -1,6 +1,6 @@
-import 'package:card_battler/game/components/bases.dart';
-import 'package:card_battler/game/components/player_stats.dart';
-import 'package:card_battler/game/models/bases_model.dart';
+import 'package:card_battler/game/components/team/bases.dart';
+import 'package:card_battler/game/components/team/player_stats.dart';
+import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/game_constants.dart';
 import 'package:flame/components.dart';
 

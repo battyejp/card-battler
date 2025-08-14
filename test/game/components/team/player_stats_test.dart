@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/components/player_stats.dart';
+import 'package:card_battler/game/components/team/player_stats.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 
