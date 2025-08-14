@@ -45,7 +45,7 @@ class CardBattlerGame extends FlameGame {
 
     world.add(shop);
 
-    final team = Team()
+    final team = Team(names: ['Player 2', 'Player 3', 'Player 4'])
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(0 - enemiesWidth / 2 - shopWidth, topPositionY);
 
