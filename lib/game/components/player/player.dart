@@ -1,32 +1,50 @@
+import 'package:card_battler/game/components/player/card_deck.dart';
 import 'package:card_battler/game/components/player/card_pile.dart';
-import 'package:card_battler/game/components/player/hand.dart';
+import 'package:card_battler/game/components/player/card_hand.dart';
+import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/player/card_pile_model.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
   static const handWidthFactor = 0.6;
   static const pileWidthFactor = (1 - handWidthFactor) / 2;
+  static const cardsToDrawOnTap = 5;
+
+  late final CardDeck _deck;
+  late final CardHand _hand;
+  late final CardPile _discard;
 
   @override
   bool get debugMode => true;
 
   @override
   void onLoad() {
-    final deck = CardPile(CardPileModel(numberOfCards: 7))
+    final deckModel = CardPileModel(numberOfCards: 20);
+    final handModel = CardHandModel();
+
+    _deck = CardDeck(deckModel, onTap: () => _drawCardsFromDeck())
       ..size = Vector2(size.x * pileWidthFactor, size.y);
 
-    add(deck);
+    add(_deck);
 
-    final hand = Hand()
+    _hand = CardHand(handModel)
       ..size = Vector2(size.x * handWidthFactor, size.y)
-      ..position = Vector2(deck.x + deck.width, 0);
+      ..position = Vector2(_deck.x + _deck.width, 0);
 
-    add(hand);
+    add(_hand);
 
-    final discard = CardPile(CardPileModel())
+    _discard = CardPile(CardPileModel())
       ..size = Vector2(size.x * pileWidthFactor, size.y)
-      ..position = Vector2(hand.x + hand.width, 0);
+      ..position = Vector2(_hand.x + _hand.width, 0);
 
-    add(discard);
+    add(_discard);
+  }
+
+  void _drawCardsFromDeck() {
+    final drawnCards = _deck.model.drawCards(cardsToDrawOnTap);
+    if (drawnCards.isNotEmpty) {
+      _hand.model.addCards(drawnCards);
+      _hand.refreshDisplay(); // Refresh the hand display
+    }
   }
 }
