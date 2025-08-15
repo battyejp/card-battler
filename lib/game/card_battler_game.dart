@@ -2,6 +2,7 @@ import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/ui/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
+import 'package:card_battler/game/models/ui/shop_model.dart';
 import 'package:flame/game.dart';
 import 'components/player/player.dart';
 
@@ -41,7 +42,7 @@ class CardBattlerGame extends FlameGame {
     world.add(enemies);
 
     final shopWidth = availableWidth * 0.5 / 2;
-    final shop = Shop()
+    final shop = Shop(ShopModel())
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
 
