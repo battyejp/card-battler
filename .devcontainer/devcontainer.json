@@ -1,0 +1,27 @@
+{
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"name": "Flutter Flame Game Dev Container",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"Dart-Code.dart-code",
+				"Dart-Code.flutter",
+				"github.copilot",
+				"github.vscode-pull-request-github",
+				"github.vscode-github-actions",
+				"anthropic.claude-code"
+			]
+		}
+	},
+	"postCreateCommand": "bash .devcontainer/setup.sh",
+	"forwardPorts": [8080],
+	"portsAttributes": {
+		"8080": {
+			"label": "Flutter Web Server",
+			"onAutoForward": "notify"
+		}
+	},
+	"remoteUser": "root"
+}
