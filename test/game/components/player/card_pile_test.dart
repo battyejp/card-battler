@@ -1,4 +1,5 @@
 import 'package:card_battler/game/models/player/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/player/card_pile.dart';
 import 'package:card_battler/game/components/shared/card.dart';
@@ -145,26 +146,8 @@ void main() {
       });
     });
 
-    group('refreshDisplay', () {
-      testWithFlameGame('removes existing components before adding new ones', (game) async {
-        final model = CardPileModel(numberOfCards: 3);
-        final pile = CardPile(model)..size = Vector2(100, 150);
-
-        await game.ensureAdd(pile);
-
-        // Verify initial state - should have 1 card and 1 text component (count label)
-        expect(pile.children.whereType<Card>().length, 1);
-        expect(pile.children.whereType<TextComponent>().length, 1);
-
-        // Call refreshDisplay
-        pile.refreshDisplay();
-
-        // Should still have same components after refresh
-        expect(pile.children.whereType<Card>().length, 1);
-        expect(pile.children.whereType<TextComponent>().length, 1);
-      });
-
-      testWithFlameGame('updates display when model transitions from empty to having cards', (game) async {
+    group('reactive updates', () {
+      testWithFlameGame('updates display automatically when cards are added to model', (game) async {
         final model = CardPileModel.empty();
         final pile = CardPile(model)..size = Vector2(100, 150);
 
@@ -176,22 +159,20 @@ void main() {
         expect(textComponents.length, 1);
         expect(textComponents.first.text, 'Empty');
 
-        // Simulate adding cards to the model (in reality this would happen through model methods)
-        // For testing purposes, we'll create a new model with cards and replace it
-        final newModel = CardPileModel(numberOfCards: 2);
-        final newPile = CardPile(newModel)..size = Vector2(100, 150);
+        // Add cards to the model - should trigger automatic update
+        model.addCard(CardModel(name: 'Test Card', cost: 1, faceUp: false));
         
-        await game.ensureAdd(newPile);
-        newPile.refreshDisplay();
+        // Allow a frame for the stream to process
+        await game.ready();
 
         // Verify updated state - should now have card and count label
-        expect(newPile.children.whereType<Card>().length, 1);
-        final newTextComponents = newPile.children.whereType<TextComponent>().toList();
+        expect(pile.children.whereType<Card>().length, 1);
+        final newTextComponents = pile.children.whereType<TextComponent>().toList();
         expect(newTextComponents.length, 1);
-        expect(newTextComponents.first.text, '2');
+        expect(newTextComponents.first.text, '1');
       });
 
-      testWithFlameGame('updates display when model transitions from having cards to empty', (game) async {
+      testWithFlameGame('updates display automatically when cards are drawn from model', (game) async {
         final model = CardPileModel(numberOfCards: 5);
         final pile = CardPile(model)..size = Vector2(100, 150);
 
@@ -203,21 +184,20 @@ void main() {
         expect(textComponents.length, 1);
         expect(textComponents.first.text, '5');
 
-        // Simulate emptying the model
-        final emptyModel = CardPileModel.empty();
-        final emptyPile = CardPile(emptyModel)..size = Vector2(100, 150);
+        // Draw all cards from the model - should trigger automatic update
+        model.drawCards(5);
         
-        await game.ensureAdd(emptyPile);
-        emptyPile.refreshDisplay();
+        // Allow a frame for the stream to process
+        await game.ready();
 
         // Verify updated state - should now show empty text
-        expect(emptyPile.children.whereType<Card>().length, 0);
-        final newTextComponents = emptyPile.children.whereType<TextComponent>().toList();
+        expect(pile.children.whereType<Card>().length, 0);
+        final newTextComponents = pile.children.whereType<TextComponent>().toList();
         expect(newTextComponents.length, 1);
         expect(newTextComponents.first.text, 'Empty');
       });
 
-      testWithFlameGame('updates card count when model card count changes', (game) async {
+      testWithFlameGame('updates count automatically when individual cards are drawn', (game) async {
         final model = CardPileModel(numberOfCards: 3);
         final pile = CardPile(model)..size = Vector2(100, 150);
 
@@ -228,39 +208,36 @@ void main() {
         expect(initialTextComponents.length, 1);
         expect(initialTextComponents.first.text, '3');
 
-        // Simulate model with different card count
-        final newModel = CardPileModel(numberOfCards: 7);
-        final newPile = CardPile(newModel)..size = Vector2(100, 150);
+        // Draw one card from the model
+        model.drawCard();
         
-        await game.ensureAdd(newPile);
-        newPile.refreshDisplay();
+        // Allow a frame for the stream to process
+        await game.ready();
 
         // Verify updated count
-        final newTextComponents = newPile.children.whereType<TextComponent>().toList();
+        final newTextComponents = pile.children.whereType<TextComponent>().toList();
         expect(newTextComponents.length, 1);
-        expect(newTextComponents.first.text, '7');
+        expect(newTextComponents.first.text, '2');
       });
 
-      testWithFlameGame('preserves component positioning after refresh', (game) async {
-        final model = CardPileModel(numberOfCards: 4);
-        final pile = CardPile(model)..size = Vector2(200, 300);
+      testWithFlameGame('cleans up stream subscription on component removal', (game) async {
+        final model = CardPileModel(numberOfCards: 2);
+        final pile = CardPile(model)..size = Vector2(100, 150);
 
         await game.ensureAdd(pile);
-
-        // Get initial positions
-        final initialCard = pile.children.whereType<Card>().first;
-        final initialText = pile.children.whereType<TextComponent>().first;
-        final initialCardPos = initialCard.position.clone();
-        final initialTextPos = initialText.position.clone();
-
-        // Refresh display
-        pile.refreshDisplay();
-
-        // Verify positions are maintained
-        final newCard = pile.children.whereType<Card>().first;
-        final newText = pile.children.whereType<TextComponent>().first;
-        expect(newCard.position, equals(initialCardPos));
-        expect(newText.position, equals(initialTextPos));
+        
+        // Verify component is mounted and working
+        expect(pile.isMounted, true);
+        
+        // Remove the component
+        game.remove(pile);
+        await game.ready();
+        
+        // Verify component is removed
+        expect(pile.isMounted, false);
+        
+        // Adding cards to model after component removal should not cause errors
+        expect(() => model.addCard(CardModel(name: 'Test', cost: 1, faceUp: false)), returnsNormally);
       });
     });
   });

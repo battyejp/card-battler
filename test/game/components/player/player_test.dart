@@ -311,6 +311,33 @@ void main() {
           expect(displayedCards[i].cardModel.cost, equals(hand.model.cards[i].cost));
         }
       });
+
+      testWithFlameGame('cards in hand are face up', (game) async {
+        final player = Player()..size = Vector2(600, 300);
+
+        await game.ensureAdd(player);
+
+        final deck = player.children.whereType<CardDeck>().first;
+        final hand = player.children.whereType<CardHand>().first;
+
+        // Verify deck cards are face down initially
+        expect(deck.model.allCards.every((card) => !card.isFaceUp), isTrue);
+
+        // Draw cards
+        deck.onTap?.call();
+
+        // Wait for the next frame to allow component updates
+        await game.ready();
+
+        // Verify all cards in hand are face up
+        expect(hand.model.cards.every((card) => card.isFaceUp), isTrue);
+        
+        // Verify displayed cards show face up content
+        final displayedCards = hand.children.whereType<Card>().toList();
+        for (final card in displayedCards) {
+          expect(card.cardModel.isFaceUp, isTrue);
+        }
+      });
     });
 
     group('constants and configuration', () {

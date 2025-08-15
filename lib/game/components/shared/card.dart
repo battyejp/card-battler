@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 class Card extends PositionComponent {
   final CardModel cardModel;
   late TextComponent _nameTextComponent;
+  late TextComponent _costTextComponent;
 
   Card(this.cardModel);
 
@@ -18,18 +19,47 @@ class Card extends PositionComponent {
   }
 
   void _addTextComponent() {
-    _nameTextComponent = TextComponent(
-      text: cardModel.isFaceUp ? "${cardModel.name} - Cost: ${cardModel.cost}" : "Back",
-      anchor: Anchor.center,
-      position: Vector2(size.x / 2, size.y / 2),
-      textRenderer: TextPaint(
-        style: const TextStyle(
-          fontSize: 20,
-          color: Colors.white,
+    if (cardModel.isFaceUp) {
+      _nameTextComponent = TextComponent(
+        text: cardModel.name,
+        anchor: Anchor.center,
+        position: Vector2(size.x / 2, size.y / 2 - 15),
+        textRenderer: TextPaint(
+          style: const TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+          ),
         ),
-      ),
-    );
-    add(_nameTextComponent);
+      );
+      
+      _costTextComponent = TextComponent(
+        text: "Cost: ${cardModel.cost}",
+        anchor: Anchor.center,
+        position: Vector2(size.x / 2, size.y / 2 + 15),
+        textRenderer: TextPaint(
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+          ),
+        ),
+      );
+      
+      add(_nameTextComponent);
+      add(_costTextComponent);
+    } else {
+      _nameTextComponent = TextComponent(
+        text: "Back",
+        anchor: Anchor.center,
+        position: Vector2(size.x / 2, size.y / 2),
+        textRenderer: TextPaint(
+          style: const TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        ),
+      );
+      add(_nameTextComponent);
+    }
   }
 
   @override

@@ -42,10 +42,12 @@ class Player extends PositionComponent {
 
   void _drawCardsFromDeck() {
     final drawnCards = _deck.model.drawCards(cardsToDrawOnTap);
+
     if (drawnCards.isNotEmpty) {
+      for (final card in drawnCards) {
+        card.isFaceUp = true;
+      }
       _hand.model.addCards(drawnCards);
-      _hand.refreshDisplay(); // Refresh the hand display
-      _deck.refreshDisplay(); // Refresh the deck display to update card count
     }
   }
 }

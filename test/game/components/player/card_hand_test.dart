@@ -47,16 +47,20 @@ void main() {
         expect(cards, isEmpty);
       });
 
-      testWithFlameGame('refreshDisplay does nothing when hand is empty', (game) async {
+      testWithFlameGame('reactive updates handle empty hand correctly', (game) async {
         final model = CardHandModel();
         final hand = CardHand(model)..size = Vector2(300, 150);
 
         await game.ensureAdd(hand);
 
-        hand.refreshDisplay();
+        // Adding and removing cards should trigger reactive updates
+        model.addCard(CardModel(name: 'Test', cost: 1));
+        await game.ready();
+        expect(hand.children.whereType<Card>().length, equals(1));
 
-        final cards = hand.children.whereType<Card>().toList();
-        expect(cards, isEmpty);
+        model.clearCards();
+        await game.ready();
+        expect(hand.children.whereType<Card>().length, equals(0));
       });
     });
 
@@ -181,8 +185,8 @@ void main() {
       });
     });
 
-    group('refreshDisplay method', () {
-      testWithFlameGame('refreshDisplay updates card positions after model changes', (game) async {
+    group('reactive updates', () {
+      testWithFlameGame('automatically updates card positions after model changes', (game) async {
         final model = CardHandModel();
         model.addCard(CardModel(name: 'Initial Card', cost: 1));
         final hand = CardHand(model)..size = Vector2(400, 200);
@@ -191,23 +195,19 @@ void main() {
 
         expect(hand.children.whereType<Card>().length, equals(1));
 
-        // Add more cards to model (initially displays 1 card from onLoad)
-        expect(hand.children.whereType<Card>().length, equals(1));
-        
+        // Add more cards to model - should trigger automatic update
         model.addCards([
           CardModel(name: 'Added Card 1', cost: 2),
           CardModel(name: 'Added Card 2', cost: 3),
         ]);
 
-        // Refresh display
-        hand.refreshDisplay();
         await game.ready();
 
         final cards = hand.children.whereType<Card>().toList();
         expect(cards.length, equals(3));
       });
 
-      testWithFlameGame('refreshDisplay clears old cards before adding new ones', (game) async {
+      testWithFlameGame('automatically clears old cards before adding new ones', (game) async {
         final model = CardHandModel();
         model.addCards([
           CardModel(name: 'Card 1', cost: 1),
@@ -218,46 +218,61 @@ void main() {
         await game.ensureAdd(hand);
         expect(hand.children.whereType<Card>().length, equals(2));
 
-        // Clear model and add different cards
+        // Clear model and add different cards - should trigger automatic update
         model.clearCards();
+        await game.ready(); // Wait for clear to process
+        
         model.addCard(CardModel(name: 'New Card', cost: 5));
-
-        hand.refreshDisplay();
-        await game.ready();
+        await game.ready(); // Wait for add to process
 
         final cards = hand.children.whereType<Card>().toList();
         expect(cards.length, equals(1));
         expect(cards[0].cardModel.name, equals('New Card'));
       });
 
-      testWithFlameGame('multiple refreshDisplay calls work correctly', (game) async {
+      testWithFlameGame('handles multiple model changes reactively', (game) async {
         final model = CardHandModel();
         final hand = CardHand(model)..size = Vector2(400, 200);
 
         await game.ensureAdd(hand);
 
-        // First refresh - empty
-        hand.refreshDisplay();
-        await game.ready();
+        // Start empty
         expect(hand.children.whereType<Card>().length, equals(0));
 
-        // Add cards and refresh
+        // Add cards - should trigger automatic update
         model.addCard(CardModel(name: 'Card 1', cost: 1));
-        hand.refreshDisplay();
         await game.ready();
         expect(hand.children.whereType<Card>().length, equals(1));
 
-        // Add more cards and refresh
+        // Add more cards - should trigger automatic update
         model.addCard(CardModel(name: 'Card 2', cost: 2));
-        hand.refreshDisplay();
         await game.ready();
         expect(hand.children.whereType<Card>().length, equals(2));
 
-        // Clear and refresh
+        // Clear - should trigger automatic update
         model.clearCards();
-        hand.refreshDisplay();
         await game.ready();
         expect(hand.children.whereType<Card>().length, equals(0));
+      });
+
+      testWithFlameGame('cleans up stream subscription on component removal', (game) async {
+        final model = CardHandModel();
+        final hand = CardHand(model)..size = Vector2(400, 200);
+
+        await game.ensureAdd(hand);
+        
+        // Verify component is mounted and working
+        expect(hand.isMounted, true);
+        
+        // Remove the component
+        game.remove(hand);
+        await game.ready();
+        
+        // Verify component is removed
+        expect(hand.isMounted, false);
+        
+        // Adding cards to model after component removal should not cause errors
+        expect(() => model.addCard(CardModel(name: 'Test', cost: 1)), returnsNormally);
       });
     });
 
@@ -294,21 +309,19 @@ void main() {
         // Start empty
         expect(hand.children.whereType<Card>().length, equals(0));
 
-        // Add cards to model
+        // Add cards to model - should trigger automatic update
         model.addCards([
           CardModel(name: 'Dynamic Card 1', cost: 2),
           CardModel(name: 'Dynamic Card 2', cost: 4),
         ]);
-        hand.refreshDisplay();
         await game.ready();
 
         expect(hand.children.whereType<Card>().length, equals(2));
 
-        // Replace cards in model
+        // Replace cards in model - should trigger automatic update
         model.replaceCards([
           CardModel(name: 'Replacement Card', cost: 6),
         ]);
-        hand.refreshDisplay();
         await game.ready();
 
         final cards = hand.children.whereType<Card>().toList();

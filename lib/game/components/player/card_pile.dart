@@ -1,18 +1,20 @@
 import 'package:card_battler/game/models/player/card_pile_model.dart';
 import 'package:flame/components.dart';
 import 'package:card_battler/game/components/shared/card.dart';
+import 'package:card_battler/game/components/reactive_position_component.dart';
 import 'package:flutter/material.dart' hide Card;
 
-class CardPile extends PositionComponent {
-  final CardPileModel model;
-
-  CardPile(this.model);
+class CardPile extends ReactivePositionComponent<CardPileModel> {
+  CardPile(super.model);
 
   @override
   bool get debugMode => true;
 
   @override
-  onLoad() {
+  void updateDisplay() {
+    super.updateDisplay();
+    
+    // Add components based on current model state
     if (model.hasNoCards) {
       _addEmptyText();
     } else {
@@ -61,19 +63,5 @@ class CardPile extends PositionComponent {
       ),
     );
     add(countText);
-  }
-
-  /// Refreshes the display of the card pile to reflect model changes
-  void refreshDisplay() {
-    // Clear existing components
-    removeWhere((component) => component is Card || component is TextComponent);
-    
-    // Re-add components based on current model state
-    if (model.hasNoCards) {
-      _addEmptyText();
-    } else {
-      _addTopCard();
-      _addCardCountLabel();
-    }
   }
 }

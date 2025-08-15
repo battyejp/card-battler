@@ -1,6 +1,7 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/reactive_model.dart';
 
-class CardPileModel {
+class CardPileModel with ReactiveModel<CardPileModel> {
   final List<CardModel> _cards;
 
   CardPileModel({int numberOfCards = 0, List<CardModel>? cards})
@@ -9,7 +10,7 @@ class CardPileModel {
           (index) => CardModel(
             name: 'Card ${index + 1}',
             cost: 1,
-            isFaceUp: false,
+            faceUp: false,
           ),
         );
 
@@ -30,6 +31,7 @@ class CardPileModel {
     final drawnCards = _cards.take(cardsToTake).toList();
     _cards.removeRange(0, cardsToTake);
     
+    notifyChange();
     return drawnCards;
   }
 
@@ -37,6 +39,20 @@ class CardPileModel {
   /// Returns null if the pile is empty
   CardModel? drawCard() {
     if (_cards.isEmpty) return null;
-    return _cards.removeAt(0);
+    final card = _cards.removeAt(0);
+    notifyChange();
+    return card;
+  }
+
+  /// Adds cards to the pile
+  void addCards(List<CardModel> cards) {
+    _cards.addAll(cards);
+    notifyChange();
+  }
+
+  /// Adds a single card to the pile
+  void addCard(CardModel card) {
+    _cards.add(card);
+    notifyChange();
   }
 }

@@ -1,24 +1,17 @@
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/components/shared/card.dart';
+import 'package:card_battler/game/components/reactive_position_component.dart';
 import 'package:flame/components.dart';
 
-class CardHand extends PositionComponent {
-  final CardHandModel model;
-
-  CardHand(this.model);
+class CardHand extends ReactivePositionComponent<CardHandModel> {
+  CardHand(super.model);
 
   @override
   bool get debugMode => true;
 
   @override
-  void onLoad() {
-    super.onLoad();
-    _spreadOutCards();
-  }
-
-  void _spreadOutCards() {
-    // Clear existing cards first
-    removeWhere((component) => component is Card);
+  void updateDisplay() {
+    super.updateDisplay();
     
     if (model.cards.isEmpty) return;
     
@@ -38,10 +31,5 @@ class CardHand extends PositionComponent {
 
       add(card);
     }
-  }
-
-  /// Refreshes the display of cards in the hand
-  void refreshDisplay() {
-    _spreadOutCards();
   }
 }

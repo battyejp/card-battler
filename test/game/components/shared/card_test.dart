@@ -61,30 +61,37 @@ void main() {
     });
 
     group('onLoad functionality', () {
-      testWithFlameGame('creates text component on load', (game) async {
+      testWithFlameGame('creates text components on load when face up', (game) async {
         final cardModel = CardModel(name: 'Magic Missile', cost: 2);
         final card = Card(cardModel)..size = Vector2(100, 150);
 
         await game.ensureAdd(card);
 
-        expect(card.children.length, equals(1));
-        expect(card.children.first, isA<TextComponent>());
+        expect(card.children.length, equals(2));
+        expect(card.children.whereType<TextComponent>().length, equals(2));
         
-        final textComponent = card.children.first as TextComponent;
-        expect(textComponent.text, equals('Magic Missile - Cost: 2'));
-        expect(textComponent.anchor, equals(Anchor.center));
-        expect(textComponent.position, equals(Vector2(50, 75)));
+        final textComponents = card.children.whereType<TextComponent>().toList();
+        final nameComponent = textComponents.firstWhere((c) => c.text == 'Magic Missile');
+        final costComponent = textComponents.firstWhere((c) => c.text == 'Cost: 2');
+        
+        expect(nameComponent.text, equals('Magic Missile'));
+        expect(costComponent.text, equals('Cost: 2'));
+        expect(nameComponent.anchor, equals(Anchor.center));
+        expect(costComponent.anchor, equals(Anchor.center));
       });
 
-      testWithFlameGame('text component updates with different card data', (game) async {
+      testWithFlameGame('text components update with different card data', (game) async {
         final cardModel = CardModel(name: 'Heal', cost: 1);
         final card = Card(cardModel)..size = Vector2(80, 120);
 
         await game.ensureAdd(card);
 
-        final textComponent = card.children.first as TextComponent;
-        expect(textComponent.text, equals('Heal - Cost: 1'));
-        expect(textComponent.position, equals(Vector2(40, 60)));
+        final textComponents = card.children.whereType<TextComponent>().toList();
+        final nameComponent = textComponents.firstWhere((c) => c.text == 'Heal');
+        final costComponent = textComponents.firstWhere((c) => c.text == 'Cost: 1');
+        
+        expect(nameComponent.text, equals('Heal'));
+        expect(costComponent.text, equals('Cost: 1'));
       });
 
       testWithFlameGame('handles empty card name', (game) async {
@@ -93,8 +100,12 @@ void main() {
 
         await game.ensureAdd(card);
 
-        final textComponent = card.children.first as TextComponent;
-        expect(textComponent.text, equals(' - Cost: 0'));
+        final textComponents = card.children.whereType<TextComponent>().toList();
+        final nameComponent = textComponents.firstWhere((c) => c.text == '');
+        final costComponent = textComponents.firstWhere((c) => c.text == 'Cost: 0');
+        
+        expect(nameComponent.text, equals(''));
+        expect(costComponent.text, equals('Cost: 0'));
       });
     });
 
@@ -107,30 +118,41 @@ void main() {
 
         await game.ensureAdd(card);
 
-        final textComponent = card.children.first as TextComponent;
-        expect(textComponent.text, equals('Test Card - Cost: 3'));
+        expect(card.children.length, equals(2));
+        final textComponents = card.children.whereType<TextComponent>().toList();
+        final nameComponent = textComponents.firstWhere((c) => c.text == 'Test Card');
+        final costComponent = textComponents.firstWhere((c) => c.text == 'Cost: 3');
+        
+        expect(nameComponent.text, equals('Test Card'));
+        expect(costComponent.text, equals('Cost: 3'));
       });
 
       testWithFlameGame('card shows card details when face up', (game) async {
-        final cardModel = CardModel(name: 'Fire Ball', cost: 5, isFaceUp: true);
+        final cardModel = CardModel(name: 'Fire Ball', cost: 5, faceUp: true);
         final card = Card(cardModel)..size = Vector2(100, 150);
 
         expect(cardModel.isFaceUp, isTrue);
 
         await game.ensureAdd(card);
 
-        final textComponent = card.children.first as TextComponent;
-        expect(textComponent.text, equals('Fire Ball - Cost: 5'));
+        expect(card.children.length, equals(2));
+        final textComponents = card.children.whereType<TextComponent>().toList();
+        final nameComponent = textComponents.firstWhere((c) => c.text == 'Fire Ball');
+        final costComponent = textComponents.firstWhere((c) => c.text == 'Cost: 5');
+        
+        expect(nameComponent.text, equals('Fire Ball'));
+        expect(costComponent.text, equals('Cost: 5'));
       });
 
       testWithFlameGame('card shows "Back" when face down', (game) async {
-        final cardModel = CardModel(name: 'Secret Card', cost: 7, isFaceUp: false);
+        final cardModel = CardModel(name: 'Secret Card', cost: 7, faceUp: false);
         final card = Card(cardModel)..size = Vector2(100, 150);
 
         expect(cardModel.isFaceUp, isFalse);
 
         await game.ensureAdd(card);
 
+        expect(card.children.length, equals(1));
         final textComponent = card.children.first as TextComponent;
         expect(textComponent.text, equals('Back'));
       });
@@ -146,12 +168,13 @@ void main() {
           final cardModel = CardModel(
             name: testCase['name'] as String,
             cost: testCase['cost'] as int,
-            isFaceUp: false,
+            faceUp: false,
           );
           final card = Card(cardModel)..size = Vector2(100, 150);
 
           await game.ensureAdd(card);
 
+          expect(card.children.length, equals(1));
           final textComponent = card.children.first as TextComponent;
           expect(textComponent.text, equals('Back'));
 
