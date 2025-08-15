@@ -237,7 +237,7 @@ void main() {
         expect(pile.isMounted, false);
         
         // Adding cards to model after component removal should not cause errors
-        expect(() => model.addCard(CardModel(name: 'Test', cost: 1, isFaceUp: false)), returnsNormally);
+        expect(() => model.addCard(CardModel(name: 'Test', cost: 1, faceUp: false)), returnsNormally);
       });
     });
   });
