@@ -21,3 +21,6 @@ echo ""
 echo "🌐 Your app will be available at: http://localhost:8080"
 echo ""
 echo "🎮 Happy coding! Your Flutter Flame game environment is ready!"
+
+echo "📦 Installing claude..."
+npm install -g @anthropic-ai/claude-code
