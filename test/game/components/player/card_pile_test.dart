@@ -160,7 +160,7 @@ void main() {
         expect(textComponents.first.text, 'Empty');
 
         // Add cards to the model - should trigger automatic update
-        model.addCard(CardModel(name: 'Test Card', cost: 1, isFaceUp: false));
+        model.addCard(CardModel(name: 'Test Card', cost: 1, faceUp: false));
         
         // Allow a frame for the stream to process
         await game.ready();

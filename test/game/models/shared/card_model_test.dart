@@ -18,7 +18,7 @@ void main() {
           final card = CardModel(
             name: testCase['name'] as String,
             cost: testCase['cost'] as int,
-            isFaceUp: testCase['isFaceUp'] as bool,
+            faceUp: testCase['isFaceUp'] as bool,
           );
           
           expect(card.name, equals(testCase['name']));

@@ -12,8 +12,7 @@ class CardPile extends ReactivePositionComponent<CardPileModel> {
 
   @override
   void updateDisplay() {
-    // Clear existing components
-    removeWhere((component) => component is Card || component is TextComponent);
+    super.updateDisplay();
     
     // Add components based on current model state
     if (model.hasNoCards) {

@@ -11,8 +11,7 @@ class CardHand extends ReactivePositionComponent<CardHandModel> {
 
   @override
   void updateDisplay() {
-    // Clear existing cards first
-    removeWhere((component) => component is Card);
+    super.updateDisplay();
     
     if (model.cards.isEmpty) return;
     

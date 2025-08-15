@@ -10,7 +10,7 @@ class CardPileModel with ReactiveModel<CardPileModel> {
           (index) => CardModel(
             name: 'Card ${index + 1}',
             cost: 1,
-            isFaceUp: false,
+            faceUp: false,
           ),
         );
 

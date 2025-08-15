@@ -12,9 +12,11 @@ abstract class ReactivePositionComponent<T extends ReactiveModel<T>> extends Pos
 
   ReactivePositionComponent(this.model);
 
-  /// Abstract method that subclasses must implement to update their display
-  /// This method is called automatically when the model changes
-  void updateDisplay();
+  /// Base implementation that clears all child components
+  /// Subclasses should call super.updateDisplay() first, then add their components
+  void updateDisplay() {
+    removeWhere((component) => true);
+  }
 
   @override
   void onMount() {
