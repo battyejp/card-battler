@@ -233,6 +233,38 @@ void main() {
         expect(deck.model.allCards.length, equals(0));
         expect(hand.model.cards.length, equals(handSizeBeforeTap));
       });
+
+      testWithFlameGame('deck display updates after drawing cards', (game) async {
+        final player = Player()..size = Vector2(600, 300);
+
+        await game.ensureAdd(player);
+
+        final deck = player.children.whereType<CardDeck>().first;
+
+        // Initial state - deck should show 20 cards
+        expect(deck.model.allCards.length, equals(20));
+        
+        // Find the count label (TextComponent) in the deck
+        var countLabels = deck.children.whereType<TextComponent>().where(
+          (component) => component.text.contains(RegExp(r'^\d+$'))
+        ).toList();
+        expect(countLabels.length, equals(1));
+        expect(countLabels.first.text, equals('20'));
+
+        // Tap deck to draw 5 cards
+        deck.onTap?.call();
+        await game.ready();
+
+        // Verify model updated
+        expect(deck.model.allCards.length, equals(15));
+        
+        // Verify display updated - find the new count label
+        countLabels = deck.children.whereType<TextComponent>().where(
+          (component) => component.text.contains(RegExp(r'^\d+$'))
+        ).toList();
+        expect(countLabels.length, equals(1));
+        expect(countLabels.first.text, equals('15'));
+      });
     });
 
     group('card order and content', () {

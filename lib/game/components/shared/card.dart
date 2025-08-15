@@ -1,7 +1,6 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
-import 'dart:ui';
 
 class Card extends PositionComponent {
   final CardModel cardModel;

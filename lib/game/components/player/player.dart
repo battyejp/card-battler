@@ -45,6 +45,7 @@ class Player extends PositionComponent {
     if (drawnCards.isNotEmpty) {
       _hand.model.addCards(drawnCards);
       _hand.refreshDisplay(); // Refresh the hand display
+      _deck.refreshDisplay(); // Refresh the deck display to update card count
     }
   }
 }
