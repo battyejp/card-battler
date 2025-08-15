@@ -1,7 +1,9 @@
 import 'package:card_battler/game/components/player/card_pile.dart';
+import 'package:card_battler/game/components/player/card_deck.dart';
+import 'package:card_battler/game/components/shared/card.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/player/player.dart';
-import 'package:card_battler/game/components/player/hand.dart';
+import 'package:card_battler/game/components/player/card_hand.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 
@@ -21,6 +23,12 @@ void main() {
           'hand': {'size': Vector2(240, 200), 'pos': Vector2(80, 0)},
           'discard': {'size': Vector2(80, 200), 'pos': Vector2(320, 0)},
         },
+        {
+          'size': Vector2(600, 300),
+          'deck': {'size': Vector2(120, 300), 'pos': Vector2(0, 0)},
+          'hand': {'size': Vector2(360, 300), 'pos': Vector2(120, 0)},
+          'discard': {'size': Vector2(120, 300), 'pos': Vector2(480, 0)},
+        },
       ];
 
       for (final testCase in testCases) {
@@ -31,13 +39,9 @@ void main() {
 
             await game.ensureAdd(player);
 
-            final cardPiles = player.children.whereType<CardPile>().toList();
-            final hand = player.children.whereType<Hand>().first;
-            
-            // First CardPile is the deck (leftmost)
-            final deck = cardPiles.first;
-            // Second CardPile is the discard (rightmost)
-            final discard = cardPiles.last;
+            final deck = player.children.whereType<CardDeck>().first;
+            final hand = player.children.whereType<CardHand>().first;
+            final discard = player.children.whereType<CardPile>().where((pile) => pile is! CardDeck).first;
             
             final deckCase = testCase['deck'] as Map<String, Vector2>;
             final handCase = testCase['hand'] as Map<String, Vector2>;
@@ -50,66 +54,275 @@ void main() {
             expect(discard.size, discardCase['size']);
             expect(discard.position, discardCase['pos']);
             
-            // Verify we have exactly 2 CardPiles and 1 Hand
-            expect(player.children.whereType<CardPile>().length, 2);
-            expect(player.children.whereType<Hand>().length, 1);
+            // Verify we have exactly 1 CardDeck, 1 CardHand, and 1 CardPile (discard)
+            expect(player.children.whereType<CardDeck>().length, 1);
+            expect(player.children.whereType<CardHand>().length, 1);
+            expect(player.children.whereType<CardPile>().length, 2); // CardDeck + discard pile
           },
         );
       }
-    });
 
-    group('card pile contents', () {
-      testWithFlameGame('deck starts with 7 cards and discard is empty', (game) async {
-        final player = Player()..size = Vector2(300, 100);
+      testWithFlameGame('layout factors are applied correctly', (game) async {
+        final player = Player()..size = Vector2(500, 250);
 
         await game.ensureAdd(player);
 
-        final cardPiles = player.children.whereType<CardPile>().toList();
-        final deck = cardPiles.first;
-        final discard = cardPiles.last;
+        final deck = player.children.whereType<CardDeck>().first;
+        final hand = player.children.whereType<CardHand>().first;
+        final discard = player.children.whereType<CardPile>().where((pile) => pile is! CardDeck).first;
+
+        expect(deck.size.x, equals(500 * Player.pileWidthFactor));
+        expect(hand.size.x, equals(500 * Player.handWidthFactor));
+        expect(discard.size.x, equals(500 * Player.pileWidthFactor));
+      });
+    });
+
+    group('component initialization', () {
+      testWithFlameGame('deck starts with 20 cards', (game) async {
+        final player = Player()..size = Vector2(600, 300);
+
+        await game.ensureAdd(player);
+
+        final deck = player.children.whereType<CardDeck>().first;
         
-        // Deck should have 7 cards
-        expect(deck.model.allCards.length, equals(7));
+        expect(deck.model.allCards.length, equals(20));
         expect(deck.model.hasNoCards, isFalse);
+      });
+
+      testWithFlameGame('hand starts empty', (game) async {
+        final player = Player()..size = Vector2(600, 300);
+
+        await game.ensureAdd(player);
+
+        final hand = player.children.whereType<CardHand>().first;
         
-        // Discard should be empty
+        expect(hand.model.cards.length, equals(0));
+        
+        // Should display no cards initially
+        final displayedCards = hand.children.whereType<Card>().toList();
+        expect(displayedCards.length, equals(0));
+      });
+
+      testWithFlameGame('discard starts empty', (game) async {
+        final player = Player()..size = Vector2(600, 300);
+
+        await game.ensureAdd(player);
+
+        final discard = player.children.whereType<CardPile>().where((pile) => pile is! CardDeck).first;
+        
         expect(discard.model.allCards.length, equals(0));
         expect(discard.model.hasNoCards, isTrue);
       });
 
-      testWithFlameGame('deck cards have correct properties', (game) async {
-        final player = Player()..size = Vector2(300, 100);
+      testWithFlameGame('deck has tap callback configured', (game) async {
+        final player = Player()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
-        final deck = player.children.whereType<CardPile>().first;
+        final deck = player.children.whereType<CardDeck>().first;
         
-        for (int i = 0; i < deck.model.allCards.length; i++) {
-          final card = deck.model.allCards[i];
-          expect(card.name, equals('Card ${i + 1}'));
-          expect(card.cost, equals(1));
-          expect(card.isFaceUp, isFalse);
+        expect(deck.onTap, isNotNull);
+      });
+    });
+
+    group('deck tap functionality', () {
+      testWithFlameGame('deck tap draws 5 cards to hand', (game) async {
+        final player = Player()..size = Vector2(600, 300);
+
+        await game.ensureAdd(player);
+
+        final deck = player.children.whereType<CardDeck>().first;
+        final hand = player.children.whereType<CardHand>().first;
+
+        // Initial state
+        expect(deck.model.allCards.length, equals(20));
+        expect(hand.model.cards.length, equals(0));
+
+        // Simulate deck tap
+        deck.onTap?.call();
+
+        // Verify cards were drawn
+        expect(deck.model.allCards.length, equals(15));
+        expect(hand.model.cards.length, equals(5));
+      });
+
+      testWithFlameGame('deck tap updates hand display', (game) async {
+        final player = Player()..size = Vector2(600, 300);
+
+        await game.ensureAdd(player);
+
+        final deck = player.children.whereType<CardDeck>().first;
+        final hand = player.children.whereType<CardHand>().first;
+
+        // Initially no displayed cards
+        expect(hand.children.whereType<Card>().length, equals(0));
+
+        // Tap deck
+        deck.onTap?.call();
+
+        // Wait for the next frame to allow component updates
+        await game.ready();
+
+        // Verify hand display updated
+        final displayedCards = hand.children.whereType<Card>().toList();
+        expect(displayedCards.length, equals(5));
+      });
+
+      testWithFlameGame('multiple deck taps accumulate cards in hand', (game) async {
+        final player = Player()..size = Vector2(600, 300);
+
+        await game.ensureAdd(player);
+
+        final deck = player.children.whereType<CardDeck>().first;
+        final hand = player.children.whereType<CardHand>().first;
+
+        // First tap
+        deck.onTap?.call();
+        await game.ready();
+        expect(deck.model.allCards.length, equals(15));
+        expect(hand.model.cards.length, equals(5));
+        expect(hand.children.whereType<Card>().length, equals(5));
+
+        // Second tap
+        deck.onTap?.call();
+        await game.ready();
+        expect(deck.model.allCards.length, equals(10));
+        expect(hand.model.cards.length, equals(10));
+        expect(hand.children.whereType<Card>().length, equals(10));
+      });
+
+      testWithFlameGame('deck tap with insufficient cards draws remaining cards', (game) async {
+        final player = Player()..size = Vector2(600, 300);
+
+        await game.ensureAdd(player);
+
+        final deck = player.children.whereType<CardDeck>().first;
+        final hand = player.children.whereType<CardHand>().first;
+
+        // Tap until only 3 cards remain
+        deck.onTap?.call(); // 15 left
+        deck.onTap?.call(); // 10 left  
+        deck.onTap?.call(); // 5 left
+        deck.onTap?.call(); // 0 left
+
+        // All cards should now be in hand
+        expect(deck.model.allCards.length, equals(0));
+        expect(hand.model.cards.length, equals(20));
+      });
+
+      testWithFlameGame('deck tap on empty deck does nothing', (game) async {
+        final player = Player()..size = Vector2(600, 300);
+
+        await game.ensureAdd(player);
+
+        final deck = player.children.whereType<CardDeck>().first;
+        final hand = player.children.whereType<CardHand>().first;
+
+        // Empty the deck
+        for (int i = 0; i < 4; i++) {
+          deck.onTap?.call();
+        }
+        expect(deck.model.allCards.length, equals(0));
+
+        final handSizeBeforeTap = hand.model.cards.length;
+
+        // Tap empty deck
+        deck.onTap?.call();
+
+        // Nothing should change
+        expect(deck.model.allCards.length, equals(0));
+        expect(hand.model.cards.length, equals(handSizeBeforeTap));
+      });
+
+      testWithFlameGame('deck display updates after drawing cards', (game) async {
+        final player = Player()..size = Vector2(600, 300);
+
+        await game.ensureAdd(player);
+
+        final deck = player.children.whereType<CardDeck>().first;
+
+        // Initial state - deck should show 20 cards
+        expect(deck.model.allCards.length, equals(20));
+        
+        // Find the count label (TextComponent) in the deck
+        var countLabels = deck.children.whereType<TextComponent>().where(
+          (component) => component.text.contains(RegExp(r'^\d+$'))
+        ).toList();
+        expect(countLabels.length, equals(1));
+        expect(countLabels.first.text, equals('20'));
+
+        // Tap deck to draw 5 cards
+        deck.onTap?.call();
+        await game.ready();
+
+        // Verify model updated
+        expect(deck.model.allCards.length, equals(15));
+        
+        // Verify display updated - find the new count label
+        countLabels = deck.children.whereType<TextComponent>().where(
+          (component) => component.text.contains(RegExp(r'^\d+$'))
+        ).toList();
+        expect(countLabels.length, equals(1));
+        expect(countLabels.first.text, equals('15'));
+      });
+    });
+
+    group('card order and content', () {
+      testWithFlameGame('drawn cards match deck order', (game) async {
+        final player = Player()..size = Vector2(600, 300);
+
+        await game.ensureAdd(player);
+
+        final deck = player.children.whereType<CardDeck>().first;
+        final hand = player.children.whereType<CardHand>().first;
+
+        // Record first 5 cards from deck
+        final expectedCards = deck.model.allCards.take(5).toList();
+
+        // Draw cards
+        deck.onTap?.call();
+
+        // Verify drawn cards match expected order
+        for (int i = 0; i < 5; i++) {
+          expect(hand.model.cards[i].name, equals(expectedCards[i].name));
+          expect(hand.model.cards[i].cost, equals(expectedCards[i].cost));
         }
       });
 
-      testWithFlameGame('card piles show correct count labels', (game) async {
-        final player = Player()..size = Vector2(300, 100);
+      testWithFlameGame('displayed cards match hand model', (game) async {
+        final player = Player()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
-        final cardPiles = player.children.whereType<CardPile>().toList();
-        final deck = cardPiles.first;
-        final discard = cardPiles.last;
+        final deck = player.children.whereType<CardDeck>().first;
+        final hand = player.children.whereType<CardHand>().first;
+
+        // Draw cards
+        deck.onTap?.call();
+
+        // Wait for the next frame to allow component updates
+        await game.ready();
+
+        final displayedCards = hand.children.whereType<Card>().toList();
         
-        // Deck should show count of 7
-        final deckTextComponents = deck.children.whereType<TextComponent>().toList();
-        expect(deckTextComponents.length, 1);
-        expect(deckTextComponents.first.text, equals('7'));
-        
-        // Discard should show "Empty" (no count label)
-        final discardTextComponents = discard.children.whereType<TextComponent>().toList();
-        expect(discardTextComponents.length, 1);
-        expect(discardTextComponents.first.text, equals('Empty'));
+        // Verify displayed cards match model
+        for (int i = 0; i < 5; i++) {
+          expect(displayedCards[i].cardModel.name, equals(hand.model.cards[i].name));
+          expect(displayedCards[i].cardModel.cost, equals(hand.model.cards[i].cost));
+        }
+      });
+    });
+
+    group('constants and configuration', () {
+      test('player constants are defined correctly', () {
+        expect(Player.handWidthFactor, equals(0.6));
+        expect(Player.pileWidthFactor, equals(0.2));
+        expect(Player.cardsToDrawOnTap, equals(5));
+      });
+
+      test('layout factors sum to 1.0', () {
+        final total = Player.handWidthFactor + (Player.pileWidthFactor * 2);
+        expect(total, equals(1.0));
       });
     });
   });

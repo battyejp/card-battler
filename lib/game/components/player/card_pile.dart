@@ -62,4 +62,18 @@ class CardPile extends PositionComponent {
     );
     add(countText);
   }
+
+  /// Refreshes the display of the card pile to reflect model changes
+  void refreshDisplay() {
+    // Clear existing components
+    removeWhere((component) => component is Card || component is TextComponent);
+    
+    // Re-add components based on current model state
+    if (model.hasNoCards) {
+      _addEmptyText();
+    } else {
+      _addTopCard();
+      _addCardCountLabel();
+    }
+  }
 }

@@ -102,5 +102,129 @@ void main() {
         expect(model.hasNoCards, isTrue);
       });
     });
+
+    group('card drawing methods', () {
+      group('drawCards', () {
+        test('draws correct number of cards from pile', () {
+          final model = CardPileModel(numberOfCards: 10);
+          final originalCount = model.allCards.length;
+          
+          final drawnCards = model.drawCards(3);
+          
+          expect(drawnCards.length, equals(3));
+          expect(model.allCards.length, equals(originalCount - 3));
+        });
+
+        test('draws cards from the top of the pile', () {
+          final cards = [
+            CardModel(name: 'Top Card', cost: 1),
+            CardModel(name: 'Middle Card', cost: 2),
+            CardModel(name: 'Bottom Card', cost: 3),
+          ];
+          final model = CardPileModel(cards: cards);
+          
+          final drawnCards = model.drawCards(2);
+          
+          expect(drawnCards[0].name, equals('Top Card'));
+          expect(drawnCards[1].name, equals('Middle Card'));
+          expect(model.allCards.first.name, equals('Bottom Card'));
+        });
+
+        test('returns empty list when drawing zero cards', () {
+          final model = CardPileModel(numberOfCards: 5);
+          
+          final drawnCards = model.drawCards(0);
+          
+          expect(drawnCards, isEmpty);
+          expect(model.allCards.length, equals(5));
+        });
+
+        test('returns empty list when drawing negative number of cards', () {
+          final model = CardPileModel(numberOfCards: 5);
+          
+          final drawnCards = model.drawCards(-1);
+          
+          expect(drawnCards, isEmpty);
+          expect(model.allCards.length, equals(5));
+        });
+
+        test('draws all available cards when requesting more than available', () {
+          final model = CardPileModel(numberOfCards: 3);
+          
+          final drawnCards = model.drawCards(5);
+          
+          expect(drawnCards.length, equals(3));
+          expect(model.allCards, isEmpty);
+          expect(model.hasNoCards, isTrue);
+        });
+
+        test('returns empty list when drawing from empty pile', () {
+          final model = CardPileModel.empty();
+          
+          final drawnCards = model.drawCards(3);
+          
+          expect(drawnCards, isEmpty);
+        });
+
+        test('multiple draws work correctly', () {
+          final model = CardPileModel(numberOfCards: 10);
+          
+          final firstDraw = model.drawCards(3);
+          final secondDraw = model.drawCards(2);
+          
+          expect(firstDraw.length, equals(3));
+          expect(secondDraw.length, equals(2));
+          expect(model.allCards.length, equals(5));
+        });
+      });
+
+      group('drawCard', () {
+        test('draws single card from pile', () {
+          final model = CardPileModel(numberOfCards: 5);
+          final originalCount = model.allCards.length;
+          
+          final drawnCard = model.drawCard();
+          
+          expect(drawnCard, isNotNull);
+          expect(model.allCards.length, equals(originalCount - 1));
+        });
+
+        test('draws card from the top of the pile', () {
+          final cards = [
+            CardModel(name: 'Top Card', cost: 1),
+            CardModel(name: 'Bottom Card', cost: 2),
+          ];
+          final model = CardPileModel(cards: cards);
+          
+          final drawnCard = model.drawCard();
+          
+          expect(drawnCard!.name, equals('Top Card'));
+          expect(model.allCards.first.name, equals('Bottom Card'));
+        });
+
+        test('returns null when drawing from empty pile', () {
+          final model = CardPileModel.empty();
+          
+          final drawnCard = model.drawCard();
+          
+          expect(drawnCard, isNull);
+        });
+
+        test('multiple single draws work correctly', () {
+          final model = CardPileModel(numberOfCards: 3);
+          
+          final firstCard = model.drawCard();
+          final secondCard = model.drawCard();
+          final thirdCard = model.drawCard();
+          final fourthCard = model.drawCard();
+          
+          expect(firstCard, isNotNull);
+          expect(secondCard, isNotNull);
+          expect(thirdCard, isNotNull);
+          expect(fourthCard, isNull);
+          expect(model.hasNoCards, isTrue);
+        });
+      });
+    });
   });
 }
