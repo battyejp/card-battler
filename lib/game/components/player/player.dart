@@ -44,8 +44,7 @@ class Player extends PositionComponent {
     final drawnCards = _deck.model.drawCards(cardsToDrawOnTap);
     if (drawnCards.isNotEmpty) {
       _hand.model.addCards(drawnCards);
-      _hand.refreshDisplay(); // Refresh the hand display
-      _deck.refreshDisplay(); // Refresh the deck display to update card count
+      // Components now update automatically via reactive streams
     }
   }
 }
