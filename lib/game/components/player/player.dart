@@ -1,19 +1,19 @@
-import 'package:card_battler/game/components/player/deck.dart';
-import 'package:card_battler/game/components/player/discard.dart';
+import 'package:card_battler/game/components/player/card_pile.dart';
 import 'package:card_battler/game/components/player/hand.dart';
+import 'package:card_battler/game/models/player/card_pile_model.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
   static const handWidthFactor = 0.6;
-  static const deckWidthFactor = (1 - handWidthFactor) / 2;
+  static const pileWidthFactor = (1 - handWidthFactor) / 2;
 
   @override
   bool get debugMode => true;
 
   @override
   void onLoad() {
-    final deck = Deck()
-      ..size = Vector2(size.x * deckWidthFactor, size.y);
+    final deck = CardPile(CardPileModel(numberOfCards: 7))
+      ..size = Vector2(size.x * pileWidthFactor, size.y);
 
     add(deck);
 
@@ -23,8 +23,8 @@ class Player extends PositionComponent {
 
     add(hand);
 
-    final discard = Discard()
-      ..size = Vector2(size.x * deckWidthFactor, size.y)
+    final discard = CardPile(CardPileModel())
+      ..size = Vector2(size.x * pileWidthFactor, size.y)
       ..position = Vector2(hand.x + hand.width, 0);
 
     add(discard);
