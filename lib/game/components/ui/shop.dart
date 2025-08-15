@@ -1,3 +1,4 @@
+import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flame/components.dart';
 import 'package:card_battler/game/components/shared/card.dart';
 
@@ -24,7 +25,7 @@ class Shop extends PositionComponent {
       for (int col = 0; col < cols; col++) {
       final x = startX + col * (cardWidth + hSpacing);
         final y = vSpacing + row * (cardHeight + vSpacing);
-        final card = Card()
+        final card = Card(CardModel(name: 'Test Card', cost: 5))
           ..size = Vector2(cardWidth, cardHeight)
           ..position = Vector2(x, y);
 
