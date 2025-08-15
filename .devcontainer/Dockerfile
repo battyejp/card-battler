@@ -6,6 +6,9 @@ RUN apt-get update && apt-get -y install \
     git \
     curl \
     unzip \
+    # Node.js and npm for Claude Code CLI
+    nodejs \
+    npm \
     # Basic build tools
     build-essential \
     cmake \
@@ -53,3 +56,6 @@ RUN git clone https://github.com/flutter/flutter && \
     /home/codespace/flutter/bin/flutter config --enable-web && \
     /home/codespace/flutter/bin/flutter doctor && \
     /home/codespace/flutter/bin/flutter precache
+
+# Install Claude Code CLI globally
+RUN npm install -g @anthropic-ai/claude-code
