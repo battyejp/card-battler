@@ -1,8 +1,12 @@
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/ui/shop_model.dart';
 import 'package:flame/components.dart';
 import 'package:card_battler/game/components/shared/card.dart';
 
 class Shop extends PositionComponent {
+  final ShopModel model;
+
+  Shop(this.model);
+
   static const int rows = 2;
   static const int cols = 3;
   static const double cardHeightFactor = 0.38;
@@ -25,7 +29,8 @@ class Shop extends PositionComponent {
       for (int col = 0; col < cols; col++) {
       final x = startX + col * (cardWidth + hSpacing);
         final y = vSpacing + row * (cardHeight + vSpacing);
-        final card = Card(CardModel(name: 'Test Card', cost: 5))
+        final cardModel = model.selectableCards[row * cols + col];
+        final card = Card(cardModel)
           ..size = Vector2(cardWidth, cardHeight)
           ..position = Vector2(x, y);
 

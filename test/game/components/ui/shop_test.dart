@@ -1,3 +1,4 @@
+import 'package:card_battler/game/models/ui/shop_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/ui/shop.dart';
 import 'package:card_battler/game/components/shared/card.dart';
@@ -33,7 +34,7 @@ void main() {
   ];
   for (final testCase in testCases) {
     testWithFlameGame('Shop children sizes and positions for shop size ${testCase['shopSize']}', (game) async {
-      final shop = Shop()..size = testCase['shopSize'] as Vector2;
+      final shop = Shop(ShopModel())..size = testCase['shopSize'] as Vector2;
 
       await game.ensureAdd(shop);
 
