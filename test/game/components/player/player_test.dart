@@ -4,6 +4,7 @@ import 'package:card_battler/game/components/shared/card.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/player/card_hand.dart';
+import 'package:card_battler/game/components/player/info.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 
@@ -14,19 +15,22 @@ void main() {
         {
           'size': Vector2(300, 100),
           'deck': {'size': Vector2(60, 100), 'pos': Vector2(0, 0)},
-          'hand': {'size': Vector2(180, 100), 'pos': Vector2(60, 0)},
+          'info': {'size': Vector2(180, 10), 'pos': Vector2(60, 0)},
+          'hand': {'size': Vector2(180, 90), 'pos': Vector2(60, 10)},
           'discard': {'size': Vector2(60, 100), 'pos': Vector2(240, 0)},
         },
         {
           'size': Vector2(400, 200),
           'deck': {'size': Vector2(80, 200), 'pos': Vector2(0, 0)},
-          'hand': {'size': Vector2(240, 200), 'pos': Vector2(80, 0)},
+          'info': {'size': Vector2(240, 20), 'pos': Vector2(80, 0)},
+          'hand': {'size': Vector2(240, 180), 'pos': Vector2(80, 20)},
           'discard': {'size': Vector2(80, 200), 'pos': Vector2(320, 0)},
         },
         {
           'size': Vector2(600, 300),
           'deck': {'size': Vector2(120, 300), 'pos': Vector2(0, 0)},
-          'hand': {'size': Vector2(360, 300), 'pos': Vector2(120, 0)},
+          'info': {'size': Vector2(360, 30), 'pos': Vector2(120, 0)},
+          'hand': {'size': Vector2(360, 270), 'pos': Vector2(120, 30)},
           'discard': {'size': Vector2(120, 300), 'pos': Vector2(480, 0)},
         },
       ];
@@ -40,22 +44,27 @@ void main() {
             await game.ensureAdd(player);
 
             final deck = player.children.whereType<CardDeck>().first;
+            final info = player.children.whereType<Info>().first;
             final hand = player.children.whereType<CardHand>().first;
             final discard = player.children.whereType<CardPile>().where((pile) => pile is! CardDeck).first;
             
             final deckCase = testCase['deck'] as Map<String, Vector2>;
+            final infoCase = testCase['info'] as Map<String, Vector2>;
             final handCase = testCase['hand'] as Map<String, Vector2>;
             final discardCase = testCase['discard'] as Map<String, Vector2>;
             
             expect(deck.size, deckCase['size']);
             expect(deck.position, deckCase['pos']);
+            expect(info.size, infoCase['size']);
+            expect(info.position, infoCase['pos']);
             expect(hand.size, handCase['size']);
             expect(hand.position, handCase['pos']);
             expect(discard.size, discardCase['size']);
             expect(discard.position, discardCase['pos']);
             
-            // Verify we have exactly 1 CardDeck, 1 CardHand, and 1 CardPile (discard)
+            // Verify we have exactly 1 CardDeck, 1 Info, 1 CardHand, and 1 CardPile (discard)
             expect(player.children.whereType<CardDeck>().length, 1);
+            expect(player.children.whereType<Info>().length, 1);
             expect(player.children.whereType<CardHand>().length, 1);
             expect(player.children.whereType<CardPile>().length, 2); // CardDeck + discard pile
           },
@@ -68,11 +77,15 @@ void main() {
         await game.ensureAdd(player);
 
         final deck = player.children.whereType<CardDeck>().first;
+        final info = player.children.whereType<Info>().first;
         final hand = player.children.whereType<CardHand>().first;
         final discard = player.children.whereType<CardPile>().where((pile) => pile is! CardDeck).first;
 
         expect(deck.size.x, equals(500 * Player.pileWidthFactor));
+        expect(info.size.x, equals(500 * Player.handWidthFactor));
+        expect(info.size.y, equals(250 * Player.infoHeightFactor));
         expect(hand.size.x, equals(500 * Player.handWidthFactor));
+        expect(hand.size.y, equals(250 * (1 - Player.infoHeightFactor)));
         expect(discard.size.x, equals(500 * Player.pileWidthFactor));
       });
     });
@@ -345,6 +358,7 @@ void main() {
         expect(Player.handWidthFactor, equals(0.6));
         expect(Player.pileWidthFactor, equals(0.2));
         expect(Player.cardsToDrawOnTap, equals(5));
+        expect(Player.infoHeightFactor, equals(0.1));
       });
 
       test('layout factors sum to 1.0', () {
