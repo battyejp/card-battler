@@ -1,16 +1,16 @@
 import 'package:card_battler/game/components/shared/value_image_label.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class Info extends PositionComponent {
-  late InfoModel _infoModel;
+  final InfoModel model;
 
   late ValueImageLabel _healthLabel;
   late ValueImageLabel _attackLabel;
   late ValueImageLabel _creditsLabel;
   
+  Info(this.model);
 
   @override
   bool get debugMode => true;
@@ -18,16 +18,10 @@ class Info extends PositionComponent {
   @override
   void onLoad() {
     super.onLoad();
-    _infoModel = InfoModel(
-      health: ValueImageLabelModel(value: 10, label: 'Health'),
-      attack: ValueImageLabelModel(value: 0, label: 'Attack'),
-      credits: ValueImageLabelModel(value: 0, label: 'Credits'),
-    );
 
     var comp1 = PositionComponent()
       ..size = Vector2(size.x / 3, size.y)
       ..debugColor = const Color(0xFF00FF00);
-
 
     var comp2 = PositionComponent()
       ..size = Vector2(size.x / 3, size.y)
@@ -40,15 +34,15 @@ class Info extends PositionComponent {
       ..debugColor = const Color.fromARGB(255, 15, 23, 191);
 
     _healthLabel = ValueImageLabel(
-      _infoModel.health,
+      model.health,
     );
 
     _attackLabel = ValueImageLabel(
-      _infoModel.attack,
+      model.attack,
     );
 
     _creditsLabel = ValueImageLabel(
-      _infoModel.credits,
+      model.credits,
     );
 
     comp1.add(_healthLabel);

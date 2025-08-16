@@ -6,8 +6,9 @@ import 'package:flame/components.dart';
 
 class Team extends PositionComponent {
   final List<String> names;
+  final BasesModel model;
 
-  Team({required this.names});
+  Team(this.model, this.names); //TODO move names to model
 
   @override
   bool get debugMode => true;
@@ -17,6 +18,7 @@ class Team extends PositionComponent {
     final statsCount = names.length;
     final statsHeight = size.y * GameConstants.playerStatsHeightFactor;
     double currentY = 0;
+    
     for (int i = 0; i < statsCount; i++) {
       final playerStats = PlayerStats(name: names[i])
         ..size = Vector2(size.x, statsHeight)
@@ -25,8 +27,8 @@ class Team extends PositionComponent {
       currentY += statsHeight;
     }
 
-    final basesModel = BasesModel(totalBases: 4, baseMaxHealth: 5);
-    final bases = Bases(model: basesModel)
+    // Use provided basesModel or create default for backward compatibility
+    final bases = Bases(model: model)
       ..size = Vector2(size.x, size.y - currentY)
       ..position = Vector2(0, currentY);
     add(bases);

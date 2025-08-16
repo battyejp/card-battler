@@ -27,14 +27,19 @@ class Shop extends PositionComponent {
 
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
-      final x = startX + col * (cardWidth + hSpacing);
+        final x = startX + col * (cardWidth + hSpacing);
         final y = vSpacing + row * (cardHeight + vSpacing);
-        final cardModel = model.selectableCards[row * cols + col];
-        final card = Card(cardModel)
-          ..size = Vector2(cardWidth, cardHeight)
-          ..position = Vector2(x, y);
+        final cardIndex = row * cols + col;
+        
+        // Check if we have enough cards to display
+        if (cardIndex < model.selectableCards.length) {
+          final cardModel = model.selectableCards[cardIndex];
+          final card = Card(cardModel)
+            ..size = Vector2(cardWidth, cardHeight)
+            ..position = Vector2(x, y);
 
-        add(card);
+          add(card);
+        }
       }
     }
   }
