@@ -43,10 +43,7 @@ class CardBattlerGame extends FlameGame {
 
     // Create player component with models from game state
     final player = Player(
-      infoModel: _gameState.playerInfo,
-      handModel: _gameState.playerHand,
-      deckModel: _gameState.playerDeck,
-      discardModel: _gameState.playerDiscard,
+      playerModel: _gameState.player,
     )
       ..size = Vector2(availableWidth, bottomLayoutHeight)
       ..position = Vector2((0 - size.x / 2) + margin, (size.y / 2) - margin - bottomLayoutHeight);

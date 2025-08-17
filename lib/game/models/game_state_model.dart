@@ -2,6 +2,7 @@ import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/player/card_pile_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/ui/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
@@ -13,10 +14,7 @@ enum GamePhase { setup, playerTurn, enemyTurn, shopping, battleEnd, gameOver }
 /// This serves as the single source of truth for the entire game
 class GameStateModel {
   // Player-related state
-  final InfoModel playerInfo;
-  final CardHandModel playerHand;
-  final CardPileModel playerDeck;
-  final CardPileModel playerDiscard;
+  final PlayerModel player;
 
   // Enemy state
   final EnemiesModel enemies;
@@ -28,10 +26,7 @@ class GameStateModel {
   final BasesModel bases;
 
   GameStateModel({
-    required this.playerInfo,
-    required this.playerHand,
-    required this.playerDeck,
-    required this.playerDiscard,
+    required this.player,
     required this.enemies,
     required this.shop,
     required this.bases,
@@ -40,14 +35,16 @@ class GameStateModel {
   /// Creates a new game with default starting values
   factory GameStateModel.newGame() {
     return GameStateModel(
-      playerInfo: InfoModel(
-        health: ValueImageLabelModel(value: 100, label: 'Health'),
-        attack: ValueImageLabelModel(value: 10, label: 'Attack'),
-        credits: ValueImageLabelModel(value: 50, label: 'Credits'),
+      player: PlayerModel(
+        infoModel: InfoModel(
+          health: ValueImageLabelModel(value: 100, label: 'Health'),
+          attack: ValueImageLabelModel(value: 10, label: 'Attack'),
+          credits: ValueImageLabelModel(value: 50, label: 'Credits'),
+        ),
+        handModel: CardHandModel(),
+        deckModel: CardPileModel(numberOfCards: 20),
+        discardModel: CardPileModel.empty(),
       ),
-      playerHand: CardHandModel(),
-      playerDeck: CardPileModel(numberOfCards: 20),
-      playerDiscard: CardPileModel.empty(),
       enemies: EnemiesModel(totalEnemies: 4, enemyMaxHealth: 5),
       shop: ShopModel(),
       bases: BasesModel(totalBases: 4),
