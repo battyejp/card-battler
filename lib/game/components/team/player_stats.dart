@@ -1,5 +1,5 @@
 import 'package:flame/components.dart';
-import 'package:card_battler/game/models/health_model.dart';
+import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/game_constants.dart';
 
 class PlayerStats extends PositionComponent {

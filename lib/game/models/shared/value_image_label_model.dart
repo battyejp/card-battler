@@ -1,4 +1,4 @@
-import 'package:card_battler/game/models/reactive_model.dart';
+import 'package:card_battler/game/models/shared/reactive_model.dart';
 
 class ValueImageLabelModel with ReactiveModel<ValueImageLabelModel> {
   int _value;

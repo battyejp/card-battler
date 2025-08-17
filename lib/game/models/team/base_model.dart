@@ -1,4 +1,4 @@
-import 'package:card_battler/game/models/health_model.dart';
+import 'package:card_battler/game/models/shared/health_model.dart';
 
 /// Pure game logic for a single base
 /// Contains no UI dependencies - only manages state and rules
