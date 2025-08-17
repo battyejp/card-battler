@@ -1,13 +1,22 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/player/info.dart';
 import 'package:card_battler/game/components/shared/value_image_label.dart';
+import 'package:card_battler/game/models/player/info_model.dart';
+import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 
 void main() {
   group('Info', () {
+    InfoModel createTestInfoModel() {
+      return InfoModel(
+        health: ValueImageLabelModel(value: 100, label: 'Health'),
+        attack: ValueImageLabelModel(value: 50, label: 'Attack'),
+        credits: ValueImageLabelModel(value: 25, label: 'Credits'),
+      );
+    }
     testWithFlameGame('Info can be created and added to game', (game) async {
-      final info = Info()..size = Vector2(300, 50);
+      final info = Info(createTestInfoModel())..size = Vector2(300, 50);
 
       await game.ensureAdd(info);
 
@@ -16,13 +25,13 @@ void main() {
     });
 
     testWithFlameGame('Info extends PositionComponent', (game) async {
-      final info = Info();
+      final info = Info(createTestInfoModel());
 
       expect(info, isA<PositionComponent>());
     });
 
     testWithFlameGame('Info can be positioned', (game) async {
-      final info = Info()
+      final info = Info(createTestInfoModel())
         ..size = Vector2(300, 50)
         ..position = Vector2(50, 10);
 
@@ -33,13 +42,13 @@ void main() {
     });
 
     testWithFlameGame('Info has debug mode enabled', (game) async {
-      final info = Info();
+      final info = Info(createTestInfoModel());
 
       expect(info.debugMode, isTrue);
     });
 
     testWithFlameGame('Info initializes with InfoModel', (game) async {
-      final info = Info()..size = Vector2(300, 50);
+      final info = Info(createTestInfoModel())..size = Vector2(300, 50);
 
       await game.ensureAdd(info);
 
@@ -48,7 +57,7 @@ void main() {
     });
 
     testWithFlameGame('Info creates three labeled sections', (game) async {
-      final info = Info()..size = Vector2(300, 50);
+      final info = Info(createTestInfoModel())..size = Vector2(300, 50);
 
       await game.ensureAdd(info);
 
@@ -63,7 +72,7 @@ void main() {
     });
 
     testWithFlameGame('Info sections are properly sized and positioned', (game) async {
-      final info = Info()..size = Vector2(300, 50);
+      final info = Info(createTestInfoModel())..size = Vector2(300, 50);
 
       await game.ensureAdd(info);
 
@@ -83,7 +92,7 @@ void main() {
     });
 
     testWithFlameGame('Info sections have debug colors', (game) async {
-      final info = Info()..size = Vector2(300, 50);
+      final info = Info(createTestInfoModel())..size = Vector2(300, 50);
 
       await game.ensureAdd(info);
 
@@ -96,7 +105,7 @@ void main() {
     });
 
     testWithFlameGame('Info contains health, attack, and credits labels', (game) async {
-      final info = Info()..size = Vector2(300, 50);
+      final info = Info(createTestInfoModel())..size = Vector2(300, 50);
 
       await game.ensureAdd(info);
 
@@ -115,7 +124,7 @@ void main() {
     });
 
     testWithFlameGame('Info layout adapts to different sizes', (game) async {
-      final info = Info()..size = Vector2(600, 100);
+      final info = Info(createTestInfoModel())..size = Vector2(600, 100);
 
       await game.ensureAdd(info);
 

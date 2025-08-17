@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/components/team/player_stats.dart';
 import 'package:card_battler/game/components/team/bases.dart';
+import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 
@@ -28,7 +29,8 @@ void main() {
   ];
   for (final testCase in testCases) {
     testWithFlameGame('Team children sizes and positions for team size ${testCase['teamSize']}', (game) async {
-      final team = Team(names: ['Player1', 'Player2', 'Player3'])..size = testCase['teamSize'] as Vector2;
+      final basesModel = BasesModel(totalBases: 3);
+      final team = Team(basesModel, ['Player1', 'Player2', 'Player3'])..size = testCase['teamSize'] as Vector2;
 
       await game.ensureAdd(team);
 
