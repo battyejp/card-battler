@@ -30,7 +30,7 @@ class CardBattlerGame extends FlameGame {
     if (_testSize != null) {
       onGameResize(_testSize!);
     }
-    
+
     _loadGameComponents();
   }
 
@@ -42,11 +42,12 @@ class CardBattlerGame extends FlameGame {
     final topPositionY = -1 * (size.y / 2) + margin;
 
     // Create player component with models from game state
-    final player = Player(
-      playerModel: _gameState.player,
-    )
+    final player = Player(playerModel: _gameState.player)
       ..size = Vector2(availableWidth, bottomLayoutHeight)
-      ..position = Vector2((0 - size.x / 2) + margin, (size.y / 2) - margin - bottomLayoutHeight);
+      ..position = Vector2(
+        (0 - size.x / 2) + margin,
+        (size.y / 2) - margin - bottomLayoutHeight,
+      );
 
     world.add(player);
 
@@ -60,19 +61,14 @@ class CardBattlerGame extends FlameGame {
 
     // Create shop component with model from game state
     final shopWidth = availableWidth * 0.5 / 2;
-    final shop = Shop(
-      _gameState.shop
-    )
+    final shop = Shop(_gameState.shop)
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
 
     world.add(shop);
 
     // Create team component with model from game state
-    final team = Team(
-      _gameState.bases,
-      ['Player 2', 'Player 3', 'Player 4'],
-    )
+    final team = Team(_gameState.team)
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(0 - enemiesWidth / 2 - shopWidth, topPositionY);
 

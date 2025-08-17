@@ -3,6 +3,7 @@ import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/player/card_pile_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/ui/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
@@ -23,13 +24,13 @@ class GameStateModel {
   final ShopModel shop;
 
   // Team state
-  final BasesModel bases;
+  final TeamModel team;
 
   GameStateModel({
     required this.player,
     required this.enemies,
     required this.shop,
-    required this.bases,
+    required this.team,
   });
 
   /// Creates a new game with default starting values
@@ -47,7 +48,10 @@ class GameStateModel {
       ),
       enemies: EnemiesModel(totalEnemies: 4, enemyMaxHealth: 5),
       shop: ShopModel(),
-      bases: BasesModel(totalBases: 4),
+      team: TeamModel(
+        bases: BasesModel(totalBases: 4, baseMaxHealth: 5),
+        playerNames: ['Player 2', 'Player 3', 'Player 4'],
+      ),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/components/team/player_stats.dart';
@@ -30,7 +31,8 @@ void main() {
   for (final testCase in testCases) {
     testWithFlameGame('Team children sizes and positions for team size ${testCase['teamSize']}', (game) async {
       final basesModel = BasesModel(totalBases: 3);
-      final team = Team(basesModel, ['Player1', 'Player2', 'Player3'])..size = testCase['teamSize'] as Vector2;
+      final teamModel = TeamModel(bases: basesModel, playerNames: ['Player1', 'Player2', 'Player3']);
+      final team = Team(teamModel)..size = testCase['teamSize'] as Vector2;
 
       await game.ensureAdd(team);
 
