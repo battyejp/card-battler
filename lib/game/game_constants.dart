@@ -4,7 +4,5 @@ class GameConstants {
   
   static const double playerStatsHeightFactor = 0.15;
 
-  static const int maxEnemiesInPlay = 3;
-
   static const int startingCardsInHand = 10;
 }

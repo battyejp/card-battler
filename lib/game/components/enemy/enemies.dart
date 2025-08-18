@@ -1,5 +1,4 @@
 import 'package:card_battler/game/components/enemy/enemy.dart';
-import 'package:card_battler/game/game_constants.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
@@ -35,14 +34,14 @@ class Enemies extends PositionComponent {
 
     final cardWidth = size.x * enemyWidthFactor;
     final cardHeight = size.y * enemyHeightFactor;
-    final totalCardsWidth = GameConstants.maxEnemiesInPlay * cardWidth;
-    final spacing = (size.x - totalCardsWidth) / (GameConstants.maxEnemiesInPlay + 1);
+    final totalCardsWidth = _model.maxNumberOfEnemiesInPlay * cardWidth;
+    final spacing = (size.x - totalCardsWidth) / (_model.maxNumberOfEnemiesInPlay + 1);
     final y = (size.y - cardHeight) / 2;
 
     // Create UI components for each enemy model
     _enemyComponents = [];
     final allEnemies = _model.allEnemies;
-    for (int i = 0; i < GameConstants.maxEnemiesInPlay; i++) { //TODO get 3 from model
+    for (int i = 0; i < _model.maxNumberOfEnemiesInPlay; i++) { //TODO get 3 from model
 
       final x = spacing + i * (cardWidth + spacing);
       final enemyComponent = Enemy(model: allEnemies[i])

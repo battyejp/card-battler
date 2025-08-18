@@ -1,4 +1,3 @@
-import 'package:card_battler/game/game_constants.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/enemy/enemy.dart';
@@ -31,7 +30,7 @@ void main() {
       ];
       for (final testCase in testCases) {
         testWithFlameGame('Enemies children sizes and positions for enemies size ${testCase['enemiesSize']}', (game) async {
-          final model = EnemiesModel(totalEnemies: 3);
+          final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10);
           final enemies = Enemies(model: model)..size = testCase['enemiesSize'] as Vector2;
 
           await game.ensureAdd(enemies);
@@ -50,7 +49,7 @@ void main() {
 
     group('Model Integration', () {
       testWithFlameGame('displays text from model', (game) async {
-        final model = EnemiesModel(totalEnemies: 5);
+        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10);
         final enemies = Enemies(model: model)..size = Vector2(400, 300);
 
         await game.ensureAdd(enemies);
@@ -61,19 +60,19 @@ void main() {
       });
 
       testWithFlameGame('creates correct number of enemy components based on model', (game) async {
-        final model = EnemiesModel(totalEnemies: 4);
+        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10);
         final enemies = Enemies(model: model)..size = Vector2(500, 400);
 
         await game.ensureAdd(enemies);
 
         final enemyComponents = enemies.children.whereType<Enemy>().toList();
-        expect(enemyComponents.length, GameConstants.maxEnemiesInPlay);
+        expect(enemyComponents.length, 3);
       });
     });
 
     group('UI Properties', () {
       testWithFlameGame('text component is positioned correctly', (game) async {
-        final model = EnemiesModel(totalEnemies: 3);
+        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10);
         final enemies = Enemies(model: model)..size = Vector2(300, 200);
 
         await game.ensureAdd(enemies);
