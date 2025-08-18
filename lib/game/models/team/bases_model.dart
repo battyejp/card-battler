@@ -8,7 +8,7 @@ class BasesModel {
 
   BasesModel({
     required int totalBases,
-    int baseMaxHealth = 5,
+    int baseMaxHealth = 5, //TODO pass this in
   }) : _bases = List.generate(
           totalBases, 
           (index) => BaseModel(

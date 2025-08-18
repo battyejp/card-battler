@@ -14,11 +14,10 @@ class Team extends PositionComponent {
 
   @override
   void onLoad() {
-    final statsCount = model.playerNames.length;
     final statsHeight = size.y * GameConstants.playerStatsHeightFactor;
     double currentY = 0;
     
-    for (int i = 0; i < statsCount; i++) {
+    for (int i = 0; i < model.playerNames.length; i++) {
       final playerStats = PlayerStats(name: model.playerNames[i])
         ..size = Vector2(size.x, statsHeight)
         ..position = Vector2(0, currentY);

@@ -7,7 +7,7 @@ class PlayerStats extends PositionComponent {
   final HealthModel _health;
   late TextComponent _textComponent;
 
-  PlayerStats({required this.name, int maxHealth = GameConstants.defaultPlayerMaxHealth}) 
+  PlayerStats({required this.name, int maxHealth = GameConstants.defaultPlayerMaxHealth}) //TODO pass this in
       : _health = HealthModel(maxHealth: maxHealth);
 
   /// Updates current health by [delta], clamps to [0, maxHealth]

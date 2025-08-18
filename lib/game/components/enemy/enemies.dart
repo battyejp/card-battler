@@ -42,7 +42,7 @@ class Enemies extends PositionComponent {
     // Create UI components for each enemy model
     _enemyComponents = [];
     final allEnemies = _model.allEnemies;
-    for (int i = 0; i < GameConstants.maxEnemiesInPlay; i++) {
+    for (int i = 0; i < GameConstants.maxEnemiesInPlay; i++) { //TODO get 3 from model
 
       final x = spacing + i * (cardWidth + spacing);
       final enemyComponent = Enemy(model: allEnemies[i])

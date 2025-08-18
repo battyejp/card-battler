@@ -7,7 +7,7 @@ class EnemiesModel {
 
   EnemiesModel({
     required int totalEnemies,
-    int enemyMaxHealth = 5,
+    int enemyMaxHealth = 5, //TODO pass this in
   }) : _enemies = List.generate(
           totalEnemies,
           (index) => EnemyModel(
@@ -18,7 +18,7 @@ class EnemiesModel {
 
   /// Gets the display text for the current state
   String get displayText {
-    final enemiesLeft = _enemies.length - 3 < 0 ? 0 : _enemies.length - 3;
+    final enemiesLeft = _enemies.length - 3 < 0 ? 0 : _enemies.length - 3; //pass 3 in
     return '$enemiesLeft enemies left';
   }
 

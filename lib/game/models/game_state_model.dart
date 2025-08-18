@@ -47,7 +47,7 @@ class GameStateModel {
         discardModel: CardPileModel.empty(),
       ),
       enemies: EnemiesModel(totalEnemies: 4, enemyMaxHealth: 5),
-      shop: ShopModel(),
+      shop: ShopModel(numberOfRows: 2, numberOfColumns: 3),
       team: TeamModel(
         bases: BasesModel(totalBases: 4, baseMaxHealth: 5),
         playerNames: ['Player 2', 'Player 3', 'Player 4'],
