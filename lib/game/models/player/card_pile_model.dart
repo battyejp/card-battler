@@ -1,5 +1,5 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/reactive_model.dart';
+import 'package:card_battler/game/models/shared/reactive_model.dart';
 
 class CardPileModel with ReactiveModel<CardPileModel> {
   final List<CardModel> _cards;

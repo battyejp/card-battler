@@ -1,3 +1,5 @@
+import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/team/player_stats.dart';
 import 'package:flame_test/flame_test.dart';
@@ -7,7 +9,7 @@ void main() {
   group('PlayerStats', () {
     group('health management', () {
       testWithFlameGame('updates text display when health changes', (game) async {
-        final stats = PlayerStats(name: 'Test Player', maxHealth: 100);
+        final stats = PlayerStats(model: PlayerStatsModel(name: 'Test Player', health: HealthModel(maxHealth: 100)));
         await game.ensureAdd(stats);
         
         stats.changeHealth(-25);
@@ -25,7 +27,7 @@ void main() {
 
       for (final testCase in testCases) {
         testWithFlameGame('size and position for size ${testCase['size']} pos ${testCase['pos']}', (game) async {
-          final stats = PlayerStats(name: 'Test Player', maxHealth: 100)
+          final stats = PlayerStats(model: PlayerStatsModel(name: 'Test Player', health: HealthModel(maxHealth: 100)))
             ..size = testCase['size'] as Vector2
             ..position = testCase['pos'] as Vector2;
 
@@ -38,7 +40,7 @@ void main() {
       }
 
       testWithFlameGame('adds text component on load', (game) async {
-        final stats = PlayerStats(name: 'Test Player', maxHealth: 100);
+        final stats = PlayerStats(model: PlayerStatsModel(name: 'Test Player', health: HealthModel(maxHealth: 100)));
         await game.ensureAdd(stats);
         
         expect(stats.children.whereType<TextComponent>().length, equals(1));

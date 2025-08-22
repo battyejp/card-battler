@@ -5,31 +5,51 @@ import 'package:card_battler/game/models/team/base_model.dart';
 void main() {
   group('BasesModel', () {
     group('constructor and initialization', () {
-      test('creates with required totalBases parameter', () {
-        final model = BasesModel(totalBases: 3);
+      test('creates with required bases parameter', () {
+        final bases = [
+          BaseModel(name: 'Base 1', maxHealth: 5),
+          BaseModel(name: 'Base 2', maxHealth: 5),
+          BaseModel(name: 'Base 3', maxHealth: 5),
+        ];
+        final model = BasesModel(bases: bases);
         
         expect(model.allBases.length, equals(3));
         expect(model.currentBaseIndex, equals(2)); // Last index (0-based)
       });
 
-      test('creates bases with default max health', () {
-        final model = BasesModel(totalBases: 2);
-        
-        for (final base in model.allBases) {
-          expect(base.healthDisplay, equals('5/5')); // Default baseMaxHealth is 5
-        }
-      });
-
-      test('creates bases with custom max health', () {
-        final model = BasesModel(totalBases: 3, baseMaxHealth: 100);
+      test('creates bases with custom health values', () {
+        final bases = [
+          BaseModel(name: 'Base 1', maxHealth: 100),
+          BaseModel(name: 'Base 2', maxHealth: 100),
+        ];
+        final model = BasesModel(bases: bases);
         
         for (final base in model.allBases) {
           expect(base.healthDisplay, equals('100/100'));
         }
       });
 
+      test('creates bases with different health values', () {
+        final bases = [
+          BaseModel(name: 'Base 1', maxHealth: 50),
+          BaseModel(name: 'Base 2', maxHealth: 75),
+          BaseModel(name: 'Base 3', maxHealth: 100),
+        ];
+        final model = BasesModel(bases: bases);
+        
+        expect(model.allBases[0].healthDisplay, equals('50/50'));
+        expect(model.allBases[1].healthDisplay, equals('75/75'));
+        expect(model.allBases[2].healthDisplay, equals('100/100'));
+      });
+
       test('assigns correct names to bases', () {
-        final model = BasesModel(totalBases: 4, baseMaxHealth: 10);
+        final bases = [
+          BaseModel(name: 'Base 1', maxHealth: 10),
+          BaseModel(name: 'Base 2', maxHealth: 10),
+          BaseModel(name: 'Base 3', maxHealth: 10),
+          BaseModel(name: 'Base 4', maxHealth: 10),
+        ];
+        final model = BasesModel(bases: bases);
         
         expect(model.allBases[0].name, equals('Base 1'));
         expect(model.allBases[1].name, equals('Base 2'));
@@ -47,7 +67,9 @@ void main() {
         ];
 
         for (final testCase in testCases) {
-          final model = BasesModel(totalBases: testCase['totalBases'] as int);
+          final totalBases = testCase['totalBases'] as int;
+          final bases = List.generate(totalBases, (index) => BaseModel(name: 'Base ${index + 1}', maxHealth: 5));
+          final model = BasesModel(bases: bases);
           expect(model.currentBaseIndex, equals(testCase['expectedIndex']));
         }
       });
@@ -62,7 +84,9 @@ void main() {
         ];
 
         for (final testCase in testCases) {
-          final model = BasesModel(totalBases: testCase['totalBases'] as int);
+          final totalBases = testCase['totalBases'] as int;
+          final bases = List.generate(totalBases, (index) => BaseModel(name: 'Base ${index + 1}', maxHealth: 5));
+          final model = BasesModel(bases: bases);
           expect(model.displayText, equals(testCase['expected']));
         }
       });
@@ -70,41 +94,62 @@ void main() {
       test('calculates base number correctly from current index', () {
         // Since currentBaseIndex starts at totalBases - 1,
         // base number should always be 1 initially (bases.length - currentBaseIndex)
-        final model1 = BasesModel(totalBases: 3); // currentBaseIndex = 2
+        final bases1 = [
+          BaseModel(name: 'Base 1', maxHealth: 5),
+          BaseModel(name: 'Base 2', maxHealth: 5),
+          BaseModel(name: 'Base 3', maxHealth: 5),
+        ];
+        final model1 = BasesModel(bases: bases1); // currentBaseIndex = 2
         expect(model1.displayText, equals('Base 1 of 3')); // 3 - 2 = 1
 
-        final model2 = BasesModel(totalBases: 10); // currentBaseIndex = 9  
+        final bases2 = List.generate(10, (index) => BaseModel(name: 'Base ${index + 1}', maxHealth: 5));
+        final model2 = BasesModel(bases: bases2); // currentBaseIndex = 9  
         expect(model2.displayText, equals('Base 1 of 10')); // 10 - 9 = 1
       });
     });
 
     group('all bases access', () {
       test('returns unmodifiable list of all bases', () {
-        final model = BasesModel(totalBases: 3, baseMaxHealth: 25);
-        final bases = model.allBases;
+        final bases = [
+          BaseModel(name: 'Base 1', maxHealth: 25),
+          BaseModel(name: 'Base 2', maxHealth: 25),
+          BaseModel(name: 'Base 3', maxHealth: 25),
+        ];
+        final model = BasesModel(bases: bases);
+        final returnedBases = model.allBases;
         
-        expect(bases.length, equals(3));
-        expect(bases[0].name, equals('Base 1'));
-        expect(bases[1].name, equals('Base 2'));
-        expect(bases[2].name, equals('Base 3'));
+        expect(returnedBases.length, equals(3));
+        expect(returnedBases[0].name, equals('Base 1'));
+        expect(returnedBases[1].name, equals('Base 2'));
+        expect(returnedBases[2].name, equals('Base 3'));
         
-        for (final base in bases) {
+        for (final base in returnedBases) {
           expect(base.healthDisplay, equals('25/25'));
         }
       });
 
       test('returned list is unmodifiable', () {
-        final model = BasesModel(totalBases: 2);
-        final bases = model.allBases;
+        final bases = [
+          BaseModel(name: 'Base 1', maxHealth: 5),
+          BaseModel(name: 'Base 2', maxHealth: 5),
+        ];
+        final model = BasesModel(bases: bases);
+        final returnedBases = model.allBases;
         
-        expect(() => bases.add(BaseModel(name: 'Extra', maxHealth: 10)), 
+        expect(() => returnedBases.add(BaseModel(name: 'Extra', maxHealth: 10)), 
                throwsUnsupportedError);
-        expect(() => bases.removeAt(0), throwsUnsupportedError);
-        expect(() => bases.clear(), throwsUnsupportedError);
+        expect(() => returnedBases.removeAt(0), throwsUnsupportedError);
+        expect(() => returnedBases.clear(), throwsUnsupportedError);
       });
 
       test('multiple calls return same data', () {
-        final model = BasesModel(totalBases: 4, baseMaxHealth: 50);
+        final bases = [
+          BaseModel(name: 'Base 1', maxHealth: 50),
+          BaseModel(name: 'Base 2', maxHealth: 50),
+          BaseModel(name: 'Base 3', maxHealth: 50),
+          BaseModel(name: 'Base 4', maxHealth: 50),
+        ];
+        final model = BasesModel(bases: bases);
         final bases1 = model.allBases;
         final bases2 = model.allBases;
         

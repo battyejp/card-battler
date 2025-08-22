@@ -5,11 +5,37 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/player/card_hand.dart';
 import 'package:card_battler/game/components/player/info.dart';
+import 'package:card_battler/game/models/player/info_model.dart';
+import 'package:card_battler/game/models/player/card_hand_model.dart';
+import 'package:card_battler/game/models/player/card_pile_model.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 
 void main() {
   group('Player', () {
+    Player createTestPlayer() {
+      final infoModel = InfoModel(
+        health: ValueImageLabelModel(value: 100, label: 'Health'),
+        attack: ValueImageLabelModel(value: 50, label: 'Attack'),
+        credits: ValueImageLabelModel(value: 25, label: 'Credits'),
+      );
+      final handModel = CardHandModel();
+      final deckModel = CardPileModel(numberOfCards: 20);
+      final discardModel = CardPileModel.empty();
+      
+      final playerModel = PlayerModel(
+        infoModel: infoModel,
+        handModel: handModel,
+        deckModel: deckModel,
+        discardModel: discardModel,
+      );
+      
+      return Player(
+        playerModel: playerModel,
+      );
+    }
     group('layout and positioning', () {
       final testCases = [
         {
@@ -39,7 +65,7 @@ void main() {
         testWithFlameGame(
           'Player children sizes and positions for size ${testCase['size']}',
           (game) async {
-            final player = Player()..size = testCase['size'] as Vector2;
+            final player = createTestPlayer()..size = testCase['size'] as Vector2;
 
             await game.ensureAdd(player);
 
@@ -72,7 +98,7 @@ void main() {
       }
 
       testWithFlameGame('layout factors are applied correctly', (game) async {
-        final player = Player()..size = Vector2(500, 250);
+        final player = createTestPlayer()..size = Vector2(500, 250);
 
         await game.ensureAdd(player);
 
@@ -92,7 +118,7 @@ void main() {
 
     group('component initialization', () {
       testWithFlameGame('deck starts with 20 cards', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -103,7 +129,7 @@ void main() {
       });
 
       testWithFlameGame('hand starts empty', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -117,7 +143,7 @@ void main() {
       });
 
       testWithFlameGame('discard starts empty', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -128,7 +154,7 @@ void main() {
       });
 
       testWithFlameGame('deck has tap callback configured', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -140,7 +166,7 @@ void main() {
 
     group('deck tap functionality', () {
       testWithFlameGame('deck tap draws 5 cards to hand', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -160,7 +186,7 @@ void main() {
       });
 
       testWithFlameGame('deck tap updates hand display', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -182,7 +208,7 @@ void main() {
       });
 
       testWithFlameGame('multiple deck taps accumulate cards in hand', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -205,7 +231,7 @@ void main() {
       });
 
       testWithFlameGame('deck tap with insufficient cards draws remaining cards', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -224,7 +250,7 @@ void main() {
       });
 
       testWithFlameGame('deck tap on empty deck does nothing', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -248,7 +274,7 @@ void main() {
       });
 
       testWithFlameGame('deck display updates after drawing cards', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -282,7 +308,7 @@ void main() {
 
     group('card order and content', () {
       testWithFlameGame('drawn cards match deck order', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -303,7 +329,7 @@ void main() {
       });
 
       testWithFlameGame('displayed cards match hand model', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -326,7 +352,7 @@ void main() {
       });
 
       testWithFlameGame('cards in hand are face up', (game) async {
-        final player = Player()..size = Vector2(600, 300);
+        final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 

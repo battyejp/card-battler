@@ -34,7 +34,7 @@ void main() {
   ];
   for (final testCase in testCases) {
     testWithFlameGame('Shop children sizes and positions for shop size ${testCase['shopSize']}', (game) async {
-      final shop = Shop(ShopModel())..size = testCase['shopSize'] as Vector2;
+      final shop = Shop(ShopModel(numberOfRows: 2, numberOfColumns: 3))..size = testCase['shopSize'] as Vector2;
 
       await game.ensureAdd(shop);
 

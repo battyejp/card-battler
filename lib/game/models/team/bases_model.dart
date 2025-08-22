@@ -6,18 +6,9 @@ class BasesModel {
   final List<BaseModel> _bases;
   final int _currentBaseIndex;
 
-  BasesModel({
-    required int totalBases,
-    int baseMaxHealth = 5,
-  }) : _bases = List.generate(
-          totalBases, 
-          (index) => BaseModel(
-            name: 'Base ${index + 1}', 
-            maxHealth: baseMaxHealth
-          )
-        ),
-        _currentBaseIndex = totalBases - 1;
-
+  BasesModel({required List<BaseModel> bases, int baseMaxHealth = 5})
+    : _bases = bases,
+      _currentBaseIndex = bases.length - 1;
 
   /// Gets the current (active) base index
   int get currentBaseIndex => _currentBaseIndex;
@@ -28,7 +19,9 @@ class BasesModel {
     if (allBasesDestroyed) {
       return 'All bases destroyed!';
     }
-    final currentBaseNumber = allBasesDestroyed ? 0 : _bases.length - _currentBaseIndex;
+    final currentBaseNumber = allBasesDestroyed
+        ? 0
+        : _bases.length - _currentBaseIndex;
     return 'Base $currentBaseNumber of ${_bases.length}';
   }
 

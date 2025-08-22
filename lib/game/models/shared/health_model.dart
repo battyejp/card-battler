@@ -1,10 +1,8 @@
-import 'package:card_battler/game/game_constants.dart';
-
 class HealthModel {
   final int maxHealth;
   int _currentHealth;
 
-  HealthModel({this.maxHealth = GameConstants.defaultPlayerMaxHealth}) 
+  HealthModel({required this.maxHealth}) 
       : _currentHealth = maxHealth;
 
   int get currentHealth => _currentHealth;
@@ -13,7 +11,7 @@ class HealthModel {
   void changeHealth(int delta) {
     _currentHealth += delta;
     if (_currentHealth > maxHealth) _currentHealth = maxHealth;
-    if (_currentHealth < GameConstants.minHealth) _currentHealth = GameConstants.minHealth;
+    if (_currentHealth < 0) _currentHealth = 0;
   }
 
   /// Returns a formatted string representation of current health status

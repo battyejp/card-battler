@@ -7,8 +7,6 @@ class Shop extends PositionComponent {
 
   Shop(this.model);
 
-  static const int rows = 2;
-  static const int cols = 3;
   static const double cardHeightFactor = 0.38;
   static const double hSpacingFactor = 0.2;
 
@@ -17,24 +15,29 @@ class Shop extends PositionComponent {
 
   @override
   onLoad() {
-    final cardWidth = size.x / (cols + (cols + 1) * hSpacingFactor);
+    final cardWidth = size.x / (model.numberOfColumns + (model.numberOfColumns + 1) * hSpacingFactor);
     final cardHeight = size.y * cardHeightFactor;
-    final totalWidth = cols * cardWidth + (cols - 1) * cardWidth * hSpacingFactor;
-    final totalHeight = rows * cardHeight;
+    final totalWidth = model.numberOfColumns * cardWidth + (model.numberOfColumns - 1) * cardWidth * hSpacingFactor;
+    final totalHeight = model.numberOfRows * cardHeight;
     final hSpacing = cardWidth * hSpacingFactor;
-    final vSpacing = (size.y - totalHeight) / (rows + 1);
+    final vSpacing = (size.y - totalHeight) / (model.numberOfRows + 1);
     final startX = (size.x - totalWidth) / 2;
 
-    for (int row = 0; row < rows; row++) {
-      for (int col = 0; col < cols; col++) {
-      final x = startX + col * (cardWidth + hSpacing);
+    for (int row = 0; row < model.numberOfRows; row++) {
+      for (int col = 0; col < model.numberOfColumns; col++) {
+        final x = startX + col * (cardWidth + hSpacing);
         final y = vSpacing + row * (cardHeight + vSpacing);
-        final cardModel = model.selectableCards[row * cols + col];
-        final card = Card(cardModel)
-          ..size = Vector2(cardWidth, cardHeight)
-          ..position = Vector2(x, y);
+        final cardIndex = row * model.numberOfColumns + col;
 
-        add(card);
+        // Check if we have enough cards to display
+        if (cardIndex < model.selectableCards.length) {
+          final cardModel = model.selectableCards[cardIndex];
+          final card = Card(cardModel)
+            ..size = Vector2(cardWidth, cardHeight)
+            ..position = Vector2(x, y);
+
+          add(card);
+        }
       }
     }
   }
