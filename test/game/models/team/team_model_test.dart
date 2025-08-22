@@ -1,3 +1,5 @@
+import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
@@ -5,33 +7,38 @@ import 'package:card_battler/game/models/team/bases_model.dart';
 void main() {
   group('TeamModel', () {
     late BasesModel testBasesModel;
-    late List<String> testPlayerNames;
+    late List<PlayerStatsModel> players;
 
     setUp(() {
       testBasesModel = BasesModel(totalBases: 3, baseMaxHealth: 5);
-      testPlayerNames = ['Player 1', 'Player 2', 'Player 3'];
+      players = [
+        PlayerStatsModel(name: 'Player 1', health: HealthModel(maxHealth: 100)),
+        PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 100)),
+        PlayerStatsModel(name: 'Player 3', health: HealthModel(maxHealth: 100)),
+      ];
+
     });
 
     group('constructor and initialization', () {
       test('creates with required parameters', () {
         final teamModel = TeamModel(
           bases: testBasesModel,
-          playerNames: testPlayerNames,
+          players: players,
         );
 
         expect(teamModel.bases, equals(testBasesModel));
-        expect(teamModel.playerNames, equals(testPlayerNames));
+        expect(teamModel.players, equals(players));
       });
 
       test('stores references to provided models', () {
         final teamModel = TeamModel(
           bases: testBasesModel,
-          playerNames: testPlayerNames,
+          players: players,
         );
 
         // Verify that the same instances are returned
         expect(identical(teamModel.bases, testBasesModel), isTrue);
-        expect(identical(teamModel.playerNames, testPlayerNames), isTrue);
+        expect(identical(teamModel.players, players), isTrue);
       });
     });
 
@@ -39,7 +46,7 @@ void main() {
       test('bases getter returns correct BasesModel', () {
         final teamModel = TeamModel(
           bases: testBasesModel,
-          playerNames: testPlayerNames,
+          players: players,
         );
 
         expect(teamModel.bases, isA<BasesModel>());
@@ -52,15 +59,12 @@ void main() {
       test('playerNames getter returns correct List<String>', () {
         final teamModel = TeamModel(
           bases: testBasesModel,
-          playerNames: testPlayerNames,
+          players: players,
         );
 
-        expect(teamModel.playerNames, isA<List<String>>());
-        expect(teamModel.playerNames, equals(testPlayerNames));
-        expect(teamModel.playerNames.length, equals(3));
-        expect(teamModel.playerNames, contains('Player 1'));
-        expect(teamModel.playerNames, contains('Player 2'));
-        expect(teamModel.playerNames, contains('Player 3'));
+        expect(teamModel.players, isA<List<PlayerStatsModel>>());
+        expect(teamModel.players, equals(players));
+        expect(teamModel.players.length, equals(3));
       });
     });
   });

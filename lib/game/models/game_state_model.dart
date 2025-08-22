@@ -3,6 +3,8 @@ import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/player/card_pile_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/ui/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
@@ -50,7 +52,11 @@ class GameStateModel {
       shop: ShopModel(numberOfRows: 2, numberOfColumns: 3),
       team: TeamModel(
         bases: BasesModel(totalBases: 4, baseMaxHealth: 5),
-        playerNames: ['Player 2', 'Player 3', 'Player 4'],
+        players: [
+          PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 10)),
+          PlayerStatsModel(name: 'Player 3', health: HealthModel(maxHealth: 10)),
+          PlayerStatsModel(name: 'Player 4', health: HealthModel(maxHealth: 10)),
+        ],
       ),
     );
   }

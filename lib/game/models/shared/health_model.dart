@@ -4,7 +4,7 @@ class HealthModel {
   final int maxHealth;
   int _currentHealth;
 
-  HealthModel({this.maxHealth = GameConstants.defaultPlayerMaxHealth}) 
+  HealthModel({required this.maxHealth}) 
       : _currentHealth = maxHealth;
 
   int get currentHealth => _currentHealth;

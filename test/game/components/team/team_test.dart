@@ -1,3 +1,5 @@
+import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/team/team.dart';
@@ -31,7 +33,11 @@ void main() {
   for (final testCase in testCases) {
     testWithFlameGame('Team children sizes and positions for team size ${testCase['teamSize']}', (game) async {
       final basesModel = BasesModel(totalBases: 3);
-      final teamModel = TeamModel(bases: basesModel, playerNames: ['Player1', 'Player2', 'Player3']);
+      final teamModel = TeamModel(bases: basesModel, players: [
+        PlayerStatsModel(name: 'Player 1', health: HealthModel(maxHealth: 100)),
+        PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 100)),
+        PlayerStatsModel(name: 'Player 3', health: HealthModel(maxHealth: 100)),
+      ]);
       final team = Team(teamModel)..size = testCase['teamSize'] as Vector2;
 
       await game.ensureAdd(team);

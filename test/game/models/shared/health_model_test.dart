@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
-import 'package:card_battler/game/game_constants.dart';
 
 void main() {
   group('Health', () {
@@ -18,9 +17,9 @@ void main() {
       });
 
       test('uses default max health from GameConstants', () {
-        final model = HealthModel();
-        expect(model.maxHealth, equals(GameConstants.defaultPlayerMaxHealth));
-        expect(model.currentHealth, equals(GameConstants.defaultPlayerMaxHealth));
+        final model = HealthModel(maxHealth: 10);
+        expect(model.maxHealth, equals(10));
+        expect(model.currentHealth, equals(10));
       });
     });
 

@@ -1,13 +1,14 @@
 import 'package:card_battler/game/models/team/bases_model.dart';
+import 'package:card_battler/game/models/team/player_stats_model.dart';
 
 class TeamModel {
   final BasesModel _bases;
-  final List<String> _playerNames;
+  final List<PlayerStatsModel> _players;
 
-  TeamModel({required BasesModel bases, required List<String> playerNames})
+  TeamModel({required BasesModel bases, required List<PlayerStatsModel> players})
       : _bases = bases,
-        _playerNames = playerNames;
+        _players = players;
 
-  List<String> get playerNames => _playerNames;
+  List<PlayerStatsModel> get players => _players;
   BasesModel get bases => _bases;
 }
