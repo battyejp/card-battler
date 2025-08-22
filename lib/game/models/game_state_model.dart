@@ -4,6 +4,7 @@ import 'package:card_battler/game/models/player/card_pile_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game/models/team/base_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/ui/shop_model.dart';
@@ -48,14 +49,33 @@ class GameStateModel {
         deckModel: CardPileModel(numberOfCards: 20),
         discardModel: CardPileModel.empty(),
       ),
-      enemies: EnemiesModel(totalEnemies: 4, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 5),
+      enemies: EnemiesModel(
+        totalEnemies: 4,
+        maxNumberOfEnemiesInPlay: 3,
+        maxEnemyHealth: 5,
+      ),
       shop: ShopModel(numberOfRows: 2, numberOfColumns: 3),
       team: TeamModel(
-        bases: BasesModel(totalBases: 4, baseMaxHealth: 5),
+        bases: BasesModel(
+          bases: [
+            BaseModel(name: 'Base 1', maxHealth: 5),
+            BaseModel(name: 'Base 2', maxHealth: 5),
+            BaseModel(name: 'Base 3', maxHealth: 5),
+          ],
+        ),
         players: [
-          PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 10)),
-          PlayerStatsModel(name: 'Player 3', health: HealthModel(maxHealth: 10)),
-          PlayerStatsModel(name: 'Player 4', health: HealthModel(maxHealth: 10)),
+          PlayerStatsModel(
+            name: 'Player 2',
+            health: HealthModel(maxHealth: 10),
+          ),
+          PlayerStatsModel(
+            name: 'Player 3',
+            health: HealthModel(maxHealth: 10),
+          ),
+          PlayerStatsModel(
+            name: 'Player 4',
+            health: HealthModel(maxHealth: 10),
+          ),
         ],
       ),
     );
@@ -117,16 +137,16 @@ class GameStateModel {
   // }
 
   /// Gets a summary of the current game state for debugging
-//   String get gameStateDebugInfo {
-//     return '''
-// Game State Debug Info:
-// - Player Health: ${playerInfo.health.value}
-// - Player Attack: ${playerInfo.attack.value}
-// - Player Credits: ${playerInfo.credits.value}
-// - Cards in Hand: ${playerHand.cards.length}
-// - Cards in Deck: ${playerDeck.allCards.length}
-// - Cards in Discard: ${playerDiscard.allCards.length}
-// - Enemies Remaining: ${enemies.aliveEnemies.length}/${enemies.allEnemies.length}
-// ''';
-//   }
+  //   String get gameStateDebugInfo {
+  //     return '''
+  // Game State Debug Info:
+  // - Player Health: ${playerInfo.health.value}
+  // - Player Attack: ${playerInfo.attack.value}
+  // - Player Credits: ${playerInfo.credits.value}
+  // - Cards in Hand: ${playerHand.cards.length}
+  // - Cards in Deck: ${playerDeck.allCards.length}
+  // - Cards in Discard: ${playerDiscard.allCards.length}
+  // - Enemies Remaining: ${enemies.aliveEnemies.length}/${enemies.allEnemies.length}
+  // ''';
+  //   }
 }

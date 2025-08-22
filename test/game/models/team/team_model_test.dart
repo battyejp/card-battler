@@ -3,6 +3,7 @@ import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
+import 'package:card_battler/game/models/team/base_model.dart';
 
 void main() {
   group('TeamModel', () {
@@ -10,7 +11,12 @@ void main() {
     late List<PlayerStatsModel> players;
 
     setUp(() {
-      testBasesModel = BasesModel(totalBases: 3, baseMaxHealth: 5);
+      final bases = [
+        BaseModel(name: 'Base 1', maxHealth: 5),
+        BaseModel(name: 'Base 2', maxHealth: 5),
+        BaseModel(name: 'Base 3', maxHealth: 5),
+      ];
+      testBasesModel = BasesModel(bases: bases);
       players = [
         PlayerStatsModel(name: 'Player 1', health: HealthModel(maxHealth: 100)),
         PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 100)),

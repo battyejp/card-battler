@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:card_battler/game/components/team/bases.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
+import 'package:card_battler/game/models/team/base_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 
@@ -9,22 +10,33 @@ void main() {
   group('Bases Component (UI-only)', () {
     group('Constructor and Model Integration', () {
       testWithFlameGame('displays correct text', (game) async {
-        final model = BasesModel(totalBases: 4, baseMaxHealth: 100);
-        final bases = Bases(model: model)
+        final baseList = [
+          BaseModel(name: 'Base 1', maxHealth: 100),
+          BaseModel(name: 'Base 2', maxHealth: 100),
+          BaseModel(name: 'Base 3', maxHealth: 100),
+          BaseModel(name: 'Base 4', maxHealth: 100),
+        ];
+        final model = BasesModel(bases: baseList);
+        final basesComponent = Bases(model: model)
           ..size = Vector2(200, 200)
           ..position = Vector2(0, 0);
 
-        await game.ensureAdd(bases);
+        await game.ensureAdd(basesComponent);
 
-        expect(game.children.contains(bases), isTrue);
+        expect(game.children.contains(basesComponent), isTrue);
         
         // Check that text component is added and shows correct text
-        final textComponent = bases.children.firstWhere((child) => child is TextComponent) as TextComponent;
+        final textComponent = basesComponent.children.firstWhere((child) => child is TextComponent) as TextComponent;
         expect(textComponent.text, equals('Base 1 of 4'));
       });
 
       testWithFlameGame('creates correct number of base components', (game) async {
-        final model = BasesModel(totalBases: 3, baseMaxHealth: 50);
+        final baseList = [
+          BaseModel(name: 'Base 1', maxHealth: 50),
+          BaseModel(name: 'Base 2', maxHealth: 50),
+          BaseModel(name: 'Base 3', maxHealth: 50),
+        ];
+        final model = BasesModel(bases: baseList);
         final bases = Bases(model: model)
           ..size = Vector2(150, 150)
           ..position = Vector2(0, 0);
@@ -40,7 +52,14 @@ void main() {
       });
 
       testWithFlameGame('sets correct visibility for base components', (game) async {
-        final model = BasesModel(totalBases: 5, baseMaxHealth: 10);
+        final baseList = [
+          BaseModel(name: 'Base 1', maxHealth: 10),
+          BaseModel(name: 'Base 2', maxHealth: 10),
+          BaseModel(name: 'Base 3', maxHealth: 10),
+          BaseModel(name: 'Base 4', maxHealth: 10),
+          BaseModel(name: 'Base 5', maxHealth: 10),
+        ];
+        final model = BasesModel(bases: baseList);
         final bases = Bases(model: model)
           ..size = Vector2(100, 100)
           ..position = Vector2(0, 0);
@@ -63,7 +82,13 @@ void main() {
 
     group('UI Properties', () {
       testWithFlameGame('text component is positioned correctly', (game) async {
-        final model = BasesModel(totalBases: 4, baseMaxHealth: 75);
+        final baseList = [
+          BaseModel(name: 'Base 1', maxHealth: 75),
+          BaseModel(name: 'Base 2', maxHealth: 75),
+          BaseModel(name: 'Base 3', maxHealth: 75),
+          BaseModel(name: 'Base 4', maxHealth: 75),
+        ];
+        final model = BasesModel(bases: baseList);
         final bases = Bases(model: model)
           ..size = Vector2(200, 160)
           ..position = Vector2(0, 0);
@@ -76,7 +101,11 @@ void main() {
       });
 
       testWithFlameGame('text has correct styling', (game) async {
-        final model = BasesModel(totalBases: 2, baseMaxHealth: 25);
+        final baseList = [
+          BaseModel(name: 'Base 1', maxHealth: 25),
+          BaseModel(name: 'Base 2', maxHealth: 25),
+        ];
+        final model = BasesModel(bases: baseList);
         final bases = Bases(model: model)
           ..size = Vector2(100, 100)
           ..position = Vector2(0, 0);
@@ -90,7 +119,12 @@ void main() {
       });
 
       testWithFlameGame('base components are positioned correctly', (game) async {
-        final model = BasesModel(totalBases: 3, baseMaxHealth: 10);
+        final baseList = [
+          BaseModel(name: 'Base 1', maxHealth: 10),
+          BaseModel(name: 'Base 2', maxHealth: 10),
+          BaseModel(name: 'Base 3', maxHealth: 10),
+        ];
+        final model = BasesModel(bases: baseList);
         final bases = Bases(model: model)
           ..size = Vector2(100, 160)
           ..position = Vector2(0, 0);
@@ -117,7 +151,11 @@ void main() {
 
       for (final testCase in testCases) {
         testWithFlameGame('handles size ${testCase['size']} and position ${testCase['pos']}', (game) async {
-          final model = BasesModel(totalBases: 2, baseMaxHealth: 10);
+          final baseList = [
+            BaseModel(name: 'Base 1', maxHealth: 10),
+            BaseModel(name: 'Base 2', maxHealth: 10),
+          ];
+          final model = BasesModel(bases: baseList);
           final bases = Bases(model: model)
             ..size = testCase['size'] as Vector2
             ..position = testCase['pos'] as Vector2;
@@ -156,7 +194,8 @@ void main() {
         final testCounts = [1, 2, 4, 6];
         
         for (final count in testCounts) {
-          final model = BasesModel(totalBases: count, baseMaxHealth: 10);
+          final baseList = List.generate(count, (index) => BaseModel(name: 'Base ${index + 1}', maxHealth: 10));
+          final model = BasesModel(bases: baseList);
           final bases = Bases(model: model)
             ..size = Vector2(100, 100)
             ..position = Vector2(0, 0);

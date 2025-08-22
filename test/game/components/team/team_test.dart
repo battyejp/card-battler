@@ -6,6 +6,7 @@ import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/components/team/player_stats.dart';
 import 'package:card_battler/game/components/team/bases.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
+import 'package:card_battler/game/models/team/base_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 
@@ -32,7 +33,12 @@ void main() {
   ];
   for (final testCase in testCases) {
     testWithFlameGame('Team children sizes and positions for team size ${testCase['teamSize']}', (game) async {
-      final basesModel = BasesModel(totalBases: 3);
+      final baseList = [
+        BaseModel(name: 'Base 1', maxHealth: 5),
+        BaseModel(name: 'Base 2', maxHealth: 5),
+        BaseModel(name: 'Base 3', maxHealth: 5),
+      ];
+      final basesModel = BasesModel(bases: baseList);
       final teamModel = TeamModel(bases: basesModel, players: [
         PlayerStatsModel(name: 'Player 1', health: HealthModel(maxHealth: 100)),
         PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 100)),
