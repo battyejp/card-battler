@@ -1,6 +1,5 @@
 import 'package:card_battler/game/components/team/bases.dart';
 import 'package:card_battler/game/components/team/player_stats.dart';
-import 'package:card_battler/game/game_constants.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:flame/components.dart';
 
@@ -14,7 +13,7 @@ class Team extends PositionComponent {
 
   @override
   void onLoad() {
-    final statsHeight = size.y * GameConstants.playerStatsHeightFactor;
+    final statsHeight = size.y * 0.15;
     double currentY = 0;
     
     for (int i = 0; i < model.players.length; i++) {
