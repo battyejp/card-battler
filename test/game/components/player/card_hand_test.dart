@@ -54,7 +54,7 @@ void main() {
         await game.ensureAdd(hand);
 
         // Adding and removing cards should trigger reactive updates
-        model.addCard(CardModel(name: 'Test', cost: 1));
+        model.addCard(CardModel(name: 'Test', type: 'Player'));
         await game.ready();
         expect(hand.children.whereType<Card>().length, equals(1));
 
@@ -68,9 +68,9 @@ void main() {
       testWithFlameGame('displays cards with correct layout parameters', (game) async {
         final model = CardHandModel();
         model.addCards([
-          CardModel(name: 'Card 1', cost: 1),
-          CardModel(name: 'Card 2', cost: 2),
-          CardModel(name: 'Card 3', cost: 3),
+          CardModel(name: 'Card 1', type: 'Player'),
+          CardModel(name: 'Card 2', type: 'Player'),
+          CardModel(name: 'Card 3', type: 'Player'),
         ]);
         final hand = CardHand(model)..size = Vector2(400, 200);
 
@@ -92,8 +92,8 @@ void main() {
       testWithFlameGame('positions cards with correct spacing', (game) async {
         final model = CardHandModel();
         model.addCards([
-          CardModel(name: 'Card 1', cost: 1),
-          CardModel(name: 'Card 2', cost: 2),
+          CardModel(name: 'Card 1', type: 'Player'),
+          CardModel(name: 'Card 2', type: 'Player'),
         ]);
         final hand = CardHand(model)..size = Vector2(400, 200);
 
@@ -116,7 +116,7 @@ void main() {
 
       testWithFlameGame('centers cards vertically', (game) async {
         final model = CardHandModel();
-        model.addCard(CardModel(name: 'Test Card', cost: 1));
+        model.addCard(CardModel(name: 'Test Card', type: 'Player'));
         final hand = CardHand(model)..size = Vector2(400, 200);
 
         await game.ensureAdd(hand);
@@ -132,7 +132,7 @@ void main() {
 
       testWithFlameGame('handles single card layout', (game) async {
         final model = CardHandModel();
-        model.addCard(CardModel(name: 'Single Card', cost: 5));
+        model.addCard(CardModel(name: 'Single Card', type: 'Player'));
         final hand = CardHand(model)..size = Vector2(300, 150);
 
         await game.ensureAdd(hand);
@@ -158,7 +158,7 @@ void main() {
           final cardCount = testCase['cardCount'] as int;
           
           for (int i = 0; i < cardCount; i++) {
-            model.addCard(CardModel(name: 'Card ${i + 1}', cost: i + 1));
+            model.addCard(CardModel(name: 'Card ${i + 1}', type: 'Player'));
           }
           
           final handSize = testCase['handSize'] as Vector2;
@@ -188,7 +188,7 @@ void main() {
     group('reactive updates', () {
       testWithFlameGame('automatically updates card positions after model changes', (game) async {
         final model = CardHandModel();
-        model.addCard(CardModel(name: 'Initial Card', cost: 1));
+        model.addCard(CardModel(name: 'Initial Card', type: 'Player'));
         final hand = CardHand(model)..size = Vector2(400, 200);
 
         await game.ensureAdd(hand);
@@ -197,8 +197,8 @@ void main() {
 
         // Add more cards to model - should trigger automatic update
         model.addCards([
-          CardModel(name: 'Added Card 1', cost: 2),
-          CardModel(name: 'Added Card 2', cost: 3),
+          CardModel(name: 'Added Card 1', type: 'Player'),
+          CardModel(name: 'Added Card 2', type: 'Player'),
         ]);
 
         await game.ready();
@@ -210,8 +210,8 @@ void main() {
       testWithFlameGame('automatically clears old cards before adding new ones', (game) async {
         final model = CardHandModel();
         model.addCards([
-          CardModel(name: 'Card 1', cost: 1),
-          CardModel(name: 'Card 2', cost: 2),
+          CardModel(name: 'Card 1', type: 'Player'),
+          CardModel(name: 'Card 2', type: 'Player'),
         ]);
         final hand = CardHand(model)..size = Vector2(400, 200);
 
@@ -222,7 +222,7 @@ void main() {
         model.clearCards();
         await game.ready(); // Wait for clear to process
         
-        model.addCard(CardModel(name: 'New Card', cost: 5));
+        model.addCard(CardModel(name: 'New Card', type: 'Player'));
         await game.ready(); // Wait for add to process
 
         final cards = hand.children.whereType<Card>().toList();
@@ -240,12 +240,12 @@ void main() {
         expect(hand.children.whereType<Card>().length, equals(0));
 
         // Add cards - should trigger automatic update
-        model.addCard(CardModel(name: 'Card 1', cost: 1));
+        model.addCard(CardModel(name: 'Card 1', type: 'Player'));
         await game.ready();
         expect(hand.children.whereType<Card>().length, equals(1));
 
         // Add more cards - should trigger automatic update
-        model.addCard(CardModel(name: 'Card 2', cost: 2));
+        model.addCard(CardModel(name: 'Card 2', type: 'Player'));
         await game.ready();
         expect(hand.children.whereType<Card>().length, equals(2));
 
@@ -272,7 +272,7 @@ void main() {
         expect(hand.isMounted, false);
         
         // Adding cards to model after component removal should not cause errors
-        expect(() => model.addCard(CardModel(name: 'Test', cost: 1)), returnsNormally);
+        expect(() => model.addCard(CardModel(name: 'Test', type: 'Player')), returnsNormally);
       });
     });
 
@@ -280,9 +280,9 @@ void main() {
       testWithFlameGame('displays cards from model correctly', (game) async {
         final model = CardHandModel();
         final testCards = [
-          CardModel(name: 'Test Card A', cost: 3),
-          CardModel(name: 'Test Card B', cost: 7),
-          CardModel(name: 'Test Card C', cost: 1),
+          CardModel(name: 'Test Card A', type: 'Player'),
+          CardModel(name: 'Test Card B', type: 'Player'),
+          CardModel(name: 'Test Card C', type: 'Player'),
         ];
         model.addCards(testCards);
         
@@ -296,7 +296,6 @@ void main() {
         // Verify the cards match the model
         for (int i = 0; i < testCards.length; i++) {
           expect(displayedCards[i].cardModel.name, equals(testCards[i].name));
-          expect(displayedCards[i].cardModel.cost, equals(testCards[i].cost));
         }
       });
 
@@ -311,8 +310,8 @@ void main() {
 
         // Add cards to model - should trigger automatic update
         model.addCards([
-          CardModel(name: 'Dynamic Card 1', cost: 2),
-          CardModel(name: 'Dynamic Card 2', cost: 4),
+          CardModel(name: 'Dynamic Card 1', type: 'Player'),
+          CardModel(name: 'Dynamic Card 2', type: 'Player'),
         ]);
         await game.ready();
 
@@ -320,7 +319,7 @@ void main() {
 
         // Replace cards in model - should trigger automatic update
         model.replaceCards([
-          CardModel(name: 'Replacement Card', cost: 6),
+          CardModel(name: 'Replacement Card', type: 'Player'),
         ]);
         await game.ready();
 

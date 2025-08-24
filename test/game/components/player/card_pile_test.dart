@@ -160,7 +160,7 @@ void main() {
         expect(textComponents.first.text, 'Empty');
 
         // Add cards to the model - should trigger automatic update
-        model.addCard(CardModel(name: 'Test Card', cost: 1, faceUp: false));
+        model.addCard(CardModel(name: 'Test Card', type: 'Player', isFaceUp: false));
         
         // Allow a frame for the stream to process
         await game.ready();
@@ -237,7 +237,7 @@ void main() {
         expect(pile.isMounted, false);
         
         // Adding cards to model after component removal should not cause errors
-        expect(() => model.addCard(CardModel(name: 'Test', cost: 1, faceUp: false)), returnsNormally);
+        expect(() => model.addCard(CardModel(name: 'Test', type: 'Player', isFaceUp: false)), returnsNormally);
       });
     });
   });

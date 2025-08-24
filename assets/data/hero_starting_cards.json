@@ -1,0 +1,7 @@
+[
+  {"name": "Strike", "type": "Hero"},
+  {"name": "Defend", "type": "Hero"},
+  {"name": "Charge", "type": "Hero"},
+  {"name": "Heal", "type": "Hero"},
+  {"name": "Block", "type": "Hero"}
+]

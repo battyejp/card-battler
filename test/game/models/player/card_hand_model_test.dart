@@ -23,7 +23,7 @@ void main() {
         final cardHand = CardHandModel();
         expect(cardHand.cards, isEmpty);
         
-        final testCard = CardModel(name: 'Test Card', cost: 1);
+        final testCard = CardModel(name: 'Test Card', type: 'Player');
         cardHand.addCard(testCard);
         
         expect(cardHand.cards.length, equals(1));
@@ -38,8 +38,8 @@ void main() {
         cardHand = CardHandModel();
         // Add some test cards for property testing
         cardHand.addCards([
-          CardModel(name: 'Test Card 1', cost: 1),
-          CardModel(name: 'Test Card 2', cost: 2),
+          CardModel(name: 'Test Card 1', type: 'Player'),
+          CardModel(name: 'Test Card 2', type: 'Player'),
         ]);
       });
 
@@ -64,7 +64,7 @@ void main() {
         for (final card in cards) {
           expect(card, isA<CardModel>());
           expect(card.name, isNotEmpty);
-          expect(card.cost, isNonNegative);
+          
         }
       });
 
@@ -91,7 +91,7 @@ void main() {
         final cardHand1 = CardHandModel();
         final cardHand2 = CardHandModel();
         
-        cardHand1.addCard(CardModel(name: 'Test Card', cost: 5));
+        cardHand1.addCard(CardModel(name: 'Test Card', type: 'Player'));
         
         expect(cardHand1.cards.length, equals(1));
         expect(cardHand2.cards.length, equals(0));
@@ -102,10 +102,10 @@ void main() {
         final cardHand1 = CardHandModel();
         final cardHand2 = CardHandModel();
         
-        cardHand1.addCard(CardModel(name: 'Hand 1 Card', cost: 1));
+        cardHand1.addCard(CardModel(name: 'Hand 1 Card', type: 'Player'));
         cardHand2.addCards([
-          CardModel(name: 'Hand 2 Card A', cost: 2),
-          CardModel(name: 'Hand 2 Card B', cost: 3),
+          CardModel(name: 'Hand 2 Card A', type: 'Player'),
+          CardModel(name: 'Hand 2 Card B', type: 'Player'),
         ]);
         
         expect(cardHand1.cards.length, equals(1));
@@ -123,8 +123,8 @@ void main() {
           final cardHand = CardHandModel();
           final initialCount = cardHand.cards.length;
           final newCards = [
-            CardModel(name: 'New Card 1', cost: 2),
-            CardModel(name: 'New Card 2', cost: 3),
+            CardModel(name: 'New Card 1', type: 'Player'),
+            CardModel(name: 'New Card 2', type: 'Player'),
           ];
           
           cardHand.addCards(newCards);
@@ -146,9 +146,9 @@ void main() {
         test('preserves original cards when adding new ones', () {
           final cardHand = CardHandModel();
           // Add some initial cards first
-          cardHand.addCard(CardModel(name: 'Original Card', cost: 1));
+          cardHand.addCard(CardModel(name: 'Original Card', type: 'Player'));
           final originalFirstCard = cardHand.cards.first.name;
-          final newCards = [CardModel(name: 'Added Card', cost: 5)];
+          final newCards = [CardModel(name: 'Added Card', type: 'Player')];
           
           cardHand.addCards(newCards);
           
@@ -161,19 +161,18 @@ void main() {
         test('adds single card to existing hand', () {
           final cardHand = CardHandModel();
           final initialCount = cardHand.cards.length;
-          final newCard = CardModel(name: 'Single New Card', cost: 4);
+          final newCard = CardModel(name: 'Single New Card', type: 'Player');
           
           cardHand.addCard(newCard);
           
           expect(cardHand.cards.length, equals(initialCount + 1));
           expect(cardHand.cards.last.name, equals('Single New Card'));
-          expect(cardHand.cards.last.cost, equals(4));
         });
 
         test('preserves original cards when adding single card', () {
           final cardHand = CardHandModel();
           final originalCards = List<CardModel>.from(cardHand.cards);
-          final newCard = CardModel(name: 'Added Single Card', cost: 6);
+          final newCard = CardModel(name: 'Added Single Card', type: 'Player');
           
           cardHand.addCard(newCard);
           
@@ -189,8 +188,8 @@ void main() {
           final cardHand = CardHandModel();
           // Add some cards first to test clearing
           cardHand.addCards([
-            CardModel(name: 'Card 1', cost: 1),
-            CardModel(name: 'Card 2', cost: 2),
+            CardModel(name: 'Card 1', type: 'Player'),
+            CardModel(name: 'Card 2', type: 'Player'),
           ]);
           expect(cardHand.cards, isNotEmpty);
           
@@ -212,7 +211,7 @@ void main() {
         test('can add cards after clearing', () {
           final cardHand = CardHandModel();
           cardHand.clearCards();
-          final newCard = CardModel(name: 'Post-Clear Card', cost: 7);
+          final newCard = CardModel(name: 'Post-Clear Card', type: 'Player');
           
           cardHand.addCard(newCard);
           
@@ -225,8 +224,8 @@ void main() {
         test('replaces all cards with new ones', () {
           final cardHand = CardHandModel();
           final newCards = [
-            CardModel(name: 'Replacement 1', cost: 8),
-            CardModel(name: 'Replacement 2', cost: 9),
+            CardModel(name: 'Replacement 1', type: 'Player'),
+            CardModel(name: 'Replacement 2', type: 'Player'),
           ];
           
           cardHand.replaceCards(newCards);
@@ -240,8 +239,8 @@ void main() {
           final cardHand = CardHandModel();
           // Add some cards first to test replacing with empty list
           cardHand.addCards([
-            CardModel(name: 'Card A', cost: 1),
-            CardModel(name: 'Card B', cost: 2),
+            CardModel(name: 'Card A', type: 'Player'),
+            CardModel(name: 'Card B', type: 'Player'),
           ]);
           expect(cardHand.cards, isNotEmpty);
           
@@ -253,7 +252,7 @@ void main() {
         test('replaces empty hand with new cards', () {
           final cardHand = CardHandModel();
           cardHand.clearCards();
-          final newCards = [CardModel(name: 'New After Replace', cost: 10)];
+          final newCards = [CardModel(name: 'New After Replace', type: 'Player')];
           
           cardHand.replaceCards(newCards);
           
@@ -265,8 +264,8 @@ void main() {
           final cardHand = CardHandModel();
           final originalCardNames = cardHand.cards.map((c) => c.name).toSet();
           final newCards = [
-            CardModel(name: 'Totally New 1', cost: 11),
-            CardModel(name: 'Totally New 2', cost: 12),
+            CardModel(name: 'Totally New 1', type: 'Player'),
+            CardModel(name: 'Totally New 2', type: 'Player'),
           ];
           
           cardHand.replaceCards(newCards);
@@ -281,7 +280,7 @@ void main() {
         test('addCards after clearCards works correctly', () {
           final cardHand = CardHandModel();
           cardHand.clearCards();
-          final newCards = [CardModel(name: 'After Clear', cost: 13)];
+          final newCards = [CardModel(name: 'After Clear', type: 'Player')];
           
           cardHand.addCards(newCards);
           
@@ -293,9 +292,9 @@ void main() {
           final cardHand = CardHandModel();
           cardHand.clearCards();
           
-          cardHand.addCard(CardModel(name: 'First', cost: 1));
-          cardHand.addCard(CardModel(name: 'Second', cost: 2));
-          cardHand.addCard(CardModel(name: 'Third', cost: 3));
+          cardHand.addCard(CardModel(name: 'First', type: 'Player'));
+          cardHand.addCard(CardModel(name: 'Second', type: 'Player'));
+          cardHand.addCard(CardModel(name: 'Third', type: 'Player'));
           
           expect(cardHand.cards.length, equals(3));
           expect(cardHand.cards.map((c) => c.name).toList(), equals(['First', 'Second', 'Third']));
