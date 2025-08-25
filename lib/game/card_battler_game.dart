@@ -14,9 +14,6 @@ class CardBattlerGame extends FlameGame {
     _gameState = GameStateModel.newGame();
   }
 
-  // Constructor to create game with existing state (for loading saves)
-  CardBattlerGame.withState(GameStateModel gameState) : _gameState = gameState;
-
   // Test-only constructor to set size before onLoad
   CardBattlerGame.withSize(Vector2 testSize) : _testSize = testSize {
     _gameState = GameStateModel.newGame();
