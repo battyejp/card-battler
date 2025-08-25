@@ -6,7 +6,17 @@ void main() {
   group('ShopModel', () {
     group('constructor and initialization', () {
       test('creates and initializes shop with generated items', () {
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3);
+        // Create test cards
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        
+        final shop = ShopModel(
+          numberOfRows: 2, 
+          numberOfColumns: 3,
+          cards: testCards
+        );
         
         expect(shop.allCards, isNotEmpty);
         expect(shop.selectableCards, isNotEmpty);
@@ -15,14 +25,22 @@ void main() {
       });
 
       test('generates correct total number of cards', () {
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         final totalCards = shop.allCards.length + shop.selectableCards.length;
         
         expect(totalCards, equals(10));
       });
 
       test('selectable cards are first 6 cards from generated set', () {
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         
         for (int i = 0; i < shop.selectableCards.length; i++) {
           expect(shop.selectableCards[i].name, equals('Card ${i + 1}'));
@@ -32,7 +50,11 @@ void main() {
       });
 
       test('remaining cards are last 4 cards from generated set', () {
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         
         for (int i = 0; i < shop.allCards.length; i++) {
           final expectedCardNumber = i + 7;
@@ -47,7 +69,11 @@ void main() {
       late ShopModel shop;
       
       setUp(() {
-        shop = ShopModel(numberOfRows: 2, numberOfColumns: 3);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
       });
 
       test('allCards getter returns correct list', () {
@@ -77,7 +103,11 @@ void main() {
 
     group('card generation behavior', () {
       test('generated cards have expected properties', () {
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         final allGeneratedCards = [...shop.selectableCards, ...shop.allCards];
         
         for (int i = 0; i < allGeneratedCards.length; i++) {
@@ -89,7 +119,11 @@ void main() {
       });
 
       test('cards are properly partitioned between lists', () {
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         final selectableCardNames = shop.selectableCards.map((c) => c.name).toSet();
         final allCardNames = shop.allCards.map((c) => c.name).toSet();
         

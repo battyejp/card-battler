@@ -38,7 +38,11 @@ void main() {
     
     for (final testCase in testCases) {
       testWithFlameGame('Shop children sizes and positions for shop size ${testCase['shopSize']}', (game) async {
-        final shop = Shop(ShopModel(numberOfRows: 2, numberOfColumns: 3))
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shop = Shop(ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards))
           ..size = testCase['shopSize'] as Vector2;
 
         await game.ensureAdd(shop);
@@ -60,7 +64,11 @@ void main() {
   group('Shop Component Integration Tests', () {
     group('ShopCard integration', () {
       testWithFlameGame('creates ShopCard components instead of regular Cards', (game) async {
-        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 3);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(300, 200);
         
         await game.ensureAdd(shop);
@@ -77,7 +85,11 @@ void main() {
       });
 
       testWithFlameGame('ShopCards display both name and cost', (game) async {
-        final shopModel = ShopModel(numberOfRows: 1, numberOfColumns: 2);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shopModel = ShopModel(numberOfRows: 1, numberOfColumns: 2, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(200, 100);
         
         await game.ensureAdd(shop);
@@ -98,7 +110,11 @@ void main() {
       });
 
       testWithFlameGame('ShopCards use correct ShopCardModel data', (game) async {
-        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 2);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 2, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(200, 150);
         
         await game.ensureAdd(shop);
@@ -118,7 +134,11 @@ void main() {
 
     group('layout and positioning with ShopCards', () {
       testWithFlameGame('ShopCards maintain correct layout spacing', (game) async {
-        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 3);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(300, 200);
         
         await game.ensureAdd(shop);
@@ -140,7 +160,11 @@ void main() {
       });
 
       testWithFlameGame('ShopCards have consistent sizes', (game) async {
-        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 2);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 2, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(200, 150);
         
         await game.ensureAdd(shop);
@@ -164,9 +188,14 @@ void main() {
 
       for (final config in configTestCases) {
         testWithFlameGame('${config['rows']}x${config['cols']} shop creates correct ShopCards', (game) async {
+          final testCards = List.generate(
+            10,
+            (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+          );
           final shopModel = ShopModel(
             numberOfRows: config['rows'] as int,
             numberOfColumns: config['cols'] as int,
+            cards: testCards,
           );
           final shop = Shop(shopModel)..size = Vector2(400, 300);
           
@@ -188,7 +217,11 @@ void main() {
     
     group('ShopCard rendering and display', () {
       testWithFlameGame('all ShopCards render without errors', (game) async {
-        final shopModel = ShopModel(numberOfRows: 3, numberOfColumns: 3);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shopModel = ShopModel(numberOfRows: 3, numberOfColumns: 3, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(450, 350);
         
         await game.ensureAdd(shop);
@@ -204,7 +237,11 @@ void main() {
       });
 
       testWithFlameGame('ShopCards display correct cost formatting', (game) async {
-        final shopModel = ShopModel(numberOfRows: 1, numberOfColumns: 3);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shopModel = ShopModel(numberOfRows: 1, numberOfColumns: 3, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(300, 100);
         
         await game.ensureAdd(shop);
@@ -223,7 +260,11 @@ void main() {
 
     group('integration with game flow', () {
       testWithFlameGame('ShopCards are ready for interaction', (game) async {
-        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 2);
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 2, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(200, 150);
         
         await game.ensureAdd(shop);
@@ -246,7 +287,11 @@ void main() {
 
     group('performance and efficiency', () {
       testWithFlameGame('large shop creates ShopCards efficiently', (game) async {
-        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 3); // 6 cards max, limited by available (10)
+        final testCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
+        );
+        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards); // 6 cards max, limited by available (10)
         final shop = Shop(shopModel)..size = Vector2(300, 200);
         
         await game.ensureAdd(shop);
@@ -305,13 +350,10 @@ class TestShopModel extends ShopModel {
     required super.numberOfRows,
     required super.numberOfColumns,
     required int availableCards,
-  }) {
-    // Override the generated cards with a specific number
-    allCards.clear();
-    selectableCards.clear();
-    
-    for (int i = 0; i < availableCards; i++) {
-      selectableCards.add(ShopCardModel(name: 'Test Card ${i + 1}', cost: i + 1));
-    }
-  }
+  }) : super(
+         cards: List.generate(
+           availableCards,
+           (i) => ShopCardModel(name: 'Test Card ${i + 1}', cost: i + 1),
+         ),
+       );
 }

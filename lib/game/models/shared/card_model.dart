@@ -30,8 +30,15 @@ class CardModel {
   }
 }
 
-Future<List<CardModel>> loadCardsFromJson(String filePath) async {
+/// Loads cards from JSON file
+/// 
+/// Generic method that can load either CardModel or any subclass like ShopCardModel
+/// The [fromJson] parameter is a factory function that creates instances of T from JSON
+Future<List<T>> loadCardsFromJson<T>(
+  String filePath, 
+  T Function(Map<String, dynamic>) fromJson
+) async {
   final String jsonString = await rootBundle.loadString(filePath);
   final List<dynamic> jsonData = json.decode(jsonString);
-  return jsonData.map((json) => CardModel.fromJson(json)).toList();
+  return jsonData.map((json) => fromJson(json)).toList();
 }

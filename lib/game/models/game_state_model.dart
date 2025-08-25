@@ -10,8 +10,7 @@ import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
-import 'dart:async';
+import 'package:card_battler/game/models/shop/shop_card_model.dart';
 
 /// Represents the different phases of the game
 enum GamePhase { setup, playerTurn, enemyTurn, shopping, battleEnd, gameOver }
@@ -31,10 +30,6 @@ class GameStateModel {
   // Team state
   final TeamModel team;
 
-  List<CardModel> enemyCards = [];
-  List<CardModel> shopCards = [];
-  List<CardModel> heroStartingCards = [];
-
   GameStateModel({
     required this.player,
     required this.enemies,
@@ -43,7 +38,7 @@ class GameStateModel {
   });
 
   /// Creates a new game with default starting values
-  factory GameStateModel.newGame() {
+  factory GameStateModel.newGame([List<ShopCardModel> shopCards = const []]) {
     return GameStateModel(
       player: PlayerModel(
         infoModel: InfoModel(
@@ -60,7 +55,7 @@ class GameStateModel {
         maxNumberOfEnemiesInPlay: 3,
         maxEnemyHealth: 5,
       ),
-      shop: ShopModel(numberOfRows: 2, numberOfColumns: 3),
+      shop: ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: shopCards),
       team: TeamModel(
         bases: BasesModel(
           bases: [
@@ -155,10 +150,4 @@ class GameStateModel {
   // - Enemies Remaining: ${enemies.aliveEnemies.length}/${enemies.allEnemies.length}
   // ''';
   //   }
-
-  Future<void> loadCards() async {
-    enemyCards = await loadCardsFromJson('assets/data/enemy_cards.json');
-    shopCards = await loadCardsFromJson('assets/data/shop_cards.json');
-    heroStartingCards = await loadCardsFromJson('assets/data/hero_starting_cards.json');
-  }
 }

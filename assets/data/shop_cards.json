@@ -4,6 +4,6 @@
   {"name": "Sword", "type": "Shop", "cost": 3},
   {"name": "Shield", "type": "Shop", "cost": 4},
   {"name": "Armor", "type": "Shop", "cost": 5},
-  {"name": "Health Potion 2", "type": "Shop", "cost": 1},
-  {"name": "Mana Potion 2", "type": "Shop", "cost": 2}
+  {"name": "Health Potion 2", "type": "Shop", "cost": 5},
+  {"name": "Mana Potion 2", "type": "Shop", "cost": 6}
 ]

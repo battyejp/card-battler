@@ -6,23 +6,26 @@ class ShopModel {
   final int _numberOfRows;
   final int _numberOfColumns;
 
-  ShopModel({required int numberOfRows, required int numberOfColumns})
-      : _allCards = [],
-        _selectableCards = [],
-        _numberOfRows = numberOfRows,
-        _numberOfColumns = numberOfColumns {
-    _generateShopItems();
-  }
+  ShopModel({
+    required int numberOfRows,
+    required int numberOfColumns,
+    required List<ShopCardModel> cards,
+  }) : _allCards = [],
+       _selectableCards = [],
+       _numberOfRows = numberOfRows,
+       _numberOfColumns = numberOfColumns {
+    // Calculate how many cards should be selectable
+    final int displayCount = _numberOfRows * _numberOfColumns;
 
-  void _generateShopItems() {
-    _allCards = List.generate(
-      10,
-      (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
-    );
-
-    var numberOfCardOnDisplay = _numberOfColumns * _numberOfRows;
-    _selectableCards = List.from(_allCards.take(numberOfCardOnDisplay));
-    _allCards.removeRange(0, numberOfCardOnDisplay);
+    if (cards.isNotEmpty) {
+      if (cards.length <= displayCount) {
+        _selectableCards = List.from(cards);
+        _allCards = [];
+      } else {
+        _selectableCards = cards.take(displayCount).toList();
+        _allCards = cards.skip(displayCount).toList();
+      }
+    }
   }
 
   List<ShopCardModel> get allCards => _allCards;
