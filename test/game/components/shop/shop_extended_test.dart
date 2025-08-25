@@ -244,10 +244,10 @@ void main() {
 // Test helper class to create shop models with specific card counts
 class TestShopModel extends ShopModel {
   TestShopModel({
-    required int numberOfRows,
-    required int numberOfColumns,
+    required super.numberOfRows,
+    required super.numberOfColumns,
     required int availableCards,
-  }) : super(numberOfRows: numberOfRows, numberOfColumns: numberOfColumns) {
+  }) {
     // Override the generated cards with a specific number
     _allCards.clear();
     _selectableCards.clear();
