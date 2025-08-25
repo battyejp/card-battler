@@ -324,7 +324,6 @@ void main() {
         // Verify drawn cards match expected order
         for (int i = 0; i < 5; i++) {
           expect(hand.model.cards[i].name, equals(expectedCards[i].name));
-          expect(hand.model.cards[i].cost, equals(expectedCards[i].cost));
         }
       });
 
@@ -347,7 +346,6 @@ void main() {
         // Verify displayed cards match model
         for (int i = 0; i < 5; i++) {
           expect(displayedCards[i].cardModel.name, equals(hand.model.cards[i].name));
-          expect(displayedCards[i].cardModel.cost, equals(hand.model.cards[i].cost));
         }
       });
 

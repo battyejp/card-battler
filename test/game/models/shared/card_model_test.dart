@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/shop/shop_card_model.dart';
 
 void main() {
-  group('CardModel', () {
+  group('ShopCardModel', () {
     group('constructor and initialization', () {
       final testCases = [
         {'name': 'Test Card', 'cost': 5, 'isFaceUp': true},
@@ -15,10 +15,10 @@ void main() {
 
       for (final testCase in testCases) {
         test('creates with name "${testCase['name']}", cost ${testCase['cost']}, and isFaceUp ${testCase['isFaceUp']}', () {
-          final card = CardModel(
+          final card = ShopCardModel(
             name: testCase['name'] as String,
             cost: testCase['cost'] as int,
-            faceUp: testCase['isFaceUp'] as bool,
+            isFaceUp: testCase['isFaceUp'] as bool,
           );
           
           expect(card.name, equals(testCase['name']));
@@ -28,17 +28,17 @@ void main() {
       }
 
       test('defaults to face up when isFaceUp not specified', () {
-        final card = CardModel(name: 'Default Card', cost: 3);
+        final card = ShopCardModel(name: 'Default Card', cost: 3);
         
         expect(card.isFaceUp, isTrue);
       });
     });
 
     group('property access', () {
-      late CardModel card;
+      late ShopCardModel card;
       
       setUp(() {
-        card = CardModel(
+        card = ShopCardModel(
           name: 'Sample Card',
           cost: 7,
         );

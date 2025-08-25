@@ -1,0 +1,7 @@
+[
+  {"name": "Goblin", "type": "Enemy"},
+  {"name": "Orc", "type": "Enemy"},
+  {"name": "Troll", "type": "Enemy"},
+  {"name": "Dragon", "type": "Enemy"},
+  {"name": "Skeleton", "type": "Enemy"}
+]

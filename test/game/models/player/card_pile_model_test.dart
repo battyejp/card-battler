@@ -29,7 +29,6 @@ void main() {
           // Check generated cards have correct properties
           for (int i = 0; i < (testCase['expectedLength'] as int); i++) {
             expect(model.allCards[i].name, equals('Card ${i + 1}'));
-            expect(model.allCards[i].cost, equals(1));
             expect(model.allCards[i].isFaceUp, isFalse);
           }
         }
@@ -37,8 +36,8 @@ void main() {
 
       test('creates with provided cards list', () {
         final cards = [
-          CardModel(name: 'Custom Card 1', cost: 2),
-          CardModel(name: 'Custom Card 2', cost: 5),
+          CardModel(name: 'Custom Card 1', type: 'Player'),
+          CardModel(name: 'Custom Card 2', type: 'Player'),
         ];
         final model = CardPileModel(cards: cards);
         
@@ -49,7 +48,7 @@ void main() {
 
       test('provided cards list takes precedence over numberOfCards', () {
         final cards = [
-          CardModel(name: 'Override Card', cost: 3),
+          CardModel(name: 'Override Card', type: 'Player'),
         ];
         final model = CardPileModel(numberOfCards: 5, cards: cards);
         
@@ -78,7 +77,7 @@ void main() {
         final model = CardPileModel(numberOfCards: 2);
         final cards = model.allCards;
         
-        expect(() => cards.add(CardModel(name: 'Test', cost: 1)), 
+        expect(() => cards.add(CardModel(name: 'Test', type: 'Player')), 
                throwsUnsupportedError);
       });
 
@@ -117,9 +116,9 @@ void main() {
 
         test('draws cards from the top of the pile', () {
           final cards = [
-            CardModel(name: 'Top Card', cost: 1),
-            CardModel(name: 'Middle Card', cost: 2),
-            CardModel(name: 'Bottom Card', cost: 3),
+            CardModel(name: 'Top Card', type: 'Player'),
+            CardModel(name: 'Middle Card', type: 'Player'),
+            CardModel(name: 'Bottom Card', type: 'Player'),
           ];
           final model = CardPileModel(cards: cards);
           
@@ -191,8 +190,8 @@ void main() {
 
         test('draws card from the top of the pile', () {
           final cards = [
-            CardModel(name: 'Top Card', cost: 1),
-            CardModel(name: 'Bottom Card', cost: 2),
+            CardModel(name: 'Top Card', type: 'Player'),
+            CardModel(name: 'Bottom Card', type: 'Player'),
           ];
           final model = CardPileModel(cards: cards);
           

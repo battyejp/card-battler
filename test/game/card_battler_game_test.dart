@@ -3,11 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/enemy/enemies.dart';
-import 'package:card_battler/game/components/ui/shop.dart';
+import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:flame_test/flame_test.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   testWithGame<CardBattlerGame>('CardBattlerGame adds all main components to the world', CardBattlerGame.new, (game) async {
     expect(game.world.children.whereType<Player>().length, 1);
     expect(game.world.children.whereType<Enemies>().length, 1);

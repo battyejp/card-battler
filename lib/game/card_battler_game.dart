@@ -1,5 +1,5 @@
 import 'package:card_battler/game/components/enemy/enemies.dart';
-import 'package:card_battler/game/components/ui/shop.dart';
+import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:flame/game.dart';
@@ -14,9 +14,6 @@ class CardBattlerGame extends FlameGame {
     _gameState = GameStateModel.newGame();
   }
 
-  // Constructor to create game with existing state (for loading saves)
-  CardBattlerGame.withState(GameStateModel gameState) : _gameState = gameState;
-
   // Test-only constructor to set size before onLoad
   CardBattlerGame.withSize(Vector2 testSize) : _testSize = testSize {
     _gameState = GameStateModel.newGame();
@@ -26,11 +23,12 @@ class CardBattlerGame extends FlameGame {
   static const double topLayoutHeightFactor = 0.6;
 
   @override
-  onLoad() {
+  Future<void> onLoad() async {
     if (_testSize != null) {
       onGameResize(_testSize!);
     }
 
+    await _gameState.loadCards();
     _loadGameComponents();
   }
 
