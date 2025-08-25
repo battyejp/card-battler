@@ -9,8 +9,8 @@ class CardPileModel with ReactiveModel<CardPileModel> {
           numberOfCards,
           (index) => CardModel(
             name: 'Card ${index + 1}',
-            cost: 1,
-            faceUp: false,
+            type: 'Player',
+            isFaceUp: false,
           ),
         );
 

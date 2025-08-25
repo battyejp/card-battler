@@ -4,8 +4,8 @@ import 'package:flame/components.dart';
 
 class Card extends PositionComponent {
   final CardModel cardModel;
-  late TextComponent _nameTextComponent;
-  late TextComponent _costTextComponent;
+  @protected
+  late TextComponent nameTextComponent;
 
   Card(this.cardModel);
 
@@ -15,51 +15,48 @@ class Card extends PositionComponent {
   @override
   void onLoad() {
     super.onLoad();
-    _addTextComponent();
+    addTextComponent();
   }
 
-  void _addTextComponent() {
+  @protected
+  void addTextComponent() {
     if (cardModel.isFaceUp) {
-      _nameTextComponent = TextComponent(
-        text: cardModel.name,
-        anchor: Anchor.center,
-        position: Vector2(size.x / 2, size.y / 2 - 15),
-        textRenderer: TextPaint(
-          style: const TextStyle(
-            fontSize: 20,
-            color: Colors.white,
-          ),
-        ),
-      );
-      
-      _costTextComponent = TextComponent(
-        text: "Cost: ${cardModel.cost}",
-        anchor: Anchor.center,
-        position: Vector2(size.x / 2, size.y / 2 + 15),
-        textRenderer: TextPaint(
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.white,
-          ),
-        ),
-      );
-      
-      add(_nameTextComponent);
-      add(_costTextComponent);
+      createNameTextComponent(Vector2(size.x / 2, size.y / 2));
+      add(nameTextComponent);
     } else {
-      _nameTextComponent = TextComponent(
-        text: "Back",
-        anchor: Anchor.center,
-        position: Vector2(size.x / 2, size.y / 2),
-        textRenderer: TextPaint(
-          style: const TextStyle(
-            fontSize: 20,
-            color: Colors.white,
-          ),
-        ),
-      );
-      add(_nameTextComponent);
+      createBackTextComponent();
+      add(nameTextComponent);
     }
+  }
+
+  @protected
+  void createNameTextComponent(Vector2 position) {
+    nameTextComponent = TextComponent(
+      text: cardModel.name,
+      anchor: Anchor.center,
+      position: position,
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontSize: 20,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  @protected
+  void createBackTextComponent() {
+    nameTextComponent = TextComponent(
+      text: "Back",
+      anchor: Anchor.center,
+      position: Vector2(size.x / 2, size.y / 2),
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontSize: 20,
+          color: Colors.white,
+        ),
+      ),
+    );
   }
 
   @override
