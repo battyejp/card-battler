@@ -1,7 +1,7 @@
 import 'package:card_battler/game/models/player/card_pile_model.dart';
 import 'package:flame/components.dart';
 import 'package:card_battler/game/components/shared/card.dart';
-import 'package:card_battler/game/components/reactive_position_component.dart';
+import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:flutter/material.dart' hide Card;
 
 class CardPile extends ReactivePositionComponent<CardPileModel> {
