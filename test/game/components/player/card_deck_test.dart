@@ -1,4 +1,5 @@
 import 'package:card_battler/game/models/player/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/player/card_deck.dart';
 import 'package:card_battler/game/components/shared/card.dart';
@@ -6,11 +7,18 @@ import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
+List<CardModel> _generateCards(int count) {
+  return List.generate(count, (index) => CardModel(
+    name: 'Card $index',
+    type: 'test',
+  ));
+}
+
 void main() {
   group('CardDeck', () {
     group('inheritance from CardPile', () {
       testWithFlameGame('inherits all CardPile functionality with cards', (game) async {
-        final deck = CardDeck(CardPileModel(numberOfCards: 5))
+        final deck = CardDeck(CardPileModel(cards: _generateCards(5)))
           ..size = Vector2(100, 150);
 
         await game.ensureAdd(deck);
@@ -40,7 +48,7 @@ void main() {
       });
 
       testWithFlameGame('debug mode enabled like CardPile', (game) async {
-        final deck = CardDeck(CardPileModel(numberOfCards: 3));
+        final deck = CardDeck(CardPileModel(cards: _generateCards(3)));
         
         expect(deck.debugMode, isTrue);
       });
@@ -50,7 +58,7 @@ void main() {
       testWithFlameGame('calls onTap callback when tapped', (game) async {
         bool tapped = false;
         final deck = CardDeck(
-          CardPileModel(numberOfCards: 3),
+          CardPileModel(cards: _generateCards(3)),
           onTap: () => tapped = true,
         )..size = Vector2(100, 150);
 
@@ -63,7 +71,7 @@ void main() {
       });
 
       testWithFlameGame('does not throw when no onTap callback provided', (game) async {
-        final deck = CardDeck(CardPileModel(numberOfCards: 3))
+        final deck = CardDeck(CardPileModel(cards: _generateCards(3)))
           ..size = Vector2(100, 150);
 
         await game.ensureAdd(deck);
@@ -74,7 +82,7 @@ void main() {
       testWithFlameGame('onTap callback can be called multiple times', (game) async {
         int tapCount = 0;
         final deck = CardDeck(
-          CardPileModel(numberOfCards: 3),
+          CardPileModel(cards: _generateCards(3)),
           onTap: () => tapCount++,
         )..size = Vector2(100, 150);
 
@@ -94,7 +102,7 @@ void main() {
         }
 
         final deck = CardDeck(
-          CardPileModel(numberOfCards: 3),
+          CardPileModel(cards: _generateCards(3)),
           onTap: testCallback,
         )..size = Vector2(100, 150);
 
@@ -108,7 +116,7 @@ void main() {
 
     group('constructor', () {
       test('accepts CardPileModel and optional onTap callback', () {
-        final model = CardPileModel(numberOfCards: 5);
+        final model = CardPileModel(cards: _generateCards(5));
         void callback() {}
 
         final deckWithCallback = CardDeck(model, onTap: callback);
@@ -141,7 +149,7 @@ void main() {
         testWithFlameGame('deck size ${testCase['size']} with ${testCase['cards']} cards handles taps correctly', (game) async {
           bool tapped = false;
           final deck = CardDeck(
-            CardPileModel(numberOfCards: testCase['cards'] as int),
+            CardPileModel(cards: _generateCards(testCase['cards'] as int)),
             onTap: () => tapped = true,
           )..size = testCase['size'] as Vector2;
 
@@ -156,7 +164,7 @@ void main() {
 
     group('TapCallbacks mixin integration', () {
       testWithFlameGame('implements TapCallbacks correctly', (game) async {
-        final deck = CardDeck(CardPileModel(numberOfCards: 3));
+        final deck = CardDeck(CardPileModel(cards: _generateCards(3)));
         
         expect(deck, isA<TapCallbacks>());
         
@@ -167,7 +175,7 @@ void main() {
       });
 
       testWithFlameGame('tap callback can be null without issues', (game) async {
-        final deck = CardDeck(CardPileModel(numberOfCards: 3));
+        final deck = CardDeck(CardPileModel(cards: _generateCards(3)));
         
         await game.ensureAdd(deck);
         

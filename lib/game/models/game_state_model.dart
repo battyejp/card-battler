@@ -3,6 +3,7 @@ import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/player/card_pile_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/team/base_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
@@ -38,7 +39,7 @@ class GameStateModel {
   });
 
   /// Creates a new game with default starting values
-  factory GameStateModel.newGame(List<ShopCardModel> shopCards) {
+  factory GameStateModel.newGame(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards) {
     return GameStateModel(
       player: PlayerModel(
         infoModel: InfoModel(
@@ -47,7 +48,7 @@ class GameStateModel {
           credits: ValueImageLabelModel(value: 50, label: 'Credits'),
         ),
         handModel: CardHandModel(),
-        deckModel: CardPileModel(numberOfCards: 20),
+        deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
       ),
       enemies: EnemiesModel(

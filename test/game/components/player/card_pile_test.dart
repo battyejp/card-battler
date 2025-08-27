@@ -6,6 +6,13 @@ import 'package:card_battler/game/components/shared/card.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 
+List<CardModel> _generateCards(int count) {
+  return List.generate(count, (index) => CardModel(
+    name: 'Card $index',
+    type: 'test',
+  ));
+}
+
 void main() {
   group('CardPile', () {
     group('with cards', () {
@@ -23,7 +30,7 @@ void main() {
       ];
       for (final testCase in testCases) {
         testWithFlameGame('Pile child size and position for pile size ${testCase['deckSize']}', (game) async {
-          final pile = CardPile(CardPileModel(numberOfCards: 3))..size = testCase['deckSize'] as Vector2;
+          final pile = CardPile(CardPileModel(cards: _generateCards(3)))..size = testCase['deckSize'] as Vector2;
 
           await game.ensureAdd(pile);
 
@@ -95,7 +102,7 @@ void main() {
         ];
 
         for (final testCase in testCases) {
-          final pile = CardPile(CardPileModel(numberOfCards: testCase['numberOfCards'] as int))
+          final pile = CardPile(CardPileModel(cards: _generateCards(testCase['numberOfCards'] as int)))
             ..size = Vector2(100, 150);
 
           await game.ensureAdd(pile);
@@ -132,7 +139,7 @@ void main() {
         ];
 
         for (final testCase in testCases) {
-          final pile = CardPile(CardPileModel(numberOfCards: 7))
+          final pile = CardPile(CardPileModel(cards: _generateCards(7)))
             ..size = testCase['size'] as Vector2;
 
           await game.ensureAdd(pile);
@@ -173,7 +180,7 @@ void main() {
       });
 
       testWithFlameGame('updates display automatically when cards are drawn from model', (game) async {
-        final model = CardPileModel(numberOfCards: 5);
+        final model = CardPileModel(cards: _generateCards(5));
         final pile = CardPile(model)..size = Vector2(100, 150);
 
         await game.ensureAdd(pile);
@@ -198,7 +205,7 @@ void main() {
       });
 
       testWithFlameGame('updates count automatically when individual cards are drawn', (game) async {
-        final model = CardPileModel(numberOfCards: 3);
+        final model = CardPileModel(cards: _generateCards(3));
         final pile = CardPile(model)..size = Vector2(100, 150);
 
         await game.ensureAdd(pile);
@@ -221,7 +228,7 @@ void main() {
       });
 
       testWithFlameGame('cleans up stream subscription on component removal', (game) async {
-        final model = CardPileModel(numberOfCards: 2);
+        final model = CardPileModel(cards: _generateCards(2));
         final pile = CardPile(model)..size = Vector2(100, 150);
 
         await game.ensureAdd(pile);

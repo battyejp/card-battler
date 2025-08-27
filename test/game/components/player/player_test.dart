@@ -10,8 +10,17 @@ import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/player/card_pile_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
+
+List<CardModel> _generateCards(int count) {
+  return List.generate(count, (index) => CardModel(
+    name: 'Card $index',
+    type: 'test',
+    isFaceUp: false,
+  ));
+}
 
 void main() {
   group('Player', () {
@@ -22,7 +31,7 @@ void main() {
         credits: ValueImageLabelModel(value: 25, label: 'Credits'),
       );
       final handModel = CardHandModel();
-      final deckModel = CardPileModel(numberOfCards: 20);
+      final deckModel = CardPileModel(cards: _generateCards(20));
       final discardModel = CardPileModel.empty();
       
       final playerModel = PlayerModel(

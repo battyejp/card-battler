@@ -4,15 +4,8 @@ import 'package:card_battler/game/models/shared/reactive_model.dart';
 class CardPileModel with ReactiveModel<CardPileModel> {
   final List<CardModel> _cards;
 
-  CardPileModel({int numberOfCards = 0, List<CardModel>? cards})
-      : _cards = cards ?? List.generate(
-          numberOfCards,
-          (index) => CardModel(
-            name: 'Card ${index + 1}',
-            type: 'Player',
-            isFaceUp: false,
-          ),
-        );
+  CardPileModel({List<CardModel> cards = const []})
+      : _cards = cards;
 
   CardPileModel.empty() : _cards = [];
 

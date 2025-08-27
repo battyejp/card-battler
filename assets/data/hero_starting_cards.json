@@ -3,5 +3,8 @@
   {"name": "Defend", "type": "Hero"},
   {"name": "Charge", "type": "Hero"},
   {"name": "Heal", "type": "Hero"},
-  {"name": "Block", "type": "Hero"}
+  {"name": "Block", "type": "Hero"},
+  {"name": "Dodge", "type": "Hero"},
+  {"name": "Counter", "type": "Hero"},
+  {"name": "Bash", "type": "Hero"}
 ]
