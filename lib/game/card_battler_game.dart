@@ -2,37 +2,52 @@ import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:flame/game.dart';
 import 'components/player/player.dart';
 
 class CardBattlerGame extends FlameGame {
-  late GameStateModel _gameState;
+  GameStateModel? _gameState;
   Vector2? _testSize;
 
   // Default constructor with new game state
-  CardBattlerGame() {
-    _gameState = GameStateModel.newGame();
-  }
+  CardBattlerGame();
 
   // Test-only constructor to set size before onLoad
-  CardBattlerGame.withSize(Vector2 testSize) : _testSize = testSize {
-    _gameState = GameStateModel.newGame();
-  }
+  CardBattlerGame.withSize(Vector2 testSize) : _testSize = testSize;
 
   static const double margin = 20.0;
   static const double topLayoutHeightFactor = 0.6;
 
   @override
   Future<void> onLoad() async {
+    List<ShopCardModel> shopCards = [];
+
     if (_testSize != null) {
       onGameResize(_testSize!);
+
+      shopCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Test Card ${index + 1}', cost: 1),
+        );
+    }
+    else {
+        shopCards = await loadCardsFromJson<ShopCardModel>(
+          'assets/data/shop_cards.json',
+          ShopCardModel.fromJson,
+        );
     }
 
-    await _gameState.loadCards();
+    _gameState = GameStateModel.newGame(shopCards);
     _loadGameComponents();
   }
 
   void _loadGameComponents() {
+    if (_gameState == null) {
+      return;
+    }
+
     final availableHeight = size.y - (margin * 2);
     final availableWidth = size.x - (margin * 2);
     final topLayoutHeight = availableHeight * topLayoutHeightFactor;
@@ -40,7 +55,7 @@ class CardBattlerGame extends FlameGame {
     final topPositionY = -1 * (size.y / 2) + margin;
 
     // Create player component with models from game state
-    final player = Player(playerModel: _gameState.player)
+    final player = Player(playerModel: _gameState!.player)
       ..size = Vector2(availableWidth, bottomLayoutHeight)
       ..position = Vector2(
         (0 - size.x / 2) + margin,
@@ -51,7 +66,7 @@ class CardBattlerGame extends FlameGame {
 
     // Create enemies component with model from game state
     final enemiesWidth = availableWidth * 0.5;
-    final enemies = Enemies(model: _gameState.enemies)
+    final enemies = Enemies(model: _gameState!.enemies)
       ..size = Vector2(enemiesWidth, topLayoutHeight)
       ..position = Vector2((0 - enemiesWidth / 2), topPositionY);
 
@@ -59,14 +74,14 @@ class CardBattlerGame extends FlameGame {
 
     // Create shop component with model from game state
     final shopWidth = availableWidth * 0.5 / 2;
-    final shop = Shop(_gameState.shop)
+    final shop = Shop(_gameState!.shop)
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
 
     world.add(shop);
 
     // Create team component with model from game state
-    final team = Team(_gameState.team)
+    final team = Team(_gameState!.team)
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(0 - enemiesWidth / 2 - shopWidth, topPositionY);
 
