@@ -2,6 +2,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/models/player/card_pile_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 
+List<CardModel> _generateCards(int count) {
+  return List.generate(count, (index) => CardModel(
+    name: 'Card ${index + 1}',
+    type: 'test',
+    isFaceUp: false,
+  ));
+}
+
 void main() {
   group('CardPileModel', () {
     group('constructor and initialization', () {
@@ -21,7 +29,8 @@ void main() {
         ];
 
         for (final testCase in testCases) {
-          final model = CardPileModel(numberOfCards: testCase['numberOfCards'] as int);
+          final cardCount = testCase['numberOfCards'] as int;
+          final model = CardPileModel(cards: _generateCards(cardCount));
           
           expect(model.allCards.length, equals(testCase['expectedLength']));
           expect(model.hasNoCards, equals(testCase['expectedLength'] == 0));
@@ -46,11 +55,11 @@ void main() {
         expect(model.allCards, equals(cards));
       });
 
-      test('provided cards list takes precedence over numberOfCards', () {
+      test('creates with provided cards list', () {
         final cards = [
           CardModel(name: 'Override Card', type: 'Player'),
         ];
-        final model = CardPileModel(numberOfCards: 5, cards: cards);
+        final model = CardPileModel(cards: cards);
         
         expect(model.allCards.length, equals(1));
         expect(model.allCards.first.name, equals('Override Card'));
@@ -74,7 +83,7 @@ void main() {
 
     group('properties', () {
       test('allCards returns unmodifiable list', () {
-        final model = CardPileModel(numberOfCards: 2);
+        final model = CardPileModel(cards: _generateCards(2));
         final cards = model.allCards;
         
         expect(() => cards.add(CardModel(name: 'Test', type: 'Player')), 
@@ -82,7 +91,7 @@ void main() {
       });
 
       test('hasNoCards returns correct value for non-empty pile', () {
-        final model = CardPileModel(numberOfCards: 3);
+        final model = CardPileModel(cards: _generateCards(3));
         expect(model.hasNoCards, isFalse);
       });
 
@@ -96,8 +105,8 @@ void main() {
         expect(model.hasNoCards, isTrue);
       });
 
-      test('hasNoCards returns correct value for pile with numberOfCards = 0', () {
-        final model = CardPileModel(numberOfCards: 0);
+      test('hasNoCards returns correct value for pile with empty cards list', () {
+        final model = CardPileModel(cards: _generateCards(0));
         expect(model.hasNoCards, isTrue);
       });
     });
@@ -105,7 +114,7 @@ void main() {
     group('card drawing methods', () {
       group('drawCards', () {
         test('draws correct number of cards from pile', () {
-          final model = CardPileModel(numberOfCards: 10);
+          final model = CardPileModel(cards: _generateCards(10));
           final originalCount = model.allCards.length;
           
           final drawnCards = model.drawCards(3);
@@ -130,7 +139,7 @@ void main() {
         });
 
         test('returns empty list when drawing zero cards', () {
-          final model = CardPileModel(numberOfCards: 5);
+          final model = CardPileModel(cards: _generateCards(5));
           
           final drawnCards = model.drawCards(0);
           
@@ -139,7 +148,7 @@ void main() {
         });
 
         test('returns empty list when drawing negative number of cards', () {
-          final model = CardPileModel(numberOfCards: 5);
+          final model = CardPileModel(cards: _generateCards(5));
           
           final drawnCards = model.drawCards(-1);
           
@@ -148,7 +157,7 @@ void main() {
         });
 
         test('draws all available cards when requesting more than available', () {
-          final model = CardPileModel(numberOfCards: 3);
+          final model = CardPileModel(cards: _generateCards(3));
           
           final drawnCards = model.drawCards(5);
           
@@ -166,7 +175,7 @@ void main() {
         });
 
         test('multiple draws work correctly', () {
-          final model = CardPileModel(numberOfCards: 10);
+          final model = CardPileModel(cards: _generateCards(10));
           
           final firstDraw = model.drawCards(3);
           final secondDraw = model.drawCards(2);
@@ -179,7 +188,7 @@ void main() {
 
       group('drawCard', () {
         test('draws single card from pile', () {
-          final model = CardPileModel(numberOfCards: 5);
+          final model = CardPileModel(cards: _generateCards(5));
           final originalCount = model.allCards.length;
           
           final drawnCard = model.drawCard();
@@ -210,7 +219,7 @@ void main() {
         });
 
         test('multiple single draws work correctly', () {
-          final model = CardPileModel(numberOfCards: 3);
+          final model = CardPileModel(cards: _generateCards(3));
           
           final firstCard = model.drawCard();
           final secondCard = model.drawCard();

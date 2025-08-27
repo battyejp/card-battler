@@ -4,6 +4,15 @@ import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/player/card_pile_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
+
+List<CardModel> _generateCards(int count) {
+  return List.generate(count, (index) => CardModel(
+    name: 'Card ${index + 1}',
+    type: 'test',
+    isFaceUp: false,
+  ));
+}
 
 void main() {
   group('PlayerModel', () {
@@ -19,7 +28,7 @@ void main() {
         credits: ValueImageLabelModel(value: 25, label: 'Credits'),
       );
       testHandModel = CardHandModel();
-      testDeckModel = CardPileModel(numberOfCards: 20);
+      testDeckModel = CardPileModel(cards: _generateCards(20));
       testDiscardModel = CardPileModel.empty();
     });
 
