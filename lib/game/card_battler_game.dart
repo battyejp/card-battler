@@ -22,32 +22,24 @@ class CardBattlerGame extends FlameGame {
 
   @override
   Future<void> onLoad() async {
+    List<ShopCardModel> shopCards = [];
+
     if (_testSize != null) {
       onGameResize(_testSize!);
+
+      shopCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Test Card ${index + 1}', cost: 1),
+        );
     }
-
-    try {
-      List<ShopCardModel> shopCards = [];
-
-      // Only try to load shop cards from assets if not in test environment
-      try {
+    else {
         shopCards = await loadCardsFromJson<ShopCardModel>(
           'assets/data/shop_cards.json',
           ShopCardModel.fromJson,
         );
-      } catch (e) {
-        // In test environment, create some dummy shop cards
-        shopCards = List.generate(
-          10,
-          (index) => ShopCardModel(name: 'Test Card ${index + 1}', cost: 1),
-        );
-      }
-
-      _gameState = GameStateModel.newGame(shopCards);
-    } catch (e) {
-      _gameState = GameStateModel.newGame([]);
     }
 
+    _gameState = GameStateModel.newGame(shopCards);
     _loadGameComponents();
   }
 

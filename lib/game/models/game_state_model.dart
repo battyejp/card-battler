@@ -38,7 +38,7 @@ class GameStateModel {
   });
 
   /// Creates a new game with default starting values
-  factory GameStateModel.newGame([List<ShopCardModel> shopCards = const []]) {
+  factory GameStateModel.newGame(List<ShopCardModel> shopCards) {
     return GameStateModel(
       player: PlayerModel(
         infoModel: InfoModel(
