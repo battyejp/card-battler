@@ -11,6 +11,14 @@ List<CardModel> _generatePlayerDeckCards() {
   ));
 }
 
+List<CardModel> _generateEnemyCards() {
+  return List.generate(10, (index) => CardModel(
+    name: 'Enemy Card ${index + 1}',
+    type: 'Enemy',
+    isFaceUp: false,
+  ));
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('GameStateModel', () {
@@ -19,7 +27,8 @@ void main() {
         // Create empty shop cards list for new game
         final shopCards = <ShopCardModel>[];
         final playerDeckCards = _generatePlayerDeckCards();
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards);
+        final enemyCards = _generateEnemyCards();
+        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
         
         expect(gameState, isNotNull);
         expect(gameState.player, isNotNull);
@@ -34,7 +43,8 @@ void main() {
         // Create empty shop cards list for new game
         final shopCards = <ShopCardModel>[];
         final playerDeckCards = _generatePlayerDeckCards();
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards);
+        final enemyCards = _generateEnemyCards();
+        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
         
         expect(gameState.player, isNotNull);
         expect(gameState.enemies, isNotNull);
@@ -48,7 +58,8 @@ void main() {
         // Create empty shop cards list for new game
         final shopCards = <ShopCardModel>[];
         final playerDeckCards = _generatePlayerDeckCards();
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards);
+        final enemyCards = _generateEnemyCards();
+        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
         
         // All component models should be initialized
         expect(gameState.player, isNotNull);

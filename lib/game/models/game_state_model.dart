@@ -39,7 +39,7 @@ class GameStateModel {
   });
 
   /// Creates a new game with default starting values
-  factory GameStateModel.newGame(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards) {
+  factory GameStateModel.newGame(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards, List<CardModel> enemyCards) {
     return GameStateModel(
       player: PlayerModel(
         infoModel: InfoModel(
@@ -55,6 +55,7 @@ class GameStateModel {
         totalEnemies: 4,
         maxNumberOfEnemiesInPlay: 3,
         maxEnemyHealth: 5,
+        enemyCards: enemyCards,
       ),
       shop: ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: shopCards),
       team: TeamModel(

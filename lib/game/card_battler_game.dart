@@ -24,6 +24,7 @@ class CardBattlerGame extends FlameGame {
   Future<void> onLoad() async {
     List<ShopCardModel> shopCards = [];
     List<CardModel> playerDeckCards = [];
+    List<CardModel> enemyCards = [];
 
     if (_testSize != null) {
       onGameResize(_testSize!);
@@ -41,6 +42,15 @@ class CardBattlerGame extends FlameGame {
             isFaceUp: false,
           ),
         );
+
+        enemyCards = List.generate(
+          10,
+          (index) => CardModel(
+            name: 'Enemy Card ${index + 1}',
+            type: 'Enemy',
+            isFaceUp: false,
+          ),
+        );
     }
     else {
         shopCards = await loadCardsFromJson<ShopCardModel>(
@@ -52,9 +62,14 @@ class CardBattlerGame extends FlameGame {
           'assets/data/hero_starting_cards.json',
           CardModel.fromJson,
         );
+
+        enemyCards = await loadCardsFromJson<CardModel>(
+          'assets/data/enemy_cards.json',
+          CardModel.fromJson,
+        );
     }
 
-    _gameState = GameStateModel.newGame(shopCards, playerDeckCards);
+    _gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
     _loadGameComponents();
   }
 

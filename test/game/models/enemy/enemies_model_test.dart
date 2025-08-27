@@ -1,18 +1,27 @@
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/enemy/enemy_model.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+List<CardModel> _generateEnemyCards() {
+  return List.generate(10, (index) => CardModel(
+    name: 'Enemy Card ${index + 1}',
+    type: 'Enemy',
+    isFaceUp: false,
+  ));
+}
 
 void main() {
   group('EnemiesModel', () {
     group('constructor and initialization', () {
       test('creates with required totalEnemies parameter', () {
-        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10);
+        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10, enemyCards: _generateEnemyCards());
 
         expect(model.allEnemies.length, equals(3));
       });
 
       test('creates enemies with default max health', () {
-        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 5);
+        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 5, enemyCards: _generateEnemyCards());
 
         for (final enemy in model.allEnemies) {
           expect(enemy.healthDisplay, equals('5/5')); // Default enemyMaxHealth is 5
@@ -20,7 +29,7 @@ void main() {
       });
 
       test('creates enemies with custom max health', () {
-        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 100);
+        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 100, enemyCards: _generateEnemyCards());
 
         for (final enemy in model.allEnemies) {
           expect(enemy.healthDisplay, equals('100/100'));
@@ -28,7 +37,7 @@ void main() {
       });
 
       test('assigns correct names to enemies', () {
-        final model = EnemiesModel(totalEnemies: 4, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10);
+        final model = EnemiesModel(totalEnemies: 4, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10, enemyCards: _generateEnemyCards());
 
         expect(model.allEnemies[0].name, equals('Enemy 1'));
         expect(model.allEnemies[1].name, equals('Enemy 2'));
@@ -46,7 +55,7 @@ void main() {
         ];
 
         for (final testCase in testCases) {
-          final model = EnemiesModel(totalEnemies: testCase['totalEnemies'] as int, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10);
+          final model = EnemiesModel(totalEnemies: testCase['totalEnemies'] as int, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10, enemyCards: _generateEnemyCards());
           expect(model.displayText, equals(testCase['expected']));
         }
       });
@@ -54,7 +63,7 @@ void main() {
 
     group('all enemies access', () {
       test('returns unmodifiable list of all enemies', () {
-        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 25);
+        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 25, enemyCards: _generateEnemyCards());
         final enemies = model.allEnemies;
 
         expect(enemies.length, equals(3));
@@ -68,7 +77,7 @@ void main() {
       });
 
       test('returned list is unmodifiable', () {
-        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10);
+        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10, enemyCards: _generateEnemyCards());
         final enemies = model.allEnemies;
 
         expect(() => enemies.add(EnemyModel(name: 'Extra', maxHealth: 10)),
@@ -78,7 +87,7 @@ void main() {
       });
 
       test('multiple calls return same data', () {
-        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 50);
+        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 50, enemyCards: _generateEnemyCards());
         final enemies1 = model.allEnemies;
         final enemies2 = model.allEnemies;
 

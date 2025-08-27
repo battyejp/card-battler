@@ -1,17 +1,21 @@
 import 'package:card_battler/game/models/enemy/enemy_model.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
 
 /// Pure game logic for managing a stack of enemies
 /// Contains no UI dependencies - only manages state and rules
 class EnemiesModel {
   final List<EnemyModel> _enemies;
   final int _maxNumberOfEnemiesInPlay;
+  final List<CardModel> _enemyCards;
 
   EnemiesModel({
     required int totalEnemies,
     required int maxNumberOfEnemiesInPlay,
     required int maxEnemyHealth,
+    required List<CardModel> enemyCards,
   }) : _maxNumberOfEnemiesInPlay = maxNumberOfEnemiesInPlay,
-       _enemies = List.generate(
+      _enemyCards = enemyCards,
+      _enemies = List.generate(
          totalEnemies,
          (index) =>
              EnemyModel(name: 'Enemy ${index + 1}', maxHealth: maxEnemyHealth),
