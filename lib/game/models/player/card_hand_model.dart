@@ -25,11 +25,4 @@ class CardHandModel with ReactiveModel<CardHandModel> {
     _cards.clear();
     notifyChange();
   }
-
-  /// Replaces all cards in the hand with new ones
-  void replaceCards(List<CardModel> newCards) {
-    _cards.clear();
-    _cards.addAll(newCards);
-    notifyChange();
-  }
 }

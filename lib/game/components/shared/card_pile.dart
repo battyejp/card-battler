@@ -1,11 +1,12 @@
-import 'package:card_battler/game/models/player/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:flame/components.dart';
 import 'package:card_battler/game/components/shared/card.dart';
 import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:flutter/material.dart' hide Card;
 
 class CardPile extends ReactivePositionComponent<CardPileModel> {
-  CardPile(super.model);
+  final bool showNext;
+  CardPile(super.model, {this.showNext = true});
 
   @override
   bool get debugMode => true;
@@ -18,7 +19,7 @@ class CardPile extends ReactivePositionComponent<CardPileModel> {
     if (model.hasNoCards) {
       _addEmptyText();
     } else {
-      _addTopCard();
+      _addCard();
       _addCardCountLabel();
     }
   }
@@ -38,11 +39,11 @@ class CardPile extends ReactivePositionComponent<CardPileModel> {
     add(emptyText);
   }
 
-  void _addTopCard() {
+  void _addCard() {
     final cardWidth = size.x * 0.5;
     final cardHeight = size.y * 0.9;
 
-    final card = Card(model.allCards.first)
+    final card = Card(showNext ? model.allCards.first : model.allCards.last)
       ..size = Vector2(cardWidth, cardHeight)
       ..position = Vector2((size.x - cardWidth) / 2, (size.y - cardHeight) / 2);
 

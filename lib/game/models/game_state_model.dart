@@ -1,6 +1,7 @@
+import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
-import 'package:card_battler/game/models/player/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
@@ -31,11 +32,14 @@ class GameStateModel {
   // Team state
   final TeamModel team;
 
+  final EnemyTurnAreaModel enemyTurnArea;
+
   GameStateModel({
     required this.player,
     required this.enemies,
     required this.shop,
     required this.team,
+    required this.enemyTurnArea,
   });
 
   /// Creates a new game with default starting values
@@ -50,6 +54,9 @@ class GameStateModel {
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
+      ),
+      enemyTurnArea: EnemyTurnAreaModel(
+        enemyCards: CardPileModel(cards: enemyCards),
       ),
       enemies: EnemiesModel(
         totalEnemies: 4,

@@ -1,4 +1,5 @@
 import 'package:card_battler/game/components/enemy/enemies.dart';
+import 'package:card_battler/game/components/enemy/enemy_turn_area.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
@@ -71,6 +72,20 @@ class CardBattlerGame extends FlameGame {
 
     _gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
     _loadGameComponents();
+    _showEnemiesTurn();
+  }
+
+  void _showEnemiesTurn() {
+    // Show announcement with current enemy state
+    final announcement = EnemyTurnArea(
+      displayDuration: const Duration(seconds: 5),
+      onComplete: () {
+      },
+      model: _gameState!.enemyTurnArea,
+    );
+
+    announcement.size = size;
+    camera.viewport.add(announcement);
   }
 
   void _loadGameComponents() {

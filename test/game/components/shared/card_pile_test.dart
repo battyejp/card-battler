@@ -1,7 +1,7 @@
-import 'package:card_battler/game/models/player/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/components/player/card_pile.dart';
+import 'package:card_battler/game/components/shared/card_pile.dart';
 import 'package:card_battler/game/components/shared/card.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';

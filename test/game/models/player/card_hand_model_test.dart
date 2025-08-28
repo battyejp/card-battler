@@ -220,62 +220,6 @@ void main() {
         });
       });
 
-      group('replaceCards', () {
-        test('replaces all cards with new ones', () {
-          final cardHand = CardHandModel();
-          final newCards = [
-            CardModel(name: 'Replacement 1', type: 'Player'),
-            CardModel(name: 'Replacement 2', type: 'Player'),
-          ];
-          
-          cardHand.replaceCards(newCards);
-          
-          expect(cardHand.cards.length, equals(2));
-          expect(cardHand.cards[0].name, equals('Replacement 1'));
-          expect(cardHand.cards[1].name, equals('Replacement 2'));
-        });
-
-        test('replaces cards with empty list', () {
-          final cardHand = CardHandModel();
-          // Add some cards first to test replacing with empty list
-          cardHand.addCards([
-            CardModel(name: 'Card A', type: 'Player'),
-            CardModel(name: 'Card B', type: 'Player'),
-          ]);
-          expect(cardHand.cards, isNotEmpty);
-          
-          cardHand.replaceCards([]);
-          
-          expect(cardHand.cards, isEmpty);
-        });
-
-        test('replaces empty hand with new cards', () {
-          final cardHand = CardHandModel();
-          cardHand.clearCards();
-          final newCards = [CardModel(name: 'New After Replace', type: 'Player')];
-          
-          cardHand.replaceCards(newCards);
-          
-          expect(cardHand.cards.length, equals(1));
-          expect(cardHand.cards.first.name, equals('New After Replace'));
-        });
-
-        test('completely replaces previous cards', () {
-          final cardHand = CardHandModel();
-          final originalCardNames = cardHand.cards.map((c) => c.name).toSet();
-          final newCards = [
-            CardModel(name: 'Totally New 1', type: 'Player'),
-            CardModel(name: 'Totally New 2', type: 'Player'),
-          ];
-          
-          cardHand.replaceCards(newCards);
-          
-          for (final card in cardHand.cards) {
-            expect(originalCardNames.contains(card.name), isFalse);
-          }
-        });
-      });
-
       group('method combinations', () {
         test('addCards after clearCards works correctly', () {
           final cardHand = CardHandModel();

@@ -6,7 +6,6 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 class EnemiesModel {
   final List<EnemyModel> _enemies;
   final int _maxNumberOfEnemiesInPlay;
-  final List<CardModel> _enemyCards;
 
   EnemiesModel({
     required int totalEnemies,
@@ -14,7 +13,6 @@ class EnemiesModel {
     required int maxEnemyHealth,
     required List<CardModel> enemyCards,
   }) : _maxNumberOfEnemiesInPlay = maxNumberOfEnemiesInPlay,
-      _enemyCards = enemyCards,
       _enemies = List.generate(
          totalEnemies,
          (index) =>
