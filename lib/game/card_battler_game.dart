@@ -72,6 +72,9 @@ class CardBattlerGame extends FlameGame {
 
     _gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
     _loadGameComponents();
+  }
+
+  void _onPlayerCardsDrawn() {
     _showEnemiesTurn();
   }
 
@@ -100,7 +103,10 @@ class CardBattlerGame extends FlameGame {
     final topPositionY = -1 * (size.y / 2) + margin;
 
     // Create player component with models from game state
-    final player = Player(playerModel: _gameState!.player)
+    final player = Player(
+      playerModel: _gameState!.player,
+      onCardsDrawn: _onPlayerCardsDrawn,
+    )
       ..size = Vector2(availableWidth, bottomLayoutHeight)
       ..position = Vector2(
         (0 - size.x / 2) + margin,

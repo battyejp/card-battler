@@ -6,7 +6,7 @@ class CardModel {
   final String _type;
   bool isFaceUp;
 
-  CardModel({required String name, required String type, this.isFaceUp = true})
+  CardModel({required String name, required String type, this.isFaceUp = false})
       : _name = name,
         _type = type;
 
@@ -17,7 +17,7 @@ class CardModel {
     return CardModel(
       name: json['name'],
       type: json['type'],
-      isFaceUp: json['faceUp'] ?? true,
+      isFaceUp: json['faceUp'] ?? false,
     );
   }
 

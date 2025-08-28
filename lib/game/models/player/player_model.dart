@@ -7,6 +7,7 @@ class PlayerModel {
   final CardHandModel _handModel;
   final CardPileModel _deckModel;
   final CardPileModel _discardModel;
+  static const cardsToDrawOnTap = 5;
 
   PlayerModel({
     required InfoModel infoModel,
@@ -23,4 +24,15 @@ class PlayerModel {
   CardHandModel get handModel => _handModel;
   CardPileModel get deckModel => _deckModel;
   CardPileModel get discardModel => _discardModel;
+
+  void drawCardsFromDeck() {
+    final drawnCards = _deckModel.drawCards(cardsToDrawOnTap);
+
+    if (drawnCards.isNotEmpty) {
+      for (final card in drawnCards) {
+        card.isFaceUp = true;
+      }
+      _handModel.addCards(drawnCards);
+    }
+  }
 }

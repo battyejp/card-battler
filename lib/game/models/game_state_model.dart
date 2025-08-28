@@ -44,19 +44,67 @@ class GameStateModel {
 
   /// Creates a new game with default starting values
   factory GameStateModel.newGame(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards, List<CardModel> enemyCards) {
-    return GameStateModel(
-      player: PlayerModel(
+    final players = <PlayerModel>[
+      PlayerModel(
         infoModel: InfoModel(
-          health: ValueImageLabelModel(value: 100, label: 'Health'),
-          attack: ValueImageLabelModel(value: 10, label: 'Attack'),
-          credits: ValueImageLabelModel(value: 50, label: 'Credits'),
+          name: 'Player 1',
+          health: ValueImageLabelModel(value: 10, label: 'Health'),
+          attack: ValueImageLabelModel(value: 0, label: 'Attack'),
+          credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+          isActive: true,
         ),
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
       ),
+      PlayerModel(
+        infoModel: InfoModel(
+          name: 'Player 2',
+          health: ValueImageLabelModel(value: 10, label: 'Health'),
+          attack: ValueImageLabelModel(value: 0, label: 'Attack'),
+          credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+        ),
+        handModel: CardHandModel(),
+        deckModel: CardPileModel(cards: playerDeckCards),
+        discardModel: CardPileModel.empty(),
+      ),
+      PlayerModel(
+        infoModel: InfoModel(
+          name: 'Player 3',
+          health: ValueImageLabelModel(value: 10, label: 'Health'),
+          attack: ValueImageLabelModel(value: 0, label: 'Attack'),
+          credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+        ),
+        handModel: CardHandModel(),
+        deckModel: CardPileModel(cards: playerDeckCards),
+        discardModel: CardPileModel.empty(),
+      ),
+      PlayerModel(
+        infoModel: InfoModel(
+          name: 'Player 4',
+          health: ValueImageLabelModel(value: 10, label: 'Health'),
+          attack: ValueImageLabelModel(value: 0, label: 'Attack'),
+          credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+        ),
+        handModel: CardHandModel(),
+        deckModel: CardPileModel(cards: playerDeckCards),
+        discardModel: CardPileModel.empty(),
+      ),
+    ];
+
+    final playerStats = players.map((player) {
+      return PlayerStatsModel(
+        name: player.infoModel.name,
+        health: HealthModel(maxHealth: 10),
+        isActive: player.infoModel.isActive,
+      );
+    }).toList();
+
+    return GameStateModel(
+      player: players.first, // For single-player, use the first player
       enemyTurnArea: EnemyTurnAreaModel(
         enemyCards: CardPileModel(cards: enemyCards),
+        playerStats: playerStats,
       ),
       enemies: EnemiesModel(
         totalEnemies: 4,
@@ -73,20 +121,7 @@ class GameStateModel {
             BaseModel(name: 'Base 3', maxHealth: 5),
           ],
         ),
-        players: [
-          PlayerStatsModel(
-            name: 'Player 2',
-            health: HealthModel(maxHealth: 10),
-          ),
-          PlayerStatsModel(
-            name: 'Player 3',
-            health: HealthModel(maxHealth: 10),
-          ),
-          PlayerStatsModel(
-            name: 'Player 4',
-            health: HealthModel(maxHealth: 10),
-          ),
-        ],
+        players: playerStats,
       ),
     );
   }
