@@ -1,6 +1,6 @@
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/components/shared/card.dart';
-import 'package:card_battler/game/components/reactive_position_component.dart';
+import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:flame/components.dart';
 
 class CardHand extends ReactivePositionComponent<CardHandModel> {

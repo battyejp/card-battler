@@ -1,6 +1,7 @@
+import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
-import 'package:card_battler/game/models/player/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
@@ -31,15 +32,18 @@ class GameStateModel {
   // Team state
   final TeamModel team;
 
+  final EnemyTurnAreaModel enemyTurnArea;
+
   GameStateModel({
     required this.player,
     required this.enemies,
     required this.shop,
     required this.team,
+    required this.enemyTurnArea,
   });
 
   /// Creates a new game with default starting values
-  factory GameStateModel.newGame(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards) {
+  factory GameStateModel.newGame(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards, List<CardModel> enemyCards) {
     return GameStateModel(
       player: PlayerModel(
         infoModel: InfoModel(
@@ -51,10 +55,14 @@ class GameStateModel {
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
       ),
+      enemyTurnArea: EnemyTurnAreaModel(
+        enemyCards: CardPileModel(cards: enemyCards),
+      ),
       enemies: EnemiesModel(
         totalEnemies: 4,
         maxNumberOfEnemiesInPlay: 3,
         maxEnemyHealth: 5,
+        enemyCards: enemyCards,
       ),
       shop: ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: shopCards),
       team: TeamModel(

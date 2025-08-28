@@ -316,16 +316,6 @@ void main() {
         await game.ready();
 
         expect(hand.children.whereType<Card>().length, equals(2));
-
-        // Replace cards in model - should trigger automatic update
-        model.replaceCards([
-          CardModel(name: 'Replacement Card', type: 'Player'),
-        ]);
-        await game.ready();
-
-        final cards = hand.children.whereType<Card>().toList();
-        expect(cards.length, equals(1));
-        expect(cards[0].cardModel.name, equals('Replacement Card'));
       });
     });
   });

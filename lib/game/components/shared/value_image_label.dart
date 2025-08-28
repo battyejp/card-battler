@@ -1,5 +1,5 @@
 import 'package:flame/components.dart';
-import 'package:card_battler/game/components/reactive_position_component.dart';
+import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:flutter/material.dart';
 

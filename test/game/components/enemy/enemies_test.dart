@@ -2,8 +2,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/enemy/enemy.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
+
+List<CardModel> _generateEnemyCards() {
+  return List.generate(10, (index) => CardModel(
+    name: 'Enemy Card ${index + 1}',
+    type: 'Enemy',
+    isFaceUp: false,
+  ));
+}
 
 void main() {
   group('Enemies Component', () {
@@ -30,7 +39,7 @@ void main() {
       ];
       for (final testCase in testCases) {
         testWithFlameGame('Enemies children sizes and positions for enemies size ${testCase['enemiesSize']}', (game) async {
-          final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10);
+          final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10, enemyCards: _generateEnemyCards());
           final enemies = Enemies(model: model)..size = testCase['enemiesSize'] as Vector2;
 
           await game.ensureAdd(enemies);
@@ -49,7 +58,7 @@ void main() {
 
     group('Model Integration', () {
       testWithFlameGame('displays text from model', (game) async {
-        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10);
+        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10, enemyCards: _generateEnemyCards());
         final enemies = Enemies(model: model)..size = Vector2(400, 300);
 
         await game.ensureAdd(enemies);
@@ -60,7 +69,7 @@ void main() {
       });
 
       testWithFlameGame('creates correct number of enemy components based on model', (game) async {
-        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10);
+        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10, enemyCards: _generateEnemyCards());
         final enemies = Enemies(model: model)..size = Vector2(500, 400);
 
         await game.ensureAdd(enemies);
@@ -72,7 +81,7 @@ void main() {
 
     group('UI Properties', () {
       testWithFlameGame('text component is positioned correctly', (game) async {
-        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10);
+        final model = EnemiesModel(totalEnemies: 3, maxNumberOfEnemiesInPlay: 3, maxEnemyHealth: 10, enemyCards: _generateEnemyCards());
         final enemies = Enemies(model: model)..size = Vector2(300, 200);
 
         await game.ensureAdd(enemies);

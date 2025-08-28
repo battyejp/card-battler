@@ -37,12 +37,6 @@ class CardPileModel with ReactiveModel<CardPileModel> {
     return card;
   }
 
-  /// Adds cards to the pile
-  void addCards(List<CardModel> cards) {
-    _cards.addAll(cards);
-    notifyChange();
-  }
-
   /// Adds a single card to the pile
   void addCard(CardModel card) {
     _cards.add(card);
