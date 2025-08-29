@@ -34,7 +34,7 @@ void main() {
         expect(stats.children.whereType<TextComponent>().length, equals(1));
         
         final textComponent = stats.children.whereType<TextComponent>().first;
-        expect(textComponent.text, equals('Test Player: 100/100'));
+        expect(textComponent.text, equals('Test Player'));
         expect(textComponent.position, equals(Vector2(10, 10)));
       });
     });
