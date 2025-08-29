@@ -14,6 +14,7 @@ void main() {
           health: health,
           attack: attack,
           credits: credits,
+          name: 'TestPlayer',
         );
 
         expect(infoModel.health, equals(health));
@@ -26,6 +27,7 @@ void main() {
           health: ValueImageLabelModel(value: 0, label: 'HP'),
           attack: ValueImageLabelModel(value: 999, label: 'ATK'),
           credits: ValueImageLabelModel(value: -10, label: 'Gold'),
+          name: 'TestPlayer',
         );
 
         expect(infoModel.health.display, equals('HP: 0'));
@@ -42,6 +44,7 @@ void main() {
           health: health,
           attack: attack,
           credits: credits,
+          name: 'TestPlayer',
         );
 
         // Modify original models
@@ -63,6 +66,7 @@ void main() {
           health: health,
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+          name: 'TestPlayer',
         );
 
         expect(infoModel.health, isA<ValueImageLabelModel>());
@@ -76,6 +80,7 @@ void main() {
           health: ValueImageLabelModel(value: 0, label: 'Health'),
           attack: attack,
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+          name: 'TestPlayer',
         );
 
         expect(infoModel.attack, isA<ValueImageLabelModel>());
@@ -89,6 +94,7 @@ void main() {
           health: ValueImageLabelModel(value: 0, label: 'Health'),
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: credits,
+          name: 'TestPlayer',
         );
 
         expect(infoModel.credits, isA<ValueImageLabelModel>());
@@ -103,6 +109,7 @@ void main() {
           health: ValueImageLabelModel(value: 100, label: 'HP'),
           attack: ValueImageLabelModel(value: 20, label: 'ATK'),
           credits: ValueImageLabelModel(value: 50, label: 'Gold'),
+          name: 'TestPlayer',
         );
 
         // Modify each model independently
@@ -120,6 +127,7 @@ void main() {
           health: ValueImageLabelModel(value: 100, label: 'Health'),
           attack: ValueImageLabelModel(value: 20, label: 'Attack'),
           credits: ValueImageLabelModel(value: 50, label: 'Credits'),
+          name: 'TestPlayer',
         );
 
         // Test reactive streams are available
@@ -146,12 +154,14 @@ void main() {
           health: ValueImageLabelModel(value: 100, label: 'Health'),
           attack: ValueImageLabelModel(value: 20, label: 'Attack'),
           credits: ValueImageLabelModel(value: 50, label: 'Credits'),
+          name: 'TestPlayer1',
         );
 
         final infoModel2 = InfoModel(
           health: ValueImageLabelModel(value: 80, label: 'Health'),
           attack: ValueImageLabelModel(value: 15, label: 'Attack'),
           credits: ValueImageLabelModel(value: 30, label: 'Credits'),
+          name: 'TestPlayer2',
         );
 
         // Modify first model
@@ -172,6 +182,7 @@ void main() {
           health: ValueImageLabelModel(value: -999999, label: 'Health'),
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 999999999, label: 'Credits'),
+          name: 'TestPlayer',
         );
 
         expect(infoModel.health.display, equals('Health: -999999'));
@@ -184,6 +195,7 @@ void main() {
           health: ValueImageLabelModel(value: 100, label: ''),
           attack: ValueImageLabelModel(value: 25, label: 'ATK/DEF'),
           credits: ValueImageLabelModel(value: 50, label: '💰'),
+          name: 'TestPlayer',
         );
 
         expect(infoModel.health.display, equals(': 100'));
@@ -198,12 +210,14 @@ void main() {
           health: sharedHealth,
           attack: ValueImageLabelModel(value: 20, label: 'Attack1'),
           credits: ValueImageLabelModel(value: 50, label: 'Credits1'),
+          name: 'TestPlayer1',
         );
 
         final infoModel2 = InfoModel(
           health: sharedHealth,
           attack: ValueImageLabelModel(value: 30, label: 'Attack2'),
           credits: ValueImageLabelModel(value: 75, label: 'Credits2'),
+          name: 'TestPlayer2',
         );
 
         // Modifying shared health affects both

@@ -1,0 +1,7 @@
+[
+  {"name": "Damage Chosen Player", "type": "Enemy", "abilities": [ {"type": "Damage", "value": 2, "target": "ChosenPlayer"} ]},
+  {"name": "Cannot gain health"},
+  {"name": "Cannot draw extra cards"},
+  {"name": "Lose a Card"},
+  {"name": "Villains gain health"}
+]

@@ -13,6 +13,7 @@ void main() {
         health: ValueImageLabelModel(value: 100, label: 'Health'),
         attack: ValueImageLabelModel(value: 50, label: 'Attack'),
         credits: ValueImageLabelModel(value: 25, label: 'Credits'),
+        name: 'TestPlayer',
       );
     }
     testWithFlameGame('Info can be created and added to game', (game) async {

@@ -66,7 +66,7 @@ class CardModel {
     required String name,
     required String type,
     List<AbilityModel>? abilities,
-    this.isFaceUp = false,
+    this.isFaceUp = true,
   }) : _name = name,
        _type = type,
        _abilities = abilities ?? [];
@@ -85,7 +85,7 @@ class CardModel {
       name: json['name'],
       type: json['type'],
       abilities: abilities,
-      isFaceUp: json['faceUp'] ?? false,
+      isFaceUp: json['faceUp'] ?? true,
     );
   }
 

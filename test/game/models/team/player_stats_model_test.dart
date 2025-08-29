@@ -354,5 +354,151 @@ void main() {
         expect(player1.health, isNot(equals(player3.health)));
       });
     });
+
+    group('isActive property', () {
+      test('defaults to false when not specified', () {
+        final health = HealthModel(maxHealth: 100);
+        final playerStats = PlayerStatsModel(
+          name: 'Default Player',
+          health: health,
+        );
+
+        expect(playerStats.isActive, isFalse);
+      });
+
+      test('can be set to true during construction', () {
+        final health = HealthModel(maxHealth: 100);
+        final playerStats = PlayerStatsModel(
+          name: 'Active Player',
+          health: health,
+          isActive: true,
+        );
+
+        expect(playerStats.isActive, isTrue);
+      });
+
+      test('can be set to false explicitly during construction', () {
+        final health = HealthModel(maxHealth: 100);
+        final playerStats = PlayerStatsModel(
+          name: 'Inactive Player',
+          health: health,
+          isActive: false,
+        );
+
+        expect(playerStats.isActive, isFalse);
+      });
+
+      test('isActive property does not affect display or health functionality', () {
+        final health = HealthModel(maxHealth: 50);
+        
+        final activePlayer = PlayerStatsModel(
+          name: 'Active',
+          health: health,
+          isActive: true,
+        );
+        
+        final inactivePlayer = PlayerStatsModel(
+          name: 'Inactive',
+          health: HealthModel(maxHealth: 50),
+          isActive: false,
+        );
+
+        // Both should display the same format regardless of isActive
+        expect(activePlayer.display, equals('Active: 50/50'));
+        expect(inactivePlayer.display, equals('Inactive: 50/50'));
+        
+        // Health functionality should work the same
+        activePlayer.health.changeHealth(-10);
+        inactivePlayer.health.changeHealth(-10);
+        
+        expect(activePlayer.display, equals('Active: 40/50'));
+        expect(inactivePlayer.display, equals('Inactive: 40/50'));
+      });
+
+      test('supports multiple players with different isActive states', () {
+        final players = [
+          PlayerStatsModel(
+            name: 'Player1',
+            health: HealthModel(maxHealth: 100),
+            isActive: true,
+          ),
+          PlayerStatsModel(
+            name: 'Player2',
+            health: HealthModel(maxHealth: 80),
+            isActive: false,
+          ),
+          PlayerStatsModel(
+            name: 'Player3',
+            health: HealthModel(maxHealth: 120),
+            isActive: true,
+          ),
+        ];
+
+        expect(players[0].isActive, isTrue);
+        expect(players[1].isActive, isFalse);
+        expect(players[2].isActive, isTrue);
+        
+        // Verify names and health are independent of active state
+        expect(players[0].name, equals('Player1'));
+        expect(players[1].name, equals('Player2'));
+        expect(players[2].name, equals('Player3'));
+      });
+
+      test('isActive state is immutable after construction', () {
+        final health = HealthModel(maxHealth: 100);
+        final playerStats = PlayerStatsModel(
+          name: 'Immutable Player',
+          health: health,
+          isActive: true,
+        );
+
+        // isActive should remain true - no setter should exist
+        expect(playerStats.isActive, isTrue);
+        
+        // Verify it's a final field by checking there's no setter (this would be compile-time)
+        // We can only verify the current value remains consistent
+        expect(playerStats.isActive, isTrue);
+      });
+    });
+
+    group('name property', () {
+      test('name getter returns correct value', () {
+        final health = HealthModel(maxHealth: 100);
+        final playerStats = PlayerStatsModel(
+          name: 'Test Name',
+          health: health,
+        );
+
+        expect(playerStats.name, equals('Test Name'));
+      });
+
+      test('name property is immutable after construction', () {
+        final health = HealthModel(maxHealth: 100);
+        final playerStats = PlayerStatsModel(
+          name: 'Original Name',
+          health: health,
+        );
+
+        // Name should remain consistent - no setter should exist
+        expect(playerStats.name, equals('Original Name'));
+        
+        // Verify it remains the same on multiple accesses
+        final name1 = playerStats.name;
+        final name2 = playerStats.name;
+        expect(name1, equals(name2));
+        expect(name1, equals('Original Name'));
+      });
+
+      test('name is used correctly in display property', () {
+        final health = HealthModel(maxHealth: 75);
+        final playerStats = PlayerStatsModel(
+          name: 'Display Test',
+          health: health,
+        );
+
+        expect(playerStats.display, contains('Display Test'));
+        expect(playerStats.display, equals('Display Test: 75/75'));
+      });
+    });
   });
 }
