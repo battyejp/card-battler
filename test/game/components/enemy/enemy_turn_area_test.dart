@@ -50,7 +50,6 @@ void main() {
       });
 
       testWithFlameGame('accepts optional parameters', (game) async {
-        bool onCompleteCalled = false;
         final model = EnemyTurnAreaModel(
           enemyCards: CardPileModel(cards: _generateTestCards(2)),
           playerStats: [_createTestPlayerStats('Player1')],
@@ -59,7 +58,7 @@ void main() {
         final enemyTurnArea = EnemyTurnArea(
           model: model,
           displayDuration: const Duration(seconds: 5),
-          onComplete: () => onCompleteCalled = true,
+          onComplete: () => {},
         );
 
         expect(enemyTurnArea, isNotNull);
