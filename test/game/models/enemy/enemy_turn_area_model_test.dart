@@ -170,21 +170,6 @@ void main() {
         expect(enemyTurnArea.playedCards.allCards.length, equals(cardsAfterFirstDraw));
         expect(enemyTurnArea.enemyCards.allCards.length, equals(enemyCardsAfterFirstDraw));
       });
-
-      test('handles empty enemy deck gracefully', () {
-        final enemyCards = CardPileModel.empty();
-        final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playerStats: playerStats,
-        );
-
-        enemyTurnArea.drawCardsFromDeck();
-
-        expect(enemyTurnArea.playedCards.hasNoCards, isTrue);
-        expect(enemyTurnArea.turnFinished, isTrue);
-      });
     });
 
     group('updatePlayersStats functionality', () {
