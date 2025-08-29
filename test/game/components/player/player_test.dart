@@ -29,6 +29,7 @@ void main() {
         health: ValueImageLabelModel(value: 100, label: 'Health'),
         attack: ValueImageLabelModel(value: 50, label: 'Attack'),
         credits: ValueImageLabelModel(value: 25, label: 'Credits'),
+        name: 'TestPlayer',
       );
       final handModel = CardHandModel();
       final deckModel = CardPileModel(cards: _generateCards(20));
@@ -390,7 +391,7 @@ void main() {
       test('player constants are defined correctly', () {
         expect(Player.handWidthFactor, equals(0.6));
         expect(Player.pileWidthFactor, equals(0.2));
-        expect(Player.cardsToDrawOnTap, equals(5));
+        // cardsToDrawOnTap property has been removed - this constant is now handled by the deck drawing logic
         expect(Player.infoHeightFactor, equals(0.1));
       });
 

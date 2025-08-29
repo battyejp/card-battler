@@ -11,6 +11,7 @@ import 'components/player/player.dart';
 class CardBattlerGame extends FlameGame {
   GameStateModel? _gameState;
   Vector2? _testSize;
+  EnemyTurnArea? _enemyTurnArea;
 
   // Default constructor with new game state
   CardBattlerGame();
@@ -71,21 +72,29 @@ class CardBattlerGame extends FlameGame {
     }
 
     _gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
+    _gameState!.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished;
     _loadGameComponents();
+  }
+
+  void _onPlayerCardsDrawn() {
     _showEnemiesTurn();
+  }
+  
+  void _onEnemyTurnFinished() {
+    _enemyTurnArea!.startFadeOut();
   }
 
   void _showEnemiesTurn() {
     // Show announcement with current enemy state
-    final announcement = EnemyTurnArea(
+    _enemyTurnArea = EnemyTurnArea(
       displayDuration: const Duration(seconds: 5),
       onComplete: () {
       },
       model: _gameState!.enemyTurnArea,
     );
 
-    announcement.size = size;
-    camera.viewport.add(announcement);
+    _enemyTurnArea!.size = size;
+    camera.viewport.add(_enemyTurnArea!);
   }
 
   void _loadGameComponents() {
@@ -100,7 +109,10 @@ class CardBattlerGame extends FlameGame {
     final topPositionY = -1 * (size.y / 2) + margin;
 
     // Create player component with models from game state
-    final player = Player(playerModel: _gameState!.player)
+    final player = Player(
+      playerModel: _gameState!.player,
+      onCardsDrawn: _onPlayerCardsDrawn,
+    )
       ..size = Vector2(availableWidth, bottomLayoutHeight)
       ..position = Vector2(
         (0 - size.x / 2) + margin,

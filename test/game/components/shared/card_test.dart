@@ -61,7 +61,7 @@ void main() {
 
     group('onLoad functionality', () {
       testWithFlameGame('creates text components on load when face up', (game) async {
-        final cardModel = CardModel(name: 'Magic Missile', type: 'Spell');
+        final cardModel = CardModel(name: 'Magic Missile', type: 'Spell', isFaceUp: true);
         final card = Card(cardModel)..size = Vector2(100, 150);
 
         await game.ensureAdd(card);
@@ -76,7 +76,7 @@ void main() {
       });
 
       testWithFlameGame('text components update with different card data', (game) async {
-        final cardModel = CardModel(name: 'Heal', type: 'Spell');
+        final cardModel = CardModel(name: 'Heal', type: 'Spell', isFaceUp: true);
         final card = Card(cardModel)..size = Vector2(80, 120);
 
         await game.ensureAdd(card);
@@ -87,7 +87,7 @@ void main() {
       });
 
       testWithFlameGame('handles empty card name', (game) async {
-        final cardModel = CardModel(name: '', type: 'Unknown');
+        final cardModel = CardModel(name: '', type: 'Unknown', isFaceUp: true);
         final card = Card(cardModel)..size = Vector2(50, 75);
 
         await game.ensureAdd(card);
@@ -99,14 +99,14 @@ void main() {
     });
 
     group('face up/down functionality', () {
-      testWithFlameGame('card is face up by default', (game) async {
+      testWithFlameGame('card is face down by default', (game) async {
         final cardModel = CardModel(name: 'Test Card', type: 'Player');
         final card = Card(cardModel)..size = Vector2(100, 150);
 
         await game.ensureAdd(card);
 
-        expect(card.children.length, equals(1)); // only name component
-        expect(card.cardModel.isFaceUp, equals(true));
+        expect(card.children.length, equals(1)); // only back text component
+        expect(card.cardModel.isFaceUp, equals(false));
       });
 
       testWithFlameGame('card shows card name when face up', (game) async {
@@ -136,7 +136,7 @@ void main() {
 
     group('render functionality', () {
       testWithFlameGame('card renders without error', (game) async {
-        final cardModel = CardModel(name: 'Render Test', type: 'Test');
+        final cardModel = CardModel(name: 'Render Test', type: 'Test', isFaceUp: true);
         final card = Card(cardModel)..size = Vector2(100, 150);
 
         await game.ensureAdd(card);

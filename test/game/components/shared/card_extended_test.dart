@@ -191,7 +191,7 @@ void main() {
 
     group('error handling and edge cases', () {
       testWithFlameGame('handles empty card name', (game) async {
-        final cardModel = CardModel(name: '', type: 'Empty');
+        final cardModel = CardModel(name: '', type: 'Empty', isFaceUp: true);
         final card = Card(cardModel)..size = Vector2(100, 150);
         
         await game.ensureAdd(card);
@@ -202,7 +202,7 @@ void main() {
 
       testWithFlameGame('handles very long card names', (game) async {
         final longName = 'This is a very long card name that might not fit well';
-        final cardModel = CardModel(name: longName, type: 'Long');
+        final cardModel = CardModel(name: longName, type: 'Long', isFaceUp: true);
         final card = Card(cardModel)..size = Vector2(100, 150);
         
         await game.ensureAdd(card);
@@ -213,7 +213,7 @@ void main() {
 
       testWithFlameGame('handles special characters in card names', (game) async {
         final specialName = 'Card with 特殊字符 & émojis 🎮⚔️';
-        final cardModel = CardModel(name: specialName, type: 'Special');
+        final cardModel = CardModel(name: specialName, type: 'Special', isFaceUp: true);
         final card = Card(cardModel)..size = Vector2(100, 150);
         
         await game.ensureAdd(card);

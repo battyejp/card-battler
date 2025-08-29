@@ -9,7 +9,7 @@ void main() {
         
         expect(card.name, equals('Test Card'));
         expect(card.type, equals('Player'));
-        expect(card.isFaceUp, isTrue); // default value
+        expect(card.isFaceUp, isFalse); // default value
       });
 
       test('creates with all parameters', () {
@@ -24,10 +24,10 @@ void main() {
         expect(card.isFaceUp, isFalse);
       });
 
-      test('defaults isFaceUp to true when not specified', () {
+      test('defaults isFaceUp to false when not specified', () {
         final card = CardModel(name: 'Default Card', type: 'Hero');
         
-        expect(card.isFaceUp, isTrue);
+        expect(card.isFaceUp, isFalse);
       });
 
       final testCases = [
@@ -107,7 +107,7 @@ void main() {
         expect(card.isFaceUp, isFalse);
       });
 
-      test('fromJson defaults faceUp to true when not specified', () {
+      test('fromJson defaults faceUp to false when not specified', () {
         final json = {
           'name': 'Default Face Up',
           'type': 'Action',
@@ -115,10 +115,10 @@ void main() {
         
         final card = CardModel.fromJson(json);
         
-        expect(card.isFaceUp, isTrue);
+        expect(card.isFaceUp, isFalse);
       });
 
-      test('fromJson handles null faceUp as true', () {
+      test('fromJson handles null faceUp as false', () {
         final json = {
           'name': 'Null Face Up',
           'type': 'Artifact',
@@ -127,7 +127,7 @@ void main() {
         
         final card = CardModel.fromJson(json);
         
-        expect(card.isFaceUp, isTrue);
+        expect(card.isFaceUp, isFalse);
       });
 
       test('toJson creates correct JSON representation', () {

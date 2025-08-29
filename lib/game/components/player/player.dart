@@ -8,10 +8,10 @@ import 'package:flame/components.dart';
 class Player extends PositionComponent {
   static const handWidthFactor = 0.6;
   static const pileWidthFactor = (1 - handWidthFactor) / 2;
-  static const cardsToDrawOnTap = 5;
   static const infoHeightFactor = 0.1;
 
   final PlayerModel _playerModel;
+  final void Function()? onCardsDrawn;
 
   late final CardDeck _deck;
   late final CardHand _hand;
@@ -21,6 +21,7 @@ class Player extends PositionComponent {
   // Default constructor for backward compatibility
   Player({
     required PlayerModel playerModel,
+    this.onCardsDrawn,
   })  : _playerModel = playerModel;
 
   @override
@@ -29,7 +30,10 @@ class Player extends PositionComponent {
   @override
   void onLoad() {
 
-    _deck = CardDeck(_playerModel.deckModel, onTap: () => _drawCardsFromDeck())
+    _deck = CardDeck(_playerModel.deckModel, onTap: () => {
+      _playerModel.drawCardsFromDeck(),
+      onCardsDrawn?.call()
+    })
       ..size = Vector2(size.x * pileWidthFactor, size.y);
 
     add(_deck);
@@ -52,16 +56,5 @@ class Player extends PositionComponent {
       ..position = Vector2(_hand.x + _hand.width, 0);
 
     add(_discard);
-  }
-
-  void _drawCardsFromDeck() {
-    final drawnCards = _deck.model.drawCards(cardsToDrawOnTap);
-
-    if (drawnCards.isNotEmpty) {
-      for (final card in drawnCards) {
-        card.isFaceUp = true;
-      }
-      _hand.model.addCards(drawnCards);
-    }
   }
 }

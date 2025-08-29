@@ -17,11 +17,15 @@ class Team extends PositionComponent {
     double currentY = 0;
     
     for (int i = 0; i < model.players.length; i++) {
-      final playerStats = PlayerStats(model: model.players[i])
-        ..size = Vector2(size.x, statsHeight)
-        ..position = Vector2(0, currentY);
-      add(playerStats);
-      currentY += statsHeight;
+      var player = model.players[i];
+
+      if (!player.isActive) {
+        final playerStats = PlayerStats(model: player)
+          ..size = Vector2(size.x, statsHeight)
+          ..position = Vector2(0, currentY);
+        add(playerStats);
+        currentY += statsHeight;
+      }
     }
 
     // Use provided basesModel or create default for backward compatibility

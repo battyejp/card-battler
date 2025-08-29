@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:card_battler/game/components/shared/card_deck.dart';
 import 'package:card_battler/game/components/shared/card_pile.dart';
 import 'package:card_battler/game/components/shared/overlay.dart';
+import 'package:card_battler/game/components/team/player_stats.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -28,6 +29,7 @@ class EnemyTurnArea extends Overlay {
       1.0,
       EffectController(duration: super.fadeDuration),
     ));
+    _model.turnFinished = false;
   }
 
   @override
@@ -36,6 +38,7 @@ class EnemyTurnArea extends Overlay {
     _playArea.add(OpacityEffect.to(
       0.0,
       EffectController(duration: super.fadeDuration),
+      onComplete: () => removeFromParent(),
     ));
   }
 
@@ -51,28 +54,30 @@ class EnemyTurnArea extends Overlay {
 
     backdrop.add(_playArea);
 
-    _deck = CardDeck(_model.enemyCards, onTap: () => _drawCardsFromDeck())
-      ..anchor = Anchor.centerLeft
-      ..position = Vector2(0, _playArea.size.y / 2)
+    _deck = CardDeck(_model.enemyCards, onTap: () => _model.drawCardsFromDeck())
+      ..anchor = Anchor.topLeft
+      ..position = Vector2(0, 0)
       ..size = Vector2(_playArea.size.x * 0.25, _playArea.size.y / 2);
 
     _playArea.add(_deck);
 
     _playedCards = CardPile(_model.playedCards, showNext: false)
-      ..anchor = Anchor.centerRight
-      ..position = Vector2(_playArea.size.x, _playArea.size.y / 2)
+      ..anchor = Anchor.topRight
+      ..position = Vector2(_playArea.size.x, 0)
       ..size = Vector2(_playArea.size.x * 0.25, _playArea.size.y / 2);
 
     _playArea.add(_playedCards);
-  }
 
-  void _drawCardsFromDeck() {
-    final drawnCard = _deck.model.drawCard();
+    final statsHeight = _playArea.size.y / 2 * 0.15;
+    double currentY = _playArea.size.y / 2;
+    for (int i = 0; i < _model.playerStats.length; i++) {
+      var player = _model.playerStats[i];
 
-    if (drawnCard != null) {
-      drawnCard.isFaceUp = true;
-
-      _playedCards.model.addCard(drawnCard);
-    }
+      final playerStats = PlayerStats(model: player)
+        ..size = Vector2(_playArea.size.x, statsHeight)
+        ..position = Vector2(0, currentY);
+      _playArea.add(playerStats);
+      currentY += statsHeight;
+    }    
   }
 }
