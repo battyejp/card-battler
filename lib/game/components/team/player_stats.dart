@@ -15,7 +15,7 @@ class PlayerStats extends PositionComponent {
   void onLoad() {
     super.onLoad();
     var textComponent = TextComponent(
-      text: _model.display,
+      text: _model.name,
       position: Vector2(10, 10),
       anchor: Anchor.topLeft,
     );

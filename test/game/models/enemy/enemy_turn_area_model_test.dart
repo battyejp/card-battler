@@ -308,7 +308,7 @@ void main() {
         expect(activePlayer.health.currentHealth, equals(100));
       });
 
-      test('ignores non-activePlayer targets for now', () {
+      test('applies damage to all players with allPlayers target', () {
         final activePlayer = _createTestPlayerStats('ActivePlayer', isActive: true, health: 100);
         final playerStats = [activePlayer];
         
@@ -332,8 +332,8 @@ void main() {
 
         enemyTurnArea.updatePlayersStats(allPlayersCard);
 
-        // Health should remain unchanged since allPlayers target is not implemented
-        expect(activePlayer.health.currentHealth, equals(100));
+        // Health should be reduced by 20 since allPlayers target applies damage to all players
+        expect(activePlayer.health.currentHealth, equals(80));
       });
 
       test('handles card with no abilities', () {

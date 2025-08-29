@@ -26,7 +26,7 @@ class EnemyTurnAreaModel {
       updatePlayersStats(drawnCard);
     }
 
-    turnFinished = true;
+    turnFinished = drawnCard?.abilities.where((ability) => ability.type == AbilityType.drawCard).isEmpty ?? true;
   }
 
   void updatePlayersStats(CardModel drawnCard) {
@@ -40,7 +40,15 @@ class EnemyTurnAreaModel {
               });
               break;
             case AbilityTarget.otherPlayers:
+              playerStats.where((player) => !player.isActive).forEach((stats) {
+                stats.health.changeHealth(-ability.value);
+              });
+              break;
             case AbilityTarget.allPlayers:
+              for (var stats in playerStats) {
+                stats.health.changeHealth(-ability.value);
+              }
+              break;
             case AbilityTarget.base:
             case AbilityTarget.chosenPlayer:
               break;

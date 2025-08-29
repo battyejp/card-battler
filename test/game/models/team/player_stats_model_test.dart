@@ -19,7 +19,7 @@ void main() {
           health: testHealthModel,
         );
 
-        expect(playerStats.display, equals('Test Player: 100/100'));
+        expect(playerStats.name, equals('Test Player: 100/100'));
         expect(playerStats.health, equals(testHealthModel));
       });
 
@@ -34,7 +34,7 @@ void main() {
 
         // Verify that changes to the original health model are reflected
         testHealthModel.changeHealth(-20);
-        expect(playerStats.display, equals('Test Player: 80/100'));
+        expect(playerStats.name, equals('Test Player: 80/100'));
       });
 
       test('works with different name values', () {
@@ -43,7 +43,7 @@ void main() {
         for (final name in names) {
           final health = HealthModel(maxHealth: 50);
           final playerStats = PlayerStatsModel(name: name, health: health);
-          expect(playerStats.display, equals('$name: 50/50'));
+          expect(playerStats.name, equals('$name: 50/50'));
         }
       });
 
@@ -56,9 +56,9 @@ void main() {
         final highHealthPlayer = PlayerStatsModel(name: 'Tank', health: highHealth);
         final mediumHealthPlayer = PlayerStatsModel(name: 'Balanced', health: mediumHealth);
 
-        expect(lowHealthPlayer.display, equals('Fragile: 1/1'));
-        expect(highHealthPlayer.display, equals('Tank: 999/999'));
-        expect(mediumHealthPlayer.display, equals('Balanced: 50/50'));
+        expect(lowHealthPlayer.name, equals('Fragile: 1/1'));
+        expect(highHealthPlayer.name, equals('Tank: 999/999'));
+        expect(mediumHealthPlayer.name, equals('Balanced: 50/50'));
       });
     });
 
@@ -69,7 +69,7 @@ void main() {
           health: HealthModel(maxHealth: 75),
         );
 
-        expect(playerStats.display, equals('Hero: 75/75'));
+        expect(playerStats.name, equals('Hero: 75/75'));
       });
 
       test('reflects health changes correctly', () {
@@ -80,23 +80,23 @@ void main() {
         );
 
         // Initial state
-        expect(playerStats.display, equals('Warrior: 100/100'));
+        expect(playerStats.name, equals('Warrior: 100/100'));
 
         // After taking damage
         health.changeHealth(-25);
-        expect(playerStats.display, equals('Warrior: 75/100'));
+        expect(playerStats.name, equals('Warrior: 75/100'));
 
         // After healing
         health.changeHealth(10);
-        expect(playerStats.display, equals('Warrior: 85/100'));
+        expect(playerStats.name, equals('Warrior: 85/100'));
 
         // After more damage
         health.changeHealth(-85);
-        expect(playerStats.display, equals('Warrior: 0/100'));
+        expect(playerStats.name, equals('Warrior: 0/100'));
 
         // After healing beyond max
         health.changeHealth(150);
-        expect(playerStats.display, equals('Warrior: 100/100'));
+        expect(playerStats.name, equals('Warrior: 100/100'));
       });
 
       test('handles zero and maximum health correctly', () {
@@ -107,15 +107,15 @@ void main() {
         );
 
         // At maximum health
-        expect(playerStats.display, equals('TestPlayer: 50/50'));
+        expect(playerStats.name, equals('TestPlayer: 50/50'));
 
         // At zero health
         health.changeHealth(-50);
-        expect(playerStats.display, equals('TestPlayer: 0/50'));
+        expect(playerStats.name, equals('TestPlayer: 0/50'));
 
         // Back to full health
         health.changeHealth(50);
-        expect(playerStats.display, equals('TestPlayer: 50/50'));
+        expect(playerStats.name, equals('TestPlayer: 50/50'));
       });
 
       test('updates with multiple health changes', () {
@@ -137,7 +137,7 @@ void main() {
 
         for (int i = 0; i < healthChanges.length; i++) {
           health.changeHealth(healthChanges[i]);
-          expect(playerStats.display, equals(expectedDisplays[i]));
+          expect(playerStats.name, equals(expectedDisplays[i]));
         }
       });
     });
@@ -172,7 +172,7 @@ void main() {
         playerStats.health.changeHealth(-15);
         expect(playerStats.health.currentHealth, equals(45));
         expect(playerStats.health.healthDisplay, equals('45/60'));
-        expect(playerStats.display, equals('Mage: 45/60'));
+        expect(playerStats.name, equals('Mage: 45/60'));
       });
 
       test('maintains reference consistency', () {
@@ -199,7 +199,7 @@ void main() {
           health: health,
         );
 
-        expect(playerStats.display, equals(': 25/25'));
+        expect(playerStats.name, equals(': 25/25'));
       });
 
       test('handles minimum health values', () {
@@ -209,11 +209,11 @@ void main() {
           health: health,
         );
 
-        expect(playerStats.display, equals('Minimal: 1/1'));
+        expect(playerStats.name, equals('Minimal: 1/1'));
 
         // Test taking damage to zero
         health.changeHealth(-1);
-        expect(playerStats.display, equals('Minimal: 0/1'));
+        expect(playerStats.name, equals('Minimal: 0/1'));
       });
 
       test('handles large health values', () {
@@ -223,11 +223,11 @@ void main() {
           health: health,
         );
 
-        expect(playerStats.display, equals('Immortal: 999999/999999'));
+        expect(playerStats.name, equals('Immortal: 999999/999999'));
 
         // Test large damage
         health.changeHealth(-500000);
-        expect(playerStats.display, equals('Immortal: 499999/999999'));
+        expect(playerStats.name, equals('Immortal: 499999/999999'));
       });
 
       test('handles special characters in name', () {
@@ -244,7 +244,7 @@ void main() {
         for (final name in specialNames) {
           final health = HealthModel(maxHealth: 10);
           final playerStats = PlayerStatsModel(name: name, health: health);
-          expect(playerStats.display, equals('$name: 10/10'));
+          expect(playerStats.name, equals('$name: 10/10'));
         }
       });
 
@@ -256,19 +256,19 @@ void main() {
         );
 
         // Perform various operations
-        expect(playerStats.display, equals('Consistent: 100/100'));
+        expect(playerStats.name, equals('Consistent: 100/100'));
 
         health.changeHealth(-50);
-        expect(playerStats.display, equals('Consistent: 50/100'));
+        expect(playerStats.name, equals('Consistent: 50/100'));
         expect(playerStats.health.currentHealth, equals(50));
 
         health.changeHealth(25);
-        expect(playerStats.display, equals('Consistent: 75/100'));
+        expect(playerStats.name, equals('Consistent: 75/100'));
         expect(playerStats.health.currentHealth, equals(75));
 
         // Verify multiple accesses remain consistent
-        final display1 = playerStats.display;
-        final display2 = playerStats.display;
+        final display1 = playerStats.name;
+        final display2 = playerStats.name;
         final health1 = playerStats.health;
         final health2 = playerStats.health;
 
@@ -291,19 +291,19 @@ void main() {
 
         // Test damage
         playerStats.health.changeHealth(-30);
-        expect(playerStats.display, equals('Integrated: 90/120'));
+        expect(playerStats.name, equals('Integrated: 90/120'));
 
         // Test healing
         playerStats.health.changeHealth(15);
-        expect(playerStats.display, equals('Integrated: 105/120'));
+        expect(playerStats.name, equals('Integrated: 105/120'));
 
         // Test over-healing (should cap at max)
         playerStats.health.changeHealth(50);
-        expect(playerStats.display, equals('Integrated: 120/120'));
+        expect(playerStats.name, equals('Integrated: 120/120'));
 
         // Test over-damage (should cap at 0)
         playerStats.health.changeHealth(-200);
-        expect(playerStats.display, equals('Integrated: 0/120'));
+        expect(playerStats.name, equals('Integrated: 0/120'));
       });
 
       test('reflects health model state changes immediately', () {
@@ -314,16 +314,16 @@ void main() {
         );
 
         // Changes to health model should immediately affect display
-        expect(playerStats.display, equals('Reactive: 80/80'));
+        expect(playerStats.name, equals('Reactive: 80/80'));
 
         health.changeHealth(-20);
-        expect(playerStats.display, equals('Reactive: 60/80'));
+        expect(playerStats.name, equals('Reactive: 60/80'));
 
         health.changeHealth(-60);
-        expect(playerStats.display, equals('Reactive: 0/80'));
+        expect(playerStats.name, equals('Reactive: 0/80'));
 
         health.changeHealth(40);
-        expect(playerStats.display, equals('Reactive: 40/80'));
+        expect(playerStats.name, equals('Reactive: 40/80'));
       });
 
       test('supports different health model instances', () {
@@ -335,18 +335,18 @@ void main() {
         final player2 = PlayerStatsModel(name: 'Player2', health: health2);
         final player3 = PlayerStatsModel(name: 'Player3', health: health3);
 
-        expect(player1.display, equals('Player1: 50/50'));
-        expect(player2.display, equals('Player2: 75/75'));
-        expect(player3.display, equals('Player3: 100/100'));
+        expect(player1.name, equals('Player1: 50/50'));
+        expect(player2.name, equals('Player2: 75/75'));
+        expect(player3.name, equals('Player3: 100/100'));
 
         // Modify each independently
         health1.changeHealth(-10);
         health2.changeHealth(-25);
         health3.changeHealth(-50);
 
-        expect(player1.display, equals('Player1: 40/50'));
-        expect(player2.display, equals('Player2: 50/75'));
-        expect(player3.display, equals('Player3: 50/100'));
+        expect(player1.name, equals('Player1: 40/50'));
+        expect(player2.name, equals('Player2: 50/75'));
+        expect(player3.name, equals('Player3: 50/100'));
 
         // Verify they remain independent
         expect(player1.health, isNot(equals(player2.health)));
@@ -404,15 +404,15 @@ void main() {
         );
 
         // Both should display the same format regardless of isActive
-        expect(activePlayer.display, equals('Active: 50/50'));
-        expect(inactivePlayer.display, equals('Inactive: 50/50'));
+        expect(activePlayer.name, equals('Active: 50/50'));
+        expect(inactivePlayer.name, equals('Inactive: 50/50'));
         
         // Health functionality should work the same
         activePlayer.health.changeHealth(-10);
         inactivePlayer.health.changeHealth(-10);
         
-        expect(activePlayer.display, equals('Active: 40/50'));
-        expect(inactivePlayer.display, equals('Inactive: 40/50'));
+        expect(activePlayer.name, equals('Active: 40/50'));
+        expect(inactivePlayer.name, equals('Inactive: 40/50'));
       });
 
       test('supports multiple players with different isActive states', () {
@@ -496,8 +496,8 @@ void main() {
           health: health,
         );
 
-        expect(playerStats.display, contains('Display Test'));
-        expect(playerStats.display, equals('Display Test: 75/75'));
+        expect(playerStats.name, contains('Display Test'));
+        expect(playerStats.name, equals('Display Test: 75/75'));
       });
     });
   });

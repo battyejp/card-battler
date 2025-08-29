@@ -9,7 +9,6 @@ class PlayerStatsModel {
       : _name = name,
         _health = health;
 
-  String get display => '$_name: ${_health.healthDisplay}';
-  HealthModel get health => _health;
   String get name => _name;
+  HealthModel get health => _health;
 }
