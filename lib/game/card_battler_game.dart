@@ -11,6 +11,7 @@ import 'components/player/player.dart';
 class CardBattlerGame extends FlameGame {
   GameStateModel? _gameState;
   Vector2? _testSize;
+  EnemyTurnArea? _enemyTurnArea;
 
   // Default constructor with new game state
   CardBattlerGame();
@@ -71,24 +72,31 @@ class CardBattlerGame extends FlameGame {
     }
 
     _gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
+    _gameState!.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished;
     _loadGameComponents();
   }
 
   void _onPlayerCardsDrawn() {
     _showEnemiesTurn();
   }
+  
+  void _onEnemyTurnFinished() {
+    Future.delayed(const Duration(seconds: 1), () {
+      _enemyTurnArea!.startFadeOut();
+    });
+  }
 
   void _showEnemiesTurn() {
     // Show announcement with current enemy state
-    final announcement = EnemyTurnArea(
+    _enemyTurnArea = EnemyTurnArea(
       displayDuration: const Duration(seconds: 5),
       onComplete: () {
       },
       model: _gameState!.enemyTurnArea,
     );
 
-    announcement.size = size;
-    camera.viewport.add(announcement);
+    _enemyTurnArea!.size = size;
+    camera.viewport.add(_enemyTurnArea!);
   }
 
   void _loadGameComponents() {

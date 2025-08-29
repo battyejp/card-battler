@@ -1,16 +1,19 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
+import 'package:flutter/foundation.dart';
 
 class EnemyTurnAreaModel {
   final CardPileModel enemyCards;
   final CardPileModel playedCards;
   final List<PlayerStatsModel> playerStats;
+  VoidCallback? onTurnFinished;
   bool turnFinished;
 
   EnemyTurnAreaModel({
     required this.enemyCards,
     required this.playerStats,
+    this.onTurnFinished,
   })  : playedCards = CardPileModel.empty(),
         turnFinished = false;
 
@@ -27,6 +30,10 @@ class EnemyTurnAreaModel {
     }
 
     turnFinished = drawnCard?.abilities.any((ability) => ability.type == AbilityType.drawCard) == false;
+    
+    if (turnFinished) {
+      onTurnFinished?.call();
+    }
   }
 
   void updatePlayersStats(CardModel drawnCard) {

@@ -38,6 +38,7 @@ class EnemyTurnArea extends Overlay {
     _playArea.add(OpacityEffect.to(
       0.0,
       EffectController(duration: super.fadeDuration),
+      onComplete: () => removeFromParent(),
     ));
   }
 
