@@ -81,9 +81,7 @@ class CardBattlerGame extends FlameGame {
   }
   
   void _onEnemyTurnFinished() {
-    Future.delayed(const Duration(seconds: 1), () {
-      _enemyTurnArea!.startFadeOut();
-    });
+    _enemyTurnArea!.startFadeOut();
   }
 
   void _showEnemiesTurn() {
