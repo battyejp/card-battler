@@ -1,24 +1,12 @@
+import 'package:card_battler/game/components/shared/health.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:flame/components.dart';
 
 class PlayerStats extends PositionComponent {
   final PlayerStatsModel _model;
-  late TextComponent _textComponent;
 
   PlayerStats({required PlayerStatsModel model})
       : _model = model;
-
-  /// Updates current health by [delta], clamps to [0, maxHealth]
-  void changeHealth(int delta) {
-    _model.health.changeHealth(delta);
-    _updateDisplay();
-  }
-
-  void _updateDisplay() {
-    if (hasChildren) {
-      _textComponent.text = _model.display;
-    }
-  }
 
   @override
   bool get debugMode => true;
@@ -26,10 +14,18 @@ class PlayerStats extends PositionComponent {
   @override
   void onLoad() {
     super.onLoad();
-    _textComponent = TextComponent(
-      text: _model.display,
-      position: Vector2(10, 10),
+    var textComponent = TextComponent(
+      text: _model.name,
+      position: Vector2(0, size.y / 2),
+      anchor: Anchor.centerLeft,
     );
-    add(_textComponent);
+
+    add(textComponent);
+
+    var healthComponent = Health(_model.health)
+      ..anchor = Anchor.centerLeft
+      ..position = Vector2(size.x / 2, size.y / 2);
+
+    add(healthComponent);
   }
 }

@@ -30,5 +30,25 @@ class EnemyTurnAreaModel {
   }
 
   void updatePlayersStats(CardModel drawnCard) {
+    for (var ability in drawnCard.abilities) {
+      switch (ability.type) {
+        case AbilityType.damage:
+          switch (ability.target) {
+            case AbilityTarget.activePlayer:
+              playerStats.where((player) => player.isActive).forEach((stats) {
+                stats.health.changeHealth(-ability.value);
+              });
+              break;
+            case AbilityTarget.otherPlayers:
+            case AbilityTarget.allPlayers:
+            case AbilityTarget.base:
+            case AbilityTarget.chosenPlayer:
+              break;
+          }
+          break;
+        case AbilityType.drawCard:
+          break;
+      }
+    }
   }
 }

@@ -4,5 +4,5 @@
   {"name": "Damage Base", "type": "Enemy", "abilities": [ {"type": "Damage", "value": 1, "target": "Base"} ]},
   {"name": "Damage Chosen Player", "type": "Enemy", "abilities": [ {"type": "Damage", "value": 2, "target": "ChosenPlayer"} ]},
   {"name": "Damage Base And Active Player", "type": "Enemy", "abilities": [ {"type": "Damage", "value": 2, "target": "ActivePlayer"}, {"type": "Damage", "value": 1, "target": "Base"} ]},
-  {"name": "Damage Active Player And Another Turn", "type": "Enemy", "abilities": [ {"type": "Damage", "value": 2, "target": "ActivePlayer"}, {"type": "DrawCard", "value": 1} ]}
+  {"name": "Damage Active Player And Another Turn", "type": "Enemy", "abilities": [ {"type": "Damage", "value": 2, "target": "ActivePlayer"}, {"type": "DrawCard", "value": 1, "target": "Base"} ]}
 ]

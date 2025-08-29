@@ -7,18 +7,6 @@ import 'package:flame/components.dart';
 
 void main() {
   group('PlayerStats', () {
-    group('health management', () {
-      testWithFlameGame('updates text display when health changes', (game) async {
-        final stats = PlayerStats(model: PlayerStatsModel(name: 'Test Player', health: HealthModel(maxHealth: 100)));
-        await game.ensureAdd(stats);
-        
-        stats.changeHealth(-25);
-        
-        final textComponent = stats.children.whereType<TextComponent>().first;
-        expect(textComponent.text, equals('Test Player: 75/100'));
-      });
-    });
-
     group('component behavior', () {
       final testCases = [
         {'size': Vector2(100, 100), 'pos': Vector2(10, 20)},

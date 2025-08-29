@@ -1,4 +1,6 @@
-class HealthModel {
+import 'package:card_battler/game/models/shared/reactive_model.dart';
+
+class HealthModel with ReactiveModel<HealthModel> {
   final int maxHealth;
   int _currentHealth;
 
@@ -12,6 +14,7 @@ class HealthModel {
     _currentHealth += delta;
     if (_currentHealth > maxHealth) _currentHealth = maxHealth;
     if (_currentHealth < 0) _currentHealth = 0;
+    notifyChange();
   }
 
   /// Returns a formatted string representation of current health status
