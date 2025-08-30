@@ -20,8 +20,9 @@ class Info extends PositionComponent {
   void onLoad() {
     super.onLoad();
 
-    var comp1 = Health(model.healthModel, Anchor.topLeft)
+    var comp1 = PositionComponent()
       ..size = Vector2(size.x / 3, size.y)
+      ..position = Vector2(0, 0)
       ..debugColor = const Color(0xFF00FF00);
 
     var comp2 = PositionComponent()
