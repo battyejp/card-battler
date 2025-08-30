@@ -1,4 +1,3 @@
-import 'package:card_battler/game/components/shared/health.dart';
 import 'package:card_battler/game/components/shared/value_image_label.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:flame/components.dart';
