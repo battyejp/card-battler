@@ -1,3 +1,4 @@
+import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
@@ -9,12 +10,14 @@ void main() {
         final health = ValueImageLabelModel(value: 100, label: 'Health');
         final attack = ValueImageLabelModel(value: 25, label: 'Attack');
         final credits = ValueImageLabelModel(value: 50, label: 'Credits');
-        
+        final healthModel = HealthModel(maxHealth: 100);
+
         final infoModel = InfoModel(
           health: health,
           attack: attack,
           credits: credits,
           name: 'TestPlayer',
+          healthModel: healthModel,
         );
 
         expect(infoModel.health, equals(health));
@@ -28,6 +31,7 @@ void main() {
           attack: ValueImageLabelModel(value: 999, label: 'ATK'),
           credits: ValueImageLabelModel(value: -10, label: 'Gold'),
           name: 'TestPlayer',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         expect(infoModel.health.display, equals('HP: 0'));
@@ -45,6 +49,7 @@ void main() {
           attack: attack,
           credits: credits,
           name: 'TestPlayer',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         // Modify original models
@@ -67,6 +72,7 @@ void main() {
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
           name: 'TestPlayer',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         expect(infoModel.health, isA<ValueImageLabelModel>());
@@ -81,6 +87,7 @@ void main() {
           attack: attack,
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
           name: 'TestPlayer',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         expect(infoModel.attack, isA<ValueImageLabelModel>());
@@ -95,6 +102,7 @@ void main() {
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: credits,
           name: 'TestPlayer',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         expect(infoModel.credits, isA<ValueImageLabelModel>());
@@ -110,6 +118,7 @@ void main() {
           attack: ValueImageLabelModel(value: 20, label: 'ATK'),
           credits: ValueImageLabelModel(value: 50, label: 'Gold'),
           name: 'TestPlayer',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         // Modify each model independently
@@ -128,6 +137,7 @@ void main() {
           attack: ValueImageLabelModel(value: 20, label: 'Attack'),
           credits: ValueImageLabelModel(value: 50, label: 'Credits'),
           name: 'TestPlayer',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         // Test reactive streams are available
@@ -155,6 +165,7 @@ void main() {
           attack: ValueImageLabelModel(value: 20, label: 'Attack'),
           credits: ValueImageLabelModel(value: 50, label: 'Credits'),
           name: 'TestPlayer1',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         final infoModel2 = InfoModel(
@@ -162,6 +173,7 @@ void main() {
           attack: ValueImageLabelModel(value: 15, label: 'Attack'),
           credits: ValueImageLabelModel(value: 30, label: 'Credits'),
           name: 'TestPlayer2',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         // Modify first model
@@ -183,6 +195,7 @@ void main() {
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 999999999, label: 'Credits'),
           name: 'TestPlayer',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         expect(infoModel.health.display, equals('Health: -999999'));
@@ -196,6 +209,7 @@ void main() {
           attack: ValueImageLabelModel(value: 25, label: 'ATK/DEF'),
           credits: ValueImageLabelModel(value: 50, label: '💰'),
           name: 'TestPlayer',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         expect(infoModel.health.display, equals(': 100'));
@@ -211,6 +225,7 @@ void main() {
           attack: ValueImageLabelModel(value: 20, label: 'Attack1'),
           credits: ValueImageLabelModel(value: 50, label: 'Credits1'),
           name: 'TestPlayer1',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         final infoModel2 = InfoModel(
@@ -218,6 +233,7 @@ void main() {
           attack: ValueImageLabelModel(value: 30, label: 'Attack2'),
           credits: ValueImageLabelModel(value: 75, label: 'Credits2'),
           name: 'TestPlayer2',
+          healthModel: HealthModel(maxHealth: 100),
         );
 
         // Modifying shared health affects both

@@ -1,3 +1,4 @@
+import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
@@ -26,6 +27,7 @@ void main() {
         health: ValueImageLabelModel(value: 100, label: 'Health'),
         attack: ValueImageLabelModel(value: 50, label: 'Attack'),
         credits: ValueImageLabelModel(value: 25, label: 'Credits'),
+        healthModel: HealthModel(maxHealth: 100),
         name: 'TestPlayer',
       );
       testHandModel = CardHandModel();

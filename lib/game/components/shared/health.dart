@@ -4,8 +4,9 @@ import 'package:flame/components.dart';
 
 class Health extends ReactivePositionComponent<HealthModel> {
   late TextComponent _textComponent;
+  final Anchor _anchor;
 
-  Health(super.model);
+  Health(super.model, [this._anchor = Anchor.centerLeft]);
 
   @override
   bool get debugMode => true;
@@ -16,7 +17,7 @@ class Health extends ReactivePositionComponent<HealthModel> {
 
     _textComponent = TextComponent(
       text: model.healthDisplay,
-      anchor: Anchor.centerLeft,
+      anchor: _anchor,
     );
 
     add(_textComponent);

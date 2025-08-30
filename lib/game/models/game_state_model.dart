@@ -51,6 +51,7 @@ class GameStateModel {
           health: ValueImageLabelModel(value: 10, label: 'Health'),
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+          healthModel: HealthModel(maxHealth: 10),
           isActive: true,
         ),
         handModel: CardHandModel(),
@@ -63,6 +64,7 @@ class GameStateModel {
           health: ValueImageLabelModel(value: 10, label: 'Health'),
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+          healthModel: HealthModel(maxHealth: 10),
         ),
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
@@ -74,6 +76,7 @@ class GameStateModel {
           health: ValueImageLabelModel(value: 10, label: 'Health'),
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+          healthModel: HealthModel(maxHealth: 10),
         ),
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
@@ -85,6 +88,7 @@ class GameStateModel {
           health: ValueImageLabelModel(value: 10, label: 'Health'),
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+          healthModel: HealthModel(maxHealth: 10),
         ),
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
@@ -95,7 +99,7 @@ class GameStateModel {
     final playerStats = players.map((player) {
       return PlayerStatsModel(
         name: player.infoModel.name,
-        health: HealthModel(maxHealth: 10),
+        health: player.infoModel.healthModel,
         isActive: player.infoModel.isActive,
       );
     }).toList();
