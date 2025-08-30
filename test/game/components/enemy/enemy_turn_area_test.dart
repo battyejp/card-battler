@@ -13,10 +13,10 @@ List<CardModel> _generateTestCards(int count) {
     name: 'Enemy Card $index',
     type: 'enemy',
     isFaceUp: false,
-    abilities: [
-      AbilityModel(
-        type: AbilityType.damage,
-        target: AbilityTarget.activePlayer,
+    effects: [
+      EffectModel(
+        type: EffectType.damage,
+        target: EffectTarget.activePlayer,
         value: 10 + index,
       ),
     ],
@@ -223,10 +223,10 @@ void main() {
           name: 'Multi-Target Card',
           type: 'enemy',
           isFaceUp: false,
-          abilities: [
-            AbilityModel(
-              type: AbilityType.damage,
-              target: AbilityTarget.activePlayer,
+          effects: [
+            EffectModel(
+              type: EffectType.damage,
+              target: EffectTarget.activePlayer,
               value: 25,
             ),
           ],

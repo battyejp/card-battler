@@ -10,10 +10,10 @@ List<CardModel> _generateTestCards(int count) {
     name: 'Enemy Card $index',
     type: 'enemy',
     isFaceUp: false,
-    abilities: [
-      AbilityModel(
-        type: AbilityType.damage,
-        target: AbilityTarget.activePlayer,
+    effects: [
+      EffectModel(
+        type: EffectType.damage,
+        target: EffectTarget.activePlayer,
         value: 10 + index,
       ),
     ],
@@ -187,10 +187,10 @@ void main() {
         final damageCard = CardModel(
           name: 'Damage Card',
           type: 'enemy',
-          abilities: [
-            AbilityModel(
-              type: AbilityType.damage,
-              target: AbilityTarget.activePlayer,
+          effects: [
+            EffectModel(
+              type: EffectType.damage,
+              target: EffectTarget.activePlayer,
               value: 25,
             ),
           ],
@@ -217,10 +217,10 @@ void main() {
         final damageCard = CardModel(
           name: 'AOE Damage Card',
           type: 'enemy',
-          abilities: [
-            AbilityModel(
-              type: AbilityType.damage,
-              target: AbilityTarget.activePlayer,
+          effects: [
+            EffectModel(
+              type: EffectType.damage,
+              target: EffectTarget.activePlayer,
               value: 15,
             ),
           ],
@@ -233,7 +233,7 @@ void main() {
         expect(inactivePlayer.health.currentHealth, equals(90)); // unchanged
       });
 
-      test('handles cards with multiple abilities', () {
+      test('handles cards with multiple effects', () {
         final activePlayer = _createTestPlayerStats('ActivePlayer', isActive: true, health: 100);
         final playerStats = [activePlayer];
         
@@ -243,29 +243,29 @@ void main() {
           playerStats: playerStats,
         );
 
-        final multiAbilityCard = CardModel(
-          name: 'Multi Ability Card',
+        final multiEffectCard = CardModel(
+          name: 'Multi Effect Card',
           type: 'enemy',
-          abilities: [
-            AbilityModel(
-              type: AbilityType.damage,
-              target: AbilityTarget.activePlayer,
+          effects: [
+            EffectModel(
+              type: EffectType.damage,
+              target: EffectTarget.activePlayer,
               value: 10,
             ),
-            AbilityModel(
-              type: AbilityType.damage,
-              target: AbilityTarget.activePlayer,
+            EffectModel(
+              type: EffectType.damage,
+              target: EffectTarget.activePlayer,
               value: 15,
             ),
           ],
         );
 
-        enemyTurnArea.updatePlayersStats(multiAbilityCard);
+        enemyTurnArea.updatePlayersStats(multiEffectCard);
 
         expect(activePlayer.health.currentHealth, equals(75)); // 100 - 10 - 15
       });
 
-      test('ignores non-damage abilities for now', () {
+      test('ignores non-damage effects for now', () {
         final activePlayer = _createTestPlayerStats('ActivePlayer', isActive: true, health: 100);
         final playerStats = [activePlayer];
         
@@ -278,10 +278,10 @@ void main() {
         final drawCard = CardModel(
           name: 'Draw Card',
           type: 'enemy',
-          abilities: [
-            AbilityModel(
-              type: AbilityType.drawCard,
-              target: AbilityTarget.activePlayer,
+          effects: [
+            EffectModel(
+              type: EffectType.drawCard,
+              target: EffectTarget.activePlayer,
               value: 2,
             ),
           ],
@@ -289,7 +289,7 @@ void main() {
 
         enemyTurnArea.updatePlayersStats(drawCard);
 
-        // Health should remain unchanged since drawCard abilities are not implemented
+        // Health should remain unchanged since drawCard effects are not implemented
         expect(activePlayer.health.currentHealth, equals(100));
       });
 
@@ -306,10 +306,10 @@ void main() {
         final allPlayersCard = CardModel(
           name: 'All Players Damage',
           type: 'enemy',
-          abilities: [
-            AbilityModel(
-              type: AbilityType.damage,
-              target: AbilityTarget.allPlayers,
+          effects: [
+            EffectModel(
+              type: EffectType.damage,
+              target: EffectTarget.allPlayers,
               value: 20,
             ),
           ],
@@ -321,7 +321,7 @@ void main() {
         expect(activePlayer.health.currentHealth, equals(80));
       });
 
-      test('handles card with no abilities', () {
+      test('handles card with no effects', () {
         final activePlayer = _createTestPlayerStats('ActivePlayer', isActive: true, health: 100);
         final playerStats = [activePlayer];
         
@@ -331,13 +331,13 @@ void main() {
           playerStats: playerStats,
         );
 
-        final noAbilityCard = CardModel(
-          name: 'No Ability Card',
+        final noEffectCard = CardModel(
+          name: 'No Effect Card',
           type: 'enemy',
-          abilities: [],
+          effects: [],
         );
 
-        enemyTurnArea.updatePlayersStats(noAbilityCard);
+        enemyTurnArea.updatePlayersStats(noEffectCard);
 
         expect(activePlayer.health.currentHealth, equals(100)); // unchanged
       });
@@ -350,10 +350,10 @@ void main() {
             name: 'Fireball',
             type: 'enemy',
             isFaceUp: false,
-            abilities: [
-              AbilityModel(
-                type: AbilityType.damage,
-                target: AbilityTarget.activePlayer,
+            effects: [
+              EffectModel(
+                type: EffectType.damage,
+                target: EffectTarget.activePlayer,
                 value: 30,
               ),
             ],
@@ -436,10 +436,10 @@ void main() {
         final zeroDamageCard = CardModel(
           name: 'Weak Card',
           type: 'enemy',
-          abilities: [
-            AbilityModel(
-              type: AbilityType.damage,
-              target: AbilityTarget.activePlayer,
+          effects: [
+            EffectModel(
+              type: EffectType.damage,
+              target: EffectTarget.activePlayer,
               value: 0,
             ),
           ],
@@ -466,10 +466,10 @@ void main() {
         final healingCard = CardModel(
           name: 'Healing Card',
           type: 'enemy',
-          abilities: [
-            AbilityModel(
-              type: AbilityType.damage,
-              target: AbilityTarget.activePlayer,
+          effects: [
+            EffectModel(
+              type: EffectType.damage,
+              target: EffectTarget.activePlayer,
               value: -20, // negative damage = healing
             ),
           ],
@@ -493,10 +493,10 @@ void main() {
         final overkillCard = CardModel(
           name: 'Overkill Card',
           type: 'enemy',
-          abilities: [
-            AbilityModel(
-              type: AbilityType.damage,
-              target: AbilityTarget.activePlayer,
+          effects: [
+            EffectModel(
+              type: EffectType.damage,
+              target: EffectTarget.activePlayer,
               value: 9999,
             ),
           ],

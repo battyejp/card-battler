@@ -1,48 +1,48 @@
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
-enum AbilityType {
+enum EffectType {
   damage,
   drawCard;
 
-  static AbilityType fromString(String value) {
-    return AbilityType.values.firstWhere(
+  static EffectType fromString(String value) {
+    return EffectType.values.firstWhere(
       (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => throw ArgumentError('Unknown ability type: $value'),
+      orElse: () => throw ArgumentError('Unknown effect type: $value'),
     );
   }
 }
 
-enum AbilityTarget {
+enum EffectTarget {
   activePlayer,
   otherPlayers,
   allPlayers,
   base,
   chosenPlayer;
 
-  static AbilityTarget fromString(String value) {
-    return AbilityTarget.values.firstWhere(
+  static EffectTarget fromString(String value) {
+    return EffectTarget.values.firstWhere(
       (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => throw ArgumentError('Unknown ability target: $value'),
+      orElse: () => throw ArgumentError('Unknown effect target: $value'),
     );
   }
 }
 
-class AbilityModel {
-  final AbilityType type;
-  final AbilityTarget target;
+class EffectModel {
+  final EffectType type;
+  final EffectTarget target;
   final int value;
 
-  AbilityModel({
+  EffectModel({
     required this.type,
     required this.target,
     required this.value,
   });
 
-  factory AbilityModel.fromJson(Map<String, dynamic> json) {
-    return AbilityModel(
-      type: AbilityType.fromString(json['type']),
-      target: AbilityTarget.fromString(json['target']),
+  factory EffectModel.fromJson(Map<String, dynamic> json) {
+    return EffectModel(
+      type: EffectType.fromString(json['type']),
+      target: EffectTarget.fromString(json['target']),
       value: json['value'],
     );
   }
@@ -59,32 +59,32 @@ class AbilityModel {
 class CardModel {
   final String _name;
   final String _type;
-  final List<AbilityModel> _abilities;
+  final List<EffectModel> _effects;
   bool isFaceUp;
 
   CardModel({
     required String name,
     required String type,
-    List<AbilityModel>? abilities,
+    List<EffectModel>? effects,
     this.isFaceUp = false,
   }) : _name = name,
        _type = type,
-       _abilities = abilities ?? [];
+       _effects = effects ?? [];
 
   String get name => _name;
   String get type => _type;
-  List<AbilityModel> get abilities => List.unmodifiable(_abilities);
+  List<EffectModel> get effects => List.unmodifiable(_effects);
 
   factory CardModel.fromJson(Map<String, dynamic> json) {
-    final abilitiesJson = json['abilities'] as List<dynamic>?;
-    final abilities = abilitiesJson
-        ?.map((abilityJson) => AbilityModel.fromJson(abilityJson))
+    final effectsJson = json['effects'] as List<dynamic>?;
+    final effects = effectsJson
+        ?.map((effectJson) => EffectModel.fromJson(effectJson))
         .toList();
     
     return CardModel(
       name: json['name'],
       type: json['type'],
-      abilities: abilities,
+      effects: effects,
       isFaceUp: false,
     );
   }
@@ -93,7 +93,7 @@ class CardModel {
     return {
       'name': _name,
       'type': _type,
-      'abilities': _abilities.map((ability) => ability.toJson()).toList(),
+      'effects': _effects.map((effect) => effect.toJson()).toList(),
       'faceUp': isFaceUp,
     };
   }

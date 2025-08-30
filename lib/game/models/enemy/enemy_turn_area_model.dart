@@ -29,7 +29,7 @@ class EnemyTurnAreaModel {
       updatePlayersStats(drawnCard);
     }
 
-    turnFinished = drawnCard?.abilities.any((ability) => ability.type == AbilityType.drawCard) == false;
+    turnFinished = drawnCard?.effects.any((effect) => effect.type == EffectType.drawCard) == false;
     
     if (turnFinished) {
       onTurnFinished?.call();
@@ -37,31 +37,31 @@ class EnemyTurnAreaModel {
   }
 
   void updatePlayersStats(CardModel drawnCard) {
-    for (var ability in drawnCard.abilities) {
-      switch (ability.type) {
-        case AbilityType.damage:
-          switch (ability.target) {
-            case AbilityTarget.activePlayer:
+    for (var effect in drawnCard.effects) {
+      switch (effect.type) {
+        case EffectType.damage:
+          switch (effect.target) {
+            case EffectTarget.activePlayer:
               for (final stats in playerStats.where((player) => player.isActive)) {
-	                stats.health.changeHealth(-ability.value);
+	                stats.health.changeHealth(-effect.value);
 	            }
               break;
-            case AbilityTarget.otherPlayers:
+            case EffectTarget.otherPlayers:
               for (final stats in playerStats.where((player) => !player.isActive)) {
-	                stats.health.changeHealth(-ability.value);
+	                stats.health.changeHealth(-effect.value);
 	            }
               break;
-            case AbilityTarget.allPlayers:
+            case EffectTarget.allPlayers:
               for (var stats in playerStats) {
-                stats.health.changeHealth(-ability.value);
+                stats.health.changeHealth(-effect.value);
               }
               break;
-            case AbilityTarget.base:
-            case AbilityTarget.chosenPlayer:
+            case EffectTarget.base:
+            case EffectTarget.chosenPlayer:
               break;
           }
           break;
-        case AbilityType.drawCard:
+        case EffectType.drawCard:
           break;
       }
     }

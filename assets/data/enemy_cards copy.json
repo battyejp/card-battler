@@ -1,5 +1,5 @@
 [
-  {"name": "Damage Chosen Player", "type": "Enemy", "abilities": [ {"type": "Damage", "value": 2, "target": "ChosenPlayer"} ]},
+  {"name": "Damage Chosen Player", "type": "Enemy", "effects": [ {"type": "Damage", "value": 2, "target": "ChosenPlayer"} ]},
   {"name": "Cannot gain health"},
   {"name": "Cannot draw extra cards"},
   {"name": "Lose a Card"},
