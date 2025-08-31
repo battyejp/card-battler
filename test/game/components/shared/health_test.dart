@@ -12,7 +12,6 @@ void main() {
         final health = Health(model);
         
         expect(health.model, equals(model));
-        expect(health.debugMode, isTrue);
       });
 
       testWithFlameGame('creates with custom anchor', (game) async {

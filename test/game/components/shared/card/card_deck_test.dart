@@ -46,12 +46,6 @@ void main() {
         final emptyText = textComponents.first;
         expect(emptyText.text, equals('Empty'));
       });
-
-      testWithFlameGame('debug mode enabled like CardPile', (game) async {
-        final deck = CardDeck(CardPileModel(cards: _generateCards(3)));
-        
-        expect(deck.debugMode, isTrue);
-      });
     });
 
     group('tap event handling', () {

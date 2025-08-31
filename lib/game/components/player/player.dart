@@ -25,9 +25,6 @@ class Player extends PositionComponent {
   })  : _playerModel = playerModel;
 
   @override
-  bool get debugMode => true;
-
-  @override
   void onLoad() {
 
     _deck = CardDeck(_playerModel.deckModel, onTap: () => {

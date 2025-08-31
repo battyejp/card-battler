@@ -7,9 +7,6 @@ class CardHand extends ReactivePositionComponent<CardHandModel> {
   CardHand(super.model);
 
   @override
-  bool get debugMode => true;
-
-  @override
   void updateDisplay() {
     super.updateDisplay();
     

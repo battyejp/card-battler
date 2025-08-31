@@ -28,12 +28,6 @@ void main() {
           expect(hand.position, testCase['pos']);
         });
       }
-
-      testWithFlameGame('has debug mode enabled', (game) async {
-        final hand = CardHand(CardHandModel());
-        
-        expect(hand.debugMode, isTrue);
-      });
     });
 
     group('empty hand display', () {

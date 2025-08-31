@@ -9,9 +9,6 @@ class CardPile extends ReactivePositionComponent<CardPileModel> {
   CardPile(super.model, {this.showNext = true});
 
   @override
-  bool get debugMode => true;
-
-  @override
   void updateDisplay() {
     super.updateDisplay();
     

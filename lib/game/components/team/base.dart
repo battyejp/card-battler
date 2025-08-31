@@ -16,9 +16,6 @@ class Base extends PositionComponent with HasVisibility {
   }
 
   @override
-  bool get debugMode => true;
-
-  @override
   void onLoad() {
     super.onLoad();
     _healthTextComponent = TextComponent(

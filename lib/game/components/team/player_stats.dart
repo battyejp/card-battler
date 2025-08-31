@@ -9,9 +9,6 @@ class PlayerStats extends PositionComponent {
       : _model = model;
 
   @override
-  bool get debugMode => true;
-
-  @override
   void onLoad() {
     super.onLoad();
     var textComponent = TextComponent(

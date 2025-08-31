@@ -42,9 +42,6 @@ class Card extends PositionComponent {
   Card(this.cardModel);
 
   @override
-  bool get debugMode => true;
-
-  @override
   void onLoad() {
     super.onLoad();
     addTextComponent();
