@@ -1,17 +1,19 @@
 import 'package:card_battler/game/components/enemy/enemies.dart';
-import 'package:card_battler/game/components/enemy/enemy_turn_area.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
+import 'package:card_battler/game/scenes/enemy_turn_scene.dart';
+import 'package:card_battler/game/scenes/scene_manager.dart';
 import 'package:flame/game.dart';
 import 'components/player/player.dart';
 
 class CardBattlerGame extends FlameGame {
   GameStateModel? _gameState;
   Vector2? _testSize;
-  EnemyTurnArea? _enemyTurnArea;
+  late final SceneManager _sceneManager;
+  Component? _mainGameScene;
 
   // Default constructor with new game state
   CardBattlerGame();
@@ -73,6 +75,11 @@ class CardBattlerGame extends FlameGame {
 
     _gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
     _gameState!.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished;
+    
+    // Initialize scene manager
+    _sceneManager = SceneManager();
+    add(_sceneManager);
+    
     _loadGameComponents();
   }
 
@@ -81,26 +88,35 @@ class CardBattlerGame extends FlameGame {
   }
   
   void _onEnemyTurnFinished() {
-    _enemyTurnArea!.startFadeOut();
+    _returnToMainScene();
   }
 
   void _showEnemiesTurn() {
-    // Show announcement with current enemy state
-    _enemyTurnArea = EnemyTurnArea(
-      displayDuration: const Duration(seconds: 5),
-      onComplete: () {
-      },
+    // Create enemy turn scene and transition to it
+    final enemyTurnScene = EnemyTurnScene(
       model: _gameState!.enemyTurnArea,
+      onSceneComplete: _onEnemyTurnFinished,
     );
 
-    _enemyTurnArea!.size = size;
-    camera.viewport.add(_enemyTurnArea!);
+    _sceneManager.transitionToScene(
+      GameSceneType.enemyTurn,
+      enemyTurnScene,
+    );
+  }
+  
+  void _returnToMainScene() {
+    if (_mainGameScene != null) {
+      _sceneManager.returnToMainScene(_mainGameScene!);
+    }
   }
 
   void _loadGameComponents() {
     if (_gameState == null) {
       return;
     }
+
+    // Create main game scene component to hold all game components
+    _mainGameScene = Component();
 
     final availableHeight = size.y - (margin * 2);
     final availableWidth = size.x - (margin * 2);
@@ -119,7 +135,7 @@ class CardBattlerGame extends FlameGame {
         (size.y / 2) - margin - bottomLayoutHeight,
       );
 
-    world.add(player);
+    _mainGameScene!.add(player);
 
     // Create enemies component with model from game state
     final enemiesWidth = availableWidth * 0.5;
@@ -127,7 +143,7 @@ class CardBattlerGame extends FlameGame {
       ..size = Vector2(enemiesWidth, topLayoutHeight)
       ..position = Vector2((0 - enemiesWidth / 2), topPositionY);
 
-    world.add(enemies);
+    _mainGameScene!.add(enemies);
 
     // Create shop component with model from game state
     final shopWidth = availableWidth * 0.5 / 2;
@@ -135,14 +151,17 @@ class CardBattlerGame extends FlameGame {
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
 
-    world.add(shop);
+    _mainGameScene!.add(shop);
 
     // Create team component with model from game state
     final team = Team(_gameState!.team)
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(0 - enemiesWidth / 2 - shopWidth, topPositionY);
 
-    world.add(team);
+    _mainGameScene!.add(team);
+    
+    // Set the main scene as the current scene
+    _sceneManager.transitionToScene(GameSceneType.main, _mainGameScene!);
   }
 
   // /// Saves the current game state to JSON
