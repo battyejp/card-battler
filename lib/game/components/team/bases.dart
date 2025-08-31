@@ -11,9 +11,6 @@ class Bases extends PositionComponent {
   Bases({required BasesModel model}) : _model = model;
 
   @override
-  bool get debugMode => true;
-
-  @override
   void onLoad() {
     // Create text component with correct styling and positioning
     _textComponent = TextComponent(

@@ -18,13 +18,13 @@ void main() {
         name: 'TestPlayer',
       );
     }
+
     testWithFlameGame('Info can be created and added to game', (game) async {
       final info = Info(createTestInfoModel())..size = Vector2(300, 50);
 
       await game.ensureAdd(info);
 
       expect(info.size, equals(Vector2(300, 50)));
-      expect(info.debugMode, isTrue);
     });
 
     testWithFlameGame('Info extends PositionComponent', (game) async {
@@ -42,12 +42,6 @@ void main() {
 
       expect(info.position, equals(Vector2(50, 10)));
       expect(info.size, equals(Vector2(300, 50)));
-    });
-
-    testWithFlameGame('Info has debug mode enabled', (game) async {
-      final info = Info(createTestInfoModel());
-
-      expect(info.debugMode, isTrue);
     });
 
     testWithFlameGame('Info initializes with InfoModel', (game) async {

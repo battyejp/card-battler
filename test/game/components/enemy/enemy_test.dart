@@ -115,13 +115,6 @@ void main() {
         // Text should remain the same since model hasn't changed
         expect(textComponent.text, equals('100/100'));
       });
-
-      testWithFlameGame('debugMode returns true', (game) async {
-        final model = EnemyModel(name: 'Test Enemy', maxHealth: 50);
-        final enemy = Enemy(model: model);
-
-        expect(enemy.debugMode, isTrue);
-      });
     });
   });
 }

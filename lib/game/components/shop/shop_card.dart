@@ -1,9 +1,9 @@
-import 'package:card_battler/game/components/shared/card.dart' as shared_card;
+import 'package:card_battler/game/components/shared/card/tapable_card.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:flutter/material.dart' hide Card;
 import 'package:flame/components.dart';
 
-class ShopCard extends shared_card.Card {
+class ShopCard extends TapableCard {
   final ShopCardModel shopCardModel;
   late TextComponent _costTextComponent;
 

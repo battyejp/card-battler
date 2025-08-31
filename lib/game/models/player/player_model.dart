@@ -1,3 +1,4 @@
+import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
@@ -26,6 +27,10 @@ class PlayerModel {
   CardPileModel get discardModel => _discardModel;
 
   void drawCardsFromDeck() {
+    if (CardInteractionController.isAnyCardSelected) {
+      return;
+    }
+
     final drawnCards = _deckModel.drawCards(cardsToDrawOnTap);
 
     if (drawnCards.isNotEmpty) {

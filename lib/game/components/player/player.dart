@@ -1,5 +1,5 @@
-import 'package:card_battler/game/components/shared/card_deck.dart';
-import 'package:card_battler/game/components/shared/card_pile.dart';
+import 'package:card_battler/game/components/shared/card/card_deck.dart';
+import 'package:card_battler/game/components/shared/card/card_pile.dart';
 import 'package:card_battler/game/components/player/card_hand.dart';
 import 'package:card_battler/game/components/player/info.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
@@ -23,9 +23,6 @@ class Player extends PositionComponent {
     required PlayerModel playerModel,
     this.onCardsDrawn,
   })  : _playerModel = playerModel;
-
-  @override
-  bool get debugMode => true;
 
   @override
   void onLoad() {

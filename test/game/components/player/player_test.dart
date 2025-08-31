@@ -1,6 +1,6 @@
-import 'package:card_battler/game/components/shared/card_pile.dart';
-import 'package:card_battler/game/components/shared/card_deck.dart';
-import 'package:card_battler/game/components/shared/card.dart';
+import 'package:card_battler/game/components/shared/card/card_pile.dart';
+import 'package:card_battler/game/components/shared/card/card_deck.dart';
+import 'package:card_battler/game/components/shared/card/card.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/player/player.dart';

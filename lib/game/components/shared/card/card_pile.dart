@@ -1,15 +1,12 @@
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:flame/components.dart';
-import 'package:card_battler/game/components/shared/card.dart';
+import 'package:card_battler/game/components/shared/card/card.dart';
 import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:flutter/material.dart' hide Card;
 
 class CardPile extends ReactivePositionComponent<CardPileModel> {
   final bool showNext;
   CardPile(super.model, {this.showNext = true});
-
-  @override
-  bool get debugMode => true;
 
   @override
   void updateDisplay() {

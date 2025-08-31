@@ -9,9 +9,6 @@ class ValueImageLabel extends ReactivePositionComponent<ValueImageLabelModel> {
   late TextComponent? _textComponent;
 
   @override
-  bool get debugMode => true;
-
-  @override
   void updateDisplay() {
     super.updateDisplay();
 

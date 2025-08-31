@@ -15,7 +15,6 @@ void main() {
         await game.ensureAdd(label);
 
         expect(label.model, equals(model));
-        expect(label.debugMode, isTrue);
       });
 
       testWithFlameGame('extends ReactivePositionComponent', (game) async {
@@ -181,13 +180,6 @@ void main() {
     });
 
     group('component properties', () {
-      testWithFlameGame('has debug mode enabled', (game) async {
-        final model = ValueImageLabelModel(value: 15, label: 'Debug');
-        final label = ValueImageLabel(model);
-
-        expect(label.debugMode, isTrue);
-      });
-
       testWithFlameGame('can be positioned and sized', (game) async {
         final model = ValueImageLabelModel(value: 20, label: 'Position');
         final label = ValueImageLabel(model)

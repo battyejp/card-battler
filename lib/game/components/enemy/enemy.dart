@@ -16,9 +16,6 @@ class Enemy extends PositionComponent {
   }
 
   @override
-  bool get debugMode => true;
-
-  @override
   void onLoad() {
     super.onLoad();
     _healthTextComponent = TextComponent(

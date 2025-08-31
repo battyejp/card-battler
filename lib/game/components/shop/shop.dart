@@ -11,9 +11,6 @@ class Shop extends PositionComponent {
   static const double hSpacingFactor = 0.2;
 
   @override
-  bool get debugMode => true;
-
-  @override
   onLoad() {
     final cardWidth = size.x / (model.numberOfColumns + (model.numberOfColumns + 1) * hSpacingFactor);
     final cardHeight = size.y * cardHeightFactor;

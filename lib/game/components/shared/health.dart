@@ -9,9 +9,6 @@ class Health extends ReactivePositionComponent<HealthModel> {
   Health(super.model, [this._anchor = Anchor.centerLeft]);
 
   @override
-  bool get debugMode => true;
-
-  @override
   void updateDisplay() {
     super.updateDisplay();
 

@@ -9,9 +9,6 @@ class Team extends PositionComponent {
   Team(this.model);
 
   @override
-  bool get debugMode => true;
-
-  @override
   void onLoad() {
     final statsHeight = size.y * 0.15;
     double currentY = 0;
