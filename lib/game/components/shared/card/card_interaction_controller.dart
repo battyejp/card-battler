@@ -28,6 +28,8 @@ class CardInteractionController {
     _selectedController?._deselect();
   }
 
+  static bool get isAnyCardSelected => _selectedController != null;
+
   bool onTapUp(TapUpEvent event) {
     // Only allow selection if no card is selected or this card is already selected
     if (!_isAnimating && (_selectedController == null || _selectedController == this)) {

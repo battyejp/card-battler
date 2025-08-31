@@ -86,6 +86,10 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
   }
 
   void _onPlayerCardsDrawn() {
+    if (CardInteractionController.isAnyCardSelected) {
+      return;
+    }
+
     _showEnemiesTurn();
   }
   
