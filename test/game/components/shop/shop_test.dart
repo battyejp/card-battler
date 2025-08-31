@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/shop/shop_card.dart';
-import 'package:card_battler/game/components/shared/card.dart';
+import 'package:card_battler/game/components/shared/card/card.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:flame_test/flame_test.dart';

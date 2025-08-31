@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:card_battler/game/components/shared/card_deck.dart';
-import 'package:card_battler/game/components/shared/card_pile.dart';
+import 'package:card_battler/game/components/shared/card/card_deck.dart';
+import 'package:card_battler/game/components/shared/card/card_pile.dart';
 import 'package:card_battler/game/components/shared/overlay.dart';
 import 'package:card_battler/game/components/team/player_stats.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';

@@ -1,6 +1,6 @@
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/components/shared/card.dart';
+import 'package:card_battler/game/components/shared/card/card.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/player/card_hand.dart';
 import 'package:flame_test/flame_test.dart';

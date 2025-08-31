@@ -2,6 +2,7 @@ import 'package:card_battler/game/components/shared/reactive_position_component.
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:flame/components.dart';
 
+//TODO unit tests
 class Health extends ReactivePositionComponent<HealthModel> {
   late TextComponent _textComponent;
   final Anchor _anchor;

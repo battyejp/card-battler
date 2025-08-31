@@ -8,7 +8,16 @@ import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:flame/game.dart';
 import 'components/player/player.dart';
 
-class CardBattlerGame extends FlameGame {
+import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
+import 'package:flame/events.dart';
+
+class CardBattlerGame extends FlameGame with TapCallbacks {
+  @override
+  void onTapUp(TapUpEvent event) {
+    // Deselect any selected card if the background is tapped
+    CardInteractionController.deselectAny();
+    super.onTapUp(event);
+  }
   GameStateModel? _gameState;
   Vector2? _testSize;
   EnemyTurnArea? _enemyTurnArea;

@@ -1,4 +1,4 @@
-import 'package:card_battler/game/components/shared/card.dart' as shared_card;
+import 'package:card_battler/game/components/shared/card/card.dart' as shared_card;
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:flutter/material.dart' hide Card;
 import 'package:flame/components.dart';

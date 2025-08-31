@@ -1,6 +1,6 @@
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:flame/components.dart';
-import 'package:card_battler/game/components/shared/card.dart';
+import 'package:card_battler/game/components/shared/card/card.dart';
 import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:flutter/material.dart' hide Card;
 
