@@ -1,11 +1,12 @@
 [
-  {"name": "Credits", "type": "Hero"},
-  {"name": "Credits", "type": "Hero"},
-  {"name": "Credits", "type": "Hero"},
-  {"name": "Credits", "type": "Hero"},
-  {"name": "Credits", "type": "Hero"},
-  {"name": "Credits", "type": "Hero"},
-  {"name": "Credits", "type": "Hero"},
-  {"name": "Credits", "type": "Hero"},
-  {"name": "Credits", "type": "Hero"}
+  {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]},
+  {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]},
+  {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]},
+  {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]},
+  {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]},
+  {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]},
+  {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]},
+  {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]},
+  {"name": "Credits", "type": "Hero", "effectOperator": "Or", "effects": [{"type": "Attack", "value": 1, "target": "Self"}, {"type": "Heal", "value": 2, "target": "Self"}]},
+  {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]}
 ]

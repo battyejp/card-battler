@@ -39,7 +39,7 @@ class EnemyTurnAreaModel {
   void updatePlayersStats(CardModel drawnCard) {
     for (var effect in drawnCard.effects) {
       switch (effect.type) {
-        case EffectType.damage:
+        case EffectType.attack:
           switch (effect.target) {
             case EffectTarget.activePlayer:
               for (final stats in playerStats.where((player) => player.isActive)) {

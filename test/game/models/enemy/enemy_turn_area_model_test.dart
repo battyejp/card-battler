@@ -12,7 +12,7 @@ List<CardModel> _generateTestCards(int count) {
     isFaceUp: false,
     effects: [
       EffectModel(
-        type: EffectType.damage,
+        type: EffectType.attack,
         target: EffectTarget.activePlayer,
         value: 10 + index,
       ),
@@ -189,7 +189,7 @@ void main() {
           type: 'enemy',
           effects: [
             EffectModel(
-              type: EffectType.damage,
+              type: EffectType.attack,
               target: EffectTarget.activePlayer,
               value: 25,
             ),
@@ -219,7 +219,7 @@ void main() {
           type: 'enemy',
           effects: [
             EffectModel(
-              type: EffectType.damage,
+              type: EffectType.attack,
               target: EffectTarget.activePlayer,
               value: 15,
             ),
@@ -248,12 +248,12 @@ void main() {
           type: 'enemy',
           effects: [
             EffectModel(
-              type: EffectType.damage,
+              type: EffectType.attack,
               target: EffectTarget.activePlayer,
               value: 10,
             ),
             EffectModel(
-              type: EffectType.damage,
+              type: EffectType.attack,
               target: EffectTarget.activePlayer,
               value: 15,
             ),
@@ -308,7 +308,7 @@ void main() {
           type: 'enemy',
           effects: [
             EffectModel(
-              type: EffectType.damage,
+              type: EffectType.attack,
               target: EffectTarget.allPlayers,
               value: 20,
             ),
@@ -352,7 +352,7 @@ void main() {
             isFaceUp: false,
             effects: [
               EffectModel(
-                type: EffectType.damage,
+                type: EffectType.attack,
                 target: EffectTarget.activePlayer,
                 value: 30,
               ),
@@ -438,7 +438,7 @@ void main() {
           type: 'enemy',
           effects: [
             EffectModel(
-              type: EffectType.damage,
+              type: EffectType.attack,
               target: EffectTarget.activePlayer,
               value: 0,
             ),
@@ -468,7 +468,7 @@ void main() {
           type: 'enemy',
           effects: [
             EffectModel(
-              type: EffectType.damage,
+              type: EffectType.attack,
               target: EffectTarget.activePlayer,
               value: -20, // negative damage = healing
             ),
@@ -495,7 +495,7 @@ void main() {
           type: 'enemy',
           effects: [
             EffectModel(
-              type: EffectType.damage,
+              type: EffectType.attack,
               target: EffectTarget.activePlayer,
               value: 9999,
             ),

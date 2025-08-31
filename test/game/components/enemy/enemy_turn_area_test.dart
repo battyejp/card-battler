@@ -15,7 +15,7 @@ List<CardModel> _generateTestCards(int count) {
     isFaceUp: false,
     effects: [
       EffectModel(
-        type: EffectType.damage,
+        type: EffectType.attack,
         target: EffectTarget.activePlayer,
         value: 10 + index,
       ),
@@ -225,7 +225,7 @@ void main() {
           isFaceUp: false,
           effects: [
             EffectModel(
-              type: EffectType.damage,
+              type: EffectType.attack,
               target: EffectTarget.activePlayer,
               value: 25,
             ),
