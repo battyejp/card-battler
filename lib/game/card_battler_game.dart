@@ -81,6 +81,9 @@ class CardBattlerGame extends FlameGame {
     _sceneManager = SceneManager();
     add(_sceneManager);
     
+    // Set the scene manager size to match the game size
+    _sceneManager.size = size;
+    
     _loadGameComponents();
   }
 

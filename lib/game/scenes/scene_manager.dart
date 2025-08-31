@@ -9,7 +9,7 @@ enum GameSceneType {
 
 /// Simple scene manager for handling transitions between game scenes
 /// This replaces RouterComponent functionality for Flame 1.30.1
-class SceneManager extends Component {
+class SceneManager extends PositionComponent {
   GameSceneType _currentScene = GameSceneType.main;
   Component? _currentSceneComponent;
   
@@ -37,13 +37,9 @@ class SceneManager extends Component {
     _currentScene = sceneType;
     _currentSceneComponent = sceneComponent;
     
-    // Set the scene size to match the game size (from ancestor game)
-    Component? gameAncestor = parent;
-    while (gameAncestor != null && gameAncestor.size.isZero()) {
-      gameAncestor = gameAncestor.parent;
-    }
-    if (gameAncestor?.size != null && !gameAncestor!.size.isZero()) {
-      sceneComponent.size = gameAncestor.size;
+    // Set the scene size to match this manager's size if we have a size
+    if (sceneComponent is PositionComponent && !size.isZero()) {
+      sceneComponent.size = size;
     }
 
     // Add the new scene

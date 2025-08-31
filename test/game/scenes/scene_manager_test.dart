@@ -151,7 +151,7 @@ void main() {
         sceneManager.size = Vector2(800, 600); // Set scene manager size
         await game.ensureAdd(sceneManager);
         
-        final testScene = Component();
+        final testScene = PositionComponent();
         await sceneManager.transitionToScene(GameSceneType.enemyTurn, testScene);
         
         expect(testScene.size, equals(Vector2(800, 600)));

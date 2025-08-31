@@ -10,7 +10,7 @@ import 'package:flutter/material.dart' show Colors, VoidCallback;
 
 /// Dedicated scene for Enemy Turn phase
 /// Replaces the overlay-based EnemyTurnArea with a proper scene
-class EnemyTurnScene extends Component {
+class EnemyTurnScene extends PositionComponent {
   late RectangleComponent _playArea;
   late final CardDeck _deck;
   late final CardPile _playedCards;
