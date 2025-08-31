@@ -24,7 +24,6 @@ void main() {
 
     setUp(() {
       testInfoModel = InfoModel(
-        health: ValueImageLabelModel(value: 100, label: 'Health'),
         attack: ValueImageLabelModel(value: 50, label: 'Attack'),
         credits: ValueImageLabelModel(value: 25, label: 'Credits'),
         healthModel: HealthModel(maxHealth: 100),
@@ -62,7 +61,7 @@ void main() {
 
         expect(playerModel.infoModel, isA<InfoModel>());
         expect(playerModel.infoModel, equals(testInfoModel));
-        expect(playerModel.infoModel.health.display, equals('Health: 100'));
+        expect(playerModel.infoModel.healthModel.healthDisplay, equals('100/100'));
         expect(playerModel.infoModel.attack.display, equals('Attack: 50'));
         expect(playerModel.infoModel.credits.display, equals('Credits: 25'));
       });

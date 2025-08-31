@@ -7,45 +7,39 @@ void main() {
   group('InfoModel', () {
     group('constructor and initialization', () {
       test('creates with required parameters', () {
-        final health = ValueImageLabelModel(value: 100, label: 'Health');
         final attack = ValueImageLabelModel(value: 25, label: 'Attack');
         final credits = ValueImageLabelModel(value: 50, label: 'Credits');
         final healthModel = HealthModel(maxHealth: 100);
 
         final infoModel = InfoModel(
-          health: health,
           attack: attack,
           credits: credits,
           name: 'TestPlayer',
           healthModel: healthModel,
         );
 
-        expect(infoModel.health, equals(health));
+        expect(infoModel.healthModel, equals(healthModel));
         expect(infoModel.attack, equals(attack));
         expect(infoModel.credits, equals(credits));
       });
 
       test('creates with different value combinations', () {
         final infoModel = InfoModel(
-          health: ValueImageLabelModel(value: 0, label: 'HP'),
           attack: ValueImageLabelModel(value: 999, label: 'ATK'),
           credits: ValueImageLabelModel(value: -10, label: 'Gold'),
           name: 'TestPlayer',
           healthModel: HealthModel(maxHealth: 100),
         );
 
-        expect(infoModel.health.display, equals('HP: 0'));
         expect(infoModel.attack.display, equals('ATK: 999'));
         expect(infoModel.credits.display, equals('Gold: -10'));
       });
 
       test('stores references to original models', () {
-        final health = ValueImageLabelModel(value: 50, label: 'Health');
         final attack = ValueImageLabelModel(value: 10, label: 'Attack');
         final credits = ValueImageLabelModel(value: 75, label: 'Credits');
         
         final infoModel = InfoModel(
-          health: health,
           attack: attack,
           credits: credits,
           name: 'TestPlayer',
@@ -53,37 +47,35 @@ void main() {
         );
 
         // Modify original models
-        health.changeValue(25);
+        infoModel.healthModel.changeHealth(-25);
         attack.changeValue(5);
         credits.changeValue(-25);
 
         // InfoModel should reflect changes since it holds references
-        expect(infoModel.health.display, equals('Health: 75'));
+        expect(infoModel.healthModel.healthDisplay, equals('75/100'));
         expect(infoModel.attack.display, equals('Attack: 15'));
         expect(infoModel.credits.display, equals('Credits: 50'));
       });
     });
 
     group('property access', () {
-      test('health property returns correct ValueImageLabelModel', () {
-        final health = ValueImageLabelModel(value: 100, label: 'Health');
+      test('healthModel property returns correct HealthModel', () {
+        final healthModel = HealthModel(maxHealth: 100);
         final infoModel = InfoModel(
-          health: health,
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
           name: 'TestPlayer',
-          healthModel: HealthModel(maxHealth: 100),
+          healthModel: healthModel,
         );
 
-        expect(infoModel.health, isA<ValueImageLabelModel>());
-        expect(infoModel.health, equals(health));
-        expect(infoModel.health.display, equals('Health: 100'));
+        expect(infoModel.healthModel, isA<HealthModel>());
+        expect(infoModel.healthModel, equals(healthModel));
+        expect(infoModel.healthModel.healthDisplay, equals('100/100'));
       });
 
       test('attack property returns correct ValueImageLabelModel', () {
         final attack = ValueImageLabelModel(value: 25, label: 'Attack Power');
         final infoModel = InfoModel(
-          health: ValueImageLabelModel(value: 0, label: 'Health'),
           attack: attack,
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
           name: 'TestPlayer',
@@ -98,7 +90,6 @@ void main() {
       test('credits property returns correct ValueImageLabelModel', () {
         final credits = ValueImageLabelModel(value: 150, label: 'Gold Coins');
         final infoModel = InfoModel(
-          health: ValueImageLabelModel(value: 0, label: 'Health'),
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: credits,
           name: 'TestPlayer',
@@ -114,7 +105,6 @@ void main() {
     group('model interactions', () {
       test('models can be modified independently', () {
         final infoModel = InfoModel(
-          health: ValueImageLabelModel(value: 100, label: 'HP'),
           attack: ValueImageLabelModel(value: 20, label: 'ATK'),
           credits: ValueImageLabelModel(value: 50, label: 'Gold'),
           name: 'TestPlayer',
@@ -122,18 +112,17 @@ void main() {
         );
 
         // Modify each model independently
-        infoModel.health.changeValue(-30);
+        infoModel.healthModel.changeHealth(-30);
         infoModel.attack.changeValue(10);
         infoModel.credits.changeValue(25);
 
-        expect(infoModel.health.display, equals('HP: 70'));
+        expect(infoModel.healthModel.healthDisplay, equals('70/100'));
         expect(infoModel.attack.display, equals('ATK: 30'));
         expect(infoModel.credits.display, equals('Gold: 75'));
       });
 
       test('reactive capabilities are preserved', () async {
         final infoModel = InfoModel(
-          health: ValueImageLabelModel(value: 100, label: 'Health'),
           attack: ValueImageLabelModel(value: 20, label: 'Attack'),
           credits: ValueImageLabelModel(value: 50, label: 'Credits'),
           name: 'TestPlayer',
@@ -141,27 +130,26 @@ void main() {
         );
 
         // Test reactive streams are available
-        expect(infoModel.health.changes, isA<Stream<ValueImageLabelModel>>());
         expect(infoModel.attack.changes, isA<Stream<ValueImageLabelModel>>());
         expect(infoModel.credits.changes, isA<Stream<ValueImageLabelModel>>());
+        expect(infoModel.healthModel.changes, isA<Stream<HealthModel>>());
 
         // Test notifications work
-        final healthChanges = <ValueImageLabelModel>[];
-        final subscription = infoModel.health.changes.listen(healthChanges.add);
+        final attackChanges = <ValueImageLabelModel>[];
+        final subscription = infoModel.attack.changes.listen(attackChanges.add);
 
-        infoModel.health.notifyChange();
+        infoModel.attack.notifyChange();
         await Future.delayed(Duration.zero);
 
-        expect(healthChanges.length, equals(1));
-        expect(healthChanges.first, equals(infoModel.health));
+        expect(attackChanges.length, equals(1));
+        expect(attackChanges.first, equals(infoModel.attack));
 
         await subscription.cancel();
-        infoModel.health.dispose();
+        infoModel.attack.dispose();
       });
 
       test('models maintain their individual state', () {
         final infoModel1 = InfoModel(
-          health: ValueImageLabelModel(value: 100, label: 'Health'),
           attack: ValueImageLabelModel(value: 20, label: 'Attack'),
           credits: ValueImageLabelModel(value: 50, label: 'Credits'),
           name: 'TestPlayer1',
@@ -169,21 +157,20 @@ void main() {
         );
 
         final infoModel2 = InfoModel(
-          health: ValueImageLabelModel(value: 80, label: 'Health'),
           attack: ValueImageLabelModel(value: 15, label: 'Attack'),
           credits: ValueImageLabelModel(value: 30, label: 'Credits'),
           name: 'TestPlayer2',
-          healthModel: HealthModel(maxHealth: 100),
+          healthModel: HealthModel(maxHealth: 80),
         );
 
         // Modify first model
-        infoModel1.health.changeValue(-20);
+        infoModel1.healthModel.changeHealth(-20);
         infoModel1.attack.changeValue(5);
 
         // Second model should remain unchanged
-        expect(infoModel1.health.display, equals('Health: 80'));
+        expect(infoModel1.healthModel.healthDisplay, equals('80/100'));
         expect(infoModel1.attack.display, equals('Attack: 25'));
-        expect(infoModel2.health.display, equals('Health: 80'));
+        expect(infoModel2.healthModel.healthDisplay, equals('80/80'));
         expect(infoModel2.attack.display, equals('Attack: 15'));
       });
     });
@@ -191,60 +178,56 @@ void main() {
     group('edge cases', () {
       test('handles extreme values', () {
         final infoModel = InfoModel(
-          health: ValueImageLabelModel(value: -999999, label: 'Health'),
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 999999999, label: 'Credits'),
           name: 'TestPlayer',
           healthModel: HealthModel(maxHealth: 100),
         );
 
-        expect(infoModel.health.display, equals('Health: -999999'));
         expect(infoModel.attack.display, equals('Attack: 0'));
         expect(infoModel.credits.display, equals('Credits: 999999999'));
+        expect(infoModel.healthModel.healthDisplay, equals('100/100'));
       });
 
       test('handles empty and special character labels', () {
         final infoModel = InfoModel(
-          health: ValueImageLabelModel(value: 100, label: ''),
           attack: ValueImageLabelModel(value: 25, label: 'ATK/DEF'),
           credits: ValueImageLabelModel(value: 50, label: '💰'),
           name: 'TestPlayer',
           healthModel: HealthModel(maxHealth: 100),
         );
 
-        expect(infoModel.health.display, equals(': 100'));
         expect(infoModel.attack.display, equals('ATK/DEF: 25'));
         expect(infoModel.credits.display, equals('💰: 50'));
+        expect(infoModel.healthModel.healthDisplay, equals('100/100'));
       });
 
       test('models can be reused in different InfoModel instances', () {
-        final sharedHealth = ValueImageLabelModel(value: 100, label: 'Shared Health');
+        final sharedAttack = ValueImageLabelModel(value: 100, label: 'Shared Attack');
         
         final infoModel1 = InfoModel(
-          health: sharedHealth,
-          attack: ValueImageLabelModel(value: 20, label: 'Attack1'),
+          attack: sharedAttack,
           credits: ValueImageLabelModel(value: 50, label: 'Credits1'),
           name: 'TestPlayer1',
           healthModel: HealthModel(maxHealth: 100),
         );
 
         final infoModel2 = InfoModel(
-          health: sharedHealth,
-          attack: ValueImageLabelModel(value: 30, label: 'Attack2'),
+          attack: sharedAttack,
           credits: ValueImageLabelModel(value: 75, label: 'Credits2'),
           name: 'TestPlayer2',
           healthModel: HealthModel(maxHealth: 100),
         );
 
-        // Modifying shared health affects both
-        sharedHealth.changeValue(-25);
+        // Modifying shared attack affects both
+        sharedAttack.changeValue(-25);
         
-        expect(infoModel1.health.display, equals('Shared Health: 75'));
-        expect(infoModel2.health.display, equals('Shared Health: 75'));
+        expect(infoModel1.attack.display, equals('Shared Attack: 75'));
+        expect(infoModel2.attack.display, equals('Shared Attack: 75'));
         
         // But other properties remain independent
-        expect(infoModel1.attack.display, equals('Attack1: 20'));
-        expect(infoModel2.attack.display, equals('Attack2: 30'));
+        expect(infoModel1.credits.display, equals('Credits1: 50'));
+        expect(infoModel2.credits.display, equals('Credits2: 75'));
       });
     });
   });
