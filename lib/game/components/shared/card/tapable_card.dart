@@ -4,7 +4,7 @@ import 'package:flame/events.dart';
 
 class TapableCard extends Card with TapCallbacks {
   final void Function()? onTap;
-    CardInteractionController? _interaction;
+  CardInteractionController? _interaction;
 
   TapableCard(super.cardModel, {this.onTap});
 

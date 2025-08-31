@@ -14,8 +14,9 @@ class CardInteractionController {
 
   bool _isSelected = false;
   bool _isAnimating = false;
-  Vector2 originalPos = Vector2.zero();
-  double animationSpeed = 0.5;
+  Vector2 _originalPos = Vector2.zero();
+  final double _animationSpeed = 0.5;
+  final double _scaleFactor = 2.5;
 
   bool get isSelected => _isSelected;
   bool get isAnimating => _isAnimating;
@@ -67,18 +68,18 @@ class CardInteractionController {
       targetPosition = screenCenter;
     }
 
-    targetPosition.x = targetPosition.x - gameSize.x / 2 - card.size.x / 2 * 2.5;
-    targetPosition.y = targetPosition.y - gameSize.y / 2 - card.size.y / 2 * 2.5;
-    originalPos = card.position.clone();
+    targetPosition.x = targetPosition.x - gameSize.x / 2 - card.size.x / 2 * _scaleFactor;
+    targetPosition.y = targetPosition.y - gameSize.y / 2 - card.size.y / 2 * _scaleFactor;
+    _originalPos = card.position.clone();
 
     final moveEffect = MoveEffect.to(
       targetPosition,
-      EffectController(duration: animationSpeed),
+      EffectController(duration: _animationSpeed),
     );
   
     final scaleEffect = ScaleEffect.to(
       Vector2.all(2.5),
-      EffectController(duration: animationSpeed),
+      EffectController(duration: _animationSpeed),
     );
 
     moveEffect.onComplete = () => _isAnimating = false;
@@ -95,13 +96,13 @@ class CardInteractionController {
     _selectedController = null;
 
     final moveEffect = MoveEffect.to(
-      originalPos,
-      EffectController(duration: animationSpeed),
+      _originalPos,
+      EffectController(duration: _animationSpeed),
     );
 
     final scaleEffect = ScaleEffect.to(
       Vector2.all(1.0),
-      EffectController(duration: animationSpeed),
+      EffectController(duration: _animationSpeed),
     );
 
     moveEffect.onComplete = () => _isAnimating = false;
