@@ -1,10 +1,13 @@
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/components/shared/card.dart';
 import 'package:card_battler/game/components/shared/reactive_position_component.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flame/components.dart';
 
 class CardHand extends ReactivePositionComponent<CardHandModel> {
-  CardHand(super.model);
+  final void Function(CardModel)? onCardTapped;
+  
+  CardHand(super.model, {this.onCardTapped});
 
   @override
   bool get debugMode => true;
@@ -25,7 +28,7 @@ class CardHand extends ReactivePositionComponent<CardHandModel> {
     for (var i = 0; i < model.cards.length; i++) {
       final cardPosition = Vector2(startX + (i * (cardWidth + spacing)), (size.y - cardHeight) / 2);
 
-      final card = Card(model.cards[i])
+      final card = Card(model.cards[i], onTap: onCardTapped)
         ..size = Vector2(cardWidth, cardHeight)
         ..position = cardPosition;
 

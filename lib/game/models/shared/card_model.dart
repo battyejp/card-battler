@@ -83,6 +83,54 @@ class CardModel {
   String get type => _type;
   List<EffectModel> get effects => List.unmodifiable(_effects);
 
+  /// Generate a description text from the card's effects
+  String get description {
+    if (_effects.isEmpty) {
+      return "No special effects.";
+    }
+    
+    final descriptions = <String>[];
+    for (final effect in _effects) {
+      String targetStr = _formatTarget(effect.target);
+      String effectStr = _formatEffect(effect.type, effect.value);
+      descriptions.add("$effectStr $targetStr");
+    }
+    
+    return descriptions.join(", ");
+  }
+
+  String _formatTarget(EffectTarget target) {
+    switch (target) {
+      case EffectTarget.activePlayer:
+        return "active player";
+      case EffectTarget.otherPlayers:
+        return "other players";
+      case EffectTarget.allPlayers:
+        return "all players";
+      case EffectTarget.base:
+        return "base";
+      case EffectTarget.chosenPlayer:
+        return "chosen player";
+      case EffectTarget.self:
+        return "self";
+    }
+  }
+
+  String _formatEffect(EffectType type, int value) {
+    switch (type) {
+      case EffectType.attack:
+        return "Attack ${value > 0 ? '+$value' : value}";
+      case EffectType.heal:
+        return "Heal ${value > 0 ? '+$value' : value}";
+      case EffectType.credits:
+        return "Credits ${value > 0 ? '+$value' : value}";
+      case EffectType.drawCard:
+        return "Draw $value ${value == 1 ? 'card' : 'cards'}";
+      case EffectType.damageLimit:
+        return "Damage limit $value";
+    }
+  }
+
   factory CardModel.fromJson(Map<String, dynamic> json) {
     final effectsJson = json['effects'] as List<dynamic>?;
     final effects = effectsJson

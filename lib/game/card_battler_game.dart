@@ -1,5 +1,6 @@
 import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/enemy/enemy_turn_area.dart';
+import 'package:card_battler/game/components/shared/card_focus_overlay.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
@@ -84,6 +85,33 @@ class CardBattlerGame extends FlameGame {
     _enemyTurnArea!.startFadeOut();
   }
 
+  void _onHandCardTapped(CardModel card) {
+    _showCardFocus(card, 'Play', () {
+      // Handle playing the card
+      // TODO: Implement card play logic
+    });
+  }
+
+  void _onShopCardTapped(CardModel card) {
+    _showCardFocus(card, 'Buy', () {
+      // Handle buying the card
+      // TODO: Implement card purchase logic
+    });
+  }
+
+  void _showCardFocus(CardModel card, String actionLabel, void Function() onAction) {
+    final overlay = CardFocusOverlay(
+      cardModel: card,
+      actionLabel: actionLabel,
+      onActionPressed: onAction,
+      onComplete: () {
+        // Overlay dismissed
+      },
+    )..size = size;
+
+    camera.viewport.add(overlay);
+  }
+
   void _showEnemiesTurn() {
     // Show announcement with current enemy state
     _enemyTurnArea = EnemyTurnArea(
@@ -112,6 +140,7 @@ class CardBattlerGame extends FlameGame {
     final player = Player(
       playerModel: _gameState!.player,
       onCardsDrawn: _onPlayerCardsDrawn,
+      onHandCardTapped: _onHandCardTapped,
     )
       ..size = Vector2(availableWidth, bottomLayoutHeight)
       ..position = Vector2(
@@ -131,7 +160,7 @@ class CardBattlerGame extends FlameGame {
 
     // Create shop component with model from game state
     final shopWidth = availableWidth * 0.5 / 2;
-    final shop = Shop(_gameState!.shop)
+    final shop = Shop(_gameState!.shop, onCardTapped: _onShopCardTapped)
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
 

@@ -1,16 +1,24 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 
-class Card extends PositionComponent {
+class Card extends PositionComponent with TapCallbacks {
   final CardModel cardModel;
+  final void Function(CardModel)? onTap;
   @protected
   late TextComponent nameTextComponent;
 
-  Card(this.cardModel);
+  Card(this.cardModel, {this.onTap});
 
   @override
   bool get debugMode => true;
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    super.onTapUp(event);
+    onTap?.call(cardModel);
+  }
 
   @override
   void onLoad() {
