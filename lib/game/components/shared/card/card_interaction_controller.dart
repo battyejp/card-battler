@@ -15,6 +15,7 @@ class CardInteractionController {
   bool _isSelected = false;
   bool _isAnimating = false;
   Vector2 originalPos = Vector2.zero();
+  double animationSpeed = 0.5;
 
   bool get isSelected => _isSelected;
   bool get isAnimating => _isAnimating;
@@ -70,12 +71,12 @@ class CardInteractionController {
 
     final moveEffect = MoveEffect.to(
       targetPosition,
-      EffectController(duration: 1),
+      EffectController(duration: animationSpeed),
     );
   
     final scaleEffect = ScaleEffect.to(
       Vector2.all(2.5),
-      EffectController(duration: 1),
+      EffectController(duration: animationSpeed),
     );
 
     moveEffect.onComplete = () => _isAnimating = false;
@@ -93,12 +94,12 @@ class CardInteractionController {
 
     final moveEffect = MoveEffect.to(
       originalPos,
-      EffectController(duration: 1),
+      EffectController(duration: animationSpeed),
     );
 
     final scaleEffect = ScaleEffect.to(
       Vector2.all(1.0),
-      EffectController(duration: 1),
+      EffectController(duration: animationSpeed),
     );
 
     moveEffect.onComplete = () => _isAnimating = false;

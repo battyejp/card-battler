@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 
+//TODO move this to tapable card also hide button
 /// A simple close (X) button for the card, using Flame's TextComponent for clarity
 class CloseButtonComponent extends PositionComponent with TapCallbacks {
   final VoidCallback onPressed;
@@ -36,11 +37,10 @@ class CloseButtonComponent extends PositionComponent with TapCallbacks {
   }
 }
 
-class Card extends PositionComponent with TapCallbacks {
+class Card extends PositionComponent {
   final CardModel cardModel;
   @protected
   late TextComponent nameTextComponent;
-  CardInteractionController? _interaction;
   CloseButtonComponent? _closeButton;
 
   Card(this.cardModel);
@@ -51,7 +51,6 @@ class Card extends PositionComponent with TapCallbacks {
   @override
   void onLoad() {
     super.onLoad();
-    _interaction = CardInteractionController(this);
     addTextComponent();
     _closeButton = CloseButtonComponent(
       onPressed: () => CardInteractionController.deselectAny(),
@@ -109,15 +108,24 @@ class Card extends PositionComponent with TapCallbacks {
     canvas.drawRect(size.toRect(), paint);
   }
 
-  @override
-  bool onTapUp(TapUpEvent event) => _interaction?.onTapUp(event) ?? false;
+  // @override
+  // bool onTapUp(TapUpEvent event) => _interaction?.onTapUp(event) ?? false;
 
-  // Called by CardInteractionController when selection changes
-  void updateCloseButtonVisibility(bool selected) {
-    if (selected) {
-      _closeButton?.show();
-    } else {
-      _closeButton?.hide();
-    }
-  }
+  // @override
+  // bool onTapUp(TapUpEvent event){
+  //   if (cardModel.isFaceUp) {
+  //     return _interaction?.onTapUp(event) ?? false;
+  //   }
+  //   return false;
+  // }
+
+  // // Called by CardInteractionController when selection changes
+  // void updateCloseButtonVisibility(bool selected) {
+  //   if (selected) {
+  //     _closeButton?.show();
+  //   } else {
+  //     _closeButton?.hide();
+  //   }
+  // }
+
 }

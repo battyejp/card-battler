@@ -6,9 +6,10 @@ class CardDeck extends CardPile with TapCallbacks {
 
   CardDeck(super.model, {this.onTap});
 
+  //TODO not be able to tap is a card is selected
   @override
-  void onTapUp(TapUpEvent event) {
-    super.onTapUp(event);
+  bool onTapUp(TapUpEvent event) {
     onTap?.call();
+    return true;
   }
 }
