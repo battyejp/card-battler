@@ -58,10 +58,14 @@ class EnemyTurnAreaModel {
               break;
             case EffectTarget.base:
             case EffectTarget.chosenPlayer:
+            case EffectTarget.self:
               break;
           }
           break;
         case EffectType.drawCard:
+        case EffectType.heal:
+        case EffectType.credits:
+        case EffectType.damageLimit:
           break;
       }
     }

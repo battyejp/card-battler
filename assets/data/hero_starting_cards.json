@@ -6,7 +6,7 @@
   {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]},
   {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]},
   {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]},
-  {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]},
-  {"name": "Credits", "type": "Hero", "effectOperator": "Or", "effects": [{"type": "Attack", "value": 1, "target": "Self"}, {"type": "Heal", "value": 2, "target": "Self"}]},
-  {"name": "Credits", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}]}
+  {"name": "Attack/Heal", "type": "Hero", "effectOperator": "Or", "effects": [{"type": "Attack", "value": 1, "target": "Self"}, {"type": "Heal", "value": 2, "target": "Self"}]},
+  {"name": "Attack", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Attack", "value": 1, "target": "Self"}]},
+  {"name": "Shield", "type": "Hero", "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "Self"}, {"type": "DamageLimit", "value": 1, "target": "Self"}]}
 ]

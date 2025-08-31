@@ -3,7 +3,14 @@ import 'package:flutter/services.dart' show rootBundle;
 
 enum EffectType {
   attack,
-  drawCard;
+  heal,
+  credits,
+  drawCard, //discard
+  damageLimit;
+  // placeNewCardOnDeck
+  // random skill 
+  // Search pile
+  // BlockEnemy
 
   static EffectType fromString(String value) {
     return EffectType.values.firstWhere(
@@ -18,7 +25,8 @@ enum EffectTarget {
   otherPlayers,
   allPlayers,
   base,
-  chosenPlayer;
+  chosenPlayer,
+  self;
 
   static EffectTarget fromString(String value) {
     return EffectTarget.values.firstWhere(
