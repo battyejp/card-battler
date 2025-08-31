@@ -21,6 +21,7 @@ class Info extends PositionComponent {
 
     var comp1 = PositionComponent()
       ..size = Vector2(size.x / 3, size.y)
+      ..position = Vector2(0, 0)
       ..debugColor = const Color(0xFF00FF00);
 
     var comp2 = PositionComponent()

@@ -1,6 +1,7 @@
 import 'package:card_battler/game/components/shared/card_pile.dart';
 import 'package:card_battler/game/components/shared/card_deck.dart';
 import 'package:card_battler/game/components/shared/card.dart';
+import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/player/card_hand.dart';
@@ -29,6 +30,7 @@ void main() {
         health: ValueImageLabelModel(value: 100, label: 'Health'),
         attack: ValueImageLabelModel(value: 50, label: 'Attack'),
         credits: ValueImageLabelModel(value: 25, label: 'Credits'),
+        healthModel: HealthModel(maxHealth: 100),
         name: 'TestPlayer',
       );
       final handModel = CardHandModel();
