@@ -6,6 +6,7 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/scenes/enemy_turn_scene.dart';
 import 'package:card_battler/game/scenes/scene_manager.dart';
+import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'components/player/player.dart';
 

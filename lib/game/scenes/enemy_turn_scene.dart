@@ -6,7 +6,7 @@ import 'package:card_battler/game/components/team/player_stats.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
-import 'package:flutter/material.dart' show Colors;
+import 'package:flutter/material.dart' show Colors, VoidCallback;
 
 /// Dedicated scene for Enemy Turn phase
 /// Replaces the overlay-based EnemyTurnArea with a proper scene

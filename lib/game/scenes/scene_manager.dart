@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart' show VoidCallback;
 
 /// Enumeration of available game scenes
 enum GameSceneType {
@@ -36,9 +37,13 @@ class SceneManager extends Component {
     _currentScene = sceneType;
     _currentSceneComponent = sceneComponent;
     
-    // Set the scene size to match the parent game size
-    if (parent?.size != null) {
-      sceneComponent.size = parent!.size;
+    // Set the scene size to match the game size (from ancestor game)
+    Component? gameAncestor = parent;
+    while (gameAncestor != null && gameAncestor.size.isZero()) {
+      gameAncestor = gameAncestor.parent;
+    }
+    if (gameAncestor?.size != null && !gameAncestor!.size.isZero()) {
+      sceneComponent.size = gameAncestor.size;
     }
 
     // Add the new scene
