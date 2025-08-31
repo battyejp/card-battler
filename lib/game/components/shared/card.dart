@@ -1,13 +1,16 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 
-class Card extends PositionComponent {
+class Card extends PositionComponent with TapCallbacks {
   final CardModel cardModel;
+  final VoidCallback? onTap;
+  
   @protected
   late TextComponent nameTextComponent;
 
-  Card(this.cardModel);
+  Card(this.cardModel, {this.onTap});
 
   @override
   bool get debugMode => true;
@@ -64,5 +67,11 @@ class Card extends PositionComponent {
     super.render(canvas);
     final paint = Paint()..color = const Color.fromARGB(77, 21, 6, 193);
     canvas.drawRect(size.toRect(), paint);
+  }
+  
+  @override
+  void onTapUp(TapUpEvent event) {
+    super.onTapUp(event);
+    onTap?.call();
   }
 }

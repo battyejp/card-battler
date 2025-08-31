@@ -2,6 +2,7 @@ import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/enemy/enemy_turn_area.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
+import 'package:card_battler/game/components/shared/card_focus_overlay.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
@@ -12,6 +13,7 @@ class CardBattlerGame extends FlameGame {
   GameStateModel? _gameState;
   Vector2? _testSize;
   EnemyTurnArea? _enemyTurnArea;
+  CardFocusOverlay? _currentFocusOverlay;
 
   // Default constructor with new game state
   CardBattlerGame();
@@ -83,6 +85,28 @@ class CardBattlerGame extends FlameGame {
   void _onEnemyTurnFinished() {
     _enemyTurnArea!.startFadeOut();
   }
+  
+  /// Shows a focused, enlarged view of a card
+  void focusCard(CardModel cardModel) {
+    // Dismiss any existing focused card first
+    _dismissFocusedCard();
+    
+    // Create and show the new focused card overlay
+    _currentFocusOverlay = CardFocusOverlay(
+      cardModel: cardModel,
+      onDismiss: _dismissFocusedCard,
+    );
+    
+    camera.viewport.add(_currentFocusOverlay!);
+  }
+  
+  /// Dismisses the currently focused card if any
+  void _dismissFocusedCard() {
+    if (_currentFocusOverlay != null) {
+      _currentFocusOverlay!.removeFromParent();
+      _currentFocusOverlay = null;
+    }
+  }
 
   void _showEnemiesTurn() {
     // Show announcement with current enemy state
@@ -112,6 +136,7 @@ class CardBattlerGame extends FlameGame {
     final player = Player(
       playerModel: _gameState!.player,
       onCardsDrawn: _onPlayerCardsDrawn,
+      onCardTapped: focusCard,
     )
       ..size = Vector2(availableWidth, bottomLayoutHeight)
       ..position = Vector2(
@@ -131,7 +156,10 @@ class CardBattlerGame extends FlameGame {
 
     // Create shop component with model from game state
     final shopWidth = availableWidth * 0.5 / 2;
-    final shop = Shop(_gameState!.shop)
+    final shop = Shop(
+      _gameState!.shop,
+      onCardTapped: focusCard,
+    )
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
 

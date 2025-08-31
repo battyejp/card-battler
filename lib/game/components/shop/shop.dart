@@ -1,11 +1,13 @@
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:flame/components.dart';
 import 'package:card_battler/game/components/shop/shop_card.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
 
 class Shop extends PositionComponent {
   final ShopModel model;
+  final void Function(CardModel)? onCardTapped;
 
-  Shop(this.model);
+  Shop(this.model, {this.onCardTapped});
 
   static const double cardHeightFactor = 0.38;
   static const double hSpacingFactor = 0.2;
@@ -32,7 +34,10 @@ class Shop extends PositionComponent {
         // Check if we have enough cards to display
         if (cardIndex < model.selectableCards.length) {
           final cardModel = model.selectableCards[cardIndex];
-          final card = ShopCard(cardModel)
+          final card = ShopCard(
+            cardModel,
+            onTap: () => onCardTapped?.call(cardModel),
+          )
             ..size = Vector2(cardWidth, cardHeight)
             ..position = Vector2(x, y);
 

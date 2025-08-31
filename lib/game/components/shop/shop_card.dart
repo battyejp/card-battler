@@ -7,7 +7,7 @@ class ShopCard extends shared_card.Card {
   final ShopCardModel shopCardModel;
   late TextComponent _costTextComponent;
 
-  ShopCard(this.shopCardModel) : super(shopCardModel);
+  ShopCard(this.shopCardModel, {super.onTap}) : super(shopCardModel);
 
   @override
   void addTextComponent() {
