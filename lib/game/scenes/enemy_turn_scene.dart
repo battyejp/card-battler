@@ -6,7 +6,6 @@ import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-//TODO needs unit tests
 class EnemyTurnScene extends Component with HasGameReference<CardBattlerGame>{
   final EnemyTurnAreaModel _model;
   final Vector2 _size;

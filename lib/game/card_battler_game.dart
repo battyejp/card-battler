@@ -78,13 +78,13 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
     }
 
     _gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-    _gameState!.player.onCardsDrawn = _onPlayerCardsDrawn;
+    _gameState!.playerTurn.playerModel.onCardsDrawn = _onPlayerCardsDrawn;
     _gameState!.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished;
   
     world.add(
       router = RouterComponent(
         routes: {
-          'playerTurn': Route(() => PlayerTurnScene(gameState: _gameState!, size: size)),
+          'playerTurn': Route(() => PlayerTurnScene(model: _gameState!.playerTurn, size: size)),
           'enemyTurn': Route(() => EnemyTurnScene(model: _gameState!.enemyTurnArea, size: size)),
         },
         initialRoute: 'playerTurn',

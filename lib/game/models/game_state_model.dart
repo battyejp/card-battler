@@ -1,6 +1,7 @@
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
@@ -20,18 +21,12 @@ enum GamePhase { setup, playerTurn, enemyTurn, shopping, battleEnd, gameOver }
 /// Centralized model that contains all game state
 /// This serves as the single source of truth for the entire game
 class GameStateModel {
-  final PlayerModel player;
-  final EnemiesModel enemies;
-  final ShopModel shop;
-  final TeamModel team;
   final EnemyTurnAreaModel enemyTurnArea;
+  final PlayerTurnModel playerTurn;
 
   GameStateModel({
-    required this.player,
-    required this.enemies,
-    required this.shop,
-    required this.team,
     required this.enemyTurnArea,
+    required this.playerTurn,
   });
 
   /// Creates a new game with default starting values
@@ -96,29 +91,33 @@ class GameStateModel {
       );
     }).toList();
 
+
+
     return GameStateModel(
-      player: players.first, // For single-player, use the first player
+      playerTurn: PlayerTurnModel(
+        playerModel: players.first,
+        teamModel: TeamModel(
+          bases: BasesModel(
+            bases: [
+              BaseModel(name: 'Base 1', maxHealth: 5),
+              BaseModel(name: 'Base 2', maxHealth: 5),
+              BaseModel(name: 'Base 3', maxHealth: 5),
+            ],
+          ),
+          players: playerStats,
+        ),
+        enemiesModel: EnemiesModel(
+          totalEnemies: 4,
+          maxNumberOfEnemiesInPlay: 3,
+          maxEnemyHealth: 5,
+          enemyCards: enemyCards,
+        ),
+        shopModel: ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: shopCards),
+      ),
       enemyTurnArea: EnemyTurnAreaModel(
         enemyCards: CardPileModel(cards: enemyCards),
         playerStats: playerStats,
-      ),
-      enemies: EnemiesModel(
-        totalEnemies: 4,
-        maxNumberOfEnemiesInPlay: 3,
-        maxEnemyHealth: 5,
-        enemyCards: enemyCards,
-      ),
-      shop: ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: shopCards),
-      team: TeamModel(
-        bases: BasesModel(
-          bases: [
-            BaseModel(name: 'Base 1', maxHealth: 5),
-            BaseModel(name: 'Base 2', maxHealth: 5),
-            BaseModel(name: 'Base 3', maxHealth: 5),
-          ],
-        ),
-        players: playerStats,
-      ),
+      )
     );
   }
 

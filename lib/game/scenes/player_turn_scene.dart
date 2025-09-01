@@ -3,17 +3,16 @@ import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
-import 'package:card_battler/game/models/game_state_model.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:flame/components.dart';
 
 class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
-  //TODO should this have its own model?
   //TODO needs unit tests
-  final GameStateModel _gameState;
+  final PlayerTurnModel _model;
   final Vector2 _size;
 
-  PlayerTurnScene({required GameStateModel gameState, required Vector2 size})
-      : _gameState = gameState,
+  PlayerTurnScene({required PlayerTurnModel model, required Vector2 size})
+      : _model = model,
         _size = size {
     _loadGameComponents();
   }
@@ -30,7 +29,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
 
     // Create player component with models from game state
     final player = Player(
-      playerModel: _gameState.player,
+      playerModel: _model.playerModel,
     )
       ..size = Vector2(availableWidth, bottomLayoutHeight)
       ..position = Vector2(
@@ -42,7 +41,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
 
     // Create enemies component with model from game state
     final enemiesWidth = availableWidth * 0.5;
-    final enemies = Enemies(model: _gameState.enemies)
+    final enemies = Enemies(model: _model.enemiesModel)
       ..size = Vector2(enemiesWidth, topLayoutHeight)
       ..position = Vector2((0 - enemiesWidth / 2), topPositionY);
 
@@ -50,14 +49,14 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
 
     // Create shop component with model from game state
     final shopWidth = availableWidth * 0.5 / 2;
-    final shop = Shop(_gameState.shop)
+    final shop = Shop(_model.shopModel)
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
 
     add(shop);
 
     // Create team component with model from game state
-    final team = Team(_gameState.team)
+    final team = Team(_model.teamModel)
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(0 - enemiesWidth / 2 - shopWidth, topPositionY);
 
