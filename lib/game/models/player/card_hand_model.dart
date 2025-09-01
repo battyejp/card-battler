@@ -20,6 +20,12 @@ class CardHandModel with ReactiveModel<CardHandModel> {
     notifyChange();
   }
 
+  /// Removes a specific card from the hand
+  void removeCard(CardModel card) {
+    _cards.remove(card);
+    notifyChange();
+  }
+
   /// Clears all cards from the hand
   void clearCards() {
     _cards.clear();
