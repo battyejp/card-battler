@@ -244,7 +244,6 @@ void main() {
       testWithFlameGame('deck tap with insufficient cards only allows first draw', (game) async {
         // Create a player with only 3 cards in deck to test edge case
         final infoModel = InfoModel(
-          health: ValueImageLabelModel(value: 100, label: 'Health'),
           attack: ValueImageLabelModel(value: 50, label: 'Attack'),
           credits: ValueImageLabelModel(value: 25, label: 'Credits'),
           healthModel: HealthModel(maxHealth: 100),
