@@ -64,7 +64,6 @@ PlayerModel _createTestPlayerModel({String name = 'Test Player', bool isActive =
   return PlayerModel(
     infoModel: InfoModel(
       name: name,
-      health: ValueImageLabelModel(value: 100, label: 'Health'),
       attack: ValueImageLabelModel(value: 10, label: 'Attack'),
       credits: ValueImageLabelModel(value: 5, label: 'Credits'),
       healthModel: HealthModel(maxHealth: 100),

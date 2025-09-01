@@ -35,7 +35,6 @@ class GameStateModel {
       PlayerModel(
         infoModel: InfoModel(
           name: 'Player 1',
-          health: ValueImageLabelModel(value: 10, label: 'Health'),
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
           healthModel: HealthModel(maxHealth: 10),
@@ -48,7 +47,6 @@ class GameStateModel {
       PlayerModel(
         infoModel: InfoModel(
           name: 'Player 2',
-          health: ValueImageLabelModel(value: 10, label: 'Health'),
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
           healthModel: HealthModel(maxHealth: 10),
@@ -60,7 +58,6 @@ class GameStateModel {
       PlayerModel(
         infoModel: InfoModel(
           name: 'Player 3',
-          health: ValueImageLabelModel(value: 10, label: 'Health'),
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
           healthModel: HealthModel(maxHealth: 10),
@@ -72,7 +69,6 @@ class GameStateModel {
       PlayerModel(
         infoModel: InfoModel(
           name: 'Player 4',
-          health: ValueImageLabelModel(value: 10, label: 'Health'),
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
           healthModel: HealthModel(maxHealth: 10),

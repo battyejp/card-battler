@@ -1,3 +1,4 @@
+import 'package:card_battler/game/components/shared/health.dart';
 import 'package:card_battler/game/components/shared/value_image_label.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:flame/components.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/material.dart';
 class Info extends PositionComponent {
   final InfoModel model;
 
-  late ValueImageLabel _healthLabel;
+  late Health _healthLabel;
   late ValueImageLabel _attackLabel;
   late ValueImageLabel _creditsLabel;
   
@@ -35,8 +36,9 @@ class Info extends PositionComponent {
       ..position = Vector2((size.x / 3) * 2, 0)
       ..debugColor = const Color.fromARGB(255, 15, 23, 191);
 
-    _healthLabel = ValueImageLabel(
-      model.health,
+    _healthLabel = Health(
+      model.healthModel,
+      Anchor.topLeft,
     );
 
     _attackLabel = ValueImageLabel(

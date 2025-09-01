@@ -2,6 +2,7 @@ import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/player/info.dart';
 import 'package:card_battler/game/components/shared/value_image_label.dart';
+import 'package:card_battler/game/components/shared/health.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:flame_test/flame_test.dart';
@@ -11,7 +12,6 @@ void main() {
   group('Info', () {
     InfoModel createTestInfoModel() {
       return InfoModel(
-        health: ValueImageLabelModel(value: 100, label: 'Health'),
         attack: ValueImageLabelModel(value: 50, label: 'Attack'),
         credits: ValueImageLabelModel(value: 25, label: 'Credits'),
         healthModel: HealthModel(maxHealth: 100),
@@ -62,10 +62,12 @@ void main() {
       final sections = info.children.whereType<PositionComponent>().toList();
       expect(sections.length, equals(3));
       
-      // Each section should contain a ValueImageLabel
-      for (final section in sections) {
-        expect(section.children.whereType<ValueImageLabel>().length, equals(1));
-      }
+      // First section should contain a Health component
+      expect(sections[0].children.whereType<Health>().length, equals(1));
+      
+      // Second and third sections should contain ValueImageLabel components
+      expect(sections[1].children.whereType<ValueImageLabel>().length, equals(1));
+      expect(sections[2].children.whereType<ValueImageLabel>().length, equals(1));
     });
 
     testWithFlameGame('Info sections are properly sized and positioned', (game) async {
@@ -107,17 +109,24 @@ void main() {
       await game.ensureAdd(info);
 
       final sections = info.children.whereType<PositionComponent>().toList();
-      final labels = sections.map((s) => s.children.whereType<ValueImageLabel>().first).toList();
       
-      expect(labels.length, equals(3));
+      // First section has Health component
+      final healthComponent = sections[0].children.whereType<Health>().first;
+      expect(healthComponent, isNotNull);
       
-      // Verify labels contain expected text (after components are loaded)
+      // Second and third sections have ValueImageLabel components
+      final attackLabel = sections[1].children.whereType<ValueImageLabel>().first;
+      final creditsLabel = sections[2].children.whereType<ValueImageLabel>().first;
+      
+      expect(attackLabel, isNotNull);
+      expect(creditsLabel, isNotNull);
+      
+      // Verify components are loaded
       await game.ready();
       
-      // Check that the labels have text components
-      for (final label in labels) {
-        expect(label.children.whereType<TextComponent>().length, greaterThan(0));
-      }
+      // Check that the ValueImageLabel components have text components
+      expect(attackLabel.children.whereType<TextComponent>().length, greaterThan(0));
+      expect(creditsLabel.children.whereType<TextComponent>().length, greaterThan(0));
     });
 
     testWithFlameGame('Info layout adapts to different sizes', (game) async {
