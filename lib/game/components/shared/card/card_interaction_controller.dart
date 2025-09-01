@@ -82,7 +82,10 @@ class CardInteractionController {
       EffectController(duration: _animationSpeed),
     );
 
-    moveEffect.onComplete = () => _isAnimating = false;
+    moveEffect.onComplete = () {
+      _isAnimating = false;
+      card.isButtonVisible = true;
+    };
 
     card.add(moveEffect);
     card.add(scaleEffect);
@@ -94,6 +97,7 @@ class CardInteractionController {
     _isSelected = false;
     _isAnimating = true;
     _selectedController = null;
+    card.isButtonVisible = false;
 
     final moveEffect = MoveEffect.to(
       _originalPos,

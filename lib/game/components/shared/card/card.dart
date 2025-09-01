@@ -1,56 +1,33 @@
 
+import 'package:card_battler/game/components/shared/flat_button.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-// class CloseButtonComponent extends PositionComponent with TapCallbacks {
-//   final VoidCallback onPressed;
-//   late final TextComponent _text;
-
-//   CloseButtonComponent({required this.onPressed}) : super(size: Vector2(24, 24));
-
-//   @override
-//   Future<void> onLoad() async {
-//     _text = TextComponent(
-//       text: '×',
-//       anchor: Anchor.center,
-//       position: Vector2(size.x / 2, size.y / 2),
-//       textRenderer: TextPaint(
-//         style: const TextStyle(fontSize: 24, color: Colors.white),
-//       ),
-//     );
-//     add(_text);
-//     priority = -1; // hidden by default
-//   }
-
-//   void show() => priority = 100000;
-//   void hide() => priority = -1;
-
-//   @override
-//   bool onTapUp(TapUpEvent event) {
-//     onPressed();
-//     return true;
-//   }
-// }
-
 class Card extends PositionComponent {
   final CardModel cardModel;
+  late FlatButton _button;
+
   @protected
   late TextComponent nameTextComponent;
-  // CloseButtonComponent? _closeButton;
+
+  /// The label to display on the button
+  @protected
+  String get buttonLabel => "Play";
 
   Card(this.cardModel);
+
+  bool get isButtonVisible => _button.isVisible;
+  set isButtonVisible(bool value) => _button.isVisible = value;
 
   @override
   void onLoad() {
     super.onLoad();
     addTextComponent();
-    // _closeButton = CloseButtonComponent(
-    //   onPressed: () => CardInteractionController.deselectAny(),
-    // )
-    //   ..position = Vector2(size.x - 24, 8);
-    // add(_closeButton!);
-    // _closeButton!.hide();
+    _button = addButton(buttonLabel, size.x / 2, () {
+      // Handle button press
+    });
+    _button.isVisible = false;
   }
 
   @protected
@@ -97,7 +74,20 @@ class Card extends PositionComponent {
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    final paint = Paint()..color = const Color.fromARGB(152, 22, 6, 193);
+    final paint = Paint()..color = const Color.fromARGB(255, 22, 6, 193);
     canvas.drawRect(size.toRect(), paint);
+  }
+
+  FlatButton addButton(String label, double buttonX, Function()? action) {
+    final button = FlatButton(
+      label,
+      size: Vector2(size.x, 0.1 * size.y),
+      position: Vector2(buttonX, size.y - (0.1 * size.y) / 2),
+      onReleased: () {
+        action?.call();
+      },
+    );
+    add(button);
+    return button;
   }
 }
