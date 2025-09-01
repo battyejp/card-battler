@@ -219,7 +219,7 @@ void main() {
         expect(displayedCards.length, equals(5));
       });
 
-      testWithFlameGame('multiple deck taps accumulate cards in hand', (game) async {
+      testWithFlameGame('multiple deck taps do not accumulate cards when hand has cards', (game) async {
         final player = createTestPlayer()..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
@@ -234,55 +234,94 @@ void main() {
         expect(hand.model.cards.length, equals(5));
         expect(hand.children.whereType<Card>().length, equals(5));
 
-        // Second tap
+        // Second tap should do nothing since hand has cards
         deck.onTap?.call();
         await game.ready();
-        expect(deck.model.allCards.length, equals(10));
-        expect(hand.model.cards.length, equals(10));
-        expect(hand.children.whereType<Card>().length, equals(10));
+        expect(deck.model.allCards.length, equals(15)); // No change
+        expect(hand.model.cards.length, equals(5)); // No change
+        expect(hand.children.whereType<Card>().length, equals(5)); // No change
       });
 
-      testWithFlameGame('deck tap with insufficient cards draws remaining cards', (game) async {
-        final player = createTestPlayer()..size = Vector2(600, 300);
+      testWithFlameGame('deck tap with insufficient cards only allows first draw', (game) async {
+        // Create a player with only 3 cards in deck to test edge case
+        final infoModel = InfoModel(
+          health: ValueImageLabelModel(value: 100, label: 'Health'),
+          attack: ValueImageLabelModel(value: 50, label: 'Attack'),
+          credits: ValueImageLabelModel(value: 25, label: 'Credits'),
+          healthModel: HealthModel(maxHealth: 100),
+          name: 'TestPlayer',
+        );
+        final handModel = CardHandModel();
+        final deckModel = CardPileModel(cards: _generateCards(3)); // Only 3 cards
+        final discardModel = CardPileModel.empty();
+        
+        final playerModel = PlayerModel(
+          infoModel: infoModel,
+          handModel: handModel,
+          deckModel: deckModel,
+          discardModel: discardModel,
+        );
+        
+        final player = Player(playerModel: playerModel)..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
         final deck = player.children.whereType<CardDeck>().first;
         final hand = player.children.whereType<CardHand>().first;
 
-        // Tap until only 3 cards remain
-        deck.onTap?.call(); // 15 left
-        deck.onTap?.call(); // 10 left  
-        deck.onTap?.call(); // 5 left
-        deck.onTap?.call(); // 0 left
-
-        // All cards should now be in hand
+        // First tap draws 3 cards (all remaining)
+        deck.onTap?.call();
+        await game.ready();
+        
         expect(deck.model.allCards.length, equals(0));
-        expect(hand.model.cards.length, equals(20));
+        expect(hand.model.cards.length, equals(3));
+
+        // Second tap should do nothing since hand has cards
+        deck.onTap?.call();
+        await game.ready();
+        
+        expect(deck.model.allCards.length, equals(0)); // No change
+        expect(hand.model.cards.length, equals(3)); // No change
       });
 
       testWithFlameGame('deck tap on empty deck does nothing', (game) async {
-        final player = createTestPlayer()..size = Vector2(600, 300);
+        // Create a player with an empty deck
+        final infoModel = InfoModel(
+          health: ValueImageLabelModel(value: 100, label: 'Health'),
+          attack: ValueImageLabelModel(value: 50, label: 'Attack'),
+          credits: ValueImageLabelModel(value: 25, label: 'Credits'),
+          healthModel: HealthModel(maxHealth: 100),
+          name: 'TestPlayer',
+        );
+        final handModel = CardHandModel();
+        final deckModel = CardPileModel.empty(); // Start with empty deck
+        final discardModel = CardPileModel.empty();
+        
+        final playerModel = PlayerModel(
+          infoModel: infoModel,
+          handModel: handModel,
+          deckModel: deckModel,
+          discardModel: discardModel,
+        );
+        
+        final player = Player(playerModel: playerModel)..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
         final deck = player.children.whereType<CardDeck>().first;
         final hand = player.children.whereType<CardHand>().first;
 
-        // Empty the deck
-        for (int i = 0; i < 4; i++) {
-          deck.onTap?.call();
-        }
+        // Verify empty deck
         expect(deck.model.allCards.length, equals(0));
-
-        final handSizeBeforeTap = hand.model.cards.length;
+        expect(hand.model.cards.length, equals(0));
 
         // Tap empty deck
         deck.onTap?.call();
+        await game.ready();
 
         // Nothing should change
         expect(deck.model.allCards.length, equals(0));
-        expect(hand.model.cards.length, equals(handSizeBeforeTap));
+        expect(hand.model.cards.length, equals(0));
       });
 
       testWithFlameGame('deck display updates after drawing cards', (game) async {

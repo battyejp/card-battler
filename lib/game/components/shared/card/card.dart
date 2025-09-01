@@ -97,7 +97,7 @@ class Card extends PositionComponent {
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    final paint = Paint()..color = const Color.fromARGB(77, 21, 6, 193);
+    final paint = Paint()..color = const Color.fromARGB(152, 22, 6, 193);
     canvas.drawRect(size.toRect(), paint);
   }
 }
