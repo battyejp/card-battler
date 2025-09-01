@@ -280,7 +280,6 @@ void main() {
         final scene = PlayerTurnScene(model: model, size: size);
         await game.ensureAdd(scene);
         
-        final availableHeight = size.y - (PlayerTurnScene.margin * 2);
         final availableWidth = size.x - (PlayerTurnScene.margin * 2);
         
         final player = scene.children.whereType<Player>().first;
@@ -302,7 +301,6 @@ void main() {
         await game.ensureAdd(scene);
         
         final availableHeight = size.y - (PlayerTurnScene.margin * 2);
-        final availableWidth = size.x - (PlayerTurnScene.margin * 2);
         final topLayoutHeight = availableHeight * PlayerTurnScene.topLayoutHeightFactor;
         final bottomLayoutHeight = availableHeight - topLayoutHeight;
         
