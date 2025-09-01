@@ -30,7 +30,7 @@ class PlayerModel {
   CardPileModel get discardModel => _discardModel;
 
   void drawCardsFromDeck() {
-    if (CardInteractionController.isAnyCardSelected) {
+    if (CardInteractionController.isAnyCardSelected || handModel.cards.isNotEmpty) {
       return;
     }
 
