@@ -1,5 +1,4 @@
 import 'package:flame/game.dart';
-import 'package:flame/components.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/components/player/player.dart';
