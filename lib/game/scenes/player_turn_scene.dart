@@ -7,7 +7,6 @@ import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:flame/components.dart';
 
 class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
-  //TODO needs unit tests
   final PlayerTurnModel _model;
   final Vector2 _size;
 
