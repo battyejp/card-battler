@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' hide Card;
 
 class ActionableCard extends Card {
   late FlatButton _button;
+  final Function()? onButtonPressed;
 
   /// The label to display on the button
   @protected
@@ -14,7 +15,7 @@ class ActionableCard extends Card {
   @protected
   bool get buttonDisabled => false;
 
-  ActionableCard(super.cardModel);
+  ActionableCard(super.cardModel, {this.onButtonPressed});
 
   bool get isButtonVisible => _button.isVisible;
   set isButtonVisible(bool value) => _button.isVisible = value;
@@ -24,6 +25,7 @@ class ActionableCard extends Card {
     super.onLoad();
     _button = addButton(buttonLabel, size.x / 2, () {
       // Handle button press
+      onButtonPressed?.call();
     });
     _button.isVisible = false;
   }

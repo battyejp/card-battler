@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show rootBundle, VoidCallback;
 
 enum EffectType {
   attack,
@@ -69,12 +69,14 @@ class CardModel {
   final String _type;
   final List<EffectModel> _effects;
   bool isFaceUp;
+  VoidCallback? onCardPlayed;
 
   CardModel({
     required String name,
     required String type,
     List<EffectModel>? effects,
     this.isFaceUp = false,
+    this.onCardPlayed,
   }) : _name = name,
        _type = type,
        _effects = effects ?? [];
@@ -82,6 +84,10 @@ class CardModel {
   String get name => _name;
   String get type => _type;
   List<EffectModel> get effects => List.unmodifiable(_effects);
+
+  void playCard() {
+    onCardPlayed?.call();
+  }
 
   factory CardModel.fromJson(Map<String, dynamic> json) {
     final effectsJson = json['effects'] as List<dynamic>?;

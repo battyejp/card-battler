@@ -4,8 +4,6 @@ import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
 
 class _ButtonDisabler extends PositionComponent with IgnoreEvents {
-  @override
-  bool get debugMode => false;
 }
 
 class FlatButton extends ButtonComponent with HasVisibility {
