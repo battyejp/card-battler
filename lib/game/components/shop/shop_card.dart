@@ -13,6 +13,9 @@ class ShopCard extends TapableCard {
   String get buttonLabel => "Buy";
 
   @override
+  bool get buttonDisabled => true;
+
+  @override
   void addTextComponent() {
     if (cardModel.isFaceUp) {
       // Create name text component positioned higher to make room for cost

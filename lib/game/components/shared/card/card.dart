@@ -15,6 +15,10 @@ class Card extends PositionComponent {
   @protected
   String get buttonLabel => "Play";
 
+  /// Whether the button should be disabled by default
+  @protected
+  bool get buttonDisabled => false;
+
   Card(this.cardModel);
 
   bool get isButtonVisible => _button.isVisible;
@@ -81,6 +85,7 @@ class Card extends PositionComponent {
   FlatButton addButton(String label, double buttonX, Function()? action) {
     final button = FlatButton(
       label,
+      disabled: buttonDisabled,
       size: Vector2(size.x, 0.1 * size.y),
       position: Vector2(buttonX, size.y - (0.1 * size.y) / 2),
       onReleased: () {

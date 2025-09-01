@@ -3,15 +3,35 @@ import 'package:flame/input.dart';
 import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
 
+class _ButtonDisabler extends PositionComponent with IgnoreEvents {
+  @override
+  bool get debugMode => false;
+}
+
 class FlatButton extends ButtonComponent with HasVisibility {
+  bool _disabled = false;
+  double _opacity = 1.0;
+  late final _ButtonDisabler _disabler;
+  
+  /// Whether the button is disabled (cannot be clicked)
+  bool get disabled => _disabled;
+  set disabled(bool value) {
+    if (_disabled != value) {
+      _disabled = value;
+      _updateVisualState();
+    }
+  }
+
   FlatButton(
     String text, {
     super.size,
     super.onReleased,
     super.position,
-  }) : super(
+    bool disabled = false,
+  }) : _disabled = disabled,
+       super(
          button: ButtonBackground(const Color(0xffece8a3)),
-         buttonDown: ButtonBackground(Colors.red),
+         buttonDown: disabled ? ButtonBackground(Colors.grey) : ButtonBackground(Colors.red),
          children: [
            TextComponent(
              text: text,
@@ -27,7 +47,58 @@ class FlatButton extends ButtonComponent with HasVisibility {
            ),
          ],
          anchor: Anchor.center,
-       );
+       ) {
+    _disabler = _ButtonDisabler();
+    if (_disabled) {
+      _updateVisualState();
+    }
+  }
+
+  void _updateVisualState() {
+    if (_disabled) {
+      // Set opacity to 0.5 for greyed out appearance
+      _opacity = 0.5;
+      // Add the disabler to prevent all interactions
+      if (!children.contains(_disabler)) {
+        _disabler.size = size;
+        add(_disabler);
+      }
+      // Update button background to grey
+      button = ButtonBackground(Colors.grey);
+      // Update text color to a darker grey
+      final textComponent = children.whereType<TextComponent>().first;
+      textComponent.textRenderer = TextPaint(
+        style: TextStyle(
+          fontSize: 0.5 * size!.y,
+          fontWeight: FontWeight.bold,
+          color: Colors.grey.shade600,
+        ),
+      );
+    } else {
+      // Restore normal appearance
+      _opacity = 1.0;
+      // Remove the disabler to allow interactions
+      if (children.contains(_disabler)) {
+        remove(_disabler);
+      }
+      button = ButtonBackground(const Color(0xffece8a3));
+      final textComponent = children.whereType<TextComponent>().first;
+      textComponent.textRenderer = TextPaint(
+        style: TextStyle(
+          fontSize: 0.5 * size!.y,
+          fontWeight: FontWeight.bold,
+          color: const Color(0xffdbaf58),
+        ),
+      );
+    }
+  }
+
+  @override
+  void render(Canvas canvas) {
+    canvas.saveLayer(null, Paint()..color = Color.fromRGBO(255, 255, 255, _opacity));
+    super.render(canvas);
+    canvas.restore();
+  }
 }
 
 class ButtonBackground extends PositionComponent with HasAncestor<FlatButton> {
