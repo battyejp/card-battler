@@ -3,10 +3,9 @@ import 'package:card_battler/game/components/shared/card/card_interaction_contro
 import 'package:flame/events.dart';
 
 class TapableActionableCard extends ActionableCard with TapCallbacks {
-  final void Function()? onTap;
   CardInteractionController? _interaction;
 
-  TapableActionableCard(super.cardModel, {this.onTap});
+  TapableActionableCard(super.cardModel);
 
   @override
   bool onTapUp(TapUpEvent event) => _interaction?.onTapUp(event) ?? false;
