@@ -11,7 +11,7 @@ class ValueImageLabel extends ReactivePositionComponent<ValueImageLabelModel> {
   @override
   void updateDisplay() {
     //Don't call super.updateDisplay(), as will just update label instead of needing to remove and recreate
-    if (_textComponent == null) {
+    if (!hasChildren) {
       _addTextComponent(model.display);
     } else {
       _textComponent!.text = model.display;
