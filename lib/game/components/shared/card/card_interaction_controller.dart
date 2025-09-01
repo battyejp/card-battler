@@ -2,13 +2,13 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 
-import 'card.dart';
+import 'actionable_card.dart';
 
 
 class CardInteractionController {
   CardInteractionController(this.card);
 
-  final Card card;
+  final ActionableCard card;
 
   static CardInteractionController? _selectedController;
 

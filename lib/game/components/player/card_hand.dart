@@ -1,4 +1,4 @@
-import 'package:card_battler/game/components/shared/card/tapable_card.dart';
+import 'package:card_battler/game/components/shared/card/tapable_actionable_card.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:flame/components.dart';
@@ -22,7 +22,7 @@ class CardHand extends ReactivePositionComponent<CardHandModel> {
     for (var i = 0; i < model.cards.length; i++) {
       final cardPosition = Vector2(startX + (i * (cardWidth + spacing)), (size.y - cardHeight) / 2);
 
-      final card = TapableCard(model.cards[i])
+      final card = TapableActionableCard(model.cards[i])
         ..size = Vector2(cardWidth, cardHeight)
         ..position = cardPosition;
 
