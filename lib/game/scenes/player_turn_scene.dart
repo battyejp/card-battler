@@ -8,6 +8,7 @@ import 'package:flame/components.dart';
 
 class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
   //TODO should this have its own model?
+  //TODO needs unit tests
   final GameStateModel _gameState;
   final Vector2 _size;
 
@@ -30,7 +31,6 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
     // Create player component with models from game state
     final player = Player(
       playerModel: _gameState.player,
-      //onCardsDrawn: _onPlayerCardsDrawn,
     )
       ..size = Vector2(availableWidth, bottomLayoutHeight)
       ..position = Vector2(

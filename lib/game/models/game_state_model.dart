@@ -20,18 +20,10 @@ enum GamePhase { setup, playerTurn, enemyTurn, shopping, battleEnd, gameOver }
 /// Centralized model that contains all game state
 /// This serves as the single source of truth for the entire game
 class GameStateModel {
-  // Player-related state
   final PlayerModel player;
-
-  // Enemy state
   final EnemiesModel enemies;
-
-  // Shop state
   final ShopModel shop;
-
-  // Team state
   final TeamModel team;
-
   final EnemyTurnAreaModel enemyTurnArea;
 
   GameStateModel({

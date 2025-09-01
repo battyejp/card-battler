@@ -1,4 +1,3 @@
-import 'package:card_battler/game/components/enemy/enemy_turn_area.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
@@ -11,7 +10,6 @@ import 'package:flame/events.dart';
 class CardBattlerGame extends FlameGame with TapCallbacks {
   GameStateModel? _gameState;
   Vector2? _testSize;
-  EnemyTurnArea? _enemyTurnArea;
   late final RouterComponent router;
 
   // Default constructor with new game state
@@ -80,7 +78,8 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
     }
 
     _gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-    //_gameState!.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished;
+    _gameState!.player.onCardsDrawn = _onPlayerCardsDrawn;
+    _gameState!.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished;
   
     world.add(
       router = RouterComponent(
@@ -88,7 +87,7 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
           'playerTurn': Route(() => PlayerTurnScene(gameState: _gameState!, size: size)),
           'enemyTurn': Route(() => EnemyTurnScene(model: _gameState!.enemyTurnArea, size: size)),
         },
-        initialRoute: 'enemyTurn',
+        initialRoute: 'playerTurn',
       ),
     );
 
@@ -99,19 +98,16 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
       return;
     }
 
-    _enemyTurnArea = EnemyTurnArea(
-      displayDuration: const Duration(seconds: 5),
-      onComplete: () {
-      },
-      model: _gameState!.enemyTurnArea,
-    );
-
-    _enemyTurnArea!.size = size;
-    camera.viewport.add(_enemyTurnArea!);
+    //Pause for 1 second
+    Future.delayed(const Duration(seconds: 1), () {
+      router.pushNamed('enemyTurn');
+    });
   }
   
   void _onEnemyTurnFinished() {
-    _enemyTurnArea!.startFadeOut();
+    Future.delayed(const Duration(seconds: 1), () {
+      router.pop();
+    });
   }
 
 

@@ -7,9 +7,6 @@ class CardDeck extends CardPile with TapCallbacks {
   CardDeck(super.model, {this.onTap});
 
   @override
-  bool get debugMode => true;
-
-  @override
   bool onTapUp(TapUpEvent event) {
     onTap?.call();
     return true;
