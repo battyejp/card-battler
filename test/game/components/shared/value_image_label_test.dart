@@ -102,6 +102,7 @@ void main() {
         
         // Update value and verify positioning is preserved
         model.changeValue(8);
+        await game.ready(); // Wait for reactive update
         
         final updatedTextComponent = component.children.whereType<TextComponent>().first;
         expect(updatedTextComponent.anchor, equals(Anchor.topLeft));
@@ -140,11 +141,13 @@ void main() {
         
         // Change value and verify update
         model.changeValue(-50);
+        await game.ready(); // Wait for reactive update
         textComponent = component.children.whereType<TextComponent>().first;
         expect(textComponent.text, equals('Gold: 50'));
         
         // Another change
         model.changeValue(25);
+        await game.ready(); // Wait for reactive update
         textComponent = component.children.whereType<TextComponent>().first;
         expect(textComponent.text, equals('Gold: 75'));
       });
@@ -161,11 +164,13 @@ void main() {
         
         // Negative value
         model.changeValue(-10);
+        await game.ready(); // Wait for reactive update
         textComponent = component.children.whereType<TextComponent>().first;
         expect(textComponent.text, equals('Balance: -10'));
         
         // Back to positive
         model.changeValue(20);
+        await game.ready(); // Wait for reactive update
         textComponent = component.children.whereType<TextComponent>().first;
         expect(textComponent.text, equals('Balance: 10'));
       });
@@ -193,6 +198,7 @@ void main() {
         model.changeValue(1);
         model.changeValue(2);
         model.changeValue(3);
+        await game.ready(); // Wait for reactive update
         
         // Should still have only one text component
         expect(component.children.whereType<TextComponent>().length, equals(1));
@@ -227,12 +233,14 @@ void main() {
         
         // Update first component only
         model1.changeValue(5);
+        await game.ready(); // Wait for reactive update
         
         expect(component1.children.whereType<TextComponent>().first.text, equals('HP: 15'));
         expect(component2.children.whereType<TextComponent>().first.text, equals('MP: 20')); // Unchanged
         
         // Update second component only
         model2.changeValue(-5);
+        await game.ready(); // Wait for reactive update
         
         expect(component1.children.whereType<TextComponent>().first.text, equals('HP: 15')); // Unchanged
         expect(component2.children.whereType<TextComponent>().first.text, equals('MP: 15'));
@@ -280,6 +288,7 @@ void main() {
         
         // Updates should still work
         model.changeValue(5);
+        await game.ready(); // Wait for reactive update
         expect(component.children.whereType<TextComponent>().first.text, equals('Reload Test: 25'));
       });
     });

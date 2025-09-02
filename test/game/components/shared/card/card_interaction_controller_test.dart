@@ -25,15 +25,26 @@ void main() {
     late ActionableCard card;
     late CardInteractionController controller;
 
+    // Helper to ensure complete cleanup of static state
+    void forceResetStaticState() {
+      // Keep trying until we clear the static state
+      int attempts = 0;
+      while (CardInteractionController.selectedController != null && attempts < 10) {
+        CardInteractionController.deselectAny();
+        attempts++;
+      }
+    }
+
     setUp(() {
       cardModel = CardModel(name: 'Test Card', type: 'test');
       card = ActionableCard(cardModel);
       controller = CardInteractionController(card, null);
+      forceResetStaticState();
     });
 
     tearDown(() {
       // Reset static state between tests
-      CardInteractionController.deselectAny();
+      forceResetStaticState();
     });
 
     group('constructor and initialization', () {
@@ -67,6 +78,8 @@ void main() {
       });
 
       testWithFlameGame('isAnyCardSelected returns true when card is selected', (game) async {
+        game.onGameResize(Vector2(800, 600));
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
@@ -85,6 +98,7 @@ void main() {
 
     group('selection behavior', () {
       testWithFlameGame('onTapUp selects card when no card is selected', (game) async {
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
@@ -97,9 +111,18 @@ void main() {
         expect(controller.isSelected, isTrue);
         expect(controller.isAnimating, isTrue);
         expect(CardInteractionController.selectedController, equals(controller));
+        
+        // Complete the animation to ensure clean state for next test
+        game.update(1.0);
+        expect(controller.isAnimating, isFalse);
+        
+        // Manually deselect to ensure clean state
+        CardInteractionController.deselectAny();
+        game.update(1.0); // Complete deselect animation too
       });
 
       testWithFlameGame('onTapUp works when same card is already selected', (game) async {
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
@@ -117,12 +140,17 @@ void main() {
         final handled = controller.onTapUp(tapEvent2);
         
         expect(handled, isTrue);
+        
+        // Manual cleanup
+        CardInteractionController.deselectAny();
+        game.update(1.0);
       });
 
       testWithFlameGame('onTapUp ignores tap when different card is selected', (game) async {
         final card2 = ActionableCard(cardModel);
         final controller2 = CardInteractionController(card2, null);
         
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         card2.size = Vector2(100, 150);
         await game.ensureAdd(card);
@@ -142,9 +170,14 @@ void main() {
         expect(handled, isTrue);
         expect(controller2.isSelected, isFalse); // Second card should not be selected
         expect(CardInteractionController.selectedController, equals(controller)); // First card still selected
+        
+        // Manual cleanup
+        CardInteractionController.deselectAny();
+        game.update(1.0);
       });
 
       testWithFlameGame('onTapUp ignores tap during animation', (game) async {
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
@@ -160,6 +193,11 @@ void main() {
         
         expect(handled, isTrue);
         expect(controller.isAnimating, isTrue); // Still animating
+        
+        // Manual cleanup - wait for animation to complete first
+        game.update(1.0);
+        CardInteractionController.deselectAny();
+        game.update(1.0);
       });
     });
 
@@ -168,6 +206,7 @@ void main() {
         final card2 = ActionableCard(cardModel);
         final controller2 = CardInteractionController(card2, null);
         
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         card2.size = Vector2(100, 150);
         await game.ensureAdd(card);
@@ -190,6 +229,10 @@ void main() {
         expect(controller.isSelected, isFalse); // First card deselected
         expect(controller2.isSelected, isTrue); // Second card selected
         expect(CardInteractionController.selectedController, equals(controller2));
+        
+        // Manual cleanup
+        CardInteractionController.deselectAny();
+        game.update(1.0);
       });
     });
 
@@ -198,6 +241,7 @@ void main() {
         bool buttonEnabled() => true;
         final testController = CardInteractionController(card, buttonEnabled);
         
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
@@ -214,6 +258,7 @@ void main() {
         bool buttonEnabled() => false;
         final testController = CardInteractionController(card, buttonEnabled);
         
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
@@ -229,6 +274,7 @@ void main() {
       testWithFlameGame('button is enabled when no callback provided', (game) async {
         final testController = CardInteractionController(card, null);
         
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
@@ -244,6 +290,7 @@ void main() {
 
     group('card state changes during selection', () {
       testWithFlameGame('card button becomes visible after selection animation', (game) async {
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
@@ -297,6 +344,7 @@ void main() {
 
     group('deselectAny functionality', () {
       testWithFlameGame('deselectAny deselects currently selected card', (game) async {
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
@@ -327,6 +375,7 @@ void main() {
 
     group('animation state management', () {
       testWithFlameGame('isAnimating is true during selection', (game) async {
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
@@ -344,6 +393,7 @@ void main() {
       });
 
       testWithFlameGame('isAnimating is true during deselection', (game) async {
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
@@ -369,6 +419,7 @@ void main() {
 
     group('edge cases', () {
       testWithFlameGame('multiple rapid taps during animation are handled', (game) async {
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
@@ -384,6 +435,7 @@ void main() {
       });
 
       testWithFlameGame('deselection during animation is ignored', (game) async {
+        game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
