@@ -84,7 +84,11 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
     world.add(
       router = RouterComponent(
         routes: {
-          'playerTurn': Route(() => PlayerTurnScene(model: _gameState!.playerTurn, size: size)),
+          'playerTurn': Route(() => PlayerTurnScene(
+            model: _gameState!.playerTurn, 
+            size: size, 
+            onTakeEnemyTurn: _onTakeEnemyTurnPressed,
+          )),
           'enemyTurn': Route(() => EnemyTurnScene(model: _gameState!.enemyTurnArea, size: size)),
         },
         initialRoute: 'playerTurn',
@@ -98,10 +102,12 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
       return;
     }
 
-    //Pause for 1 second
-    Future.delayed(const Duration(seconds: 1), () {
-      router.pushNamed('enemyTurn');
-    });
+    // Update the player turn model to indicate cards have been drawn
+    _gameState!.playerTurn.setCardsDrawn(true);
+  }
+  
+  void _onTakeEnemyTurnPressed() {
+    router.pushNamed('enemyTurn');
   }
   
   void _onEnemyTurnFinished() {

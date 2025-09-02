@@ -18,6 +18,7 @@ import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
+import 'package:card_battler/game/components/shared/take_enemy_turn_button.dart';
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -558,6 +559,99 @@ void main() {
         
         // Player should be positioned below the top components
         expect(player.position.y, greaterThan(enemies.position.y));
+      });
+    });
+
+    group('Take Enemy Turn Button', () {
+      testWithFlameGame('does not show button initially when cards not drawn', (game) async {
+        final model = _createTestPlayerTurnModel();
+        final size = Vector2(800, 600);
+        
+        final scene = PlayerTurnScene(model: model, size: size);
+        await game.ensureAdd(scene);
+        
+        // Should have 4 components but no button yet
+        expect(scene.children.length, equals(4));
+        expect(scene.children.whereType<TakeEnemyTurnButton>().length, equals(0));
+      });
+
+      testWithFlameGame('shows button when cards have been drawn', (game) async {
+        final model = _createTestPlayerTurnModel();
+        final size = Vector2(800, 600);
+        
+        final scene = PlayerTurnScene(model: model, size: size);
+        await game.ensureAdd(scene);
+        
+        // Simulate cards being drawn
+        model.setCardsDrawn(true);
+        await game.ready();
+        
+        // Should now have 5 components including the button
+        expect(scene.children.length, equals(5));
+        expect(scene.children.whereType<TakeEnemyTurnButton>().length, equals(1));
+      });
+
+      testWithFlameGame('button is positioned at top center of screen', (game) async {
+        final model = _createTestPlayerTurnModel();
+        final size = Vector2(800, 600);
+        
+        final scene = PlayerTurnScene(model: model, size: size);
+        await game.ensureAdd(scene);
+        
+        // Simulate cards being drawn
+        model.setCardsDrawn(true);
+        await game.ready();
+        
+        final button = scene.children.whereType<TakeEnemyTurnButton>().first;
+        
+        // Button should be centered horizontally and at the top
+        expect(button.position.x, equals(-100.0)); // -buttonWidth / 2
+        expect(button.position.y, equals(-size.y / 2 + 10)); // Top with small margin
+        expect(button.size, equals(Vector2(200.0, 60.0)));
+      });
+
+      testWithFlameGame('button calls callback when tapped', (game) async {
+        bool callbackCalled = false;
+        
+        final model = _createTestPlayerTurnModel();
+        final size = Vector2(800, 600);
+        
+        final scene = PlayerTurnScene(
+          model: model,
+          size: size,
+          onTakeEnemyTurn: () => callbackCalled = true,
+        );
+        await game.ensureAdd(scene);
+        
+        // Simulate cards being drawn
+        model.setCardsDrawn(true);
+        await game.ready();
+        
+        final button = scene.children.whereType<TakeEnemyTurnButton>().first;
+        
+        // Simulate button tap by calling callback directly
+        button.onTap?.call();
+        
+        expect(callbackCalled, isTrue);
+      });
+
+      testWithFlameGame('button does not duplicate when cards drawn multiple times', (game) async {
+        final model = _createTestPlayerTurnModel();
+        final size = Vector2(800, 600);
+        
+        final scene = PlayerTurnScene(model: model, size: size);
+        await game.ensureAdd(scene);
+        
+        // Simulate cards being drawn multiple times
+        model.setCardsDrawn(true);
+        await game.ready();
+        model.setCardsDrawn(false);
+        await game.ready();
+        model.setCardsDrawn(true);
+        await game.ready();
+        
+        // Should still only have one button
+        expect(scene.children.whereType<TakeEnemyTurnButton>().length, equals(1));
       });
     });
   });

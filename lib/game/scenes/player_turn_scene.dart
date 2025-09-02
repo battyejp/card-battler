@@ -3,17 +3,51 @@ import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
+import 'package:card_battler/game/components/shared/take_enemy_turn_button.dart';
 import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:flame/components.dart';
+import 'dart:async';
 
 class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
   final PlayerTurnModel _model;
   final Vector2 _size;
+  final void Function()? onTakeEnemyTurn;
+  TakeEnemyTurnButton? _takeEnemyTurnButton;
+  late StreamSubscription _modelSubscription;
 
-  PlayerTurnScene({required PlayerTurnModel model, required Vector2 size})
-      : _model = model,
-        _size = size {
+  PlayerTurnScene({
+    required PlayerTurnModel model, 
+    required Vector2 size,
+    this.onTakeEnemyTurn,
+  }) : _model = model, _size = size {
     _loadGameComponents();
+  }
+
+  @override 
+  void onMount() {
+    super.onMount();
+    // Listen to model changes for the button
+    _modelSubscription = _model.changes.listen((_) {
+      _handleModelChange();
+    });
+  }
+
+  @override
+  void onRemove() {
+    _modelSubscription.cancel();
+    super.onRemove();
+  }
+
+  void _handleModelChange() {
+    // Add the button if cards have been drawn and button doesn't exist
+    if (_model.cardsDrawn && _takeEnemyTurnButton == null) {
+      _addTakeEnemyTurnButton();
+    }
+    // Remove the button if cards haven't been drawn and button exists
+    else if (!_model.cardsDrawn && _takeEnemyTurnButton != null) {
+      _takeEnemyTurnButton?.removeFromParent();
+      _takeEnemyTurnButton = null;
+    }
   }
 
   static const double margin = 20.0;
@@ -60,5 +94,24 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
       ..position = Vector2(0 - enemiesWidth / 2 - shopWidth, topPositionY);
 
     add(team);
+  }
+  
+  void _addTakeEnemyTurnButton() {
+    if (_takeEnemyTurnButton != null) return;
+    
+    // Position the button at the top center of the screen
+    final buttonWidth = 200.0;
+    final buttonHeight = 60.0;
+    
+    _takeEnemyTurnButton = TakeEnemyTurnButton(
+      onTap: onTakeEnemyTurn,
+    )
+      ..size = Vector2(buttonWidth, buttonHeight)
+      ..position = Vector2(
+        -buttonWidth / 2, // Center horizontally
+        -_size.y / 2 + 10, // Top of screen with small margin
+      );
+    
+    add(_takeEnemyTurnButton!);
   }
 }
