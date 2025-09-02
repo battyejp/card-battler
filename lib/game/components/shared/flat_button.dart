@@ -63,7 +63,7 @@ class FlatButton extends ButtonComponent with HasVisibility {
       }
       // Update button background to grey
       button = ButtonBackground(Colors.grey);
-      buttonDown = ButtonBackground(Colors.grey.shade700);
+      buttonDown = ButtonBackground(Colors.grey);
       // Update text color to a darker grey
       final textComponent = children.whereType<TextComponent>().first;
       textComponent.textRenderer = TextPaint(

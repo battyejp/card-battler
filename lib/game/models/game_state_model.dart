@@ -87,7 +87,7 @@ class GameStateModel {
       );
     }).toList();
 
-
+    PlayerTurnModel.selectedPlayer = players.first;
 
     return GameStateModel(
       playerTurn: PlayerTurnModel(

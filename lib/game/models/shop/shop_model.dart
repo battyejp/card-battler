@@ -1,10 +1,14 @@
+import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/shared/reactive_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 
-class ShopModel {
+class ShopModel with ReactiveModel<ShopModel> {
   List<ShopCardModel> _allCards;
   List<ShopCardModel> _selectableCards;
   final int _numberOfRows;
   final int _numberOfColumns;
+
+  Function(CardModel)? cardPlayed;
 
   ShopModel({
     required int numberOfRows,
@@ -26,6 +30,21 @@ class ShopModel {
         _allCards = cards.skip(displayCount).toList();
       }
     }
+
+    for(final card in _selectableCards) {
+      card.onCardPlayed = () => _onCardPlayed(card);
+    }
+  }
+
+  void _onCardPlayed(CardModel card) {
+    card.onCardPlayed = null;
+    cardPlayed?.call(card);
+  }
+
+  /// Removes a specific card from the hand
+  void removeSelectableCardFromShop(CardModel card) {
+    _selectableCards.remove(card);
+    notifyChange();
   }
 
   List<ShopCardModel> get allCards => _allCards;

@@ -11,9 +11,7 @@ class ActionableCard extends Card {
   @protected
   String get buttonLabel => "Play";
 
-  /// Whether the button should be disabled by default
-  @protected
-  bool get buttonDisabled => false;
+  bool get buttonDisabled => _button.disabled;
 
   set buttonDisabled(bool value) => _button.disabled = value;
 
@@ -26,8 +24,7 @@ class ActionableCard extends Card {
   void onLoad() {
     super.onLoad();
     _button = addButton(buttonLabel, size.x / 2, () {
-      cardModel.playCard();
-      
+      cardModel.playCard();    
     });
     _button.isVisible = false;
   }
@@ -35,11 +32,13 @@ class ActionableCard extends Card {
   FlatButton addButton(String label, double buttonX, Function()? action) {
     final button = FlatButton(
       label,
-      disabled: buttonDisabled,
+      disabled: false,
       size: Vector2(size.x, 0.1 * size.y),
       position: Vector2(buttonX, size.y - (0.1 * size.y) / 2),
       onReleased: () {
-        action?.call();
+        if (!buttonDisabled && isButtonVisible) {
+          action?.call();
+        }
       },
     );
     add(button);

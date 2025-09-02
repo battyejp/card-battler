@@ -11,8 +11,11 @@ class PlayerModel {
   final CardHandModel _handModel;
   final CardPileModel _deckModel;
   final CardPileModel _discardModel;
+
   static const cardsToDrawOnTap = 5;
+
   VoidCallback? onCardsDrawn;
+  Function(CardModel)? cardPlayed;
 
   PlayerModel({
     required InfoModel infoModel,
@@ -49,37 +52,7 @@ class PlayerModel {
   }
 
   void _onCardPlayed(CardModel card) {
-    // Remove card from hand and move to discard pile
-    card.isFaceUp = false;
     card.onCardPlayed = null;
-    _handModel.removeCard(card);
-    _discardModel.addCard(card);
-    CardInteractionController.deselectAny();
-    applyCardEffects(card);
-
-    // Process card effects here in the future
-    // For now, just handle the basic card play mechanics
-  }
-
-  void applyCardEffects(CardModel card) {
-    for (final effect in card.effects) {
-      switch (effect.type) {     
-        case EffectType.attack:
-          // Handle attack effect
-          break;
-        case EffectType.heal:
-          // Handle heal effect
-          break;
-        case EffectType.credits:
-          infoModel.credits.changeValue(effect.value);
-          break;
-        case EffectType.damageLimit:
-          // Handle damage limit effect
-          break;
-        case EffectType.drawCard:
-          // Handle draw effect
-          break;
-      }
-    }
+    cardPlayed?.call(card);
   }
 }

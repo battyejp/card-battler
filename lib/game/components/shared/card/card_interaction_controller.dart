@@ -84,10 +84,12 @@ class CardInteractionController {
       EffectController(duration: _animationSpeed),
     );
 
+    var buttonDisabled = _determineIfButtonEnabled == null ? false : !_determineIfButtonEnabled!();
+
     moveEffect.onComplete = () {
       _isAnimating = false;
       card.isButtonVisible = true;
-      card.buttonDisabled = _determineIfButtonEnabled == null ? false : !_determineIfButtonEnabled!();
+      card.buttonDisabled = buttonDisabled;
     };
 
     card.add(moveEffect);

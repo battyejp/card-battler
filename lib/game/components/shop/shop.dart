@@ -1,17 +1,21 @@
+import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:flame/components.dart';
 import 'package:card_battler/game/components/shop/shop_card.dart';
 
-class Shop extends PositionComponent {
-  final ShopModel model;
-
-  Shop(this.model);
+class Shop extends ReactivePositionComponent<ShopModel> {
+  Shop(super.model);
 
   static const double cardHeightFactor = 0.38;
   static const double hSpacingFactor = 0.2;
 
   @override
-  onLoad() {
+  void updateDisplay() {
+    super.updateDisplay();
+    _addCards();  
+  }
+
+  void _addCards() {
     final cardWidth = size.x / (model.numberOfColumns + (model.numberOfColumns + 1) * hSpacingFactor);
     final cardHeight = size.y * cardHeightFactor;
     final totalWidth = model.numberOfColumns * cardWidth + (model.numberOfColumns - 1) * cardWidth * hSpacingFactor;
