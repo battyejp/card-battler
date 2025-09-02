@@ -6,12 +6,28 @@ import 'package:card_battler/game/components/shared/flat_button.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flame/game.dart';
+import 'package:flutter/gestures.dart';
+
+// Mock TapUpEvent that includes the local position directly
+class MockTapUpEvent extends TapUpEvent {
+  final Vector2 _mockLocalPosition;
+  
+  MockTapUpEvent(int pointerId, Game game, this._mockLocalPosition)
+      : super(pointerId, game, TapUpDetails(kind: PointerDeviceKind.touch));
+  
+  @override
+  Vector2 get localPosition => _mockLocalPosition;
+}
 
 void main() {
   group('TapableActionableCard', () {
     late CardModel cardModel;
 
     setUp(() {
+      // Reset static state before each test
+      CardInteractionController.deselectAny();
+      
       cardModel = CardModel(name: 'Test Card', type: 'test');
     });
 
@@ -23,7 +39,7 @@ void main() {
       });
 
       testWithFlameGame('creates with button enablement function', (game) async {
-        bool Function() determineEnabled() => true;
+        bool determineEnabled() => true;
         final card = TapableActionableCard(cardModel, 
           determineIfButtonEnabled: determineEnabled);
         
@@ -31,12 +47,13 @@ void main() {
       });
 
       testWithFlameGame('has interaction controller after onLoad', (game) async {
+        game.onGameResize(Vector2(800, 600));
         final card = TapableActionableCard(cardModel)..size = Vector2(100, 150);
         
         await game.ensureAdd(card);
         
         // Interaction controller should be set up (private field, so we test behavior)
-        expect(() => card.onTapUp(TapUpEvent(1, TapUpInfo())), returnsNormally);
+        expect(() => card.onTapUp(MockTapUpEvent(1, game, Vector2(50, 75))), returnsNormally);
       });
     });
 
@@ -96,25 +113,28 @@ void main() {
       });
 
       testWithFlameGame('onTapUp delegates to interaction controller', (game) async {
+        game.onGameResize(Vector2(800, 600));
         final card = TapableActionableCard(cardModel)..size = Vector2(100, 150);
         
         await game.ensureAdd(card);
         
         // Should not throw and should return a boolean
-        final result = card.onTapUp(TapUpEvent(1, TapUpInfo()));
+        final result = card.onTapUp(MockTapUpEvent(1, game, Vector2(50, 75)));
         expect(result, isA<bool>());
       });
 
       testWithFlameGame('tap interaction works without button enablement function', (game) async {
+        game.onGameResize(Vector2(800, 600));
         final card = TapableActionableCard(cardModel)..size = Vector2(100, 150);
         
         await game.ensureAdd(card);
         
         // Should handle tap events normally
-        expect(() => card.onTapUp(TapUpEvent(1, game, TapUpDetails())), returnsNormally);
+        expect(() => card.onTapUp(MockTapUpEvent(1, game, Vector2(50, 75))), returnsNormally);
       });
 
       testWithFlameGame('tap interaction works with button enablement function', (game) async {
+        game.onGameResize(Vector2(800, 600));
         bool buttonShouldBeEnabled = true;
         final card = TapableActionableCard(cardModel, 
           determineIfButtonEnabled: () => buttonShouldBeEnabled
@@ -123,7 +143,7 @@ void main() {
         await game.ensureAdd(card);
         
         // Should handle tap events with enablement function
-        expect(() => card.onTapUp(TapUpEvent(1, game, TapUpDetails())), returnsNormally);
+        expect(() => card.onTapUp(MockTapUpEvent(1, game, Vector2(50, 75))), returnsNormally);
       });
     });
 
@@ -186,6 +206,7 @@ void main() {
 
     group('multiple instances', () {
       testWithFlameGame('different cards work independently', (game) async {
+        game.onGameResize(Vector2(800, 600));
         final card1 = TapableActionableCard(
           CardModel(name: 'Card 1', type: 'test')
         )..size = Vector2(100, 150);
@@ -202,8 +223,8 @@ void main() {
         expect(card2.cardModel.name, equals('Card 2'));
         
         // Both should handle taps independently
-        expect(() => card1.onTapUp(TapUpEvent(1, game, TapUpDetails())), returnsNormally);
-        expect(() => card2.onTapUp(TapUpEvent(1, game, TapUpDetails())), returnsNormally);
+        expect(() => card1.onTapUp(MockTapUpEvent(1, game, Vector2(50, 75))), returnsNormally);
+        expect(() => card2.onTapUp(MockTapUpEvent(1, game, Vector2(50, 75))), returnsNormally);
       });
 
       testWithFlameGame('cards can have different enablement logic', (game) async {

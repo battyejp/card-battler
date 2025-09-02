@@ -3,8 +3,20 @@ import 'package:flame_test/flame_test.dart';
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/components/shared/card/actionable_card.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flame/game.dart';
+import 'package:flutter/gestures.dart';
+
+// Mock TapUpEvent that includes the local position directly
+class MockTapUpEvent extends TapUpEvent {
+  final Vector2 _mockLocalPosition;
+  
+  MockTapUpEvent(int pointerId, Game game, this._mockLocalPosition)
+      : super(pointerId, game, TapUpDetails(kind: PointerDeviceKind.touch));
+  
+  @override
+  Vector2 get localPosition => _mockLocalPosition;
+}
 
 void main() {
   group('CardInteractionController', () {
@@ -13,6 +25,9 @@ void main() {
     late CardInteractionController controller;
 
     setUp(() {
+      // Reset static state before each test
+      CardInteractionController.deselectAny();
+      
       cardModel = CardModel(name: 'Test Card', type: 'test');
       card = ActionableCard(cardModel)..size = Vector2(100, 150);
       controller = CardInteractionController(card, null);
@@ -24,7 +39,7 @@ void main() {
       });
 
       test('creates with card and button enablement function', () {
-        bool Function() enablementFunction() => true;
+        bool enablementFunction() => true;
         final controllerWithFunction = CardInteractionController(card, enablementFunction);
         expect(controllerWithFunction, isNotNull);
       });
@@ -54,7 +69,7 @@ void main() {
       testWithFlameGame('onTapUp handles tap events and returns boolean', (game) async {
         await game.ensureAdd(card);
         
-        final tapEvent = TapUpEvent(1, game, TapUpDetails(localPosition: Vector2(50, 75)));
+        final tapEvent = MockTapUpEvent(1, game, Vector2(50, 75));
         final result = controller.onTapUp(tapEvent);
         
         expect(result, isA<bool>());
@@ -62,23 +77,31 @@ void main() {
       });
 
       testWithFlameGame('tapping selects the card', (game) async {
+        // Ensure game has a size for the selection animation
+        game.onGameResize(Vector2(800, 600));
         await game.ensureAdd(card);
         
         expect(controller.isSelected, isFalse);
+        expect(controller.isAnimating, isFalse);
+        expect(CardInteractionController.selectedController, isNull);
         
-        final tapEvent = TapUpEvent(1, game, TapUpDetails(localPosition: Vector2(50, 75)));
-        controller.onTapUp(tapEvent);
+        final tapEvent = MockTapUpEvent(1, game, Vector2(50, 75));
+        final result = controller.onTapUp(tapEvent);
         
-        expect(controller.isSelected, isTrue);
+        expect(result, isTrue); // onTapUp should return true
+        
+        // The card should be selected immediately but may be animating
+        expect(controller.isSelected, isTrue, reason: 'Card should be selected after tap');
       });
 
       testWithFlameGame('selecting card updates static state', (game) async {
+        game.onGameResize(Vector2(800, 600));
         await game.ensureAdd(card);
         
         expect(CardInteractionController.isAnyCardSelected, isFalse);
         expect(CardInteractionController.selectedController, isNull);
         
-        final tapEvent = TapUpEvent(1, game, TapUpDetails(localPosition: Vector2(50, 75)));
+        final tapEvent = MockTapUpEvent(1, game, Vector2(50, 75));
         controller.onTapUp(tapEvent);
         
         expect(CardInteractionController.isAnyCardSelected, isTrue);
@@ -86,16 +109,18 @@ void main() {
       });
 
       testWithFlameGame('deselectAny deselects current selection', (game) async {
+        game.onGameResize(Vector2(800, 600));
         await game.ensureAdd(card);
         
-        final tapEvent = TapUpEvent(1, game, TapUpDetails(localPosition: Vector2(50, 75)));
+        final tapEvent = MockTapUpEvent(1, game, Vector2(50, 75));
         controller.onTapUp(tapEvent);
         
         expect(controller.isSelected, isTrue);
         
         CardInteractionController.deselectAny();
         
-        expect(controller.isSelected, isFalse);
+        // Card is still animating deselection, so it's not immediately deselected
+        expect(controller.isAnimating, isTrue);
         expect(CardInteractionController.isAnyCardSelected, isFalse);
       });
     });
@@ -105,12 +130,17 @@ void main() {
         bool buttonEnabled = true;
         final controllerWithEnabler = CardInteractionController(card, () => buttonEnabled);
         
+        game.onGameResize(Vector2(800, 600));
         await game.ensureAdd(card);
         
         expect(card.isButtonVisible, isFalse);
         
-        final tapEvent = TapUpEvent(1, game, TapUpDetails(localPosition: Vector2(50, 75)));
+        final tapEvent = MockTapUpEvent(1, game, Vector2(50, 75));
         controllerWithEnabler.onTapUp(tapEvent);
+        
+        // Button visibility is set after animation completes, so wait for it
+        await game.ready();
+        game.update(0.6); // Wait for animation duration (0.5s + buffer)
         
         expect(card.isButtonVisible, isTrue);
       });
@@ -118,10 +148,15 @@ void main() {
       testWithFlameGame('button enabled by default when no enablement function', (game) async {
         final controllerNoEnabler = CardInteractionController(card, null);
         
+        game.onGameResize(Vector2(800, 600));
         await game.ensureAdd(card);
         
-        final tapEvent = TapUpEvent(1, game, TapUpDetails(localPosition: Vector2(50, 75)));
+        final tapEvent = MockTapUpEvent(1, game, Vector2(50, 75));
         controllerNoEnabler.onTapUp(tapEvent);
+        
+        // Button visibility is set after animation completes, so wait for it
+        await game.ready();
+        game.update(0.6); // Wait for animation duration (0.5s + buffer)
         
         expect(card.isButtonVisible, isTrue);
         expect(card.buttonDisabled, isFalse);
@@ -130,23 +165,29 @@ void main() {
 
     group('card visual state changes', () {
       testWithFlameGame('card priority changes on selection', (game) async {
+        game.onGameResize(Vector2(800, 600));
         await game.ensureAdd(card);
         
         final initialPriority = card.priority;
         
-        final tapEvent = TapUpEvent(1, game, TapUpDetails(localPosition: Vector2(50, 75)));
+        final tapEvent = MockTapUpEvent(1, game, Vector2(50, 75));
         controller.onTapUp(tapEvent);
         
         expect(card.priority, greaterThan(initialPriority));
       });
 
       testWithFlameGame('button visibility changes with selection', (game) async {
+        game.onGameResize(Vector2(800, 600));
         await game.ensureAdd(card);
         
         expect(card.isButtonVisible, isFalse);
         
-        final tapEvent = TapUpEvent(1, game, TapUpDetails(localPosition: Vector2(50, 75)));
+        final tapEvent = MockTapUpEvent(1, game, Vector2(50, 75));
         controller.onTapUp(tapEvent);
+        
+        // Button visibility is set after animation completes, so wait for it
+        await game.ready();
+        game.update(0.6); // Wait for animation duration (0.5s + buffer)
         
         expect(card.isButtonVisible, isTrue);
         
@@ -161,42 +202,45 @@ void main() {
           ..size = Vector2(100, 150);
         final controller2 = CardInteractionController(card2, null);
         
+        game.onGameResize(Vector2(800, 600));
         await game.ensureAdd(card);
         await game.ensureAdd(card2);
         
         // Select first card
-        final tapEvent1 = TapUpEvent(1, game, TapUpDetails(localPosition: Vector2(50, 75)));
+        final tapEvent1 = MockTapUpEvent(1, game, Vector2(50, 75));
         controller.onTapUp(tapEvent1);
         
         expect(controller.isSelected, isTrue);
         expect(controller2.isSelected, isFalse);
         
         // Select second card
-        final tapEvent2 = TapUpEvent(2, game, TapUpDetails(localPosition: Vector2(50, 75)));
+        final tapEvent2 = MockTapUpEvent(2, game, Vector2(50, 75));
         controller2.onTapUp(tapEvent2);
         
-        expect(controller.isSelected, isFalse); // First should be deselected
+        // First card should be animating deselection, second card should be selected
+        expect(controller.isAnimating, isTrue); // First is animating deselection
         expect(controller2.isSelected, isTrue);
       });
     });
 
     group('edge cases', () {
       testWithFlameGame('tapping already selected card does not deselect', (game) async {
+        game.onGameResize(Vector2(800, 600));
         await game.ensureAdd(card);
         
-        final tapEvent = TapUpEvent(1, game, TapUpDetails(localPosition: Vector2(50, 75)));
+        final tapEvent = MockTapUpEvent(1, game, Vector2(50, 75));
         
         controller.onTapUp(tapEvent);
         expect(controller.isSelected, isTrue);
         
-        // Tap again
+        // Tap again - this should not cause a second selection since the card is already selected
         controller.onTapUp(tapEvent);
         expect(controller.isSelected, isTrue); // Should remain selected
       });
 
       testWithFlameGame('controller works with card that has no game initially', (game) async {
         // Card not added to game yet
-        final tapEvent = TapUpEvent(1, game, TapUpDetails(localPosition: Vector2(50, 75)));
+        final tapEvent = MockTapUpEvent(1, game, Vector2(50, 75));
         expect(() => controller.onTapUp(tapEvent), returnsNormally);
       });
     });

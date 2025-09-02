@@ -22,9 +22,7 @@ void main() {
       });
 
       testWithFlameGame('creates with button press callback', (game) async {
-        bool callbackTriggered = false;
         final card = ActionableCard(cardModel, onButtonPressed: () {
-          callbackTriggered = true;
         });
         
         expect(card.cardModel, equals(cardModel));

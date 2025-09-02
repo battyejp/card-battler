@@ -118,13 +118,12 @@ class ButtonBackground extends PositionComponent with HasAncestor<FlatButton> {
     _paint.strokeWidth = 0.05 * size.y;
   }
 
-  late final _background = RRect.fromRectAndRadius(
+  @override
+  void render(Canvas canvas) {
+  late final background = RRect.fromRectAndRadius(
     size.toRect(),
     Radius.circular(cornerRadius),
   );
-
-  @override
-  void render(Canvas canvas) {
-    canvas.drawRRect(_background, _paint);
+    canvas.drawRRect(background, _paint);
   }
 }
