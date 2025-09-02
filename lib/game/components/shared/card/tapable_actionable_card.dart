@@ -6,7 +6,7 @@ class TapableActionableCard extends ActionableCard with TapCallbacks {
   CardInteractionController? _interaction;
   bool Function()? _determineIfButtonEnabled;
 
-  TapableActionableCard(super.cardModel, {bool Function()? determineIfButtonEnabled}) {
+  TapableActionableCard(super.cardModel, {super.onButtonPressed, bool Function()? determineIfButtonEnabled}) {
     _determineIfButtonEnabled = determineIfButtonEnabled;
   }
 

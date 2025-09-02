@@ -9,7 +9,7 @@ class ShopCard extends TapableActionableCard {
   late TextComponent _costTextComponent;
 
   ShopCard(this.shopCardModel, {bool Function()? determineIfButtonEnabled}) 
-    : super(shopCardModel,
+    : super(shopCardModel, onButtonPressed: shopCardModel.playCard,
         determineIfButtonEnabled: () => PlayerTurnModel.selectedPlayer != null && PlayerTurnModel.selectedPlayer!.infoModel.credits.value >= shopCardModel.cost);
 
   @override

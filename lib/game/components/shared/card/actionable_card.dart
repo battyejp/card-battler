@@ -7,7 +7,6 @@ class ActionableCard extends Card {
   late FlatButton _button;
   final Function()? onButtonPressed;
 
-  /// The label to display on the button
   @protected
   String get buttonLabel => "Play";
 
@@ -24,7 +23,7 @@ class ActionableCard extends Card {
   void onLoad() {
     super.onLoad();
     _button = addButton(buttonLabel, size.x / 2, () {
-      cardModel.playCard();    
+      onButtonPressed?.call();    
     });
     _button.isVisible = false;
   }
