@@ -2,9 +2,22 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flame/game.dart';
+import 'package:flutter/gestures.dart';
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/components/shared/card/actionable_card.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
+
+// Mock TapUpEvent that includes the local position directly
+class MockTapUpEvent extends TapUpEvent {
+  final Vector2 _mockLocalPosition;
+  
+  MockTapUpEvent(int pointerId, Game game, this._mockLocalPosition)
+      : super(pointerId, game, TapUpDetails(kind: PointerDeviceKind.touch));
+  
+  @override
+  Vector2 get localPosition => _mockLocalPosition;
+}
 
 void main() {
   group('CardInteractionController', () {
@@ -58,7 +71,7 @@ void main() {
         await game.ensureAdd(card);
         
         // Simulate selection by calling onTapUp
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent);
         
         // Wait for animation to complete
@@ -77,7 +90,7 @@ void main() {
         
         expect(controller.isSelected, isFalse);
         
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         final handled = controller.onTapUp(tapEvent);
         
         expect(handled, isTrue);
@@ -91,7 +104,7 @@ void main() {
         await game.ensureAdd(card);
         
         // First selection
-        final tapEvent1 = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent1 = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent1);
         
         expect(controller.isSelected, isTrue);
@@ -100,7 +113,7 @@ void main() {
         game.update(1.0);
         
         // Second tap on same card
-        final tapEvent2 = TapUpEvent(1, TapUpInfo(Vector2(50, 50), Vector2(50, 50)));
+        final tapEvent2 = MockTapUpEvent(1, game, Vector2(50, 50));
         final handled = controller.onTapUp(tapEvent2);
         
         expect(handled, isTrue);
@@ -116,14 +129,14 @@ void main() {
         await game.ensureAdd(card2);
         
         // Select first card
-        final tapEvent1 = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent1 = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent1);
         
         expect(controller.isSelected, isTrue);
         expect(CardInteractionController.selectedController, equals(controller));
         
         // Try to select second card
-        final tapEvent2 = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent2 = MockTapUpEvent(1, game, Vector2.zero());
         final handled = controller2.onTapUp(tapEvent2);
         
         expect(handled, isTrue);
@@ -136,13 +149,13 @@ void main() {
         await game.ensureAdd(card);
         
         // First selection
-        final tapEvent1 = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent1 = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent1);
         
         expect(controller.isAnimating, isTrue);
         
         // Try to tap again while animating
-        final tapEvent2 = TapUpEvent(1, TapUpInfo(Vector2(50, 50), Vector2(50, 50)));
+        final tapEvent2 = MockTapUpEvent(1, game, Vector2(50, 50));
         final handled = controller.onTapUp(tapEvent2);
         
         expect(handled, isTrue);
@@ -161,7 +174,7 @@ void main() {
         await game.ensureAdd(card2);
         
         // Select first card
-        final tapEvent1 = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent1 = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent1);
         
         // Complete first animation
@@ -171,7 +184,7 @@ void main() {
         expect(controller.isAnimating, isFalse);
         
         // Select second card
-        final tapEvent2 = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent2 = MockTapUpEvent(1, game, Vector2.zero());
         controller2.onTapUp(tapEvent2);
         
         expect(controller.isSelected, isFalse); // First card deselected
@@ -188,7 +201,7 @@ void main() {
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         testController.onTapUp(tapEvent);
         
         // Complete animation
@@ -204,7 +217,7 @@ void main() {
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         testController.onTapUp(tapEvent);
         
         // Complete animation
@@ -219,7 +232,7 @@ void main() {
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         testController.onTapUp(tapEvent);
         
         // Complete animation
@@ -236,7 +249,7 @@ void main() {
         
         expect(card.isButtonVisible, isFalse);
         
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent);
         
         expect(card.isButtonVisible, isFalse); // Still false during animation
@@ -252,7 +265,7 @@ void main() {
         card.priority = 5;
         await game.ensureAdd(card);
         
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent);
         
         expect(card.priority, equals(99999)); // High priority during selection
@@ -264,7 +277,7 @@ void main() {
         await game.ensureAdd(card);
         
         // Select card
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent);
         
         // Complete selection animation
@@ -288,7 +301,7 @@ void main() {
         await game.ensureAdd(card);
         
         // Select card
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent);
         
         // Complete selection animation
@@ -319,7 +332,7 @@ void main() {
         
         expect(controller.isAnimating, isFalse);
         
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent);
         
         expect(controller.isAnimating, isTrue);
@@ -335,7 +348,7 @@ void main() {
         await game.ensureAdd(card);
         
         // Select card
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent);
         
         // Complete selection
@@ -359,7 +372,7 @@ void main() {
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
         
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         
         // Multiple rapid taps
         expect(controller.onTapUp(tapEvent), isTrue);
@@ -375,7 +388,7 @@ void main() {
         await game.ensureAdd(card);
         
         // Select card
-        final tapEvent = TapUpEvent(1, TapUpInfo(Vector2.zero(), Vector2.zero()));
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent);
         
         expect(controller.isAnimating, isTrue);
