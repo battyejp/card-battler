@@ -35,7 +35,7 @@ class FlatButton extends ButtonComponent with HasVisibility {
              text: text,
              textRenderer: TextPaint(
                style: TextStyle(
-                 fontSize: 0.5 * size!.y,
+                 fontSize: (0.5 * size!.y).clamp(1.0, double.infinity),
                  fontWeight: FontWeight.bold,
                  color: const Color(0xffdbaf58),
                ),
@@ -68,7 +68,7 @@ class FlatButton extends ButtonComponent with HasVisibility {
       final textComponent = children.whereType<TextComponent>().first;
       textComponent.textRenderer = TextPaint(
         style: TextStyle(
-          fontSize: 0.5 * size.y,
+          fontSize: (0.5 * size.y).clamp(1.0, double.infinity),
           fontWeight: FontWeight.bold,
           color: Colors.grey.shade600,
         ),
@@ -85,7 +85,7 @@ class FlatButton extends ButtonComponent with HasVisibility {
       final textComponent = children.whereType<TextComponent>().first;
       textComponent.textRenderer = TextPaint(
         style: TextStyle(
-          fontSize: 0.5 * size.y,
+          fontSize: (0.5 * size.y).clamp(1.0, double.infinity),
           fontWeight: FontWeight.bold,
           color: const Color(0xffdbaf58),
         ),

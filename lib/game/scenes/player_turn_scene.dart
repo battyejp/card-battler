@@ -12,12 +12,16 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
 
   PlayerTurnScene({required PlayerTurnModel model, required Vector2 size})
       : _model = model,
-        _size = size {
-    _loadGameComponents();
-  }
+        _size = size;
 
   static const double margin = 20.0;
   static const double topLayoutHeightFactor = 0.6;
+
+  @override
+  Future<void> onMount() async {
+    super.onMount();
+    _loadGameComponents();
+  }
 
   void _loadGameComponents() {
     final availableHeight = _size.y - (margin * 2);
