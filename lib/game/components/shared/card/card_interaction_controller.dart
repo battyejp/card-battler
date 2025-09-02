@@ -1,9 +1,8 @@
+import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
-
 import 'actionable_card.dart';
-
 
 class CardInteractionController {
   CardInteractionController(this.card, bool Function()? determineIfButtonEnabled) {
@@ -88,7 +87,7 @@ class CardInteractionController {
 
     moveEffect.onComplete = () {
       _isAnimating = false;
-      card.isButtonVisible = true;
+      card.isButtonVisible = GameStateModel.instance.currentPhase != GamePhase.setup;
       card.buttonDisabled = buttonDisabled;
     };
 

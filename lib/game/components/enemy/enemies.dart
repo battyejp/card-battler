@@ -15,17 +15,6 @@ class Enemies extends PositionComponent {
 
   @override
   void onLoad() {
-    // Create text component with correct styling and positioning
-    _textComponent = TextComponent(
-      text: _model.displayText,
-      textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 20, color: Colors.white),
-      ),
-      anchor: Anchor.center,
-    );
-    _textComponent.position = Vector2(size.x / 2, 20);
-    add(_textComponent);
-
     final cardWidth = size.x * enemyWidthFactor;
     final cardHeight = size.y * enemyHeightFactor;
     final totalCardsWidth = _model.maxNumberOfEnemiesInPlay * cardWidth;
@@ -45,6 +34,16 @@ class Enemies extends PositionComponent {
       _enemyComponents.add(enemyComponent);
       add(enemyComponent);
     }
+
+    _textComponent = TextComponent(
+      text: _model.displayText,
+      textRenderer: TextPaint(
+        style: const TextStyle(fontSize: 20, color: Colors.white),
+      ),
+      anchor: Anchor.center,
+    );
+    _textComponent.position = Vector2(size.x / 2, size.y - size.y * 0.1);
+    add(_textComponent);
   }
 
   @override

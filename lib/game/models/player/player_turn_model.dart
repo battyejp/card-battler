@@ -12,8 +12,6 @@ class PlayerTurnModel {
   final EnemiesModel enemiesModel;
   final ShopModel shopModel;
 
-  static PlayerModel? selectedPlayer;
-
   PlayerTurnModel({
     required this.playerModel,
     required this.teamModel,

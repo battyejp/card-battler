@@ -14,10 +14,6 @@ class Info extends PositionComponent {
   Info(this.model);
 
   @override
-  bool get debugMode => true;
-  
-
-  @override
   void onLoad() {
     super.onLoad();
 

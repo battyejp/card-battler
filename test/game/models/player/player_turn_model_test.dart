@@ -1,3 +1,4 @@
+import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
@@ -22,8 +23,8 @@ void main() {
     late PlayerTurnModel playerTurnModel;
 
     setUp(() {
-      PlayerTurnModel.selectedPlayer = null;
-      
+      GameStateModel.instance.selectedPlayer = null;
+
       final infoModel = InfoModel(
         attack: ValueImageLabelModel(value: 50, label: 'Attack'),
         credits: ValueImageLabelModel(value: 100, label: 'Credits'),
@@ -81,7 +82,7 @@ void main() {
       });
 
       test('selectedPlayer starts as null', () {
-        expect(PlayerTurnModel.selectedPlayer, isNull);
+        expect(GameStateModel.instance.selectedPlayer, isNull);
       });
     });
 
@@ -223,13 +224,13 @@ void main() {
           discardModel: CardPileModel.empty(),
         );
 
-        PlayerTurnModel.selectedPlayer = newPlayer;
-        expect(PlayerTurnModel.selectedPlayer, equals(newPlayer));
+        GameStateModel.instance.selectedPlayer = newPlayer;
+        expect(GameStateModel.instance.selectedPlayer, equals(newPlayer));
       });
 
       test('can be set to null', () {
-        PlayerTurnModel.selectedPlayer = null;
-        expect(PlayerTurnModel.selectedPlayer, isNull);
+        GameStateModel.instance.selectedPlayer = null;
+        expect(GameStateModel.instance.selectedPlayer, isNull);
       });
     });
   });
