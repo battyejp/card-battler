@@ -201,7 +201,7 @@ void main() {
     });
 
     group('selection with different cards', () {
-      testWithFlameGame('selecting new card deselects previous card', (game) async {
+      testWithFlameGame('tapping different card when one is selected is ignored', (game) async {
         final card2 = ActionableCard(cardModel);
         final controller2 = CardInteractionController(card2, null);
         
@@ -220,18 +220,16 @@ void main() {
         
         expect(controller.isSelected, isTrue);
         expect(controller.isAnimating, isFalse);
+        expect(CardInteractionController.selectedController, equals(controller));
         
-        // Select second card
+        // Try to select second card - should be ignored
         final tapEvent2 = MockTapUpEvent(1, game, Vector2.zero());
-        controller2.onTapUp(tapEvent2);
+        final handled = controller2.onTapUp(tapEvent2);
         
-        // Complete animation for the second selection and first deselection
-        game.update(1.0); // Complete selection animation for second card
-        game.update(1.0); // Complete deselection animation for first card
-        
-        expect(controller.isSelected, isFalse); // First card deselected
-        expect(controller2.isSelected, isTrue); // Second card selected
-        expect(CardInteractionController.selectedController, equals(controller2));
+        expect(handled, isTrue);
+        expect(controller.isSelected, isTrue); // First card still selected
+        expect(controller2.isSelected, isFalse); // Second card not selected
+        expect(CardInteractionController.selectedController, equals(controller)); // First card still selected
         
         // Manual cleanup
         CardInteractionController.deselectAny();
@@ -447,29 +445,6 @@ void main() {
         
         expect(controller.isSelected, isTrue);
         expect(controller.isAnimating, isTrue);
-      });
-
-      testWithFlameGame('deselection during animation is ignored', (game) async {
-        game.onGameResize(Vector2(800, 600));
-        card.size = Vector2(100, 150);
-        await game.ensureAdd(card);
-        
-        // Select card
-        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
-        controller.onTapUp(tapEvent);
-        
-        expect(controller.isAnimating, isTrue);
-        
-        // Try to deselect during animation - should be ignored
-        CardInteractionController.deselectAny();
-        
-        expect(controller.isSelected, isTrue); // Still selected
-        expect(controller.isAnimating, isTrue); // Still animating selection
-        
-        // Manual cleanup - wait for animation to finish
-        game.update(1.0);
-        CardInteractionController.deselectAny();
-        game.update(1.0);
       });
     });
   });
