@@ -31,7 +31,7 @@ class ShopModel with ReactiveModel<ShopModel> {
       }
     }
 
-    for(final card in _selectableCards) {
+    for (final card in _selectableCards) {
       card.onCardPlayed = () => _onCardPlayed(card);
     }
   }

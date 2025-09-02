@@ -42,7 +42,7 @@ class PlayerTurnModel {
 
   void applyCardEffects(CardModel card) {
   for (final effect in card.effects) {
-    switch (effect.type) {     
+    switch (effect.type) {  
       case EffectType.attack:
         // Handle attack effect
         break;

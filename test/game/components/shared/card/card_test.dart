@@ -105,7 +105,7 @@ void main() {
 
         await game.ensureAdd(card);
 
-        expect(card.children.length, equals(2)); // 1 text component + 1 button // only back text component
+        expect(card.children.length, equals(2));
         expect(card.cardModel.isFaceUp, equals(false));
       });
 
@@ -115,7 +115,7 @@ void main() {
 
         await game.ensureAdd(card);
 
-        expect(card.children.length, equals(2)); // 1 text component + 1 button // only name component
+        expect(card.children.length, equals(2));
         
         final textComponent = card.children.whereType<TextComponent>().first;
         expect(textComponent.text, equals('Fire Ball'));
@@ -127,7 +127,7 @@ void main() {
 
         await game.ensureAdd(card);
 
-        expect(card.children.length, equals(2)); // 1 text component + 1 button // only back text
+        expect(card.children.length, equals(2));
         
         final textComponent = card.children.whereType<TextComponent>().first;
         expect(textComponent.text, equals('Back'));
@@ -141,7 +141,7 @@ void main() {
 
         await game.ensureAdd(card);
 
-        expect(card.children.length, equals(2)); // 1 text component + 1 button
+        expect(card.children.length, equals(2));
         expect(card.cardModel.name, equals('Render Test'));
       });
     });

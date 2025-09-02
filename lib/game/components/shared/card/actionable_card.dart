@@ -23,7 +23,7 @@ class ActionableCard extends Card {
   void onLoad() {
     super.onLoad();
     _button = addButton(buttonLabel, size.x / 2, () {
-      onButtonPressed?.call();    
+      onButtonPressed?.call();
     });
     _button.isVisible = false;
   }
