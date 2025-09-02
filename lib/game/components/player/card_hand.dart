@@ -23,9 +23,7 @@ class CardHand extends ReactivePositionComponent<CardHandModel> {
       final cardPosition = Vector2(startX + (i * (cardWidth + spacing)), (size.y - cardHeight) / 2);
       var cardModel = model.cards[i];
 
-      final card = TapableActionableCard(cardModel, onButtonPressed: () {
-        cardModel.playCard();
-      })
+      final card = TapableActionableCard(cardModel)
         ..size = Vector2(cardWidth, cardHeight)
         ..position = cardPosition;
 

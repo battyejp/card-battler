@@ -26,8 +26,8 @@ class ActionableCard extends Card {
   void onLoad() {
     super.onLoad();
     _button = addButton(buttonLabel, size.x / 2, () {
-      // Handle button press
-      onButtonPressed?.call();
+      cardModel.playCard();
+      
     });
     _button.isVisible = false;
   }
