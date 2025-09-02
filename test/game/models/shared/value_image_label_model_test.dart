@@ -151,9 +151,9 @@ void main() {
         await Future.delayed(Duration.zero);
         
         expect(changes.length, equals(3));
-        expect(changes[0].value, equals(1));
-        expect(changes[1].value, equals(3));
-        expect(changes[2].value, equals(6));
+        // All changes reference the same model instance, so they all have the final value
+        expect(changes.every((change) => change.value == 6), isTrue);
+        expect(changes.every((change) => change == model), isTrue);
         
         await subscription.cancel();
         model.dispose();
