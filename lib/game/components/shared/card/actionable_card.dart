@@ -15,6 +15,8 @@ class ActionableCard extends Card {
   @protected
   bool get buttonDisabled => false;
 
+  set buttonDisabled(bool value) => _button.disabled = value;
+
   ActionableCard(super.cardModel, {this.onButtonPressed});
 
   bool get isButtonVisible => _button.isVisible;

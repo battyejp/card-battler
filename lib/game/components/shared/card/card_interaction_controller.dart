@@ -6,8 +6,11 @@ import 'actionable_card.dart';
 
 
 class CardInteractionController {
-  CardInteractionController(this.card);
+  CardInteractionController(this.card, bool Function()? determineIfButtonEnabled) {
+    _determineIfButtonEnabled = determineIfButtonEnabled;
+  }
 
+  bool Function()? _determineIfButtonEnabled;
   final ActionableCard card;
 
   static CardInteractionController? _selectedController;
@@ -84,6 +87,7 @@ class CardInteractionController {
     moveEffect.onComplete = () {
       _isAnimating = false;
       card.isButtonVisible = true;
+      card.buttonDisabled = _determineIfButtonEnabled == null ? false : !_determineIfButtonEnabled!();
     };
 
     card.add(moveEffect);

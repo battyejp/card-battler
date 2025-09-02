@@ -9,10 +9,16 @@ class PlayerTurnModel {
   final EnemiesModel enemiesModel;
   final ShopModel shopModel;
 
+  static PlayerModel? _selectedPlayer;
+
+  static PlayerModel? get selectedPlayer => _selectedPlayer;
+
   PlayerTurnModel({
     required this.playerModel,
     required this.teamModel,
     required this.enemiesModel,
     required this.shopModel,
-  });
+  }) {
+    _selectedPlayer ??= playerModel;
+  }
 }

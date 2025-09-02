@@ -4,8 +4,11 @@ import 'package:flame/events.dart';
 
 class TapableActionableCard extends ActionableCard with TapCallbacks {
   CardInteractionController? _interaction;
+  bool Function()? _determineIfButtonEnabled;
 
-  TapableActionableCard(super.cardModel, {super.onButtonPressed});
+  TapableActionableCard(super.cardModel, {super.onButtonPressed, bool Function()? determineIfButtonEnabled}) {
+    _determineIfButtonEnabled = determineIfButtonEnabled;
+  }
 
   @override
   bool onTapUp(TapUpEvent event) => _interaction?.onTapUp(event) ?? false;
@@ -13,6 +16,6 @@ class TapableActionableCard extends ActionableCard with TapCallbacks {
   @override
   void onLoad() {
     super.onLoad();
-    _interaction = CardInteractionController(this);
+    _interaction = CardInteractionController(this, _determineIfButtonEnabled);
   }
 }
