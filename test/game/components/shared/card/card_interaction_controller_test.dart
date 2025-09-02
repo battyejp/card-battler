@@ -226,6 +226,10 @@ void main() {
         final tapEvent2 = MockTapUpEvent(1, game, Vector2.zero());
         controller2.onTapUp(tapEvent2);
         
+        // Complete animation for the second selection and first deselection
+        game.update(1.0); // Complete selection animation for second card
+        game.update(1.0); // Complete deselection animation for first card
+        
         expect(controller.isSelected, isFalse); // First card deselected
         expect(controller2.isSelected, isTrue); // Second card selected
         expect(CardInteractionController.selectedController, equals(controller2));
@@ -462,6 +466,11 @@ void main() {
         
         expect(controller.isSelected, isTrue); // Still selected
         expect(controller.isAnimating, isTrue); // Still animating selection
+        
+        // Manual cleanup - wait for animation to finish
+        game.update(1.0);
+        CardInteractionController.deselectAny();
+        game.update(1.0);
       });
     });
   });

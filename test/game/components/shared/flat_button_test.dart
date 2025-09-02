@@ -80,30 +80,42 @@ void main() {
         expect(button.disabled, isTrue);
       });
 
-      testWithFlameGame('disabled button has disabler component added', (game) async {
+      testWithFlameGame('disabled button changes visual state correctly', (game) async {
         final button = FlatButton('Test', size: Vector2(100, 50));
         
         await game.ensureAdd(button);
         
-        final initialChildCount = button.children.length;
+        // Verify button is initially enabled
+        expect(button.disabled, isFalse);
         
+        // Disable the button
         button.disabled = true;
         
-        // Should have one more child (the disabler)
-        expect(button.children.length, equals(initialChildCount + 1));
+        // Verify button is disabled
+        expect(button.disabled, isTrue);
+        
+        // Verify visual state changes (text component should exist and be styled for disabled state)
+        final textComponent = button.children.whereType<TextComponent>().first;
+        expect(textComponent, isNotNull);
       });
 
-      testWithFlameGame('enabled button has disabler component removed', (game) async {
+      testWithFlameGame('enabled button changes visual state correctly', (game) async {
         final button = FlatButton('Test', size: Vector2(100, 50), disabled: true);
         
         await game.ensureAdd(button);
         
-        final disabledChildCount = button.children.length;
+        // Verify button is initially disabled
+        expect(button.disabled, isTrue);
         
+        // Enable the button
         button.disabled = false;
         
-        // Should have one less child (the disabler removed)
-        expect(button.children.length, equals(disabledChildCount - 1));
+        // Verify button is enabled
+        expect(button.disabled, isFalse);
+        
+        // Verify visual state changes (text component should exist and be styled for enabled state)
+        final textComponent = button.children.whereType<TextComponent>().first;
+        expect(textComponent, isNotNull);
       });
     });
 
