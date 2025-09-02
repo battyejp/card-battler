@@ -36,13 +36,13 @@ class ShopModel with ReactiveModel<ShopModel> {
     }
   }
 
-  void _onCardPlayed(CardModel card) {
+  void _onCardPlayed(ShopCardModel card) {
     card.onCardPlayed = null;
     cardPlayed?.call(card);
   }
 
   /// Removes a specific card from the hand
-  void removeSelectableCardFromShop(CardModel card) {
+  void removeSelectableCardFromShop(ShopCardModel card) {
     _selectableCards.remove(card);
     notifyChange();
   }

@@ -2,6 +2,7 @@ import 'package:card_battler/game/components/shared/card/card_interaction_contro
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 
@@ -25,8 +26,14 @@ class PlayerTurnModel {
 
   void onCardPlayed(CardModel card) {
     card.isFaceUp = false;
-    playerModel.handModel.removeCard(card);
-    shopModel.removeSelectableCardFromShop(card);
+
+    if (card is ShopCardModel) {
+      shopModel.removeSelectableCardFromShop(card);
+      playerModel.infoModel.credits.changeValue(-card.cost);
+    } else {
+      playerModel.handModel.removeCard(card);
+    }
+
     playerModel.discardModel.addCard(card);
     CardInteractionController.deselectAny();
 
