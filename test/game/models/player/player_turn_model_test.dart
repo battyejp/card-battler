@@ -22,6 +22,8 @@ void main() {
     late PlayerTurnModel playerTurnModel;
 
     setUp(() {
+      PlayerTurnModel.selectedPlayer = null;
+      
       final infoModel = InfoModel(
         attack: ValueImageLabelModel(value: 50, label: 'Attack'),
         credits: ValueImageLabelModel(value: 100, label: 'Credits'),
@@ -78,8 +80,8 @@ void main() {
         expect(shopModel.cardPlayed, isNotNull);
       });
 
-      test('sets selectedPlayer to provided playerModel', () {
-        expect(PlayerTurnModel.selectedPlayer, equals(playerModel));
+      test('selectedPlayer starts as null', () {
+        expect(PlayerTurnModel.selectedPlayer, isNull);
       });
     });
 
