@@ -285,6 +285,10 @@ void main() {
         game.update(1.0);
         
         expect(card.buttonDisabled, isFalse);
+        
+        // Manual cleanup
+        CardInteractionController.deselectAny();
+        game.update(1.0);
       });
     });
 
@@ -305,6 +309,10 @@ void main() {
         game.update(1.0);
         
         expect(card.isButtonVisible, isTrue); // Now visible after animation
+        
+        // Manual cleanup
+        CardInteractionController.deselectAny();
+        game.update(1.0);
       });
 
       testWithFlameGame('card priority is increased during selection', (game) async {
@@ -316,6 +324,10 @@ void main() {
         controller.onTapUp(tapEvent);
         
         expect(card.priority, equals(99999)); // High priority during selection
+        
+        // Manual cleanup
+        CardInteractionController.deselectAny();
+        game.update(1.0);
       });
 
       testWithFlameGame('card priority is restored after deselection', (game) async {
