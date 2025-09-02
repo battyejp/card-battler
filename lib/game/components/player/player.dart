@@ -29,7 +29,6 @@ class Player extends PositionComponent {
 
     _deck = CardDeck(_playerModel.deckModel, onTap: () => {
       _playerModel.drawCardsFromDeck(),
-      //onCardsDrawn?.call()
     })
       ..size = Vector2(size.x * pileWidthFactor, size.y);
 

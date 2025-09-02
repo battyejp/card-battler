@@ -244,6 +244,90 @@ void main() {
           expect(cardHand.cards.map((c) => c.name).toList(), equals(['First', 'Second', 'Third']));
         });
       });
+
+      group('removeCard', () {
+        test('removes specific card from hand', () {
+          final cardHand = CardHandModel();
+          final card1 = CardModel(name: 'Card 1', type: 'Player');
+          final card2 = CardModel(name: 'Card 2', type: 'Player');
+          final card3 = CardModel(name: 'Card 3', type: 'Player');
+          
+          cardHand.addCards([card1, card2, card3]);
+          expect(cardHand.cards.length, equals(3));
+          
+          cardHand.removeCard(card2);
+          
+          expect(cardHand.cards.length, equals(2));
+          expect(cardHand.cards.contains(card2), isFalse);
+          expect(cardHand.cards.contains(card1), isTrue);
+          expect(cardHand.cards.contains(card3), isTrue);
+        });
+
+        test('removing non-existent card does not affect hand', () {
+          final cardHand = CardHandModel();
+          final card1 = CardModel(name: 'Card 1', type: 'Player');
+          final card2 = CardModel(name: 'Card 2', type: 'Player');
+          final nonExistentCard = CardModel(name: 'Not in hand', type: 'Player');
+          
+          cardHand.addCards([card1, card2]);
+          final initialCount = cardHand.cards.length;
+          
+          cardHand.removeCard(nonExistentCard);
+          
+          expect(cardHand.cards.length, equals(initialCount));
+          expect(cardHand.cards.contains(card1), isTrue);
+          expect(cardHand.cards.contains(card2), isTrue);
+        });
+
+        test('removing card from empty hand does nothing', () {
+          final cardHand = CardHandModel();
+          final card = CardModel(name: 'Test Card', type: 'Player');
+          
+          expect(cardHand.cards.isEmpty, isTrue);
+          
+          cardHand.removeCard(card);
+          
+          expect(cardHand.cards.isEmpty, isTrue);
+        });
+
+        test('removing first card works correctly', () {
+          final cardHand = CardHandModel();
+          final card1 = CardModel(name: 'First', type: 'Player');
+          final card2 = CardModel(name: 'Second', type: 'Player');
+          
+          cardHand.addCards([card1, card2]);
+          
+          cardHand.removeCard(card1);
+          
+          expect(cardHand.cards.length, equals(1));
+          expect(cardHand.cards.first, equals(card2));
+        });
+
+        test('removing last card works correctly', () {
+          final cardHand = CardHandModel();
+          final card1 = CardModel(name: 'First', type: 'Player');
+          final card2 = CardModel(name: 'Last', type: 'Player');
+          
+          cardHand.addCards([card1, card2]);
+          
+          cardHand.removeCard(card2);
+          
+          expect(cardHand.cards.length, equals(1));
+          expect(cardHand.cards.first, equals(card1));
+        });
+
+        test('removing only card empties hand', () {
+          final cardHand = CardHandModel();
+          final card = CardModel(name: 'Only Card', type: 'Player');
+          
+          cardHand.addCard(card);
+          expect(cardHand.cards.length, equals(1));
+          
+          cardHand.removeCard(card);
+          
+          expect(cardHand.cards.isEmpty, isTrue);
+        });
+      });
     });
   });
 }

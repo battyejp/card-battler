@@ -74,12 +74,14 @@ void main() {
         final model = ValueImageLabelModel(value: 10, label: 'Health');
         model.changeValue(5);
         expect(model.display, equals('Health: 15'));
+        expect(model.value, equals(15));
       });
 
       test('decreases value with negative delta', () {
         final model = ValueImageLabelModel(value: 10, label: 'Mana');
         model.changeValue(-3);
         expect(model.display, equals('Mana: 7'));
+        expect(model.value, equals(7));
       });
 
       test('handles zero delta without changing value', () {
@@ -118,6 +120,78 @@ void main() {
         
         model.changeValue(-100);
         expect(model.display, contains('$originalLabel:'));
+      });
+
+      test('changeValue triggers notifyChange', () async {
+        final model = ValueImageLabelModel(value: 10, label: 'Test');
+        
+        final changes = <ValueImageLabelModel>[];
+        final subscription = model.changes.listen(changes.add);
+        
+        model.changeValue(5);
+        await Future.delayed(Duration.zero);
+        
+        expect(changes.length, equals(1));
+        expect(changes.first, equals(model));
+        expect(changes.first.value, equals(15));
+        
+        await subscription.cancel();
+        model.dispose();
+      });
+
+      test('multiple changeValue calls trigger multiple notifications', () async {
+        final model = ValueImageLabelModel(value: 0, label: 'Counter');
+        
+        final changes = <ValueImageLabelModel>[];
+        final subscription = model.changes.listen(changes.add);
+        
+        model.changeValue(1);
+        model.changeValue(2);
+        model.changeValue(3);
+        await Future.delayed(Duration.zero);
+        
+        expect(changes.length, equals(3));
+        // All changes reference the same model instance, so they all have the final value
+        expect(changes.every((change) => change.value == 6), isTrue);
+        expect(changes.every((change) => change == model), isTrue);
+        
+        await subscription.cancel();
+        model.dispose();
+      });
+    });
+
+    group('value getter', () {
+      test('returns current value correctly', () {
+        final model = ValueImageLabelModel(value: 42, label: 'Test');
+        expect(model.value, equals(42));
+      });
+
+      test('value updates when changeValue is called', () {
+        final model = ValueImageLabelModel(value: 0, label: 'Counter');
+        
+        model.changeValue(10);
+        expect(model.value, equals(10));
+        
+        model.changeValue(-5);
+        expect(model.value, equals(5));
+        
+        model.changeValue(20);
+        expect(model.value, equals(25));
+      });
+
+      test('value and display stay synchronized', () {
+        final model = ValueImageLabelModel(value: 100, label: 'Sync Test');
+        
+        expect(model.value, equals(100));
+        expect(model.display, equals('Sync Test: 100'));
+        
+        model.changeValue(50);
+        expect(model.value, equals(150));
+        expect(model.display, equals('Sync Test: 150'));
+        
+        model.changeValue(-200);
+        expect(model.value, equals(-50));
+        expect(model.display, equals('Sync Test: -50'));
       });
     });
 

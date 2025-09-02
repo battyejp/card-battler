@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 
@@ -10,8 +11,11 @@ class PlayerModel {
   final CardHandModel _handModel;
   final CardPileModel _deckModel;
   final CardPileModel _discardModel;
+
   static const cardsToDrawOnTap = 5;
+
   VoidCallback? onCardsDrawn;
+  Function(CardModel)? cardPlayed;
 
   PlayerModel({
     required InfoModel infoModel,
@@ -39,10 +43,16 @@ class PlayerModel {
     if (drawnCards.isNotEmpty) {
       for (final card in drawnCards) {
         card.isFaceUp = true;
+        card.onCardPlayed = () => _onCardPlayed(card);
       }
       _handModel.addCards(drawnCards);
     }
 
     onCardsDrawn?.call();
+  }
+
+  void _onCardPlayed(CardModel card) {
+    card.onCardPlayed = null;
+    cardPlayed?.call(card);
   }
 }

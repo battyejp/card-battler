@@ -107,5 +107,100 @@ void main() {
         expect(playerModel.discardModel.hasNoCards, isTrue);
       });
     });
+
+    group('drawCardsFromDeck functionality', () {
+      test('sets onCardPlayed callback on drawn cards', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+        );
+
+        playerModel.drawCardsFromDeck();
+
+        for (final card in playerModel.handModel.cards) {
+          expect(card.onCardPlayed, isNotNull);
+        }
+      });
+
+      test('drawn cards trigger cardPlayed callback when played', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+        );
+
+        CardModel? playedCard;
+        playerModel.cardPlayed = (card) => playedCard = card;
+
+        playerModel.drawCardsFromDeck();
+        
+        final drawnCard = playerModel.handModel.cards.first;
+        drawnCard.onCardPlayed?.call();
+
+        expect(playedCard, equals(drawnCard));
+      });
+
+      test('onCardPlayed callback is cleared after card is played', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+        );
+
+        playerModel.drawCardsFromDeck();
+        
+        final drawnCard = playerModel.handModel.cards.first;
+        expect(drawnCard.onCardPlayed, isNotNull);
+
+        playerModel.cardPlayed = (card) {};
+        drawnCard.onCardPlayed?.call();
+
+        expect(drawnCard.onCardPlayed, isNull);
+      });
+    });
+
+    group('cardPlayed callback functionality', () {
+      test('cardPlayed callback can be set and called', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+        );
+
+        CardModel? receivedCard;
+        playerModel.cardPlayed = (card) => receivedCard = card;
+
+        final testCard = CardModel(name: 'Test Card', type: 'test');
+        playerModel.cardPlayed?.call(testCard);
+
+        expect(receivedCard, equals(testCard));
+      });
+
+      test('multiple cards can be played through callback', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+        );
+
+        final playedCards = <CardModel>[];
+        playerModel.cardPlayed = (card) => playedCards.add(card);
+
+        final card1 = CardModel(name: 'Card 1', type: 'test');
+        final card2 = CardModel(name: 'Card 2', type: 'test');
+
+        playerModel.cardPlayed?.call(card1);
+        playerModel.cardPlayed?.call(card2);
+
+        expect(playedCards.length, equals(2));
+        expect(playedCards, containsAll([card1, card2]));
+      });
+    });
   });
 }

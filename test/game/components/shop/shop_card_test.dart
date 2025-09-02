@@ -26,7 +26,7 @@ void main() {
 
         await game.ensureAdd(card);
 
-        expect(card.children.length, equals(2));
+        expect(card.children.length, equals(3)); // 2 text components + 1 button
         expect(card.children.whereType<TextComponent>().length, equals(2));
         
         final textComponents = card.children.whereType<TextComponent>().toList();
@@ -75,7 +75,7 @@ void main() {
 
         await game.ensureAdd(card);
 
-        expect(card.children.length, equals(2)); // name and cost components
+        expect(card.children.length, equals(3)); // name and cost components + button
         expect(card.cardModel.isFaceUp, equals(true));
       });
 
@@ -85,7 +85,7 @@ void main() {
 
         await game.ensureAdd(card);
 
-        expect(card.children.length, equals(2)); // name and cost components
+        expect(card.children.length, equals(3)); // name and cost components + button
         
         final textComponents = card.children.whereType<TextComponent>().toList();
         final nameComponent = textComponents.firstWhere((c) => c.text == 'Fire Ball');
@@ -101,7 +101,7 @@ void main() {
 
         await game.ensureAdd(card);
 
-        expect(card.children.length, equals(1)); // only back text
+        expect(card.children.length, equals(2)); // back text + button
         
         final textComponents = card.children.whereType<TextComponent>().toList();
         expect(textComponents.first.text, equals('Back'));

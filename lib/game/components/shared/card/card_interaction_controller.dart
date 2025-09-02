@@ -2,19 +2,23 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 
-import 'card.dart';
+import 'actionable_card.dart';
 
 
 class CardInteractionController {
-  CardInteractionController(this.card);
+  CardInteractionController(this.card, bool Function()? determineIfButtonEnabled) {
+    _determineIfButtonEnabled = determineIfButtonEnabled;
+  }
 
-  final Card card;
+  bool Function()? _determineIfButtonEnabled;
+  final ActionableCard card;
 
   static CardInteractionController? _selectedController;
 
   bool _isSelected = false;
   bool _isAnimating = false;
   Vector2 _originalPos = Vector2.zero();
+  int _originalPriority = 0;
   final double _animationSpeed = 0.5;
   final double _scaleFactor = 2.5;
 
@@ -53,9 +57,7 @@ class CardInteractionController {
     _isSelected = true;
     _isAnimating = true;
 
-    // // Notify selection manager via callback.
-    // card.onSelectionChanged?.call(card);
-
+    _originalPriority = card.priority;
     card.priority = 99999;
 
     final gameSize = card.findGame()?.size;
@@ -82,7 +84,13 @@ class CardInteractionController {
       EffectController(duration: _animationSpeed),
     );
 
-    moveEffect.onComplete = () => _isAnimating = false;
+    var buttonDisabled = _determineIfButtonEnabled == null ? false : !_determineIfButtonEnabled!();
+
+    moveEffect.onComplete = () {
+      _isAnimating = false;
+      card.isButtonVisible = true;
+      card.buttonDisabled = buttonDisabled;
+    };
 
     card.add(moveEffect);
     card.add(scaleEffect);
@@ -94,6 +102,8 @@ class CardInteractionController {
     _isSelected = false;
     _isAnimating = true;
     _selectedController = null;
+    card.isButtonVisible = false;
+    card.priority = _originalPriority;
 
     final moveEffect = MoveEffect.to(
       _originalPos,

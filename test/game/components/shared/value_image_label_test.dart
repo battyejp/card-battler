@@ -40,14 +40,13 @@ void main() {
       });
     });
 
-    group('text component creation', () {
+    group('text component creation and display', () {
       testWithFlameGame('creates text component on load', (game) async {
         final model = ValueImageLabelModel(value: 42, label: 'Answer');
         final label = ValueImageLabel(model);
 
         await game.ensureAdd(label);
 
-        // Should have a text component child
         final textComponents = label.children.whereType<TextComponent>().toList();
         expect(textComponents.length, equals(1));
       });
@@ -87,6 +86,30 @@ void main() {
         final textComponents = label.children.whereType<TextComponent>().toList();
         expect(textComponents.length, equals(1));
       });
+
+      testWithFlameGame('preserves text component positioning and styling', (game) async {
+        final model = ValueImageLabelModel(value: 42, label: 'Answer');
+        final component = ValueImageLabel(model)..size = Vector2(200, 100);
+        
+        await game.ensureAdd(component);
+        
+        final textComponent = component.children.whereType<TextComponent>().first;
+        
+        // Verify positioning (should be centered)
+        expect(textComponent.anchor, equals(Anchor.topLeft));
+        expect(textComponent.position.x, equals(100.0)); // size.x / 2
+        expect(textComponent.position.y, equals(50.0));  // size.y / 2
+        
+        // Update value and verify positioning is preserved
+        model.changeValue(8);
+        await game.ready(); // Wait for reactive update
+        
+        final updatedTextComponent = component.children.whereType<TextComponent>().first;
+        expect(updatedTextComponent.anchor, equals(Anchor.topLeft));
+        expect(updatedTextComponent.position.x, equals(100.0));
+        expect(updatedTextComponent.position.y, equals(50.0));
+        expect(updatedTextComponent.text, equals('Answer: 50'));
+      });
     });
 
     group('display updates', () {
@@ -106,30 +129,50 @@ void main() {
         expect(textComponent.text, equals('Energy: 75'));
       });
 
-      testWithFlameGame('handles negative values in display', (game) async {
-        final model = ValueImageLabelModel(value: 10, label: 'Temperature');
-        final label = ValueImageLabel(model);
-
-        await game.ensureAdd(label);
-
-        model.changeValue(-30);
-        label.updateDisplay();
-
-        final textComponent = label.children.whereType<TextComponent>().first;
-        expect(textComponent.text, equals('Temperature: -20'));
+      testWithFlameGame('text component reflects model changes immediately', (game) async {
+        final model = ValueImageLabelModel(value: 100, label: 'Gold');
+        final component = ValueImageLabel(model)..size = Vector2(100, 50);
+        
+        await game.ensureAdd(component);
+        
+        // Verify initial text
+        var textComponent = component.children.whereType<TextComponent>().first;
+        expect(textComponent.text, equals('Gold: 100'));
+        
+        // Change value and verify update
+        model.changeValue(-50);
+        await game.ready(); // Wait for reactive update
+        textComponent = component.children.whereType<TextComponent>().first;
+        expect(textComponent.text, equals('Gold: 50'));
+        
+        // Another change
+        model.changeValue(25);
+        await game.ready(); // Wait for reactive update
+        textComponent = component.children.whereType<TextComponent>().first;
+        expect(textComponent.text, equals('Gold: 75'));
       });
 
-      testWithFlameGame('handles zero values in display', (game) async {
-        final model = ValueImageLabelModel(value: 100, label: 'Lives');
-        final label = ValueImageLabel(model);
-
-        await game.ensureAdd(label);
-
-        model.changeValue(-100);
-        label.updateDisplay();
-
-        final textComponent = label.children.whereType<TextComponent>().first;
-        expect(textComponent.text, equals('Lives: 0'));
+      testWithFlameGame('handles zero and negative values correctly', (game) async {
+        final model = ValueImageLabelModel(value: 0, label: 'Balance');
+        final component = ValueImageLabel(model)..size = Vector2(100, 50);
+        
+        await game.ensureAdd(component);
+        
+        // Initial zero value
+        var textComponent = component.children.whereType<TextComponent>().first;
+        expect(textComponent.text, equals('Balance: 0'));
+        
+        // Negative value
+        model.changeValue(-10);
+        await game.ready(); // Wait for reactive update
+        textComponent = component.children.whereType<TextComponent>().first;
+        expect(textComponent.text, equals('Balance: -10'));
+        
+        // Back to positive
+        model.changeValue(20);
+        await game.ready(); // Wait for reactive update
+        textComponent = component.children.whereType<TextComponent>().first;
+        expect(textComponent.text, equals('Balance: 10'));
       });
 
       testWithFlameGame('handles large values in display', (game) async {
@@ -140,6 +183,26 @@ void main() {
 
         final textComponent = label.children.whereType<TextComponent>().first;
         expect(textComponent.text, equals('Gold: 1000000'));
+      });
+
+      testWithFlameGame('does not add multiple text components on updates', (game) async {
+        final model = ValueImageLabelModel(value: 5, label: 'Lives');
+        final component = ValueImageLabel(model)..size = Vector2(100, 50);
+        
+        await game.ensureAdd(component);
+        
+        // Initial state - should have one text component
+        expect(component.children.whereType<TextComponent>().length, equals(1));
+        
+        // Trigger multiple updates
+        model.changeValue(1);
+        model.changeValue(2);
+        model.changeValue(3);
+        await game.ready(); // Wait for reactive update
+        
+        // Should still have only one text component
+        expect(component.children.whereType<TextComponent>().length, equals(1));
+        expect(component.children.whereType<TextComponent>().first.text, equals('Lives: 11'));
       });
     });
 
@@ -154,28 +217,33 @@ void main() {
         expect(() => label.updateDisplay(), returnsNormally);
       });
 
-      testWithFlameGame('can be used with different models', (game) async {
-        final model1 = ValueImageLabelModel(value: 100, label: 'HP');
-        final model2 = ValueImageLabelModel(value: 50, label: 'MP');
+      testWithFlameGame('multiple ValueImageLabel instances work independently', (game) async {
+        final model1 = ValueImageLabelModel(value: 10, label: 'HP');
+        final model2 = ValueImageLabelModel(value: 20, label: 'MP');
         
-        final label1 = ValueImageLabel(model1);
-        final label2 = ValueImageLabel(model2);
-
-        await game.ensureAdd(label1);
-        await game.ensureAdd(label2);
-
-        final text1 = label1.children.whereType<TextComponent>().first;
-        final text2 = label2.children.whereType<TextComponent>().first;
-
-        expect(text1.text, equals('HP: 100'));
-        expect(text2.text, equals('MP: 50'));
-
-        // Modify one model
-        model1.changeValue(-25);
-        label1.updateDisplay();
-
-        expect(text1.text, equals('HP: 75'));
-        expect(text2.text, equals('MP: 50')); // Should remain unchanged
+        final component1 = ValueImageLabel(model1)..size = Vector2(100, 50);
+        final component2 = ValueImageLabel(model2)..size = Vector2(100, 50);
+        
+        await game.ensureAdd(component1);
+        await game.ensureAdd(component2);
+        
+        // Verify initial states
+        expect(component1.children.whereType<TextComponent>().first.text, equals('HP: 10'));
+        expect(component2.children.whereType<TextComponent>().first.text, equals('MP: 20'));
+        
+        // Update first component only
+        model1.changeValue(5);
+        await game.ready(); // Wait for reactive update
+        
+        expect(component1.children.whereType<TextComponent>().first.text, equals('HP: 15'));
+        expect(component2.children.whereType<TextComponent>().first.text, equals('MP: 20')); // Unchanged
+        
+        // Update second component only
+        model2.changeValue(-5);
+        await game.ready(); // Wait for reactive update
+        
+        expect(component1.children.whereType<TextComponent>().first.text, equals('HP: 15')); // Unchanged
+        expect(component2.children.whereType<TextComponent>().first.text, equals('MP: 15'));
       });
     });
 
@@ -200,6 +268,28 @@ void main() {
         await game.ensureAdd(label);
 
         expect(label.anchor, equals(Anchor.center));
+      });
+
+      testWithFlameGame('updateDisplay works correctly after component reload', (game) async {
+        final model = ValueImageLabelModel(value: 20, label: 'Reload Test');
+        final component = ValueImageLabel(model)..size = Vector2(100, 50);
+        
+        await game.ensureAdd(component);
+        
+        // Initial state
+        expect(component.children.whereType<TextComponent>().first.text, equals('Reload Test: 20'));
+        
+        // Remove and re-add component
+        game.remove(component);
+        await game.ensureAdd(component);
+        
+        // Should still work correctly
+        expect(component.children.whereType<TextComponent>().first.text, equals('Reload Test: 20'));
+        
+        // Updates should still work
+        model.changeValue(5);
+        await game.ready(); // Wait for reactive update
+        expect(component.children.whereType<TextComponent>().first.text, equals('Reload Test: 25'));
       });
     });
 

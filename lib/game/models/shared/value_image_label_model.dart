@@ -11,8 +11,9 @@ class ValueImageLabelModel with ReactiveModel<ValueImageLabelModel> {
   /// Updates the value by [delta]
   void changeValue(int delta) {
     _value += delta;
+    notifyChange();
   }
 
-  /// Returns a formatted string representation of the value
+  int get value => _value;
   String get display => '$_label: $_value';
 }
