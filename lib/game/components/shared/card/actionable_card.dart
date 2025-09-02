@@ -22,25 +22,18 @@ class ActionableCard extends Card {
   @override
   void onLoad() {
     super.onLoad();
-    _button = addButton(buttonLabel, size.x / 2, () {
-      onButtonPressed?.call();
-    });
-    _button.isVisible = false;
-  }
-
-  FlatButton addButton(String label, double buttonX, Function()? action) {
-    final button = FlatButton(
-      label,
+    _button = FlatButton(
+      buttonLabel,
       disabled: false,
       size: Vector2(size.x, 0.1 * size.y),
-      position: Vector2(buttonX, size.y - (0.1 * size.y) / 2),
+      position: Vector2(size.x / 2, size.y - (0.1 * size.y) / 2),
       onReleased: () {
         if (!buttonDisabled && isButtonVisible) {
-          action?.call();
+          onButtonPressed?.call();
         }
       },
     );
-    add(button);
-    return button;
+    _button.isVisible = false;
+    add(_button);
   }
 }

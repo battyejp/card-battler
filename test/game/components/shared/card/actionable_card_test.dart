@@ -81,11 +81,12 @@ void main() {
         expect(card.buttonDisabled, isFalse);
       });
 
-      testWithFlameGame('button triggers card play when clicked', (game) async {
-        bool cardPlayed = false;
-        cardModel.onCardPlayed = () => cardPlayed = true;
+      testWithFlameGame('button triggers callback when clicked', (game) async {
+        bool callbackTriggered = false;
         
-        final card = ActionableCard(cardModel)..size = Vector2(100, 150);
+        final card = ActionableCard(cardModel, onButtonPressed: () {
+          callbackTriggered = true;
+        })..size = Vector2(100, 150);
         
         await game.ensureAdd(card);
         
@@ -95,14 +96,15 @@ void main() {
         final button = card.children.whereType<FlatButton>().first;
         button.onReleased?.call();
         
-        expect(cardPlayed, isTrue);
+        expect(callbackTriggered, isTrue);
       });
 
       testWithFlameGame('button does not trigger when disabled', (game) async {
-        bool cardPlayed = false;
-        cardModel.onCardPlayed = () => cardPlayed = true;
+        bool callbackTriggered = false;
         
-        final card = ActionableCard(cardModel)..size = Vector2(100, 150);
+        final card = ActionableCard(cardModel, onButtonPressed: () {
+          callbackTriggered = true;
+        })..size = Vector2(100, 150);
         
         await game.ensureAdd(card);
         
@@ -112,14 +114,15 @@ void main() {
         final button = card.children.whereType<FlatButton>().first;
         button.onReleased?.call();
         
-        expect(cardPlayed, isFalse);
+        expect(callbackTriggered, isFalse);
       });
 
       testWithFlameGame('button does not trigger when not visible', (game) async {
-        bool cardPlayed = false;
-        cardModel.onCardPlayed = () => cardPlayed = true;
+        bool callbackTriggered = false;
         
-        final card = ActionableCard(cardModel)..size = Vector2(100, 150);
+        final card = ActionableCard(cardModel, onButtonPressed: () {
+          callbackTriggered = true;
+        })..size = Vector2(100, 150);
         
         await game.ensureAdd(card);
         
@@ -129,42 +132,7 @@ void main() {
         final button = card.children.whereType<FlatButton>().first;
         button.onReleased?.call();
         
-        expect(cardPlayed, isFalse);
-      });
-    });
-
-    group('button customization', () {
-      testWithFlameGame('addButton creates button with custom properties', (game) async {
-        final card = ActionableCard(cardModel)..size = Vector2(100, 150);
-        
-        await game.ensureAdd(card);
-        
-        bool customActionCalled = false;
-        final customButton = card.addButton('Custom', 50.0, () {
-          customActionCalled = true;
-        });
-        
-        expect(customButton, isA<FlatButton>());
-        expect(customButton.position.x, equals(50.0));
-        expect(customButton.size.x, equals(100.0));
-        expect(customButton.size.y, equals(15.0)); // 0.1 * 150
-        
-        customButton.onReleased?.call();
-        expect(customActionCalled, isTrue);
-      });
-
-      testWithFlameGame('multiple buttons can be added', (game) async {
-        final card = ActionableCard(cardModel)..size = Vector2(100, 150);
-        
-        await game.ensureAdd(card);
-        
-        final button1 = card.addButton('First', 25.0, () {});
-        final button2 = card.addButton('Second', 75.0, () {});
-        
-        final buttons = card.children.whereType<FlatButton>().toList();
-        expect(buttons.length, equals(3)); // Original Play button + 2 custom buttons
-        expect(buttons, contains(button1));
-        expect(buttons, contains(button2));
+        expect(callbackTriggered, isFalse);
       });
     });
 
