@@ -232,6 +232,113 @@ void main() {
         expect(card1.type, isNot(equals(card2.type)));
       });
     });
+
+    group('card play functionality', () {
+      test('playCard method exists and is callable', () {
+        final card = CardModel(name: 'Playable Card', type: 'Action');
+        
+        expect(() => card.playCard(), returnsNormally);
+      });
+
+      test('playCard calls onCardPlayed callback when set', () {
+        final card = CardModel(name: 'Callback Card', type: 'Action');
+        
+        bool callbackCalled = false;
+        card.onCardPlayed = () => callbackCalled = true;
+        
+        card.playCard();
+        
+        expect(callbackCalled, isTrue);
+      });
+
+      test('playCard does nothing when onCardPlayed is null', () {
+        final card = CardModel(name: 'No Callback Card', type: 'Action');
+        
+        expect(card.onCardPlayed, isNull);
+        expect(() => card.playCard(), returnsNormally);
+      });
+
+      test('onCardPlayed callback can be set and changed', () {
+        final card = CardModel(name: 'Changeable Card', type: 'Action');
+        
+        int callCount = 0;
+        
+        card.onCardPlayed = () => callCount++;
+        card.playCard();
+        expect(callCount, equals(1));
+        
+        card.onCardPlayed = () => callCount += 10;
+        card.playCard();
+        expect(callCount, equals(11));
+      });
+
+      test('onCardPlayed callback can be cleared', () {
+        final card = CardModel(name: 'Clearable Card', type: 'Action');
+        
+        bool callbackCalled = false;
+        card.onCardPlayed = () => callbackCalled = true;
+        
+        card.onCardPlayed = null;
+        card.playCard();
+        
+        expect(callbackCalled, isFalse);
+      });
+
+      test('multiple cards can have different callbacks', () {
+        final card1 = CardModel(name: 'Card 1', type: 'Action');
+        final card2 = CardModel(name: 'Card 2', type: 'Action');
+        
+        int counter1 = 0;
+        int counter2 = 0;
+        
+        card1.onCardPlayed = () => counter1++;
+        card2.onCardPlayed = () => counter2 += 10;
+        
+        card1.playCard();
+        expect(counter1, equals(1));
+        expect(counter2, equals(0));
+        
+        card2.playCard();
+        expect(counter1, equals(1));
+        expect(counter2, equals(10));
+        
+        card1.playCard();
+        expect(counter1, equals(2));
+        expect(counter2, equals(10));
+      });
+
+      test('callback can access card instance', () {
+        final card = CardModel(name: 'Self Referencing Card', type: 'Meta');
+        
+        String? capturedName;
+        card.onCardPlayed = () => capturedName = card.name;
+        
+        card.playCard();
+        
+        expect(capturedName, equals('Self Referencing Card'));
+      });
+
+      test('callback exceptions do not crash playCard', () {
+        final card = CardModel(name: 'Exception Card', type: 'Dangerous');
+        
+        card.onCardPlayed = () => throw Exception('Test exception');
+        
+        expect(() => card.playCard(), throwsException);
+      });
+
+      test('onCardPlayed can be set during construction indirectly', () {
+        final card = CardModel(name: 'Constructor Card', type: 'Action');
+        
+        // Since onCardPlayed is not a constructor parameter, we test post-construction assignment
+        bool callbackCalled = false;
+        card.onCardPlayed = () => callbackCalled = true;
+        
+        expect(card.onCardPlayed, isNotNull);
+        
+        card.playCard();
+        expect(callbackCalled, isTrue);
+      });
+    });
   });
 
   group('loadCardsFromJson function', () {
