@@ -120,16 +120,6 @@ void main() {
         expect(GameStateModel.instance.enemyTurnArea.playedCards, isNotNull);
         expect(GameStateModel.instance.enemyTurnArea.playedCards.hasNoCards, isTrue);
       });
-
-      test('enemy turn area starts with turn not finished', () {
-        final shopCards = _generateShopCards();
-        final playerDeckCards = _generatePlayerDeckCards();
-        final enemyCards = _generateEnemyCards();
-
-        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
-
-        expect(GameStateModel.instance.enemyTurnArea.turnFinished, isFalse);
-      });
     });
 
     group('player turn validation', () {

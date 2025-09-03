@@ -59,8 +59,8 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
     }
 
     GameStateModel.instance.selectedPlayer = GameStateModel.instance.playerTurn.playerModel;
-    GameStateModel.instance.playerTurn.playerModel.onCardsDrawn = _onPlayerCardsDrawn;
-    GameStateModel.instance.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished;
+    GameStateModel.instance.playerTurn.playerModel.onCardsDrawn = _onPlayerCardsDrawn; //TODO could this be pass to gamestate
+    GameStateModel.instance.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished; //TODO could this be pass to gamestate
 
     world.add(
       router = RouterComponent(
@@ -102,7 +102,7 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
               router.pushOverlay('confirm');
             }
             else {
-              _endTurn();
+              _endTurn(); //TODO could pass into gamestate
             }
           }
         }
@@ -119,8 +119,8 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
     //TODO might need to shuffle discard back into deck
 
     GameStateModel.instance.playerTurn.discardHand();
-
-    //TODO fill up shop
+    GameStateModel.instance.playerTurn.shopModel.refillShop();
+    GameStateModel.instance.currentPhase = GamePhase.setup;
 
     turnButton.isVisible = false;
     turnButton.text = 'Take Enemy Turn';

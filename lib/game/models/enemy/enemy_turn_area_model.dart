@@ -8,17 +8,17 @@ class EnemyTurnAreaModel {
   final CardPileModel playedCards;
   final List<PlayerStatsModel> playerStats;
   VoidCallback? onTurnFinished;
-  bool turnFinished;
+  bool _turnFinished;
 
   EnemyTurnAreaModel({
     required this.enemyCards,
     required this.playerStats,
     this.onTurnFinished,
   })  : playedCards = CardPileModel.empty(),
-        turnFinished = false;
+        _turnFinished = false;
 
   void drawCardsFromDeck() {
-    if (turnFinished) return;
+    if (_turnFinished) return;
 
     final drawnCard = enemyCards.drawCard();
 
@@ -29,10 +29,11 @@ class EnemyTurnAreaModel {
       updatePlayersStats(drawnCard);
     }
 
-    turnFinished = drawnCard?.effects.any((effect) => effect.type == EffectType.drawCard) == false;
-    
-    if (turnFinished) {
+    _turnFinished = drawnCard?.effects.any((effect) => effect.type == EffectType.drawCard) == false;
+
+    if (_turnFinished) {
       onTurnFinished?.call();
+      _turnFinished = false;
     }
   }
 

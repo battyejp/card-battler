@@ -44,7 +44,6 @@ void main() {
         expect(enemyTurnArea.enemyCards, equals(enemyCards));
         expect(enemyTurnArea.playerStats, equals(playerStats));
         expect(enemyTurnArea.playedCards.hasNoCards, isTrue);
-        expect(enemyTurnArea.turnFinished, isFalse);
       });
 
       test('initializes empty played cards pile', () {
@@ -58,18 +57,6 @@ void main() {
 
         expect(enemyTurnArea.playedCards.hasNoCards, isTrue);
         expect(enemyTurnArea.playedCards.allCards.length, equals(0));
-      });
-
-      test('initializes turnFinished as false', () {
-        final enemyCards = CardPileModel(cards: _generateTestCards(2));
-        final playerStats = [_createTestPlayerStats('Player1')];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playerStats: playerStats,
-        );
-
-        expect(enemyTurnArea.turnFinished, isFalse);
       });
 
       test('works with multiple player stats', () {
@@ -131,22 +118,6 @@ void main() {
         expect(enemyTurnArea.playedCards.allCards.first.isFaceUp, isTrue);
       });
 
-      test('sets turnFinished to true after drawing', () {
-        final enemyCards = CardPileModel(cards: _generateTestCards(2));
-        final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playerStats: playerStats,
-        );
-
-        expect(enemyTurnArea.turnFinished, isFalse);
-
-        enemyTurnArea.drawCardsFromDeck();
-
-        expect(enemyTurnArea.turnFinished, isTrue);
-      });
-
       test('does nothing if turn is already finished', () {
         final enemyCards = CardPileModel(cards: _generateTestCards(3));
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
@@ -158,7 +129,6 @@ void main() {
 
         // First draw
         enemyTurnArea.drawCardsFromDeck();
-        expect(enemyTurnArea.turnFinished, isTrue);
         
         final cardsAfterFirstDraw = enemyTurnArea.playedCards.allCards.length;
         final enemyCardsAfterFirstDraw = enemyTurnArea.enemyCards.allCards.length;
@@ -370,7 +340,6 @@ void main() {
         );
 
         // Verify initial state
-        expect(enemyTurnArea.turnFinished, isFalse);
         expect(enemyTurnArea.playedCards.hasNoCards, isTrue);
         expect(activePlayer.health.currentHealth, equals(100));
 
@@ -378,7 +347,6 @@ void main() {
         enemyTurnArea.drawCardsFromDeck();
 
         // Verify final state
-        expect(enemyTurnArea.turnFinished, isTrue);
         expect(enemyTurnArea.playedCards.allCards.length, equals(1));
         expect(enemyTurnArea.playedCards.allCards.first.isFaceUp, isTrue);
         expect(enemyTurnArea.playedCards.allCards.first.name, equals('Fireball'));
@@ -401,7 +369,6 @@ void main() {
         enemyTurnArea.drawCardsFromDeck();
 
         // Turn should complete but no damage should be applied
-        expect(enemyTurnArea.turnFinished, isTrue);
         expect(playerStats[0].health.currentHealth, equals(100));
         expect(playerStats[1].health.currentHealth, equals(80));
       });
@@ -418,7 +385,6 @@ void main() {
 
         // Should not throw and should complete turn
         expect(() => enemyTurnArea.drawCardsFromDeck(), returnsNormally);
-        expect(enemyTurnArea.turnFinished, isTrue);
       });
     });
 
