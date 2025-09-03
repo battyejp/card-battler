@@ -61,7 +61,6 @@ class ShopModel with ReactiveModel<ShopModel> {
     return cards;
   }
 
-  List<ShopCardModel> get allCards => _reserveCards; //TODO remove this getter
   List<ShopCardModel> get selectableCards => _selectableCards;
   int get numberOfRows => _numberOfRows;
   int get numberOfColumns => _numberOfColumns;
