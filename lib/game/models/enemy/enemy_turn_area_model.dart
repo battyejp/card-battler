@@ -33,7 +33,6 @@ class EnemyTurnAreaModel {
 
     if (_turnFinished) {
       onTurnFinished?.call();
-      _turnFinished = false;
     }
   }
 
