@@ -1,3 +1,4 @@
+import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
@@ -32,6 +33,7 @@ class EnemyTurnAreaModel {
     _turnFinished = drawnCard?.effects.any((effect) => effect.type == EffectType.drawCard) == false;
 
     if (_turnFinished) {
+      GameStateModel.instance.currentPhase = GamePhase.playerTurn;
       onTurnFinished?.call();
     }
   }

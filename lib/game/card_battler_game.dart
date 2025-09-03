@@ -12,7 +12,6 @@ import 'package:flame/events.dart';
 class CardBattlerGame extends FlameGame with TapCallbacks {
   Vector2? _testSize;
   late final RouterComponent router;
-  late final FlatButton turnButton;
 
   // Default constructor with new game state
   CardBattlerGame();
@@ -59,8 +58,7 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
     }
 
     GameStateModel.instance.selectedPlayer = GameStateModel.instance.playerTurn.playerModel;
-    GameStateModel.instance.playerTurn.playerModel.onCardsDrawn = _onPlayerCardsDrawn; //TODO could this be pass to gamestate
-    GameStateModel.instance.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished; //TODO could this be pass to gamestate
+    GameStateModel.instance.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished;
 
     world.add(
       router = RouterComponent(
@@ -75,7 +73,7 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
               },
               onConfirm: () {
                 router.pop();
-                _endTurn();
+                endTurn();
               },
             );
           }),
@@ -132,11 +130,9 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
   
   void _onEnemyTurnFinished() {
     Future.delayed(const Duration(seconds: 1), () {
-      GameStateModel.instance.currentPhase = GamePhase.playerTurn;
       router.pop();
     });
   }
-
 
   // /// Saves the current game state to JSON
   // Map<String, dynamic> saveGame() {
