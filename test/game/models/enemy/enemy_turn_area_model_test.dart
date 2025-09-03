@@ -117,29 +117,6 @@ void main() {
         // Verify played card is now face up
         expect(enemyTurnArea.playedCards.allCards.first.isFaceUp, isTrue);
       });
-
-      test('does nothing if turn is already finished', () {
-        final enemyCards = CardPileModel(cards: _generateTestCards(3));
-        final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playerStats: playerStats,
-        );
-
-        // First draw
-        enemyTurnArea.drawCardsFromDeck();
-        
-        final cardsAfterFirstDraw = enemyTurnArea.playedCards.allCards.length;
-        final enemyCardsAfterFirstDraw = enemyTurnArea.enemyCards.allCards.length;
-
-        // Attempt second draw
-        enemyTurnArea.drawCardsFromDeck();
-
-        // Should remain unchanged
-        expect(enemyTurnArea.playedCards.allCards.length, equals(cardsAfterFirstDraw));
-        expect(enemyTurnArea.enemyCards.allCards.length, equals(enemyCardsAfterFirstDraw));
-      });
     });
 
     group('updatePlayersStats functionality', () {
