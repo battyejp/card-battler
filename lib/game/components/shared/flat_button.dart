@@ -10,12 +10,22 @@ class FlatButton extends ButtonComponent with HasVisibility {
   bool _disabled = false;
   double _opacity = 1.0;
   late final _ButtonDisabler _disabler;
+  String _text;
   
   /// Whether the button is disabled (cannot be clicked)
   bool get disabled => _disabled;
   set disabled(bool value) {
     if (_disabled != value) {
       _disabled = value;
+      _updateVisualState();
+    }
+  }
+
+  /// The text displayed on the button
+  String get text => _text;
+  set text(String value) {
+    if (_text != value) {
+      _text = value;
       _updateVisualState();
     }
   }
@@ -27,6 +37,7 @@ class FlatButton extends ButtonComponent with HasVisibility {
     super.position,
     bool disabled = false,
   }) : _disabled = disabled,
+       _text = text,
        super(
          button: ButtonBackground(const Color(0xffece8a3)),
          buttonDown: disabled ? ButtonBackground(Colors.grey) : ButtonBackground(Colors.red),
@@ -66,6 +77,7 @@ class FlatButton extends ButtonComponent with HasVisibility {
       buttonDown = ButtonBackground(Colors.grey);
       // Update text color to a darker grey
       final textComponent = children.whereType<TextComponent>().first;
+      textComponent.text = _text;
       textComponent.textRenderer = TextPaint(
         style: TextStyle(
           fontSize: (0.5 * size.y).clamp(1.0, double.infinity),
@@ -83,6 +95,7 @@ class FlatButton extends ButtonComponent with HasVisibility {
       button = ButtonBackground(const Color(0xffece8a3));
       buttonDown = ButtonBackground(Colors.red);
       final textComponent = children.whereType<TextComponent>().first;
+      textComponent.text = _text;
       textComponent.textRenderer = TextPaint(
         style: TextStyle(
           fontSize: (0.5 * size.y).clamp(1.0, double.infinity),

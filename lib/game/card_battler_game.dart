@@ -1,4 +1,5 @@
 import 'package:card_battler/game/components/shared/flat_button.dart';
+import 'package:card_battler/game/components/shared/confirm_dialog.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
@@ -66,6 +67,18 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
         routes: {
           'playerTurn': Route(() => PlayerTurnScene(model: GameStateModel.instance.playerTurn, size: size)),
           'enemyTurn': Route(() => EnemyTurnScene(model: GameStateModel.instance.enemyTurnArea, size: size)),
+          'confirm': OverlayRoute((context, game) { 
+            return ConfirmDialog(
+              title: 'You still have cards in your hand!',
+              onCancel: () {
+                router.pop();
+              },
+              onConfirm: () {
+                router.pop();
+                _endTurn();
+              },
+            );
+          }),
         },
         initialRoute: 'playerTurn',
       ),
@@ -80,18 +93,31 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
           CardInteractionController.deselectAny();
 
           if (GameStateModel.instance.currentPhase == GamePhase.setup) {
-            //turnButton.text = 'End Turn';
+            turnButton.text = 'End Turn';
             GameStateModel.instance.currentPhase = GamePhase.enemyTurn;
             router.pushNamed('enemyTurn');
           }
-          else if (GameStateModel.instance.currentPhase == GamePhase.playerTurn) {
-            GameStateModel.instance.currentPhase = GamePhase.playerTurn;
+          else if (GameStateModel.instance.currentPhase == GamePhase.playerTurn) {      
+            if (GameStateModel.instance.playerTurn.playerModel.handModel.cards.isNotEmpty) {
+              router.pushOverlay('confirm');
+            }
+            else {
+              _endTurn();
+            }
+          }
         }
       }
     );
 
     turnButton.isVisible = false;
     world.add(turnButton);
+  }
+
+  void _endTurn() {
+    //Empty hand and move to discard, might need to move back to deck
+    //Fill up shop
+    turnButton.isVisible = true;
+    turnButton.text = 'Take Enemy Turn';
   }
 
   void _onPlayerCardsDrawn() {
