@@ -1,5 +1,6 @@
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
@@ -63,5 +64,15 @@ class PlayerTurnModel {
         break;
     }
   }
+  }
+
+  void endTurn() {
+    //TODO clear coins
+    //TODO clear Attack
+    //TODO might need to shuffle discard back into deck
+
+    discardHand();
+    shopModel.refillShop();
+    GameStateModel.instance.currentPhase = GamePhase.setup;
   }
 }

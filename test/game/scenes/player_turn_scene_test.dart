@@ -18,6 +18,7 @@ import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
+import 'package:card_battler/game/components/shared/flat_button.dart';
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -173,12 +174,13 @@ void main() {
         final scene = PlayerTurnScene(model: model, size: size);
         await game.ensureAdd(scene);
         
-        // Should have exactly 4 child components: Player, Enemies, Shop, Team
-        expect(scene.children.length, equals(4));
+        // Should have exactly 5 child components: Player, Enemies, Shop, Team, TurnButton
+        expect(scene.children.length, equals(5));
         expect(scene.children.whereType<Player>().length, equals(1));
         expect(scene.children.whereType<Enemies>().length, equals(1));
         expect(scene.children.whereType<Shop>().length, equals(1));
         expect(scene.children.whereType<Team>().length, equals(1));
+        expect(scene.children.whereType<FlatButton>().length, equals(1));
       });
 
       testWithFlameGame('player component has correct size and position', (game) async {
@@ -317,13 +319,14 @@ void main() {
         final scene = PlayerTurnScene(model: model, size: size);
         await game.ensureAdd(scene);
         
-        expect(scene.children.length, equals(4));
+        expect(scene.children.length, equals(5));
         
         // Should still create all components even with extreme ratios
         expect(scene.children.whereType<Player>().length, equals(1));
         expect(scene.children.whereType<Enemies>().length, equals(1));
         expect(scene.children.whereType<Shop>().length, equals(1));
         expect(scene.children.whereType<Team>().length, equals(1));
+        expect(scene.children.whereType<FlatButton>().length, equals(1));
       });
     });
 
@@ -433,7 +436,7 @@ void main() {
         await game.ensureAdd(scene);
         
         // Should create all components even with tiny size
-        expect(scene.children.length, equals(4));
+        expect(scene.children.length, equals(5));
       });
 
       testWithFlameGame('handles margin larger than screen size', (game) async {
@@ -444,7 +447,7 @@ void main() {
         await game.ensureAdd(scene);
         
         // Should still create components even if calculations result in negative values
-        expect(scene.children.length, equals(4));
+        expect(scene.children.length, equals(5));
       });
     });
 

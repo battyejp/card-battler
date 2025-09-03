@@ -33,6 +33,7 @@ class EnemyTurnAreaModel {
     _turnFinished = drawnCard?.effects.any((effect) => effect.type == EffectType.drawCard) == false;
 
     if (_turnFinished) {
+      _turnFinished = false;
       GameStateModel.instance.currentPhase = GamePhase.playerTurn;
       onTurnFinished?.call();
     }

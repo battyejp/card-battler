@@ -1,4 +1,3 @@
-import 'package:card_battler/game/components/shared/flat_button.dart';
 import 'package:card_battler/game/components/shared/confirm_dialog.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
@@ -12,6 +11,7 @@ import 'package:flame/events.dart';
 class CardBattlerGame extends FlameGame with TapCallbacks {
   Vector2? _testSize;
   late final RouterComponent router;
+  late final PlayerTurnScene _playerTurnScene;
 
   // Default constructor with new game state
   CardBattlerGame();
@@ -60,10 +60,16 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
     GameStateModel.instance.selectedPlayer = GameStateModel.instance.playerTurn.playerModel;
     GameStateModel.instance.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished;
 
+    _playerTurnScene = PlayerTurnScene(
+      model: GameStateModel.instance.playerTurn, 
+      size: size,
+      onTurnEnded: () => _playerTurnScene.hideTurnButton(),
+    );
+
     world.add(
       router = RouterComponent(
         routes: {
-          'playerTurn': Route(() => PlayerTurnScene(model: GameStateModel.instance.playerTurn, size: size)),
+          'playerTurn': Route(() => _playerTurnScene),
           'enemyTurn': Route(() => EnemyTurnScene(model: GameStateModel.instance.enemyTurnArea, size: size)),
           'confirm': OverlayRoute((context, game) { 
             return ConfirmDialog(
@@ -73,7 +79,8 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
               },
               onConfirm: () {
                 router.pop();
-                endTurn();
+                GameStateModel.instance.playerTurn.endTurn();
+                _playerTurnScene.onTurnEnded?.call();
               },
             );
           }),
@@ -82,50 +89,6 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
       ),
     );
 
-    turnButton = FlatButton(
-      'Take Enemy Turn',
-      size: Vector2(size.x * 0.3, 0.1 * size.y),
-      position: Vector2(0, ((size.y / 2) * -1) + (size.y * 0.1)),
-      onReleased: () {
-        if (!turnButton.disabled && turnButton.isVisible) {
-          CardInteractionController.deselectAny();
-
-          if (GameStateModel.instance.currentPhase == GamePhase.setup) {
-            turnButton.text = 'End Turn';
-            GameStateModel.instance.currentPhase = GamePhase.enemyTurn;
-            router.pushNamed('enemyTurn');
-          }
-          else if (GameStateModel.instance.currentPhase == GamePhase.playerTurn) {      
-            if (GameStateModel.instance.playerTurn.playerModel.handModel.cards.isNotEmpty) {
-              router.pushOverlay('confirm');
-            }
-            else {
-              _endTurn(); //TODO could pass into gamestate
-            }
-          }
-        }
-      }
-    );
-
-    turnButton.isVisible = false;
-    world.add(turnButton);
-  }
-
-  void _endTurn() {
-    //TODO clear coins
-    //TODO clear Attack
-    //TODO might need to shuffle discard back into deck
-
-    GameStateModel.instance.playerTurn.discardHand();
-    GameStateModel.instance.playerTurn.shopModel.refillShop();
-    GameStateModel.instance.currentPhase = GamePhase.setup;
-
-    turnButton.isVisible = false;
-    turnButton.text = 'Take Enemy Turn';
-  }
-
-  void _onPlayerCardsDrawn() {
-    turnButton.isVisible = true;
   }
   
   void _onEnemyTurnFinished() {
