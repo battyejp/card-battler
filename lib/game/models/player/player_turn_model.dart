@@ -22,6 +22,11 @@ class PlayerTurnModel {
     shopModel.cardPlayed = onCardPlayed;
   }
 
+  void discardHand() {
+    playerModel.discardModel.addCards(playerModel.handModel.cards);
+    playerModel.handModel.clearCards();
+  }
+
   void onCardPlayed(CardModel card) {
     card.isFaceUp = false;
 

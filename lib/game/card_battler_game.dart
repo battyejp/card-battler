@@ -114,9 +114,15 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
   }
 
   void _endTurn() {
-    //Empty hand and move to discard, might need to move back to deck
-    //Fill up shop
-    turnButton.isVisible = true;
+    //TODO clear coins
+    //TODO clear Attack
+    //TODO might need to shuffle discard back into deck
+
+    GameStateModel.instance.playerTurn.discardHand();
+
+    //TODO fill up shop
+
+    turnButton.isVisible = false;
     turnButton.text = 'Take Enemy Turn';
   }
 

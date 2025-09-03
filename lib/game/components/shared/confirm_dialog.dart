@@ -24,7 +24,7 @@ class ConfirmDialog extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withAlpha(30),
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),
