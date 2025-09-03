@@ -49,32 +49,18 @@ void main() {
         expect(card.testNameComponent.position, equals(Vector2(50, 75)));
       });
 
-      testWithFlameGame('addTextComponent works correctly for face-up cards', (game) async {
-        final cardModel = CardModel(name: 'Face Up Card', type: 'Test', isFaceUp: true);
-        final card = Card(cardModel)..size = Vector2(100, 150);
+      testWithFlameGame('addTextComponent works correctly with inheritance', (game) async {
+        final cardModel = CardModel(name: 'Inheritance Test', type: 'Test', isFaceUp: true);
+        final card = ExtendedCard(cardModel)..size = Vector2(100, 150);
         
         await game.ensureAdd(card);
         
+        expect(card.wasExtendedMethodCalled, isTrue);
         final textComponents = card.children.whereType<TextComponent>();
         expect(textComponents.length, equals(1));
         
         final textComponent = textComponents.first;
-        expect(textComponent.text, equals('Face Up Card'));
-        expect(textComponent.position, equals(Vector2(50, 75))); // centered
-      });
-
-      testWithFlameGame('addTextComponent works correctly for face-down cards', (game) async {
-        final cardModel = CardModel(name: 'Hidden Card', type: 'Test', isFaceUp: false);
-        final card = Card(cardModel)..size = Vector2(100, 150);
-        
-        await game.ensureAdd(card);
-        
-        final textComponents = card.children.whereType<TextComponent>();
-        expect(textComponents.length, equals(1));
-        
-        final textComponent = textComponents.first;
-        expect(textComponent.text, equals('Back'));
-        expect(textComponent.position, equals(Vector2(50, 75))); // centered
+        expect(textComponent.text, equals('Inheritance Test'));
       });
     });
 
@@ -189,28 +175,7 @@ void main() {
       }
     });
 
-    group('error handling and edge cases', () {
-      testWithFlameGame('handles empty card name', (game) async {
-        final cardModel = CardModel(name: '', type: 'Empty', isFaceUp: true);
-        final card = Card(cardModel)..size = Vector2(100, 150);
-        
-        await game.ensureAdd(card);
-        
-        final textComponent = card.children.whereType<TextComponent>().first;
-        expect(textComponent.text, equals(''));
-      });
-
-      testWithFlameGame('handles very long card names', (game) async {
-        final longName = 'This is a very long card name that might not fit well';
-        final cardModel = CardModel(name: longName, type: 'Long', isFaceUp: true);
-        final card = Card(cardModel)..size = Vector2(100, 150);
-        
-        await game.ensureAdd(card);
-        
-        final textComponent = card.children.whereType<TextComponent>().first;
-        expect(textComponent.text, equals(longName));
-      });
-
+    group('extended functionality edge cases', () {
       testWithFlameGame('handles special characters in card names', (game) async {
         final specialName = 'Card with 特殊字符 & émojis 🎮⚔️';
         final cardModel = CardModel(name: specialName, type: 'Special', isFaceUp: true);

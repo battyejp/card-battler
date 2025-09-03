@@ -1,18 +1,19 @@
-import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/player/player_turn_model.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
-import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/player/card_hand_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
-import 'package:card_battler/game/models/shared/value_image_label_model.dart';
-import 'package:card_battler/game/models/shared/health_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
-import 'package:card_battler/game/models/shop/shop_card_model.dart';
+
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/team/team_model.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
+import 'package:card_battler/game/models/player/card_hand_model.dart';
+import 'package:card_battler/game/models/player/info_model.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game/models/shared/value_image_label_model.dart';
+import 'package:card_battler/game/models/shop/shop_card_model.dart';
+import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
+import 'package:card_battler/game/models/team/team_model.dart';
 
 void main() {
   group('PlayerTurnModel', () {

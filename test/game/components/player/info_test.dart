@@ -1,12 +1,13 @@
-import 'package:card_battler/game/models/shared/health_model.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/components/player/info.dart';
-import 'package:card_battler/game/components/shared/value_image_label.dart';
-import 'package:card_battler/game/components/shared/health.dart';
-import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/shared/value_image_label_model.dart';
-import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
+import 'package:flame_test/flame_test.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import 'package:card_battler/game/components/player/info.dart';
+import 'package:card_battler/game/components/shared/health.dart';
+import 'package:card_battler/game/components/shared/value_image_label.dart';
+import 'package:card_battler/game/models/player/info_model.dart';
+import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 
 void main() {
   group('Info', () {
