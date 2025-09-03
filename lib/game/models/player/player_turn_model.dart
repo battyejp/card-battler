@@ -6,12 +6,21 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
+import 'package:flutter/foundation.dart';
+
+enum TurnButtonAction { navigateToEnemyTurn, showConfirmDialog, endTurnDirectly }
 
 class PlayerTurnModel {
   final PlayerModel playerModel;
   final TeamModel teamModel;
   final EnemiesModel enemiesModel;
   final ShopModel shopModel;
+
+  // UI callbacks
+  VoidCallback? onNavigateToEnemyTurn;
+  VoidCallback? onShowConfirmDialog;
+  VoidCallback? onSetTurnButtonEndTurnText;
+  VoidCallback? onHideTurnButton;
 
   PlayerTurnModel({
     required this.playerModel,
@@ -74,5 +83,24 @@ class PlayerTurnModel {
     discardHand();
     shopModel.refillShop();
     GameStateModel.instance.currentPhase = GamePhase.setup;
+  }
+
+  void handleTurnButtonPress() {
+    if (GameStateModel.instance.currentPhase == GamePhase.setup) {
+      // Change button text and transition to enemy turn
+      onSetTurnButtonEndTurnText?.call();
+      GameStateModel.instance.currentPhase = GamePhase.enemyTurn;
+      onNavigateToEnemyTurn?.call();
+    }
+    else if (GameStateModel.instance.currentPhase == GamePhase.playerTurn) {
+      if (playerModel.handModel.cards.isNotEmpty) {
+        // Show confirmation dialog
+        onShowConfirmDialog?.call();
+      }
+      else {
+        // End turn directly
+        endTurn();
+      }
+    }
   }
 }

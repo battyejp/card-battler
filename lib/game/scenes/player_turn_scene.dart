@@ -5,7 +5,6 @@ import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/components/shared/flat_button.dart';
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
-import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/foundation.dart';
@@ -22,6 +21,13 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
     _model.playerModel.onCardsDrawn = _onPlayerCardsDrawn;
   }
 
+  void _setupModelCallbacks() {
+    _model.onShowConfirmDialog = () => game.router.pushOverlay('confirm');
+    _model.onHideTurnButton = hideTurnButton;
+    _model.onSetTurnButtonEndTurnText = () => turnButton.text = 'End Turn';
+    _model.onNavigateToEnemyTurn = () => game.router.pushNamed('enemyTurn');
+  }
+
   static const double margin = 20.0;
   static const double topLayoutHeightFactor = 0.6;
 
@@ -30,6 +36,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
     super.onMount();
     _loadGameComponents();
     _createTurnButton();
+    _setupModelCallbacks();
   }
 
   void _loadGameComponents() {
@@ -83,21 +90,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
       onReleased: () {
         if (!turnButton.disabled && turnButton.isVisible) {
           CardInteractionController.deselectAny();
-
-          if (GameStateModel.instance.currentPhase == GamePhase.setup) {
-            turnButton.text = 'End Turn';
-            GameStateModel.instance.currentPhase = GamePhase.enemyTurn;
-            game.router.pushNamed('enemyTurn');
-          }
-          else if (GameStateModel.instance.currentPhase == GamePhase.playerTurn) {      
-            if (GameStateModel.instance.playerTurn.playerModel.handModel.cards.isNotEmpty) {
-              game.router.pushOverlay('confirm');
-            }
-            else {
-              _model.endTurn();
-              hideTurnButton();
-            }
-          }
+          _model.handleTurnButtonPress();
         }
       }
     );
