@@ -16,7 +16,7 @@ import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 
 /// Represents the different phases of the game
-enum GamePhase { setup, enemyTurn, playerTurn }
+enum GamePhase { waitingToDrawCards, cardsDrawn, enemyTurn, playerTurn }
 
 /// Centralized model that contains all game state
 /// This serves as the single source of truth for the entire game
@@ -26,7 +26,6 @@ class GameStateModel {
   final EnemyTurnAreaModel enemyTurnArea;
   final PlayerTurnModel playerTurn;
   PlayerModel? selectedPlayer;
-  GamePhase currentPhase = GamePhase.setup;
 
   GameStateModel._({
     required this.enemyTurnArea,

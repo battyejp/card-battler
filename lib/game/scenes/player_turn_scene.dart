@@ -9,43 +9,19 @@ import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:flame/components.dart';
-// import 'package:flutter/foundation.dart';
 
 class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
   final PlayerTurnModel _model;
   final Vector2 _size;
-  //final VoidCallback? onTurnEnded;
   final GameStateManager _gameStateManager = GameStateManager();
   late final FlatButton turnButton;
 
   PlayerTurnScene({required PlayerTurnModel model, required Vector2 size, /*this.onTurnEnded*/})
       : _model = model,
-        _size = size {
-    _model.playerModel.onCardsDrawn = _onPlayerCardsDrawn;
-  }
-
-  void _setupGameStateListener() {
-    _gameStateManager.addPhaseChangeListener(_onGamePhaseChanged);
-    _gameStateManager.addConfirmationRequestListener(_onConfirmationRequested);
-  }
-
-  void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
-    switch (newPhase) {
-      case GamePhase.setup:
-        turnButton.text = 'Take Enemy Turn';
-        turnButton.isVisible = true;
-        break;
-      case GamePhase.enemyTurn:
-        turnButton.text = 'End Turn';
-        game.router.pushNamed('enemyTurn');
-        break;
-      case GamePhase.playerTurn:
-        break;
-    }
-  }
+        _size = size;
 
   void _onConfirmationRequested() {
-    game.router.pushOverlay('confirm');
+    game.router.pushOverlay('confirm'); //TODO should this be moved out of here?
   }
 
   static const double margin = 20.0;
@@ -64,6 +40,11 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
     _gameStateManager.removePhaseChangeListener(_onGamePhaseChanged);
     _gameStateManager.removeConfirmationRequestListener(_onConfirmationRequested);
     super.onRemove();
+  }
+
+  void _setupGameStateListener() {
+    _gameStateManager.addPhaseChangeListener(_onGamePhaseChanged);
+    _gameStateManager.addConfirmationRequestListener(_onConfirmationRequested);
   }
 
   void _loadGameComponents() {
@@ -109,6 +90,28 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
     add(team);
   }
 
+  void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
+    switch (newPhase) {
+      case GamePhase.waitingToDrawCards:
+        turnButton.text = 'Take Enemy Turn';
+        turnButton.isVisible = false;
+        break;
+      case GamePhase.cardsDrawn:
+        turnButton.text = 'Take Enemy Turn';
+        turnButton.isVisible = true;
+        break;
+      case GamePhase.enemyTurn:
+        turnButton.text = 'End Turn';
+        turnButton.isVisible = true;
+        game.router.pushNamed('enemyTurn'); //TODO should this be moved out of here?
+        break;
+      case GamePhase.playerTurn:
+        turnButton.text = 'End Turn';
+        turnButton.isVisible = true;
+        break;
+    }
+  }
+
   void _createTurnButton() {
     turnButton = FlatButton(
       'Take Enemy Turn',
@@ -117,16 +120,12 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
       onReleased: () {
         if (!turnButton.disabled && turnButton.isVisible) {
           CardInteractionController.deselectAny();
-          _model.handleTurnButtonPress();
+          _model.handleTurnButtonPress(); //TODO don't call model directly
         }
       }
     );
 
     turnButton.isVisible = false;
     add(turnButton);
-  }
-
-  void _onPlayerCardsDrawn() {
-    turnButton.isVisible = true;
   }
 }

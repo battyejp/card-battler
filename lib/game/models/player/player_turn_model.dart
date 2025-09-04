@@ -77,21 +77,20 @@ class PlayerTurnModel {
 
     discardHand();
     shopModel.refillShop();
-    _gameStateManager.setPhase(GamePhase.setup);
+    _gameStateManager.nextPhase(); // Should be waitingToDrawCards
   }
 
   void handleTurnButtonPress() {
-    if (_gameStateManager.currentPhase == GamePhase.setup) {
-      _gameStateManager.setPhase(GamePhase.enemyTurn);
-    }
-    else if (_gameStateManager.currentPhase == GamePhase.playerTurn) {
+    if (_gameStateManager.currentPhase == GamePhase.playerTurn) {
       if (playerModel.handModel.cards.isNotEmpty) {
         _gameStateManager.requestConfirmation();
+        return;
       }
-      else {
-        // End turn directly
-        endTurn();
-      }
+
+      endTurn();
+    }
+    else{
+      _gameStateManager.nextPhase();
     }
   }
 }

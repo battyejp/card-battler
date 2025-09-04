@@ -1,10 +1,9 @@
-import 'dart:ui';
-
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
 
 class PlayerModel {
   final InfoModel _infoModel;
@@ -12,9 +11,8 @@ class PlayerModel {
   final CardPileModel _deckModel;
   final CardPileModel _discardModel;
 
+  final GameStateManager _gameStateManager = GameStateManager();
   static const cardsToDrawOnTap = 5;
-
-  VoidCallback? onCardsDrawn;
   Function(CardModel)? cardPlayed;
 
   PlayerModel({
@@ -48,7 +46,7 @@ class PlayerModel {
       _handModel.addCards(drawnCards);
     }
 
-    onCardsDrawn?.call();
+    _gameStateManager.nextPhase();
   }
 
   void _onCardPlayed(CardModel card) {

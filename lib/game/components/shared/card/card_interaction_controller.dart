@@ -89,7 +89,7 @@ class CardInteractionController {
 
     moveEffect.onComplete = () {
       _isAnimating = false;
-      card.isButtonVisible = _gameStateManager.currentPhase != GamePhase.setup;
+      card.isButtonVisible = _gameStateManager.currentPhase == GamePhase.playerTurn;
       card.buttonDisabled = buttonDisabled;
     };
 

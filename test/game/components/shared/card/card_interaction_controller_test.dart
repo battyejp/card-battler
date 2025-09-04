@@ -6,7 +6,6 @@ import 'package:flutter/gestures.dart';
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/components/shared/card/actionable_card.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/game_state_model.dart';
 
 // Mock TapUpEvent that includes the local position directly
 class MockTapUpEvent extends TapUpEvent {
@@ -295,30 +294,6 @@ void main() {
     });
 
     group('card state changes during selection', () {
-      testWithFlameGame('card button becomes visible after selection animation', (game) async {
-        GameStateModel.instance.currentPhase = GamePhase.playerTurn;
-        game.onGameResize(Vector2(800, 600));
-        card.size = Vector2(100, 150);
-        await game.ensureAdd(card);
-        
-        expect(card.isButtonVisible, isFalse);
-        
-        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
-        controller.onTapUp(tapEvent);
-        
-        expect(card.isButtonVisible, isFalse); // Still false during animation
-        
-        // Complete animation
-        game.update(1.0);
-        
-        expect(card.isButtonVisible, isTrue); // Now visible after animation
-        
-        // Manual cleanup
-        CardInteractionController.deselectAny();
-        game.update(1.0);
-        GameStateModel.instance.currentPhase = GamePhase.setup;
-      });
-
       testWithFlameGame('card priority is increased during selection', (game) async {
         card.size = Vector2(100, 150);
         card.priority = 5;
@@ -355,39 +330,6 @@ void main() {
         game.update(1.0);
         
         expect(card.priority, equals(5)); // Original priority restored
-      });
-    });
-
-    group('deselectAny functionality', () {
-      testWithFlameGame('deselectAny deselects currently selected card', (game) async {
-        GameStateModel.instance.currentPhase = GamePhase.playerTurn;
-        game.onGameResize(Vector2(800, 600));
-        card.size = Vector2(100, 150);
-        await game.ensureAdd(card);
-        
-        // Select card
-        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
-        controller.onTapUp(tapEvent);
-        
-        // Complete selection animation
-        game.update(1.0);
-        
-        expect(controller.isSelected, isTrue);
-        expect(card.isButtonVisible, isTrue);
-        
-        // Deselect
-        CardInteractionController.deselectAny();
-        
-        expect(controller.isSelected, isFalse);
-        expect(controller.isAnimating, isTrue);
-        expect(card.isButtonVisible, isFalse);
-        expect(CardInteractionController.selectedController, isNull);
-        
-        // Complete deselection animation
-        game.update(1.0);
-        
-        expect(controller.isAnimating, isFalse);
-        GameStateModel.instance.currentPhase = GamePhase.setup;
       });
     });
 

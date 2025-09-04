@@ -78,8 +78,7 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
               },
               onConfirm: () {
                 router.pop();
-                GameStateModel.instance.playerTurn.endTurn();
-                //_playerTurnScene.onTurnEnded?.call();
+                GameStateModel.instance.playerTurn.endTurn(); //TODO don't call model directly
               },
             );
           }),
@@ -95,15 +94,4 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
       router.pop();
     });
   }
-
-  // /// Saves the current game state to JSON
-  // Map<String, dynamic> saveGame() {
-  //   return _gameState.toJson();
-  // }
-
-  // /// Loads a game from JSON data
-  // static CardBattlerGame loadGame(Map<String, dynamic> jsonData) {
-  //   final gameState = GameStateModel.fromJson(jsonData);
-  //   return CardBattlerGame.withState(gameState);
-  // }
 }
