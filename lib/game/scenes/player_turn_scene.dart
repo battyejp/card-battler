@@ -5,27 +5,47 @@ import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/components/shared/flat_button.dart';
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 
 class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
   final PlayerTurnModel _model;
   final Vector2 _size;
-  final VoidCallback? onTurnEnded;
+  //final VoidCallback? onTurnEnded;
+  final GameStateManager _gameStateManager = GameStateManager();
   late final FlatButton turnButton;
 
-  PlayerTurnScene({required PlayerTurnModel model, required Vector2 size, this.onTurnEnded})
+  PlayerTurnScene({required PlayerTurnModel model, required Vector2 size, /*this.onTurnEnded*/})
       : _model = model,
         _size = size {
     _model.playerModel.onCardsDrawn = _onPlayerCardsDrawn;
   }
 
-  void _setupModelCallbacks() {
-    _model.onShowConfirmDialog = () => game.router.pushOverlay('confirm');
-    _model.onHideTurnButton = hideTurnButton;
-    _model.onSetTurnButtonEndTurnText = () => turnButton.text = 'End Turn';
-    _model.onNavigateToEnemyTurn = () => game.router.pushNamed('enemyTurn');
+  void _setupGameStateListener() {
+    _gameStateManager.addPhaseChangeListener(_onGamePhaseChanged);
+    _gameStateManager.addConfirmationRequestListener(_onConfirmationRequested);
+  }
+
+  void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
+    switch (newPhase) {
+      case GamePhase.setup:
+        turnButton.text = 'Take Enemy Turn';
+        turnButton.isVisible = true;
+        break;
+      case GamePhase.enemyTurn:
+        turnButton.text = 'End Turn';
+        game.router.pushNamed('enemyTurn');
+        break;
+      case GamePhase.playerTurn:
+        break;
+    }
+  }
+
+  void _onConfirmationRequested() {
+    game.router.pushOverlay('confirm');
   }
 
   static const double margin = 20.0;
@@ -36,7 +56,14 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
     super.onMount();
     _loadGameComponents();
     _createTurnButton();
-    _setupModelCallbacks();
+    _setupGameStateListener();
+  }
+
+  @override
+  void onRemove() {
+    _gameStateManager.removePhaseChangeListener(_onGamePhaseChanged);
+    _gameStateManager.removeConfirmationRequestListener(_onConfirmationRequested);
+    super.onRemove();
   }
 
   void _loadGameComponents() {
@@ -101,10 +128,5 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
 
   void _onPlayerCardsDrawn() {
     turnButton.isVisible = true;
-  }
-
-  void hideTurnButton() {
-    turnButton.text = 'Take Enemy Turn';
-    turnButton.isVisible = false;
   }
 }

@@ -63,7 +63,6 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
     _playerTurnScene = PlayerTurnScene(
       model: GameStateModel.instance.playerTurn, 
       size: size,
-      onTurnEnded: () => _playerTurnScene.hideTurnButton(),
     );
 
     world.add(
@@ -80,7 +79,7 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
               onConfirm: () {
                 router.pop();
                 GameStateModel.instance.playerTurn.endTurn();
-                _playerTurnScene.onTurnEnded?.call();
+                //_playerTurnScene.onTurnEnded?.call();
               },
             );
           }),

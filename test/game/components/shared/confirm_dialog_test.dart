@@ -6,12 +6,9 @@ void main() {
   group('ConfirmDialog', () {
     group('constructor and initialization', () {
       testWidgets('creates with required parameters', (tester) async {
-        bool confirmCalled = false;
-        bool cancelCalled = false;
-
         final dialog = ConfirmDialog(
-          onConfirm: () => confirmCalled = true,
-          onCancel: () => cancelCalled = true,
+          onConfirm: () {},
+          onCancel: () {},
         );
 
         await tester.pumpWidget(
@@ -27,12 +24,9 @@ void main() {
       });
 
       testWidgets('creates with custom title and message', (tester) async {
-        bool confirmCalled = false;
-        bool cancelCalled = false;
-
-        final dialog = ConfirmDialog(
-          onConfirm: () => confirmCalled = true,
-          onCancel: () => cancelCalled = true,
+          final dialog = ConfirmDialog(
+          onConfirm: () {},
+          onCancel: () {},
           title: 'Delete Item',
           message: 'This action cannot be undone.',
         );
@@ -215,7 +209,7 @@ void main() {
         expect(cancelButtons, findsOneWidget);
 
         final cancelButton = tester.widget<ElevatedButton>(cancelButtons);
-        final buttonStyle = cancelButton.style as ButtonStyle?;
+        final buttonStyle = cancelButton.style;
         final backgroundColor = buttonStyle?.backgroundColor?.resolve({});
         expect(backgroundColor, equals(Colors.grey));
       });
@@ -237,7 +231,7 @@ void main() {
         expect(confirmButtons, findsOneWidget);
 
         final confirmButton = tester.widget<ElevatedButton>(confirmButtons);
-        final buttonStyle = confirmButton.style as ButtonStyle?;
+        final buttonStyle = confirmButton.style;
         final backgroundColor = buttonStyle?.backgroundColor?.resolve({});
         expect(backgroundColor, equals(Colors.blue));
       });
