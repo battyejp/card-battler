@@ -497,7 +497,7 @@ void main() {
         expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
       });
 
-      test('calls onTurnFinished callback after phase advancement', () {
+      test('advances to next phase after turn completion', () {
         gameStateManager.reset(); // Start fresh
         gameStateManager.nextPhase(); // cardsDrawn
         gameStateManager.nextPhase(); // enemyTurn
@@ -519,18 +519,13 @@ void main() {
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
         
-        bool callbackCalled = false;
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
-          onTurnFinished: () {
-            callbackCalled = true;
-          },
         );
 
         enemyTurnArea.drawCardsFromDeck();
 
-        expect(callbackCalled, isTrue);
         expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
       });
 
@@ -556,23 +551,18 @@ void main() {
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
         
-        bool callbackCalled = false;
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
-          onTurnFinished: () {
-            callbackCalled = true;
-          },
         );
 
         enemyTurnArea.drawCardsFromDeck();
 
         // Since card has drawCard effect, turn should continue
-        expect(callbackCalled, isFalse);
         expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn)); // Should remain in enemyTurn
       });
 
-      test('multiple draws in same turn only advance phase once', () {
+      test('phase advances correctly with multiple card draws', () {
         gameStateManager.reset();
         gameStateManager.nextPhase(); // cardsDrawn
         gameStateManager.nextPhase(); // enemyTurn
@@ -605,24 +595,20 @@ void main() {
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true, health: 100)];
         
-        int callbackCallCount = 0;
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
-          onTurnFinished: () {
-            callbackCallCount++;
-          },
         );
 
         // Draw first card - should finish turn and advance phase
         enemyTurnArea.drawCardsFromDeck();
         expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
-        expect(callbackCallCount, equals(1));
+        expect(playerStats[0].health.currentHealth, equals(90)); // 100 - 10
 
-        // Try to draw second card - this will draw another card and finish another turn
+        // Draw second card - this will draw another card and advance phase again
         enemyTurnArea.drawCardsFromDeck();
         expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards)); // nextPhase from playerTurn goes to waitingToDrawCards
-        expect(callbackCallCount, equals(2)); // Should be called again since second draw finished another turn
+        expect(playerStats[0].health.currentHealth, equals(75)); // 90 - 15
       });
     });
   });

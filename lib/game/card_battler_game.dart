@@ -1,9 +1,7 @@
-import 'package:card_battler/game/components/shared/confirm_dialog.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/scenes/enemy_turn_scene.dart';
-import 'package:card_battler/game/scenes/player_turn_scene.dart';
+import 'package:card_battler/game/services/scene_manager.dart';
 import 'package:flame/game.dart';
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:flame/events.dart';
@@ -11,7 +9,7 @@ import 'package:flame/events.dart';
 class CardBattlerGame extends FlameGame with TapCallbacks {
   Vector2? _testSize;
   late final RouterComponent router;
-  late final PlayerTurnScene _playerTurnScene;
+  final SceneManager _sceneManager = SceneManager();
 
   // Default constructor with new game state
   CardBattlerGame();
@@ -57,41 +55,8 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
       GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
     }
 
-    GameStateModel.instance.selectedPlayer = GameStateModel.instance.playerTurn.playerModel;
-    GameStateModel.instance.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished;
-
-    _playerTurnScene = PlayerTurnScene(
-      model: GameStateModel.instance.playerTurn, 
-      size: size,
-    );
-
     world.add(
-      router = RouterComponent(
-        routes: {
-          'playerTurn': Route(() => _playerTurnScene),
-          'enemyTurn': Route(() => EnemyTurnScene(model: GameStateModel.instance.enemyTurnArea, size: size)),
-          'confirm': OverlayRoute((context, game) { 
-            return ConfirmDialog(
-              title: 'You still have cards in your hand!',
-              onCancel: () {
-                router.pop();
-              },
-              onConfirm: () {
-                router.pop();
-                GameStateModel.instance.playerTurn.endTurn(); //TODO don't call model directly
-              },
-            );
-          }),
-        },
-        initialRoute: 'playerTurn',
-      ),
+      router = _sceneManager.createRouter(size),
     );
-
-  }
-  
-  void _onEnemyTurnFinished() {
-    Future.delayed(const Duration(seconds: 1), () {
-      router.pop();
-    });
   }
 }

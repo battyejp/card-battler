@@ -2,20 +2,17 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
-import 'package:flutter/foundation.dart';
 
 class EnemyTurnAreaModel {
   final CardPileModel enemyCards;
   final CardPileModel playedCards;
   final List<PlayerStatsModel> playerStats;
   final GameStateManager _gameStateManager = GameStateManager();
-  VoidCallback? onTurnFinished;
   bool _turnFinished;
 
   EnemyTurnAreaModel({
     required this.enemyCards,
     required this.playerStats,
-    this.onTurnFinished,
   })  : playedCards = CardPileModel.empty(),
         _turnFinished = false;
 
@@ -36,7 +33,6 @@ class EnemyTurnAreaModel {
     if (_turnFinished) {
       _turnFinished = false;
       _gameStateManager.nextPhase(); //Should be playerTurn
-      onTurnFinished?.call();
     }
   }
 

@@ -8,21 +8,19 @@ import 'package:card_battler/game/components/shared/card/card_interaction_contro
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/scene_manager.dart';
 import 'package:flame/components.dart';
 
 class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
   final PlayerTurnModel _model;
   final Vector2 _size;
   final GameStateManager _gameStateManager = GameStateManager();
+  final SceneManager _sceneManager = SceneManager();
   late final FlatButton turnButton;
 
   PlayerTurnScene({required PlayerTurnModel model, required Vector2 size, /*this.onTurnEnded*/})
       : _model = model,
         _size = size;
-
-  void _onConfirmationRequested() {
-    game.router.pushOverlay('confirm'); //TODO should this be moved out of here?
-  }
 
   static const double margin = 20.0;
   static const double topLayoutHeightFactor = 0.6;
@@ -38,13 +36,11 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
   @override
   void onRemove() {
     _gameStateManager.removePhaseChangeListener(_onGamePhaseChanged);
-    _gameStateManager.removeConfirmationRequestListener(_onConfirmationRequested);
     super.onRemove();
   }
 
   void _setupGameStateListener() {
     _gameStateManager.addPhaseChangeListener(_onGamePhaseChanged);
-    _gameStateManager.addConfirmationRequestListener(_onConfirmationRequested);
   }
 
   void _loadGameComponents() {
@@ -103,7 +99,6 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
       case GamePhase.enemyTurn:
         turnButton.text = 'End Turn';
         turnButton.isVisible = true;
-        game.router.pushNamed('enemyTurn'); //TODO should this be moved out of here?
         break;
       case GamePhase.playerTurn:
         turnButton.text = 'End Turn';
@@ -120,7 +115,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
       onReleased: () {
         if (!turnButton.disabled && turnButton.isVisible) {
           CardInteractionController.deselectAny();
-          _model.handleTurnButtonPress(); //TODO don't call model directly
+          _sceneManager.handleTurnButtonPress();
         }
       }
     );

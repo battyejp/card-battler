@@ -25,11 +25,12 @@ class GameStateModel {
   
   final EnemyTurnAreaModel enemyTurnArea;
   final PlayerTurnModel playerTurn;
-  PlayerModel? selectedPlayer;
+  final PlayerModel? selectedPlayer;
 
   GameStateModel._({
     required this.enemyTurnArea,
     required this.playerTurn,
+    this.selectedPlayer,
   });
 
   /// Gets the singleton instance of GameStateModel
@@ -156,7 +157,8 @@ class GameStateModel {
       enemyTurnArea: EnemyTurnAreaModel(
         enemyCards: CardPileModel(cards: enemyCards),
         playerStats: playerStats,
-      )
+      ),
+      selectedPlayer: players.first,
     );
   }
 

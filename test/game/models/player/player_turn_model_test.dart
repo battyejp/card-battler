@@ -24,9 +24,7 @@ void main() {
     late ShopModel shopModel;
     late PlayerTurnModel playerTurnModel;
 
-    setUp(() {
-      GameStateModel.instance.selectedPlayer = null;
-      
+    setUp(() { 
       // Reset GameStateManager to known state
       final gameStateManager = GameStateManager();
       gameStateManager.reset();
@@ -213,30 +211,6 @@ void main() {
 
         // Should not throw, even though these effects aren't implemented yet
         expect(() => playerTurnModel.applyCardEffects(card), returnsNormally);
-      });
-    });
-
-    group('static selectedPlayer', () {
-      test('can be set and retrieved', () {
-        final newPlayer = PlayerModel(
-          infoModel: InfoModel(
-            attack: ValueImageLabelModel(value: 30, label: 'Attack'),
-            credits: ValueImageLabelModel(value: 50, label: 'Credits'),
-            healthModel: HealthModel(maxHealth: 80),
-            name: 'NewPlayer',
-          ),
-          handModel: CardHandModel(),
-          deckModel: CardPileModel.empty(),
-          discardModel: CardPileModel.empty(),
-        );
-
-        GameStateModel.instance.selectedPlayer = newPlayer;
-        expect(GameStateModel.instance.selectedPlayer, equals(newPlayer));
-      });
-
-      test('can be set to null', () {
-        GameStateModel.instance.selectedPlayer = null;
-        expect(GameStateModel.instance.selectedPlayer, isNull);
       });
     });
 
