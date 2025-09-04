@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/components/shared/card/actionable_card.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
 
 // Mock TapUpEvent that includes the local position directly
 class MockTapUpEvent extends TapUpEvent {
@@ -294,6 +295,45 @@ void main() {
     });
 
     group('card state changes during selection', () {
+      testWithFlameGame('card button becomes visible only during playerTurn phase', (game) async {
+        final gameStateManager = GameStateManager();
+        gameStateManager.reset(); // Start at waitingToDrawCards
+        
+        game.onGameResize(Vector2(800, 600));
+        card.size = Vector2(100, 150);
+        await game.ensureAdd(card);
+        
+        expect(card.isButtonVisible, isFalse);
+        
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
+        controller.onTapUp(tapEvent);
+        
+        expect(card.isButtonVisible, isFalse); // Still false during animation
+        
+        // Complete animation - button should remain invisible because not in playerTurn
+        game.update(1.0);
+        expect(card.isButtonVisible, isFalse);
+        
+        // Now set to playerTurn phase
+        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
+        gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
+        gameStateManager.nextPhase(); // enemyTurn -> playerTurn
+        
+        // Select card again during playerTurn
+        CardInteractionController.deselectAny();
+        game.update(1.0);
+        
+        controller.onTapUp(tapEvent);
+        game.update(1.0);
+        
+        expect(card.isButtonVisible, isTrue); // Now visible during playerTurn
+        
+        // Clean up
+        CardInteractionController.deselectAny();
+        game.update(1.0);
+        gameStateManager.reset();
+      });
+
       testWithFlameGame('card priority is increased during selection', (game) async {
         card.size = Vector2(100, 150);
         card.priority = 5;

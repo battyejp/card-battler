@@ -6,6 +6,8 @@ import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
 
 List<CardModel> _generateCards(int count) {
   return List.generate(count, (index) => CardModel(
@@ -122,6 +124,25 @@ void main() {
         for (final card in playerModel.handModel.cards) {
           expect(card.onCardPlayed, isNotNull);
         }
+      });
+
+      test('calls GameStateManager.nextPhase() after drawing cards', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+        );
+
+        // Reset GameStateManager to known state
+        final gameStateManager = GameStateManager();
+        gameStateManager.reset(); // Should be waitingToDrawCards
+
+        // Draw cards should trigger phase advancement
+        playerModel.drawCardsFromDeck();
+
+        // Should now be in cardsDrawn phase
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
       });
 
       test('drawn cards trigger cardPlayed callback when played', () {

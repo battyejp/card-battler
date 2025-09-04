@@ -4,6 +4,8 @@ import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
 
 List<CardModel> _generateTestCards(int count) {
   return List.generate(count, (index) => CardModel(
@@ -449,6 +451,178 @@ void main() {
 
         // Should result in 0 health (death) - health model clamps to 0
         expect(activePlayer.health.currentHealth, equals(0)); // clamped to 0, not negative
+      });
+    });
+
+    group('GameStateManager integration', () {
+      late GameStateManager gameStateManager;
+
+      setUp(() {
+        gameStateManager = GameStateManager();
+      });
+
+      test('calls nextPhase when turn finishes', () {
+        // Set up game state to enemyTurn phase
+        gameStateManager.reset(); // waitingToDrawCards
+        gameStateManager.nextPhase(); // cardsDrawn
+        gameStateManager.nextPhase(); // enemyTurn
+        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn));
+
+        final testCards = [
+          CardModel(
+            name: 'Basic Enemy Card',
+            type: 'enemy',
+            isFaceUp: false,
+            effects: [
+              EffectModel(
+                type: EffectType.attack,
+                target: EffectTarget.activePlayer,
+                value: 10,
+              ),
+            ],
+          ),
+        ];
+        
+        final enemyCards = CardPileModel(cards: testCards);
+        final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
+        
+        final enemyTurnArea = EnemyTurnAreaModel(
+          enemyCards: enemyCards,
+          playerStats: playerStats,
+        );
+
+        enemyTurnArea.drawCardsFromDeck();
+
+        // Should advance to playerTurn phase after finishing enemy turn
+        expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
+      });
+
+      test('calls onTurnFinished callback after phase advancement', () {
+        gameStateManager.reset(); // Start fresh
+        gameStateManager.nextPhase(); // cardsDrawn
+        gameStateManager.nextPhase(); // enemyTurn
+
+        final testCards = [
+          CardModel(
+            name: 'Simple Card',
+            type: 'enemy',
+            effects: [
+              EffectModel(
+                type: EffectType.attack,
+                target: EffectTarget.activePlayer,
+                value: 5,
+              ),
+            ],
+          ),
+        ];
+        
+        final enemyCards = CardPileModel(cards: testCards);
+        final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
+        
+        bool callbackCalled = false;
+        final enemyTurnArea = EnemyTurnAreaModel(
+          enemyCards: enemyCards,
+          playerStats: playerStats,
+          onTurnFinished: () {
+            callbackCalled = true;
+          },
+        );
+
+        enemyTurnArea.drawCardsFromDeck();
+
+        expect(callbackCalled, isTrue);
+        expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
+      });
+
+      test('does not advance phase on incomplete turn', () {
+        gameStateManager.reset();
+        gameStateManager.nextPhase(); // cardsDrawn
+        gameStateManager.nextPhase(); // enemyTurn
+
+        final testCards = [
+          CardModel(
+            name: 'Draw Card Effect',
+            type: 'enemy',
+            effects: [
+              EffectModel(
+                type: EffectType.drawCard,
+                target: EffectTarget.self,
+                value: 1,
+              ),
+            ],
+          ),
+        ];
+        
+        final enemyCards = CardPileModel(cards: testCards);
+        final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
+        
+        bool callbackCalled = false;
+        final enemyTurnArea = EnemyTurnAreaModel(
+          enemyCards: enemyCards,
+          playerStats: playerStats,
+          onTurnFinished: () {
+            callbackCalled = true;
+          },
+        );
+
+        enemyTurnArea.drawCardsFromDeck();
+
+        // Since card has drawCard effect, turn should continue
+        expect(callbackCalled, isFalse);
+        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn)); // Should remain in enemyTurn
+      });
+
+      test('multiple draws in same turn only advance phase once', () {
+        gameStateManager.reset();
+        gameStateManager.nextPhase(); // cardsDrawn
+        gameStateManager.nextPhase(); // enemyTurn
+
+        final testCards = [
+          CardModel(
+            name: 'Attack Card 1',
+            type: 'enemy',
+            effects: [
+              EffectModel(
+                type: EffectType.attack,
+                target: EffectTarget.activePlayer,
+                value: 10,
+              ),
+            ],
+          ),
+          CardModel(
+            name: 'Attack Card 2',
+            type: 'enemy',
+            effects: [
+              EffectModel(
+                type: EffectType.attack,
+                target: EffectTarget.activePlayer,
+                value: 15,
+              ),
+            ],
+          ),
+        ];
+        
+        final enemyCards = CardPileModel(cards: testCards);
+        final playerStats = [_createTestPlayerStats('Player1', isActive: true, health: 100)];
+        
+        int callbackCallCount = 0;
+        final enemyTurnArea = EnemyTurnAreaModel(
+          enemyCards: enemyCards,
+          playerStats: playerStats,
+          onTurnFinished: () {
+            callbackCallCount++;
+          },
+        );
+
+        // Draw first card - should finish turn and advance phase
+        enemyTurnArea.drawCardsFromDeck();
+        expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
+        expect(callbackCallCount, equals(1));
+
+        // Try to draw second card - this will draw another card and finish another turn
+        enemyTurnArea.drawCardsFromDeck();
+        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards)); // nextPhase from playerTurn goes to waitingToDrawCards
+        expect(callbackCallCount, equals(2)); // Should be called again since second draw finished another turn
       });
     });
   });
