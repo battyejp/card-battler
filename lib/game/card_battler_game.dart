@@ -1,5 +1,6 @@
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/services/card_loader_service.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/scene_manager.dart';
 import 'package:flame/game.dart';
@@ -37,17 +38,17 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
       onGameResize(_testSize!);
     }
     else {
-      shopCards = await loadCardsFromJson<ShopCardModel>(
+      shopCards = await CardLoaderService.loadCardsFromJson<ShopCardModel>(
         'assets/data/shop_cards.json',
         ShopCardModel.fromJson,
       );
 
-      playerDeckCards = await loadCardsFromJson<CardModel>(
+      playerDeckCards = await CardLoaderService.loadCardsFromJson<CardModel>(
         'assets/data/hero_starting_cards.json',
         CardModel.fromJson,
       );
 
-      enemyCards = await loadCardsFromJson<CardModel>(
+      enemyCards = await CardLoaderService.loadCardsFromJson<CardModel>(
         'assets/data/enemy_cards.json',
         CardModel.fromJson,
       );

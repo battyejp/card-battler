@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle, VoidCallback;
 
+//TODO break this file up
 enum EffectType {
   attack,
   heal,
@@ -69,7 +69,7 @@ class CardModel {
   final String _type;
   final List<EffectModel> _effects;
   bool isFaceUp;
-  VoidCallback? onCardPlayed;
+  void Function()? onCardPlayed;
 
   CardModel({
     required String name,
@@ -113,15 +113,15 @@ class CardModel {
   }
 }
 
-/// Loads cards from JSON file
+/// Loads cards from JSON string
 /// 
 /// Generic method that can load either CardModel or any subclass like ShopCardModel
 /// The [fromJson] parameter is a factory function that creates instances of T from JSON
-Future<List<T>> loadCardsFromJson<T>(
-  String filePath, 
+/// The [jsonString] parameter should contain the JSON data as a string
+List<T> loadCardsFromJsonString<T>(
+  String jsonString, 
   T Function(Map<String, dynamic>) fromJson
-) async {
-  final String jsonString = await rootBundle.loadString(filePath);
+) {
   final List<dynamic> jsonData = json.decode(jsonString);
   return jsonData.map((json) => fromJson(json)).toList();
 }
