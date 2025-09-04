@@ -18,6 +18,8 @@ import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/components/shared/flat_button.dart';
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
@@ -124,11 +126,13 @@ PlayerTurnModel _createTestPlayerTurnModel({
   EnemiesModel? enemiesModel,
   ShopModel? shopModel,
 }) {
+  final gameStateService = DefaultGameStateService(GameStateManager());
   return PlayerTurnModel(
     playerModel: playerModel ?? _createTestPlayerModel(),
     teamModel: teamModel ?? _createTestTeamModel(),
     enemiesModel: enemiesModel ?? _createTestEnemiesModel(),
     shopModel: shopModel ?? _createTestShopModel(),
+    gameStateService: gameStateService,
   );
 }
 

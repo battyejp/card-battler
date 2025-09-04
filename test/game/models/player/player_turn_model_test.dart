@@ -15,6 +15,7 @@ import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
 
 void main() {
   group('PlayerTurnModel', () {
@@ -64,11 +65,13 @@ void main() {
         cards: shopCards
       );
 
+      final gameStateService = DefaultGameStateService(gameStateManager);
       playerTurnModel = PlayerTurnModel(
         playerModel: playerModel,
         teamModel: teamModel,
         enemiesModel: enemiesModel,
         shopModel: shopModel,
+        gameStateService: gameStateService,
       );
     });
 
@@ -85,8 +88,9 @@ void main() {
         expect(shopModel.cardPlayed, isNotNull);
       });
 
-      test('selectedPlayer starts as null', () {
-        expect(GameStateModel.instance.selectedPlayer, isNull);
+      test('selectedPlayer is initialized to first player', () {
+        expect(GameStateModel.instance.selectedPlayer, isNotNull);
+        expect(GameStateModel.instance.selectedPlayer?.infoModel.name, equals('Player 1'));
       });
     });
 

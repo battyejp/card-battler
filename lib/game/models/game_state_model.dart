@@ -14,6 +14,8 @@ import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
 
 /// Represents the different phases of the game
 enum GamePhase { waitingToDrawCards, cardsDrawn, enemyTurn, playerTurn }
@@ -77,6 +79,8 @@ class GameStateModel {
 
   /// Creates a new game with default starting values
   static GameStateModel _newGame(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards, List<CardModel> enemyCards) {
+    // Create shared GameStateService
+    final gameStateService = DefaultGameStateService(GameStateManager());
     final players = <PlayerModel>[
       PlayerModel(
         infoModel: InfoModel(
@@ -89,6 +93,7 @@ class GameStateModel {
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
+        gameStateService: gameStateService,
       ),
       PlayerModel(
         infoModel: InfoModel(
@@ -100,6 +105,7 @@ class GameStateModel {
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
+        gameStateService: gameStateService,
       ),
       PlayerModel(
         infoModel: InfoModel(
@@ -111,6 +117,7 @@ class GameStateModel {
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
+        gameStateService: gameStateService,
       ),
       PlayerModel(
         infoModel: InfoModel(
@@ -122,6 +129,7 @@ class GameStateModel {
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
+        gameStateService: gameStateService,
       ),
     ];
 
@@ -153,10 +161,12 @@ class GameStateModel {
           enemyCards: enemyCards,
         ),
         shopModel: ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: shopCards),
+        gameStateService: gameStateService,
       ),
       enemyTurnArea: EnemyTurnAreaModel(
         enemyCards: CardPileModel(cards: enemyCards),
         playerStats: playerStats,
+        gameStateService: gameStateService,
       ),
       selectedPlayer: players.first,
     );

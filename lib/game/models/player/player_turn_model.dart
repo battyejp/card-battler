@@ -6,7 +6,7 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
 
 enum TurnButtonAction { navigateToEnemyTurn, showConfirmDialog, endTurnDirectly }
 
@@ -15,14 +15,15 @@ class PlayerTurnModel {
   final TeamModel teamModel;
   final EnemiesModel enemiesModel;
   final ShopModel shopModel;
-  final GameStateManager _gameStateManager = GameStateManager();
+  final GameStateService _gameStateService;
 
   PlayerTurnModel({
     required this.playerModel,
     required this.teamModel,
     required this.enemiesModel,
     required this.shopModel,
-  }) {
+    required GameStateService gameStateService,
+  }) : _gameStateService = gameStateService {
     playerModel.cardPlayed = onCardPlayed;
     shopModel.cardPlayed = onCardPlayed;
   }
@@ -77,20 +78,20 @@ class PlayerTurnModel {
 
     discardHand();
     shopModel.refillShop();
-    _gameStateManager.nextPhase(); // Should be waitingToDrawCards
+    _gameStateService.nextPhase(); // Should be waitingToDrawCards
   }
 
   void handleTurnButtonPress() {
-    if (_gameStateManager.currentPhase == GamePhase.playerTurn) {
+    if (_gameStateService.currentPhase == GamePhase.playerTurn) {
       if (playerModel.handModel.cards.isNotEmpty) {
-        _gameStateManager.requestConfirmation();
+        _gameStateService.requestConfirmation();
         return;
       }
 
       endTurn();
     }
     else{
-      _gameStateManager.nextPhase();
+      _gameStateService.nextPhase();
     }
   }
 }

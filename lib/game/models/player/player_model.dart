@@ -3,15 +3,15 @@ import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
 
 class PlayerModel {
   final InfoModel _infoModel;
   final CardHandModel _handModel;
   final CardPileModel _deckModel;
   final CardPileModel _discardModel;
+  final GameStateService? _gameStateService;
 
-  final GameStateManager _gameStateManager = GameStateManager();
   static const cardsToDrawOnTap = 5;
   Function(CardModel)? cardPlayed;
 
@@ -20,10 +20,12 @@ class PlayerModel {
     required CardHandModel handModel,
     required CardPileModel deckModel,
     required CardPileModel discardModel,
+    GameStateService? gameStateService,
   }) : _infoModel = infoModel,
        _handModel = handModel,
        _deckModel = deckModel,
-       _discardModel = discardModel;
+       _discardModel = discardModel,
+       _gameStateService = gameStateService;
 
   // Expose models for use in the game components
   InfoModel get infoModel => _infoModel;
@@ -46,7 +48,7 @@ class PlayerModel {
       _handModel.addCards(drawnCards);
     }
 
-    _gameStateManager.nextPhase();
+    _gameStateService?.nextPhase();
   }
 
   void _onCardPlayed(CardModel card) {
