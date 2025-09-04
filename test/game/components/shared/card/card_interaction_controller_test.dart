@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/components/shared/card/actionable_card.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
 
 // Mock TapUpEvent that includes the local position directly
 class MockTapUpEvent extends TapUpEvent {
@@ -295,6 +296,7 @@ void main() {
 
     group('card state changes during selection', () {
       testWithFlameGame('card button becomes visible after selection animation', (game) async {
+        GameStateModel.instance.currentPhase = GamePhase.playerTurn;
         game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
@@ -314,6 +316,7 @@ void main() {
         // Manual cleanup
         CardInteractionController.deselectAny();
         game.update(1.0);
+        GameStateModel.instance.currentPhase = GamePhase.setup;
       });
 
       testWithFlameGame('card priority is increased during selection', (game) async {
@@ -357,6 +360,7 @@ void main() {
 
     group('deselectAny functionality', () {
       testWithFlameGame('deselectAny deselects currently selected card', (game) async {
+        GameStateModel.instance.currentPhase = GamePhase.playerTurn;
         game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
@@ -383,6 +387,7 @@ void main() {
         game.update(1.0);
         
         expect(controller.isAnimating, isFalse);
+        GameStateModel.instance.currentPhase = GamePhase.setup;
       });
     });
 

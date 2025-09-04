@@ -42,4 +42,9 @@ class CardPileModel with ReactiveModel<CardPileModel> {
     _cards.add(card);
     notifyChange();
   }
+
+  void addCards(List<CardModel> cards) {
+    _cards.addAll(cards);
+    notifyChange();
+  }
 }

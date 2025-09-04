@@ -43,47 +43,47 @@ void main() {
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
         
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState, isNotNull);
-        expect(gameState.enemyTurnArea, isNotNull);
-        expect(gameState.playerTurn, isNotNull);
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance, isNotNull);
+        expect(GameStateModel.instance.enemyTurnArea, isNotNull);
+        expect(GameStateModel.instance.playerTurn, isNotNull);
       });
 
       test('creates with empty shop cards', () {
         final shopCards = <ShopCardModel>[];
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState, isNotNull);
-        expect(gameState.enemyTurnArea, isNotNull);
-        expect(gameState.playerTurn, isNotNull);
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance, isNotNull);
+        expect(GameStateModel.instance.enemyTurnArea, isNotNull);
+        expect(GameStateModel.instance.playerTurn, isNotNull);
       });
 
       test('creates with empty player deck cards', () {
         final shopCards = _generateShopCards();
         final playerDeckCards = <CardModel>[];
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState, isNotNull);
-        expect(gameState.enemyTurnArea, isNotNull);
-        expect(gameState.playerTurn, isNotNull);
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance, isNotNull);
+        expect(GameStateModel.instance.enemyTurnArea, isNotNull);
+        expect(GameStateModel.instance.playerTurn, isNotNull);
       });
 
       test('creates with empty enemy cards', () {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = <CardModel>[];
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState, isNotNull);
-        expect(gameState.enemyTurnArea, isNotNull);
-        expect(gameState.playerTurn, isNotNull);
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance, isNotNull);
+        expect(GameStateModel.instance.enemyTurnArea, isNotNull);
+        expect(GameStateModel.instance.playerTurn, isNotNull);
       });
     });
 
@@ -92,43 +92,33 @@ void main() {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState.enemyTurnArea.enemyCards, isNotNull);
-        expect(gameState.enemyTurnArea.enemyCards.allCards.length, equals(enemyCards.length));
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance.enemyTurnArea.enemyCards, isNotNull);
+        expect(GameStateModel.instance.enemyTurnArea.enemyCards.allCards.length, equals(enemyCards.length));
       });
 
       test('enemy turn area has player stats', () {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState.enemyTurnArea.playerStats, isNotNull);
-        expect(gameState.enemyTurnArea.playerStats.length, equals(4)); // 4 players created
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance.enemyTurnArea.playerStats, isNotNull);
+        expect(GameStateModel.instance.enemyTurnArea.playerStats.length, equals(4)); // 4 players created
       });
 
       test('enemy turn area initializes with empty played cards', () {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState.enemyTurnArea.playedCards, isNotNull);
-        expect(gameState.enemyTurnArea.playedCards.hasNoCards, isTrue);
-      });
 
-      test('enemy turn area starts with turn not finished', () {
-        final shopCards = _generateShopCards();
-        final playerDeckCards = _generatePlayerDeckCards();
-        final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState.enemyTurnArea.turnFinished, isFalse);
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance.enemyTurnArea.playedCards, isNotNull);
+        expect(GameStateModel.instance.enemyTurnArea.playedCards.hasNoCards, isTrue);
       });
     });
 
@@ -137,63 +127,63 @@ void main() {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState.playerTurn.playerModel, isNotNull);
-        expect(gameState.playerTurn.playerModel.infoModel.name, equals('Player 1'));
-        expect(gameState.playerTurn.playerModel.infoModel.isActive, isTrue);
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance.playerTurn.playerModel, isNotNull);
+        expect(GameStateModel.instance.playerTurn.playerModel.infoModel.name, equals('Player 1'));
+        expect(GameStateModel.instance.playerTurn.playerModel.infoModel.isActive, isTrue);
       });
 
       test('player turn has team model with correct players', () {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState.playerTurn.teamModel, isNotNull);
-        expect(gameState.playerTurn.teamModel.players.length, equals(4));
-        expect(gameState.playerTurn.teamModel.players[0].name, equals('Player 1'));
-        expect(gameState.playerTurn.teamModel.players[0].isActive, isTrue);
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance.playerTurn.teamModel, isNotNull);
+        expect(GameStateModel.instance.playerTurn.teamModel.players.length, equals(4));
+        expect(GameStateModel.instance.playerTurn.teamModel.players[0].name, equals('Player 1'));
+        expect(GameStateModel.instance.playerTurn.teamModel.players[0].isActive, isTrue);
       });
 
       test('player turn has team model with correct bases', () {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState.playerTurn.teamModel.bases, isNotNull);
-        expect(gameState.playerTurn.teamModel.bases.allBases.length, equals(3));
-        expect(gameState.playerTurn.teamModel.bases.allBases[0].name, equals('Base 1'));
-        expect(gameState.playerTurn.teamModel.bases.allBases[0].healthDisplay, equals('5/5'));
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance.playerTurn.teamModel.bases, isNotNull);
+        expect(GameStateModel.instance.playerTurn.teamModel.bases.allBases.length, equals(3));
+        expect(GameStateModel.instance.playerTurn.teamModel.bases.allBases[0].name, equals('Base 1'));
+        expect(GameStateModel.instance.playerTurn.teamModel.bases.allBases[0].healthDisplay, equals('5/5'));
       });
 
       test('player turn has enemies model', () {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState.playerTurn.enemiesModel, isNotNull);
-        expect(gameState.playerTurn.enemiesModel.allEnemies.length, equals(4));
-        expect(gameState.playerTurn.enemiesModel.maxNumberOfEnemiesInPlay, equals(3));
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance.playerTurn.enemiesModel, isNotNull);
+        expect(GameStateModel.instance.playerTurn.enemiesModel.allEnemies.length, equals(4));
+        expect(GameStateModel.instance.playerTurn.enemiesModel.maxNumberOfEnemiesInPlay, equals(3));
       });
 
       test('player turn has shop model', () {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState.playerTurn.shopModel, isNotNull);
-        expect(gameState.playerTurn.shopModel.numberOfRows, equals(2));
-        expect(gameState.playerTurn.shopModel.numberOfColumns, equals(3));
-        expect(gameState.playerTurn.shopModel.selectableCards.length, equals(shopCards.length));
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance.playerTurn.shopModel, isNotNull);
+        expect(GameStateModel.instance.playerTurn.shopModel.numberOfRows, equals(2));
+        expect(GameStateModel.instance.playerTurn.shopModel.numberOfColumns, equals(3));
+        expect(GameStateModel.instance.playerTurn.shopModel.selectableCards.length, equals(shopCards.length));
       });
     });
 
@@ -202,10 +192,10 @@ void main() {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        final playerStats = gameState.enemyTurnArea.playerStats;
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        final playerStats = GameStateModel.instance.enemyTurnArea.playerStats;
         for (final player in playerStats) {
           expect(player.health.maxHealth, equals(10));
           expect(player.health.currentHealth, equals(10));
@@ -216,10 +206,10 @@ void main() {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        final playerStats = gameState.enemyTurnArea.playerStats;
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        final playerStats = GameStateModel.instance.enemyTurnArea.playerStats;
         expect(playerStats[0].isActive, isTrue);
         expect(playerStats[1].isActive, isFalse);
         expect(playerStats[2].isActive, isFalse);
@@ -230,10 +220,10 @@ void main() {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        final playerStats = gameState.enemyTurnArea.playerStats;
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        final playerStats = GameStateModel.instance.enemyTurnArea.playerStats;
         expect(playerStats[0].name, equals('Player 1'));
         expect(playerStats[1].name, equals('Player 2'));
         expect(playerStats[2].name, equals('Player 3'));
@@ -246,11 +236,11 @@ void main() {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
         // Note: All players get the same deck cards reference in the current implementation
-        final firstPlayerDeck = gameState.playerTurn.playerModel.deckModel;
+        final firstPlayerDeck = GameStateModel.instance.playerTurn.playerModel.deckModel;
         expect(firstPlayerDeck.allCards.length, equals(playerDeckCards.length));
       });
 
@@ -258,24 +248,24 @@ void main() {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
         // Enemy cards should be in enemyTurnArea
-        expect(gameState.enemyTurnArea.enemyCards.allCards.length, equals(enemyCards.length));
+        expect(GameStateModel.instance.enemyTurnArea.enemyCards.allCards.length, equals(enemyCards.length));
       });
 
       test('shop cards are properly assigned', () {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState.playerTurn.shopModel.selectableCards.length, equals(shopCards.length));
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance.playerTurn.shopModel.selectableCards.length, equals(shopCards.length));
         for (int i = 0; i < shopCards.length; i++) {
-          expect(gameState.playerTurn.shopModel.selectableCards[i].name, equals(shopCards[i].name));
-          expect(gameState.playerTurn.shopModel.selectableCards[i].cost, equals(shopCards[i].cost));
+          expect(GameStateModel.instance.playerTurn.shopModel.selectableCards[i].name, equals(shopCards[i].name));
+          expect(GameStateModel.instance.playerTurn.shopModel.selectableCards[i].cost, equals(shopCards[i].cost));
         }
       });
     });
@@ -285,12 +275,12 @@ void main() {
         final shopCards = _generateShopCards();
         final playerDeckCards = _generatePlayerDeckCards();
         final enemyCards = _generateEnemyCards();
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        final enemyAreaPlayers = gameState.enemyTurnArea.playerStats;
-        final teamPlayers = gameState.playerTurn.teamModel.players;
-        
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        final enemyAreaPlayers = GameStateModel.instance.enemyTurnArea.playerStats;
+        final teamPlayers = GameStateModel.instance.playerTurn.teamModel.players;
+
         expect(enemyAreaPlayers.length, equals(teamPlayers.length));
         for (int i = 0; i < enemyAreaPlayers.length; i++) {
           expect(enemyAreaPlayers[i].name, equals(teamPlayers[i].name));
@@ -302,12 +292,12 @@ void main() {
         final shopCards = <ShopCardModel>[];
         final playerDeckCards = <CardModel>[];
         final enemyCards = <CardModel>[];
-        
-        final gameState = GameStateModel.newGame(shopCards, playerDeckCards, enemyCards);
-        
-        expect(gameState, isNotNull);
-        expect(gameState.enemyTurnArea.enemyCards.allCards, isEmpty);
-        expect(gameState.playerTurn.shopModel.selectableCards, isEmpty);
+
+        GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+
+        expect(GameStateModel.instance, isNotNull);
+        expect(GameStateModel.instance.enemyTurnArea.enemyCards.allCards, isEmpty);
+        expect(GameStateModel.instance.playerTurn.shopModel.selectableCards, isEmpty);
       });
     });
   });

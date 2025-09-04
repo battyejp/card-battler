@@ -1,17 +1,19 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/player/player_turn_model.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
-import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/player/card_hand_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
-import 'package:card_battler/game/models/shared/value_image_label_model.dart';
-import 'package:card_battler/game/models/shared/health_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
-import 'package:card_battler/game/models/shop/shop_card_model.dart';
+
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/team/team_model.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
+import 'package:card_battler/game/models/player/card_hand_model.dart';
+import 'package:card_battler/game/models/player/info_model.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game/models/shared/value_image_label_model.dart';
+import 'package:card_battler/game/models/shop/shop_card_model.dart';
+import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
+import 'package:card_battler/game/models/team/team_model.dart';
 
 void main() {
   group('PlayerTurnModel', () {
@@ -22,8 +24,8 @@ void main() {
     late PlayerTurnModel playerTurnModel;
 
     setUp(() {
-      PlayerTurnModel.selectedPlayer = null;
-      
+      GameStateModel.instance.selectedPlayer = null;
+
       final infoModel = InfoModel(
         attack: ValueImageLabelModel(value: 50, label: 'Attack'),
         credits: ValueImageLabelModel(value: 100, label: 'Credits'),
@@ -81,7 +83,7 @@ void main() {
       });
 
       test('selectedPlayer starts as null', () {
-        expect(PlayerTurnModel.selectedPlayer, isNull);
+        expect(GameStateModel.instance.selectedPlayer, isNull);
       });
     });
 
@@ -223,13 +225,13 @@ void main() {
           discardModel: CardPileModel.empty(),
         );
 
-        PlayerTurnModel.selectedPlayer = newPlayer;
-        expect(PlayerTurnModel.selectedPlayer, equals(newPlayer));
+        GameStateModel.instance.selectedPlayer = newPlayer;
+        expect(GameStateModel.instance.selectedPlayer, equals(newPlayer));
       });
 
       test('can be set to null', () {
-        PlayerTurnModel.selectedPlayer = null;
-        expect(PlayerTurnModel.selectedPlayer, isNull);
+        GameStateModel.instance.selectedPlayer = null;
+        expect(GameStateModel.instance.selectedPlayer, isNull);
       });
     });
   });

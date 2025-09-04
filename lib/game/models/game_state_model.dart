@@ -16,21 +16,67 @@ import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 
 /// Represents the different phases of the game
-enum GamePhase { setup, playerTurn, enemyTurn, shopping, battleEnd, gameOver }
+enum GamePhase { setup, enemyTurn, playerTurn }
 
 /// Centralized model that contains all game state
 /// This serves as the single source of truth for the entire game
 class GameStateModel {
+  static GameStateModel? _instance;
+  
   final EnemyTurnAreaModel enemyTurnArea;
   final PlayerTurnModel playerTurn;
+  PlayerModel? selectedPlayer;
+  GamePhase currentPhase = GamePhase.setup;
 
-  GameStateModel({
+  GameStateModel._({
     required this.enemyTurnArea,
     required this.playerTurn,
   });
 
+  /// Gets the singleton instance of GameStateModel
+  static GameStateModel get instance {
+    if (_instance == null) {
+      var shopCards = List.generate(
+          10,
+          (index) => ShopCardModel(name: 'Test Card ${index + 1}', cost: 1),
+        );
+
+      var playerDeckCards = List.generate(
+          10,
+          (index) => CardModel(
+            name: 'Card ${index + 1}',
+            type: 'Player',
+            isFaceUp: false,
+          ),
+        );
+
+        var enemyCards = List.generate(
+          10,
+          (index) => CardModel(
+            name: 'Enemy Card ${index + 1}',
+            type: 'Enemy',
+            isFaceUp: false,
+          ),
+        );
+
+      _instance = GameStateModel._newGame(shopCards, playerDeckCards, enemyCards);
+    }
+    return _instance!;
+  }
+
+  /// Initializes the singleton instance with a new game
+  static GameStateModel initialize(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards, List<CardModel> enemyCards) {
+    _instance = GameStateModel._newGame(shopCards, playerDeckCards, enemyCards);
+    return _instance!;
+  }
+
+  /// Resets the singleton instance (useful for testing or starting a new game)
+  static void reset() {
+    _instance = null;
+  }
+
   /// Creates a new game with default starting values
-  factory GameStateModel.newGame(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards, List<CardModel> enemyCards) {
+  static GameStateModel _newGame(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards, List<CardModel> enemyCards) {
     final players = <PlayerModel>[
       PlayerModel(
         infoModel: InfoModel(
@@ -87,9 +133,7 @@ class GameStateModel {
       );
     }).toList();
 
-    PlayerTurnModel.selectedPlayer = players.first;
-
-    return GameStateModel(
+    return GameStateModel._(
       playerTurn: PlayerTurnModel(
         playerModel: players.first,
         teamModel: TeamModel(

@@ -1,18 +1,21 @@
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
+
+enum TurnButtonAction { navigateToEnemyTurn, showConfirmDialog, endTurnDirectly }
 
 class PlayerTurnModel {
   final PlayerModel playerModel;
   final TeamModel teamModel;
   final EnemiesModel enemiesModel;
   final ShopModel shopModel;
-
-  static PlayerModel? selectedPlayer;
+  final GameStateManager _gameStateManager = GameStateManager();
 
   PlayerTurnModel({
     required this.playerModel,
@@ -22,6 +25,11 @@ class PlayerTurnModel {
   }) {
     playerModel.cardPlayed = onCardPlayed;
     shopModel.cardPlayed = onCardPlayed;
+  }
+
+  void discardHand() {
+    playerModel.discardModel.addCards(playerModel.handModel.cards);
+    playerModel.handModel.clearCards();
   }
 
   void onCardPlayed(CardModel card) {
@@ -60,5 +68,30 @@ class PlayerTurnModel {
         break;
     }
   }
+  }
+
+  void endTurn() {
+    //TODO clear coins
+    //TODO clear Attack
+    //TODO might need to shuffle discard back into deck
+
+    discardHand();
+    shopModel.refillShop();
+    _gameStateManager.setPhase(GamePhase.setup);
+  }
+
+  void handleTurnButtonPress() {
+    if (_gameStateManager.currentPhase == GamePhase.setup) {
+      _gameStateManager.setPhase(GamePhase.enemyTurn);
+    }
+    else if (_gameStateManager.currentPhase == GamePhase.playerTurn) {
+      if (playerModel.handModel.cards.isNotEmpty) {
+        _gameStateManager.requestConfirmation();
+      }
+      else {
+        // End turn directly
+        endTurn();
+      }
+    }
   }
 }

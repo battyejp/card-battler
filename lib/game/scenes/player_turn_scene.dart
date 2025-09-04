@@ -3,16 +3,50 @@ import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
+import 'package:card_battler/game/components/shared/flat_button.dart';
+import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:flame/components.dart';
+// import 'package:flutter/foundation.dart';
 
 class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
   final PlayerTurnModel _model;
   final Vector2 _size;
+  //final VoidCallback? onTurnEnded;
+  final GameStateManager _gameStateManager = GameStateManager();
+  late final FlatButton turnButton;
 
-  PlayerTurnScene({required PlayerTurnModel model, required Vector2 size})
+  PlayerTurnScene({required PlayerTurnModel model, required Vector2 size, /*this.onTurnEnded*/})
       : _model = model,
-        _size = size;
+        _size = size {
+    _model.playerModel.onCardsDrawn = _onPlayerCardsDrawn;
+  }
+
+  void _setupGameStateListener() {
+    _gameStateManager.addPhaseChangeListener(_onGamePhaseChanged);
+    _gameStateManager.addConfirmationRequestListener(_onConfirmationRequested);
+  }
+
+  void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
+    switch (newPhase) {
+      case GamePhase.setup:
+        turnButton.text = 'Take Enemy Turn';
+        turnButton.isVisible = true;
+        break;
+      case GamePhase.enemyTurn:
+        turnButton.text = 'End Turn';
+        game.router.pushNamed('enemyTurn');
+        break;
+      case GamePhase.playerTurn:
+        break;
+    }
+  }
+
+  void _onConfirmationRequested() {
+    game.router.pushOverlay('confirm');
+  }
 
   static const double margin = 20.0;
   static const double topLayoutHeightFactor = 0.6;
@@ -21,6 +55,15 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
   Future<void> onMount() async {
     super.onMount();
     _loadGameComponents();
+    _createTurnButton();
+    _setupGameStateListener();
+  }
+
+  @override
+  void onRemove() {
+    _gameStateManager.removePhaseChangeListener(_onGamePhaseChanged);
+    _gameStateManager.removeConfirmationRequestListener(_onConfirmationRequested);
+    super.onRemove();
   }
 
   void _loadGameComponents() {
@@ -64,5 +107,26 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
       ..position = Vector2(0 - enemiesWidth / 2 - shopWidth, topPositionY);
 
     add(team);
+  }
+
+  void _createTurnButton() {
+    turnButton = FlatButton(
+      'Take Enemy Turn',
+      size: Vector2(_size.x * 0.3, 0.1 * _size.y),
+      position: Vector2(0, ((_size.y / 2) * -1) + (_size.y * 0.1)),
+      onReleased: () {
+        if (!turnButton.disabled && turnButton.isVisible) {
+          CardInteractionController.deselectAny();
+          _model.handleTurnButtonPress();
+        }
+      }
+    );
+
+    turnButton.isVisible = false;
+    add(turnButton);
+  }
+
+  void _onPlayerCardsDrawn() {
+    turnButton.isVisible = true;
   }
 }

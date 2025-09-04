@@ -1,24 +1,27 @@
+import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:flutter/foundation.dart';
 
 class EnemyTurnAreaModel {
   final CardPileModel enemyCards;
   final CardPileModel playedCards;
   final List<PlayerStatsModel> playerStats;
+  final GameStateManager _gameStateManager = GameStateManager();
   VoidCallback? onTurnFinished;
-  bool turnFinished;
+  bool _turnFinished;
 
   EnemyTurnAreaModel({
     required this.enemyCards,
     required this.playerStats,
     this.onTurnFinished,
   })  : playedCards = CardPileModel.empty(),
-        turnFinished = false;
+        _turnFinished = false;
 
   void drawCardsFromDeck() {
-    if (turnFinished) return;
+    if (_turnFinished) return;
 
     final drawnCard = enemyCards.drawCard();
 
@@ -29,9 +32,11 @@ class EnemyTurnAreaModel {
       updatePlayersStats(drawnCard);
     }
 
-    turnFinished = drawnCard?.effects.any((effect) => effect.type == EffectType.drawCard) == false;
-    
-    if (turnFinished) {
+    _turnFinished = drawnCard?.effects.any((effect) => effect.type == EffectType.drawCard) == false;
+
+    if (_turnFinished) {
+      _turnFinished = false;
+      _gameStateManager.setPhase(GamePhase.playerTurn);
       onTurnFinished?.call();
     }
   }

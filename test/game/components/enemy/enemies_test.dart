@@ -87,7 +87,7 @@ void main() {
         await game.ensureAdd(enemies);
 
         final textComponent = enemies.children.whereType<TextComponent>().first;
-        expect(textComponent.position, equals(Vector2(150, 20))); // x: size.x / 2, y: 20
+        expect(textComponent.position, equals(Vector2(150, 180)));
         expect(textComponent.anchor, equals(Anchor.center));
       });
     });

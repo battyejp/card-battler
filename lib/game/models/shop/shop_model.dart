@@ -3,10 +3,12 @@ import 'package:card_battler/game/models/shared/reactive_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 
 class ShopModel with ReactiveModel<ShopModel> {
-  List<ShopCardModel> _allCards;
-  List<ShopCardModel> _selectableCards;
+  final List<ShopCardModel> _reserveCards;
   final int _numberOfRows;
   final int _numberOfColumns;
+
+  late int _displayCount;
+  late List<ShopCardModel> _selectableCards;
 
   Function(CardModel)? cardPlayed;
 
@@ -14,26 +16,14 @@ class ShopModel with ReactiveModel<ShopModel> {
     required int numberOfRows,
     required int numberOfColumns,
     required List<ShopCardModel> cards,
-  }) : _allCards = [],
+  }) : _reserveCards = [],
        _selectableCards = [],
        _numberOfRows = numberOfRows,
        _numberOfColumns = numberOfColumns {
-    // Calculate how many cards should be selectable
-    final int displayCount = _numberOfRows * _numberOfColumns;
+    _displayCount = _numberOfRows * _numberOfColumns;
 
-    if (cards.isNotEmpty) {
-      if (cards.length <= displayCount) {
-        _selectableCards = List.from(cards);
-        _allCards = [];
-      } else {
-        _selectableCards = cards.take(displayCount).toList();
-        _allCards = cards.skip(displayCount).toList();
-      }
-    }
-
-    for (final card in _selectableCards) {
-      card.onCardPlayed = () => _onCardPlayed(card);
-    }
+    _reserveCards.addAll(cards);
+    _selectableCards = _getNewCardsForShopWithListenersAndRemoveFromReserve(_displayCount);
   }
 
   void _onCardPlayed(ShopCardModel card) {
@@ -41,13 +31,36 @@ class ShopModel with ReactiveModel<ShopModel> {
     cardPlayed?.call(card);
   }
 
-  /// Removes a specific card from the hand
   void removeSelectableCardFromShop(ShopCardModel card) {
     _selectableCards.remove(card);
     notifyChange();
   }
 
-  List<ShopCardModel> get allCards => _allCards;
+  void refillShop() {
+    var countToAdd = _displayCount - _selectableCards.length;
+
+    if (countToAdd == 0) {
+      return;
+    }
+
+    var newCards = _getNewCardsForShopWithListenersAndRemoveFromReserve(countToAdd);
+    _selectableCards.addAll(newCards);
+    notifyChange();
+  }
+
+  List<ShopCardModel> _getNewCardsForShopWithListenersAndRemoveFromReserve(int countToAdd) {
+    var cards = _reserveCards.take(countToAdd).toList();
+    for (final value in cards) {
+      _reserveCards.remove(value);
+    }
+
+    for (final card in cards) {
+      card.onCardPlayed = () => _onCardPlayed(card);
+    }
+
+    return cards;
+  }
+
   List<ShopCardModel> get selectableCards => _selectableCards;
   int get numberOfRows => _numberOfRows;
   int get numberOfColumns => _numberOfColumns;
