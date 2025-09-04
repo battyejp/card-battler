@@ -1,18 +1,32 @@
-import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/card_interaction_service.dart';
+import 'package:card_battler/game/services/card_ui_service.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'actionable_card.dart';
 
 class CardInteractionController {
-  CardInteractionController(this.card, bool Function()? determineIfButtonEnabled) {
-    _determineIfButtonEnabled = determineIfButtonEnabled;
-  }
-
-  bool Function()? _determineIfButtonEnabled;
   final ActionableCard card;
-  final GameStateManager _gameStateManager = GameStateManager();
+  CardInteractionService? _cardInteractionService;
+  late CardUIService _cardUIService;
+
+  CardInteractionController(
+    this.card, 
+    [bool Function()? determineIfButtonEnabled,]
+  ) {
+    _cardUIService = DefaultCardUIService(businessLogicCheck: determineIfButtonEnabled);
+  }
+  
+  CardInteractionController.withServices(
+    this.card, 
+    {
+      bool Function()? determineIfButtonEnabled,
+      CardInteractionService? cardInteractionService,
+    }
+  ) {
+    _cardInteractionService = cardInteractionService;
+    _cardUIService = DefaultCardUIService(businessLogicCheck: determineIfButtonEnabled);
+  }
 
   static CardInteractionController? _selectedController;
 
@@ -85,11 +99,11 @@ class CardInteractionController {
       EffectController(duration: _animationSpeed),
     );
 
-    var buttonDisabled = _determineIfButtonEnabled == null ? false : !_determineIfButtonEnabled!();
+    var buttonDisabled = !_cardUIService.isButtonEnabled();
 
     moveEffect.onComplete = () {
       _isAnimating = false;
-      card.isButtonVisible = _gameStateManager.currentPhase == GamePhase.playerTurn;
+      card.isButtonVisible = _cardInteractionService?.shouldShowPlayButton() ?? true;
       card.buttonDisabled = buttonDisabled;
     };
 

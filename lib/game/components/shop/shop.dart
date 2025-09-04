@@ -1,10 +1,14 @@
 import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
+import 'package:card_battler/game/services/card_interaction_service.dart';
 import 'package:flame/components.dart';
 import 'package:card_battler/game/components/shop/shop_card.dart';
 
 class Shop extends ReactivePositionComponent<ShopModel> {
-  Shop(super.model);
+  final CardInteractionService? _cardInteractionService;
+  
+  Shop(super.model, {CardInteractionService? cardInteractionService}) 
+    : _cardInteractionService = cardInteractionService;
 
   static const double cardHeightFactor = 0.38;
   static const double hSpacingFactor = 0.2;
@@ -33,7 +37,10 @@ class Shop extends ReactivePositionComponent<ShopModel> {
         // Check if we have enough cards to display
         if (cardIndex < model.selectableCards.length) {
           final cardModel = model.selectableCards[cardIndex];
-          final card = ShopCard(cardModel)
+          final card = ShopCard(
+            cardModel,
+            cardInteractionService: _cardInteractionService,
+          )
             ..size = Vector2(cardWidth, cardHeight)
             ..position = Vector2(x, y);
 

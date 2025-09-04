@@ -8,6 +8,8 @@ import 'package:card_battler/game/components/shared/card/card_interaction_contro
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/card_interaction_service.dart';
 import 'package:card_battler/game/services/scene_manager.dart';
 import 'package:flame/components.dart';
 
@@ -16,6 +18,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
   final Vector2 _size;
   final GameStateManager _gameStateManager = GameStateManager();
   final SceneManager _sceneManager = SceneManager();
+  late final CardInteractionService _cardInteractionService;
   late final FlatButton turnButton;
 
   PlayerTurnScene({required PlayerTurnModel model, required Vector2 size, /*this.onTurnEnded*/})
@@ -28,6 +31,9 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
   @override
   Future<void> onMount() async {
     super.onMount();
+    _cardInteractionService = DefaultCardInteractionService(
+      DefaultGameStateService(_gameStateManager)
+    );
     _loadGameComponents();
     _createTurnButton();
     _setupGameStateListener();
@@ -53,6 +59,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
     // Create player component with models from game state
     final player = Player(
       playerModel: _model.playerModel,
+      cardInteractionService: _cardInteractionService,
     )
       ..size = Vector2(availableWidth, bottomLayoutHeight)
       ..position = Vector2(
@@ -72,7 +79,10 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
 
     // Create shop component with model from game state
     final shopWidth = availableWidth * 0.5 / 2;
-    final shop = Shop(_model.shopModel)
+    final shop = Shop(
+      _model.shopModel,
+      cardInteractionService: _cardInteractionService,
+    )
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
 

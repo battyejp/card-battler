@@ -1,16 +1,28 @@
 import 'package:card_battler/game/components/shared/card/tapable_actionable_card.dart';
-import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
+import 'package:card_battler/game/services/card_interaction_service.dart';
 import 'package:flutter/material.dart' hide Card;
 import 'package:flame/components.dart';
 
 class ShopCard extends TapableActionableCard {
   final ShopCardModel shopCardModel;
+  //final CardInteractionService? _cardInteractionService;
   late TextComponent _costTextComponent;
 
-  ShopCard(this.shopCardModel, {bool Function()? determineIfButtonEnabled}) 
-    : super(shopCardModel, onButtonPressed: shopCardModel.playCard,
-        determineIfButtonEnabled: () => GameStateModel.instance.selectedPlayer != null && GameStateModel.instance.selectedPlayer!.infoModel.credits.value >= shopCardModel.cost);
+  ShopCard(
+    this.shopCardModel, 
+    {
+      bool Function()? determineIfButtonEnabled,
+      CardInteractionService? cardInteractionService,
+    }
+  ) : //_cardInteractionService = cardInteractionService,
+      super(
+        shopCardModel, 
+        onButtonPressed: shopCardModel.playCard,
+        determineIfButtonEnabled: determineIfButtonEnabled ?? 
+          (() => cardInteractionService?.canPurchaseShopCard(shopCardModel) ?? true),
+        cardInteractionService: cardInteractionService,
+      );
 
   @override
   String get buttonLabel => "Buy";

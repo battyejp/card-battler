@@ -1,10 +1,14 @@
 import 'package:card_battler/game/components/shared/card/tapable_actionable_card.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/components/shared/reactive_position_component.dart';
+import 'package:card_battler/game/services/card_interaction_service.dart';
 import 'package:flame/components.dart';
 
 class CardHand extends ReactivePositionComponent<CardHandModel> {
-  CardHand(super.model);
+  final CardInteractionService? _cardInteractionService;
+
+  CardHand(super.model, {CardInteractionService? cardInteractionService})
+      : _cardInteractionService = cardInteractionService;
 
   @override
   void updateDisplay() {
@@ -23,7 +27,7 @@ class CardHand extends ReactivePositionComponent<CardHandModel> {
       final cardPosition = Vector2(startX + (i * (cardWidth + spacing)), (size.y - cardHeight) / 2);
       var cardModel = model.cards[i];
 
-      final card = TapableActionableCard(cardModel, onButtonPressed: cardModel.playCard)
+      final card = TapableActionableCard(cardModel, onButtonPressed: cardModel.playCard, cardInteractionService: _cardInteractionService)
         ..size = Vector2(cardWidth, cardHeight)
         ..position = cardPosition;
 
