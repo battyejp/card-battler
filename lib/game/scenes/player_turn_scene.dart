@@ -5,7 +5,7 @@ import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/components/shared/flat_button.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/services/player_turn_coordinator.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_interaction_service.dart';
@@ -15,7 +15,7 @@ import 'package:flame/components.dart';
 
 //TODO is with HasGameReference<CardBattlerGame> needed here?
 class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame> {
-  final PlayerTurnModel _model;
+  final PlayerTurnCoordinator _model;
   final Vector2 _size;
   final GameStateManager _gameStateManager = GameStateManager();
   final SceneManager _sceneManager = SceneManager();
@@ -26,7 +26,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame> {
   CardSelectionService get cardSelectionService => _cardSelectionService;
   late final FlatButton turnButton;
 
-  PlayerTurnScene({required PlayerTurnModel model, required Vector2 size, /*this.onTurnEnded*/})
+  PlayerTurnScene({required PlayerTurnCoordinator model, required Vector2 size, /*this.onTurnEnded*/})
       : _model = model,
         _size = size;
 

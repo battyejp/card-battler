@@ -6,7 +6,8 @@ import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/scenes/player_turn_scene.dart';
-import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/services/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
@@ -200,34 +201,36 @@ class MockPlayerTurnScene extends PlayerTurnScene {
 
   MockPlayerTurnScene()
       : super(
-          model: PlayerTurnModel(
-            playerModel: PlayerModel(
-              infoModel: InfoModel(
-                attack: ValueImageLabelModel(value: 0, label: 'Attack'),
-                credits: ValueImageLabelModel(value: 0, label: 'Credits'),
-                name: 'Test Player',
-                healthModel: HealthModel(maxHealth: 10),
+          model: PlayerTurnCoordinator(
+            state: PlayerTurnState(
+              playerModel: PlayerModel(
+                infoModel: InfoModel(
+                  attack: ValueImageLabelModel(value: 0, label: 'Attack'),
+                  credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+                  name: 'Test Player',
+                  healthModel: HealthModel(maxHealth: 10),
+                ),
+                handModel: CardHandModel(),
+                deckModel: CardPileModel(),
+                discardModel: CardPileModel(),
+                gameStateService: DummyGameStateService(),
+                cardSelectionService: DefaultCardSelectionService(),
               ),
-              handModel: CardHandModel(),
-              deckModel: CardPileModel(),
-              discardModel: CardPileModel(),
-              gameStateService: DummyGameStateService(),
-              cardSelectionService: DefaultCardSelectionService(),
-            ),
-            teamModel: TeamModel(
-              bases: BasesModel(bases: []),
-              players: [],
-            ),
-            enemiesModel: EnemiesModel(
-              totalEnemies: 1,
-              maxNumberOfEnemiesInPlay: 1,
-              maxEnemyHealth: 10,
-              enemyCards: [],
-            ),
-            shopModel: ShopModel(
-              numberOfRows: 1,
-              numberOfColumns: 1,
-              cards: [],
+              teamModel: TeamModel(
+                bases: BasesModel(bases: []),
+                players: [],
+              ),
+              enemiesModel: EnemiesModel(
+                totalEnemies: 1,
+                maxNumberOfEnemiesInPlay: 1,
+                maxEnemyHealth: 10,
+                enemyCards: [],
+              ),
+              shopModel: ShopModel(
+                numberOfRows: 1,
+                numberOfColumns: 1,
+                cards: [],
+              ),
             ),
             gameStateService: DummyGameStateService(),
           ),

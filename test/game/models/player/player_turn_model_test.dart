@@ -5,7 +5,8 @@ import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
-import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/services/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
@@ -19,12 +20,12 @@ import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
 
 void main() {
-  group('PlayerTurnModel', () {
+  group('PlayerTurnCoordinator', () {
     late PlayerModel playerModel;
     late TeamModel teamModel;
     late EnemiesModel enemiesModel;
     late ShopModel shopModel;
-    late PlayerTurnModel playerTurnModel;
+    late PlayerTurnCoordinator playerTurnModel;
 
     setUp(() { 
       // Reset GameStateManager to known state
@@ -69,11 +70,14 @@ void main() {
       );
 
       final gameStateService = DefaultGameStateService(gameStateManager);
-      playerTurnModel = PlayerTurnModel(
+      final playerTurnState = PlayerTurnState(
         playerModel: playerModel,
         teamModel: teamModel,
         enemiesModel: enemiesModel,
         shopModel: shopModel,
+      );
+      playerTurnModel = PlayerTurnCoordinator(
+        state: playerTurnState,
         gameStateService: gameStateService,
       );
     });
