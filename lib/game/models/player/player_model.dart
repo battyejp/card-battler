@@ -13,9 +13,9 @@ class PlayerModel {
   final GameStateService? _gameStateService;
   final CardSelectionService? _cardSelectionService;
   
-  bool hasHadATurn = false;
   static const cardsToDrawOnTap = 5;
   Function(CardModel)? cardPlayed;
+  bool turnOver = false;
 
   PlayerModel({
     required InfoModel infoModel,

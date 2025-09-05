@@ -13,7 +13,6 @@ class Player extends PositionComponent {
   static const infoHeightFactor = 0.1;
 
   final PlayerModel _playerModel;
-  final void Function()? onCardsDrawn;
   final CardInteractionService? _cardInteractionService;
   final CardSelectionService? _cardSelectionService;
 
@@ -25,7 +24,6 @@ class Player extends PositionComponent {
   // Default constructor for backward compatibility
   Player({
     required PlayerModel playerModel,
-    this.onCardsDrawn,
     CardInteractionService? cardInteractionService,
     CardSelectionService? cardSelectionService,
   })  : _playerModel = playerModel,

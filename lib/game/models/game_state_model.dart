@@ -11,7 +11,7 @@ enum GamePhase {
   waitingToDrawCards,
   
   /// Phase after player has drawn their cards but before enemy turn
-  cardsDrawn,
+  cardsDrawnWaitingForEnemyTurn,
   
   /// Enemy's turn to play cards and take actions
   enemyTurn,
@@ -19,8 +19,8 @@ enum GamePhase {
   /// Player's turn to play cards and take actions
   playerTurn,
 
-  /// Switches to the next player in the rotation
-  switchToNextPlayer
+  /// Phase to switch to the next player after cards have been drawn
+  cardsDrawnWaitingForPlayerSwitch,
 }
 
 /// Simplified game state model that delegates to the facade

@@ -77,6 +77,8 @@ class GameStateFacade {
     final nextIndex = (currentIndex + 1) % players.length;
     final nextPlayer = players[nextIndex];
     
+    print("GameStateFacade: Switching from ${nextPlayer.deckModel.allCards.length}");
+
     // Create new PlayerTurnState and Coordinator with the next player
     final newPlayerTurnState = _factory.createPlayerTurnState(
       nextPlayer,

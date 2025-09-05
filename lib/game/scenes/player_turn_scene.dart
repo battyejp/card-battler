@@ -24,7 +24,7 @@ class PlayerTurnScene extends Component {
   /// Expose CardSelectionService for external access (e.g., background deselection)
   CardSelectionService get cardSelectionService => _cardSelectionService;
   late final FlatButton turnButton;
-  late final Player _player;
+  Player? _player;
   double _availableWidth = 0.0;
   double _bottomLayoutHeight = 0.0;
 
@@ -101,30 +101,25 @@ class PlayerTurnScene extends Component {
   void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
     switch (newPhase) {
       case GamePhase.waitingToDrawCards:
-        turnButton.text = 'Take Enemy Turn';
-        turnButton.isVisible = false;
         break;
-      case GamePhase.cardsDrawn:
+      case GamePhase.cardsDrawnWaitingForEnemyTurn:
         turnButton.text = 'Take Enemy Turn';
-        turnButton.isVisible = true;
         break;
       case GamePhase.enemyTurn:
-        turnButton.text = 'End Turn';
-        turnButton.isVisible = true;
         break;
       case GamePhase.playerTurn:
         turnButton.text = 'End Turn';
-        turnButton.isVisible = true;
         break;
-      case GamePhase.switchToNextPlayer:
-        turnButton.text = 'Change Player';
-        turnButton.isVisible = true;
+      case GamePhase.cardsDrawnWaitingForPlayerSwitch:
+        turnButton.text = 'Switch Player';
         break;
     }
+
+    turnButton.isVisible = newPhase != GamePhase.waitingToDrawCards && newPhase != GamePhase.enemyTurn;
   }
 
   void addPlayerComponent(PlayerModel playerModel) {
-    _player.removeFromParent();
+    _player?.removeFromParent();
 
     _player = Player(
       playerModel: playerModel,
@@ -137,7 +132,7 @@ class PlayerTurnScene extends Component {
         (_size.y / 2) - margin - _bottomLayoutHeight,
       );
 
-    add(_player);
+    add(_player!);
   }
 
   void _createTurnButton() {

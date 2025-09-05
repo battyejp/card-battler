@@ -46,7 +46,7 @@ void main() {
 
       test('reflects GameStateManager phase changes', () {
         gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
-        expect(gameStateService.currentPhase, equals(GamePhase.cardsDrawn));
+        expect(gameStateService.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
 
         gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
         expect(gameStateService.currentPhase, equals(GamePhase.enemyTurn));
@@ -75,14 +75,14 @@ void main() {
         );
 
         gameStateService.nextPhase();
-        expect(gameStateService.currentPhase, equals(GamePhase.cardsDrawn));
-        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
+        expect(gameStateService.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
       });
 
       test('advances through phase cycle correctly', () {
         final expectedPhases = [
           GamePhase.waitingToDrawCards, // Initial
-          GamePhase.cardsDrawn, // After first nextPhase
+          GamePhase.cardsDrawnWaitingForEnemyTurn, // After first nextPhase
           GamePhase.enemyTurn, // After second nextPhase
           GamePhase.playerTurn, // After third nextPhase
           GamePhase.waitingToDrawCards, // After fourth nextPhase (full cycle)
@@ -151,7 +151,7 @@ void main() {
         expect(confirmationCount, equals(2));
         expect(
           phaseChanges,
-          equals([GamePhase.cardsDrawn, GamePhase.enemyTurn]),
+          equals([GamePhase.cardsDrawnWaitingForEnemyTurn, GamePhase.enemyTurn]),
         );
       });
     });
@@ -162,7 +162,7 @@ void main() {
         final service2 = DefaultGameStateService(gameStateManager);
 
         service1.nextPhase();
-        expect(service2.currentPhase, equals(GamePhase.cardsDrawn));
+        expect(service2.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
 
         service2.nextPhase();
         expect(service1.currentPhase, equals(GamePhase.enemyTurn));
@@ -191,7 +191,7 @@ void main() {
         expect(
           phaseHistory,
           equals([
-            GamePhase.cardsDrawn,
+            GamePhase.cardsDrawnWaitingForEnemyTurn,
             GamePhase.enemyTurn,
             GamePhase.playerTurn,
           ]),

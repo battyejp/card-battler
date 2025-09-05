@@ -36,12 +36,14 @@ class DefaultTurnManager implements TurnManager {
     //TODO clear Attack
     //TODO might need to shuffle discard back into deck
 
+    GameStateFacade.instance.selectedPlayer!.turnOver = true;
     discardHand(state);
     state.shopModel.refillShop();
     _gameStateService.nextPhase(); // Should be waitingToDrawCards
   }
 
   void _handleSwitchToNextPlayer() {
+    GameStateFacade.instance.selectedPlayer!.turnOver = false;
     final newPlayer = GameStateFacade.instance.switchToNextPlayer();
     
     // Inform PlayerTurnScene to update player component with the new active player
@@ -49,9 +51,11 @@ class DefaultTurnManager implements TurnManager {
       _sceneManager.playerTurnScene?.addPlayerComponent(newPlayer);
     }
 
-    if (!GameStateFacade.instance.selectedPlayer!.hasHadATurn) {
-      GameStateFacade.instance.selectedPlayer!.hasHadATurn = true;
+    if (!GameStateFacade.instance.selectedPlayer!.handModel.cards.isNotEmpty) {
       _gameStateService.setPhase(GamePhase.waitingToDrawCards);
+    }
+    else {
+      _gameStateService.setPhase(GamePhase.cardsDrawnWaitingForEnemyTurn);
     }
   }
 
@@ -64,23 +68,17 @@ class DefaultTurnManager implements TurnManager {
     }
   }
 
-  void _handleStartEnemyTurn() {
-    _gameStateService.setPhase(GamePhase.enemyTurn);
-  }
-
   @override
   void handleTurnButtonPress(PlayerTurnState state) {
-    switch (_gameStateService.currentPhase) {
+    switch (_gameStateService.currentPhase) { //currentPhase is the last state as it is about to change
       case GamePhase.playerTurn:
         _handleEndPlayerTurn(state);
         break;
-      case GamePhase.enemyTurn:
-        _handleStartEnemyTurn();
-        break;
-      case GamePhase.switchToNextPlayer:
+      case GamePhase.cardsDrawnWaitingForPlayerSwitch:
         _handleSwitchToNextPlayer();
         break;
       default:
+        _gameStateService.nextPhase();
         return;
     }
   }

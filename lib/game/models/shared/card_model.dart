@@ -8,7 +8,7 @@ enum EffectType {
   drawCard, //discard
   damageLimit;
   // placeNewCardOnDeck
-  // random skill 
+  // random skill
   // Search pile
   // BlockEnemy
 
@@ -41,11 +41,9 @@ class EffectModel {
   final EffectTarget target;
   final int value;
 
-  EffectModel({
-    required this.type,
-    required this.target,
-    required this.value,
-  });
+  EffectModel copy() => EffectModel(type: type, target: target, value: value);
+
+  EffectModel({required this.type, required this.target, required this.value});
 
   factory EffectModel.fromJson(Map<String, dynamic> json) {
     return EffectModel(
@@ -56,15 +54,22 @@ class EffectModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'type': type.name,
-      'target': target.name,
-      'value': value,
-    };
+    return {'type': type.name, 'target': target.name, 'value': value};
   }
 }
 
 class CardModel {
+  /// Creates a copy of this CardModel instance
+  CardModel copy() {
+    return CardModel(
+      name: _name,
+      type: _type,
+      effects: _effects.map((e) => e.copy()).toList(),
+      isFaceUp: isFaceUp,
+      onCardPlayed: onCardPlayed,
+    );
+  }
+
   final String _name;
   final String _type;
   final List<EffectModel> _effects;
@@ -94,7 +99,7 @@ class CardModel {
     final effects = effectsJson
         ?.map((effectJson) => EffectModel.fromJson(effectJson))
         .toList();
-    
+
     return CardModel(
       name: json['name'],
       type: json['type'],
@@ -114,13 +119,13 @@ class CardModel {
 }
 
 /// Loads cards from JSON string
-/// 
+///
 /// Generic method that can load either CardModel or any subclass like ShopCardModel
 /// The [fromJson] parameter is a factory function that creates instances of T from JSON
 /// The [jsonString] parameter should contain the JSON data as a string
 List<T> loadCardsFromJsonString<T>(
-  String jsonString, 
-  T Function(Map<String, dynamic>) fromJson
+  String jsonString,
+  T Function(Map<String, dynamic>) fromJson,
 ) {
   final List<dynamic> jsonData = json.decode(jsonString);
   return jsonData.map((json) => fromJson(json)).toList();

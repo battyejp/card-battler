@@ -237,7 +237,7 @@ void main() {
         // Test from waitingToDrawCards
         expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
         playerTurnModel.handleTurnButtonPress();
-        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
 
         // Test from cardsDrawn
         playerTurnModel.handleTurnButtonPress();
@@ -304,7 +304,7 @@ void main() {
       test('turn button behavior varies correctly by phase', () {
         final phases = [
           GamePhase.waitingToDrawCards,
-          GamePhase.cardsDrawn,
+          GamePhase.cardsDrawnWaitingForEnemyTurn,
           GamePhase.enemyTurn,
           GamePhase.playerTurn
         ];

@@ -74,6 +74,9 @@ class GameStateFactory {
       gameStateService: gameStateService,
     );
 
+    print( 'GameStateFactory: Created game state with ${players.length} players, '
+        '${players[3].deckModel.allCards.length} shop cards, and ${enemyCards.length} enemy cards.');
+
     return GameStateComponents(
       playerTurn: playerTurn,
       enemyTurnArea: enemyTurnArea,
@@ -99,6 +102,8 @@ class GameStateFactory {
   ) {
     return List.generate(_numberOfPlayers, (index) {
       final playerNumber = index + 1;
+      // Create a new copy of the card list for each player to avoid shared references
+      final playerDeckCopy = List<CardModel>.from(playerDeckCards.map((card) => card.copy()));
       return PlayerModel(
         infoModel: InfoModel(
           name: 'Player $playerNumber',
@@ -108,7 +113,7 @@ class GameStateFactory {
           isActive: index == 0, // Only first player is active initially
         ),
         handModel: CardHandModel(),
-        deckModel: CardPileModel(cards: playerDeckCards),
+        deckModel: CardPileModel(cards: playerDeckCopy),
         discardModel: CardPileModel.empty(),
         gameStateService: gameStateService,
         cardSelectionService: cardSelectionService,

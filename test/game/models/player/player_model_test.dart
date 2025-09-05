@@ -165,7 +165,7 @@ void main() {
         playerModel.drawCardsFromDeck();
 
         // Should now be in cardsDrawn phase
-        expect(gameStateService.currentPhase, equals(GamePhase.cardsDrawn));
+        expect(gameStateService.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
       });
 
       test('drawn cards trigger cardPlayed callback when played', () {
