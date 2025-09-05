@@ -4,6 +4,9 @@ import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
 
 List<CardModel> _generateTestCards(int count) {
   return List.generate(count, (index) => CardModel(
@@ -39,6 +42,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         expect(enemyTurnArea.enemyCards, equals(enemyCards));
@@ -53,6 +57,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         expect(enemyTurnArea.playedCards.hasNoCards, isTrue);
@@ -70,6 +75,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         expect(enemyTurnArea.playerStats.length, equals(3));
@@ -88,6 +94,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final initialEnemyCount = enemyTurnArea.enemyCards.allCards.length;
@@ -107,6 +114,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         // Verify card starts face down
@@ -129,6 +137,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final damageCard = CardModel(
@@ -159,6 +168,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final damageCard = CardModel(
@@ -188,6 +198,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final multiEffectCard = CardModel(
@@ -220,6 +231,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final drawCard = CardModel(
@@ -248,6 +260,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final allPlayersCard = CardModel(
@@ -276,6 +289,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final noEffectCard = CardModel(
@@ -314,6 +328,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         // Verify initial state
@@ -341,6 +356,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         enemyTurnArea.drawCardsFromDeck();
@@ -358,6 +374,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         // Should not throw and should complete turn
@@ -374,6 +391,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final zeroDamageCard = CardModel(
@@ -404,6 +422,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final healingCard = CardModel(
@@ -431,6 +450,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final overkillCard = CardModel(
@@ -449,6 +469,170 @@ void main() {
 
         // Should result in 0 health (death) - health model clamps to 0
         expect(activePlayer.health.currentHealth, equals(0)); // clamped to 0, not negative
+      });
+    });
+
+    group('GameStateManager integration', () {
+      late GameStateManager gameStateManager;
+      late GameStateService gameStateService;
+
+      setUp(() {
+        gameStateManager = GameStateManager();
+        gameStateService = DefaultGameStateService(gameStateManager);
+      });
+
+      test('calls nextPhase when turn finishes', () {
+        // Set up game state to enemyTurn phase
+        gameStateManager.reset(); // waitingToDrawCards
+        gameStateManager.nextPhase(); // cardsDrawn
+        gameStateManager.nextPhase(); // enemyTurn
+        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn));
+
+        final testCards = [
+          CardModel(
+            name: 'Basic Enemy Card',
+            type: 'enemy',
+            isFaceUp: false,
+            effects: [
+              EffectModel(
+                type: EffectType.attack,
+                target: EffectTarget.activePlayer,
+                value: 10,
+              ),
+            ],
+          ),
+        ];
+        
+        final enemyCards = CardPileModel(cards: testCards);
+        final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
+        
+        final enemyTurnArea = EnemyTurnAreaModel(
+          enemyCards: enemyCards,
+          playerStats: playerStats,
+          gameStateService: gameStateService,
+        );
+
+        enemyTurnArea.drawCardsFromDeck();
+
+        // Should advance to playerTurn phase after finishing enemy turn
+        expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
+      });
+
+      test('advances to next phase after turn completion', () {
+        gameStateManager.reset(); // Start fresh
+        gameStateManager.nextPhase(); // cardsDrawn
+        gameStateManager.nextPhase(); // enemyTurn
+
+        final testCards = [
+          CardModel(
+            name: 'Simple Card',
+            type: 'enemy',
+            effects: [
+              EffectModel(
+                type: EffectType.attack,
+                target: EffectTarget.activePlayer,
+                value: 5,
+              ),
+            ],
+          ),
+        ];
+        
+        final enemyCards = CardPileModel(cards: testCards);
+        final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
+        
+        final enemyTurnArea = EnemyTurnAreaModel(
+          enemyCards: enemyCards,
+          playerStats: playerStats,
+          gameStateService: gameStateService,
+        );
+
+        enemyTurnArea.drawCardsFromDeck();
+
+        expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
+      });
+
+      test('does not advance phase on incomplete turn', () {
+        gameStateManager.reset();
+        gameStateManager.nextPhase(); // cardsDrawn
+        gameStateManager.nextPhase(); // enemyTurn
+
+        final testCards = [
+          CardModel(
+            name: 'Draw Card Effect',
+            type: 'enemy',
+            effects: [
+              EffectModel(
+                type: EffectType.drawCard,
+                target: EffectTarget.self,
+                value: 1,
+              ),
+            ],
+          ),
+        ];
+        
+        final enemyCards = CardPileModel(cards: testCards);
+        final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
+        
+        final enemyTurnArea = EnemyTurnAreaModel(
+          enemyCards: enemyCards,
+          playerStats: playerStats,
+          gameStateService: gameStateService,
+        );
+
+        enemyTurnArea.drawCardsFromDeck();
+
+        // Since card has drawCard effect, turn should continue
+        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn)); // Should remain in enemyTurn
+      });
+
+      test('phase advances correctly with multiple card draws', () {
+        gameStateManager.reset();
+        gameStateManager.nextPhase(); // cardsDrawn
+        gameStateManager.nextPhase(); // enemyTurn
+
+        final testCards = [
+          CardModel(
+            name: 'Attack Card 1',
+            type: 'enemy',
+            effects: [
+              EffectModel(
+                type: EffectType.attack,
+                target: EffectTarget.activePlayer,
+                value: 10,
+              ),
+            ],
+          ),
+          CardModel(
+            name: 'Attack Card 2',
+            type: 'enemy',
+            effects: [
+              EffectModel(
+                type: EffectType.attack,
+                target: EffectTarget.activePlayer,
+                value: 15,
+              ),
+            ],
+          ),
+        ];
+        
+        final enemyCards = CardPileModel(cards: testCards);
+        final playerStats = [_createTestPlayerStats('Player1', isActive: true, health: 100)];
+        
+        final enemyTurnArea = EnemyTurnAreaModel(
+          enemyCards: enemyCards,
+          playerStats: playerStats,
+          gameStateService: gameStateService,
+        );
+
+        // Draw first card - should finish turn and advance phase
+        enemyTurnArea.drawCardsFromDeck();
+        expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
+        expect(playerStats[0].health.currentHealth, equals(90)); // 100 - 10
+
+        // Draw second card - this will draw another card and advance phase again
+        enemyTurnArea.drawCardsFromDeck();
+        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards)); // nextPhase from playerTurn goes to waitingToDrawCards
+        expect(playerStats[0].health.currentHealth, equals(75)); // 90 - 15
       });
     });
   });

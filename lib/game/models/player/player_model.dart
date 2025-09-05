@@ -1,20 +1,19 @@
-import 'dart:ui';
-
-import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/card_selection_service.dart';
 
 class PlayerModel {
   final InfoModel _infoModel;
   final CardHandModel _handModel;
   final CardPileModel _deckModel;
   final CardPileModel _discardModel;
+  final GameStateService? _gameStateService;
+  final CardSelectionService? _cardSelectionService;
 
   static const cardsToDrawOnTap = 5;
-
-  VoidCallback? onCardsDrawn;
   Function(CardModel)? cardPlayed;
 
   PlayerModel({
@@ -22,10 +21,14 @@ class PlayerModel {
     required CardHandModel handModel,
     required CardPileModel deckModel,
     required CardPileModel discardModel,
+    required GameStateService gameStateService,
+    required CardSelectionService cardSelectionService,
   }) : _infoModel = infoModel,
        _handModel = handModel,
        _deckModel = deckModel,
-       _discardModel = discardModel;
+       _discardModel = discardModel,
+       _gameStateService = gameStateService,
+       _cardSelectionService = cardSelectionService;
 
   // Expose models for use in the game components
   InfoModel get infoModel => _infoModel;
@@ -34,7 +37,7 @@ class PlayerModel {
   CardPileModel get discardModel => _discardModel;
 
   void drawCardsFromDeck() {
-    if (CardInteractionController.isAnyCardSelected || handModel.cards.isNotEmpty) {
+    if ((_cardSelectionService?.hasSelection ?? false) || handModel.cards.isNotEmpty) {
       return;
     }
 
@@ -48,7 +51,7 @@ class PlayerModel {
       _handModel.addCards(drawnCards);
     }
 
-    onCardsDrawn?.call();
+    _gameStateService?.nextPhase();
   }
 
   void _onCardPlayed(CardModel card) {

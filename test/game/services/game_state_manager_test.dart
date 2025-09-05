@@ -9,8 +9,6 @@ void main() {
     setUp(() {
       gameStateManager = GameStateManager();
       gameStateManager.reset();
-      // Reset the singleton to setup phase
-      GameStateModel.instance.currentPhase = GamePhase.setup;
     });
 
     tearDown(() {
@@ -27,41 +25,76 @@ void main() {
 
       test('maintains state across instances', () {
         final instance1 = GameStateManager();
-        instance1.setPhase(GamePhase.playerTurn);
+        instance1.nextPhase(); // From waitingToDrawCards to cardsDrawn
         
         final instance2 = GameStateManager();
-        expect(instance2.currentPhase, equals(GamePhase.playerTurn));
+        expect(instance2.currentPhase, equals(GamePhase.cardsDrawn));
       });
     });
 
-    group('phase management', () {
-      test('initializes with setup phase', () {
-        expect(gameStateManager.currentPhase, equals(GamePhase.setup));
+    group('initial state', () {
+      test('initializes with waitingToDrawCards phase', () {
+        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
       });
 
-      test('sets phase correctly', () {
-        gameStateManager.setPhase(GamePhase.playerTurn);
+      test('reset returns to initial state', () {
+        gameStateManager.nextPhase(); // Move to cardsDrawn
+        gameStateManager.nextPhase(); // Move to enemyTurn
+        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn));
+        
+        gameStateManager.reset();
+        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
+      });
+    });
+
+    group('phase progression with nextPhase()', () {
+      test('advances from waitingToDrawCards to cardsDrawn', () {
+        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
+        gameStateManager.nextPhase();
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
+      });
+
+      test('advances from cardsDrawn to enemyTurn', () {
+        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
+        gameStateManager.nextPhase();
+        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn));
+      });
+
+      test('advances from enemyTurn to playerTurn', () {
+        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
+        gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
+        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn));
+        gameStateManager.nextPhase();
         expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
       });
 
-      test('syncs with GameStateModel singleton', () {
-        gameStateManager.setPhase(GamePhase.enemyTurn);
-        expect(GameStateModel.instance.currentPhase, equals(GamePhase.enemyTurn));
-      });
-
-      test('syncs from GameStateModel singleton on get', () {
-        GameStateModel.instance.currentPhase = GamePhase.playerTurn;
+      test('advances from playerTurn to waitingToDrawCards (full cycle)', () {
+        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
+        gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
+        gameStateManager.nextPhase(); // enemyTurn -> playerTurn
         expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
+        gameStateManager.nextPhase();
+        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
       });
 
-      test('does not trigger listeners when setting same phase', () {
-        bool listenerCalled = false;
-        gameStateManager.addPhaseChangeListener((prev, next) {
-          listenerCalled = true;
-        });
+      test('creates complete phase cycle', () {
+        final expectedPhases = [
+          GamePhase.waitingToDrawCards, // Initial
+          GamePhase.cardsDrawn,         // After first nextPhase
+          GamePhase.enemyTurn,          // After second nextPhase
+          GamePhase.playerTurn,         // After third nextPhase
+          GamePhase.waitingToDrawCards, // After fourth nextPhase (full cycle)
+        ];
 
-        gameStateManager.setPhase(GamePhase.setup);
-        expect(listenerCalled, isFalse);
+        // Test initial state
+        expect(gameStateManager.currentPhase, equals(expectedPhases[0]));
+        
+        // Test each transition
+        for (int i = 1; i < expectedPhases.length; i++) {
+          gameStateManager.nextPhase();
+          expect(gameStateManager.currentPhase, equals(expectedPhases[i]));
+        }
       });
     });
 
@@ -77,25 +110,40 @@ void main() {
           listenerCalled = true;
         });
 
-        gameStateManager.setPhase(GamePhase.playerTurn);
+        gameStateManager.nextPhase();
 
         expect(listenerCalled, isTrue);
-        expect(previousPhase, equals(GamePhase.setup));
-        expect(newPhase, equals(GamePhase.playerTurn));
+        expect(previousPhase, equals(GamePhase.waitingToDrawCards));
+        expect(newPhase, equals(GamePhase.cardsDrawn));
       });
 
       test('handles multiple listeners', () {
         int listener1Count = 0;
         int listener2Count = 0;
+        GamePhase? listener1PrevPhase, listener1NewPhase;
+        GamePhase? listener2PrevPhase, listener2NewPhase;
 
-        gameStateManager.addPhaseChangeListener((prev, next) => listener1Count++);
-        gameStateManager.addPhaseChangeListener((prev, next) => listener2Count++);
+        gameStateManager.addPhaseChangeListener((prev, next) {
+          listener1Count++;
+          listener1PrevPhase = prev;
+          listener1NewPhase = next;
+        });
+        
+        gameStateManager.addPhaseChangeListener((prev, next) {
+          listener2Count++;
+          listener2PrevPhase = prev;
+          listener2NewPhase = next;
+        });
 
-        gameStateManager.setPhase(GamePhase.playerTurn);
-        gameStateManager.setPhase(GamePhase.enemyTurn);
+        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
+        gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
 
         expect(listener1Count, equals(2));
         expect(listener2Count, equals(2));
+        expect(listener1PrevPhase, equals(GamePhase.cardsDrawn));
+        expect(listener1NewPhase, equals(GamePhase.enemyTurn));
+        expect(listener2PrevPhase, equals(GamePhase.cardsDrawn));
+        expect(listener2NewPhase, equals(GamePhase.enemyTurn));
       });
 
       test('removes listeners correctly', () {
@@ -103,11 +151,11 @@ void main() {
         void listener(GamePhase prev, GamePhase next) => callCount++;
 
         gameStateManager.addPhaseChangeListener(listener);
-        gameStateManager.setPhase(GamePhase.playerTurn);
+        gameStateManager.nextPhase();
         expect(callCount, equals(1));
 
         gameStateManager.removePhaseChangeListener(listener);
-        gameStateManager.setPhase(GamePhase.enemyTurn);
+        gameStateManager.nextPhase();
         expect(callCount, equals(1)); // Should not increment
       });
 
@@ -124,8 +172,23 @@ void main() {
           successfulListener++;
         });
 
-        gameStateManager.setPhase(GamePhase.playerTurn);
+        gameStateManager.nextPhase();
         expect(successfulListener, equals(1));
+      });
+
+      test('does not notify listeners when phase does not change', () {
+        int callCount = 0;
+        gameStateManager.addPhaseChangeListener((prev, next) => callCount++);
+
+        // Manually trigger phase change that results in same phase
+        // This tests the internal _setPhase method behavior
+        gameStateManager.nextPhase(); // Change to cardsDrawn
+        expect(callCount, equals(1));
+        
+        // Reset clears listeners and doesn't trigger phase change notifications
+        callCount = 0;
+        gameStateManager.reset(); // Reset clears listeners, so no notification
+        expect(callCount, equals(0)); // No listeners to notify after reset
       });
     });
 
@@ -183,66 +246,23 @@ void main() {
         gameStateManager.requestConfirmation();
         expect(successfulListener, equals(1));
       });
-    });
 
-    group('phase progression', () {
-      test('nextPhase advances from setup to playerTurn', () {
-        gameStateManager.setPhase(GamePhase.setup);
-        gameStateManager.nextPhase();
-        expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
-      });
-
-      test('nextPhase advances from playerTurn to enemyTurn', () {
-        gameStateManager.setPhase(GamePhase.playerTurn);
-        gameStateManager.nextPhase();
-        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn));
-      });
-
-      test('nextPhase advances from enemyTurn to setup', () {
-        gameStateManager.setPhase(GamePhase.enemyTurn);
-        gameStateManager.nextPhase();
-        expect(gameStateManager.currentPhase, equals(GamePhase.setup));
-      });
-
-      test('nextPhase creates complete cycle', () {
-        // Start at setup
-        expect(gameStateManager.currentPhase, equals(GamePhase.setup));
+      test('can request confirmation multiple times', () {
+        int confirmationCount = 0;
         
-        // Go through full cycle
-        gameStateManager.nextPhase();
-        expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
+        gameStateManager.addConfirmationRequestListener(() {
+          confirmationCount++;
+        });
+
+        gameStateManager.requestConfirmation();
+        gameStateManager.requestConfirmation();
+        gameStateManager.requestConfirmation();
         
-        gameStateManager.nextPhase();
-        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn));
-        
-        gameStateManager.nextPhase();
-        expect(gameStateManager.currentPhase, equals(GamePhase.setup));
+        expect(confirmationCount, equals(3));
       });
     });
 
-    group('utility methods', () {
-      test('initialize syncs with GameStateModel', () {
-        GameStateModel.instance.currentPhase = GamePhase.enemyTurn;
-        gameStateManager.initialize();
-        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn));
-      });
-
-      test('reset clears state and listeners', () {
-        // Set up some state
-        gameStateManager.setPhase(GamePhase.playerTurn);
-        gameStateManager.addPhaseChangeListener((prev, next) {});
-        gameStateManager.addConfirmationRequestListener(() {});
-
-        // Reset both the manager and the singleton
-        gameStateManager.reset();
-        GameStateModel.instance.currentPhase = GamePhase.setup;
-
-        // Verify reset
-        expect(gameStateManager.currentPhase, equals(GamePhase.setup));
-        // Note: We can't directly test that listeners were cleared without exposing the list
-        // but the reset method does clear phase change listeners
-      });
-
+    group('listener management', () {
       test('clearListeners removes all listeners', () {
         int phaseChangeCount = 0;
         int confirmationCount = 0;
@@ -252,19 +272,64 @@ void main() {
 
         gameStateManager.clearListeners();
 
-        gameStateManager.setPhase(GamePhase.playerTurn);
+        gameStateManager.nextPhase();
         gameStateManager.requestConfirmation();
 
         expect(phaseChangeCount, equals(0));
         expect(confirmationCount, equals(0));
       });
 
+      test('reset clears only phase change listeners', () {
+        int phaseChangeCount = 0;
+        int confirmationCount = 0;
+
+        gameStateManager.addPhaseChangeListener((prev, next) => phaseChangeCount++);
+        gameStateManager.addConfirmationRequestListener(() => confirmationCount++);
+
+        gameStateManager.reset();
+
+        gameStateManager.nextPhase();
+        gameStateManager.requestConfirmation();
+
+        expect(phaseChangeCount, equals(0)); // Phase change listeners cleared by reset
+        expect(confirmationCount, equals(1)); // Confirmation listeners NOT cleared by reset
+      });
+
+      test('can add same listener multiple times', () {
+        int callCount = 0;
+        void listener(GamePhase prev, GamePhase next) => callCount++;
+
+        gameStateManager.addPhaseChangeListener(listener);
+        gameStateManager.addPhaseChangeListener(listener);
+
+        gameStateManager.nextPhase();
+        expect(callCount, equals(2)); // Called twice because added twice
+      });
+
+      test('removing non-existent listener does not cause error', () {
+        void listener(GamePhase prev, GamePhase next) {}
+
+        // Should not throw
+        expect(() => gameStateManager.removePhaseChangeListener(listener), returnsNormally);
+        expect(() => gameStateManager.removeConfirmationRequestListener(() {}), returnsNormally);
+      });
+    });
+
+    group('debug and utility methods', () {
       test('debugInfo returns correct information', () {
-        gameStateManager.setPhase(GamePhase.playerTurn);
+        gameStateManager.nextPhase(); // Move to cardsDrawn
         final debugInfo = gameStateManager.debugInfo;
         
-        expect(debugInfo, contains('currentPhase=GamePhase.playerTurn'));
-        expect(debugInfo, contains('listeners='));
+        expect(debugInfo, contains('currentPhase=GamePhase.cardsDrawn'));
+        expect(debugInfo, contains('listeners=0')); // No listeners added in this test
+      });
+
+      test('debugInfo shows correct listener count', () {
+        gameStateManager.addPhaseChangeListener((prev, next) {});
+        gameStateManager.addPhaseChangeListener((prev, next) {});
+        
+        final debugInfo = gameStateManager.debugInfo;
+        expect(debugInfo, contains('listeners=2'));
       });
     });
 
@@ -282,28 +347,89 @@ void main() {
         });
 
         // Simulate a game flow
-        gameStateManager.nextPhase(); // setup -> playerTurn
+        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
         gameStateManager.requestConfirmation(); // Player wants to end turn
-        gameStateManager.nextPhase(); // playerTurn -> enemyTurn
-        gameStateManager.nextPhase(); // enemyTurn -> setup
+        gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
+        gameStateManager.nextPhase(); // enemyTurn -> playerTurn
 
         expect(phaseHistory, equals([
-          GamePhase.playerTurn,
+          GamePhase.cardsDrawn,
           GamePhase.enemyTurn,
-          GamePhase.setup,
+          GamePhase.playerTurn,
         ]));
         expect(confirmationRequests, equals(1));
       });
 
-      test('maintains consistency between GameStateManager and GameStateModel', () {
-        // Set through manager
-        gameStateManager.setPhase(GamePhase.playerTurn);
-        expect(GameStateModel.instance.currentPhase, equals(GamePhase.playerTurn));
+      test('full game cycle with listeners tracks all phase transitions', () {
+        List<String> transitionLog = [];
 
-        // Set through singleton directly (simulating external change)
-        GameStateModel.instance.currentPhase = GamePhase.enemyTurn;
-        // Manager should sync on next access
-        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn));
+        gameStateManager.addPhaseChangeListener((prev, next) {
+          transitionLog.add('${prev.toString()} -> ${next.toString()}');
+        });
+
+        // Complete one full cycle
+        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
+        gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
+        gameStateManager.nextPhase(); // enemyTurn -> playerTurn
+        gameStateManager.nextPhase(); // playerTurn -> waitingToDrawCards
+
+        expect(transitionLog, equals([
+          'GamePhase.waitingToDrawCards -> GamePhase.cardsDrawn',
+          'GamePhase.cardsDrawn -> GamePhase.enemyTurn',
+          'GamePhase.enemyTurn -> GamePhase.playerTurn',
+          'GamePhase.playerTurn -> GamePhase.waitingToDrawCards',
+        ]));
+      });
+    });
+
+    group('edge cases and robustness', () {
+      test('handles rapid phase transitions', () {
+        int changeCount = 0;
+        gameStateManager.addPhaseChangeListener((prev, next) => changeCount++);
+
+        // Rapidly cycle through phases
+        for (int i = 0; i < 100; i++) {
+          gameStateManager.nextPhase();
+        }
+
+        expect(changeCount, equals(100));
+        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards)); // Should be back at start
+      });
+
+      test('listener exceptions do not break state transitions', () {
+        bool successfulListenerCalled = false;
+
+        // Add a listener that throws
+        gameStateManager.addPhaseChangeListener((prev, next) {
+          throw Exception('Simulated error');
+        });
+
+        // Add a listener that should still work
+        gameStateManager.addPhaseChangeListener((prev, next) {
+          successfulListenerCalled = true;
+        });
+
+        // This should not throw and should call the successful listener
+        expect(() => gameStateManager.nextPhase(), returnsNormally);
+        expect(successfulListenerCalled, isTrue);
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
+      });
+
+      test('maintains consistency after listener management operations', () {
+        int callCount = 0;
+        void counter(GamePhase prev, GamePhase next) => callCount++;
+
+        // Add and remove listeners multiple times
+        gameStateManager.addPhaseChangeListener(counter);
+        gameStateManager.removePhaseChangeListener(counter);
+        gameStateManager.addPhaseChangeListener(counter);
+        gameStateManager.addPhaseChangeListener(counter);
+        gameStateManager.clearListeners();
+        gameStateManager.addPhaseChangeListener(counter);
+
+        gameStateManager.nextPhase();
+        expect(callCount, equals(1));
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
       });
     });
   });

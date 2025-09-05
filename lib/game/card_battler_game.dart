@@ -1,17 +1,15 @@
-import 'package:card_battler/game/components/shared/confirm_dialog.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/services/card_loader_service.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/scenes/enemy_turn_scene.dart';
-import 'package:card_battler/game/scenes/player_turn_scene.dart';
+import 'package:card_battler/game/services/scene_manager.dart';
 import 'package:flame/game.dart';
-import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:flame/events.dart';
 
 class CardBattlerGame extends FlameGame with TapCallbacks {
   Vector2? _testSize;
   late final RouterComponent router;
-  late final PlayerTurnScene _playerTurnScene;
+  final SceneManager _sceneManager = SceneManager();
 
   // Default constructor with new game state
   CardBattlerGame();
@@ -24,8 +22,7 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
 
   @override
   void onTapUp(TapUpEvent event) {
-    // Deselect any selected card if the background is tapped
-    CardInteractionController.deselectAny();
+    _sceneManager.handleBackgroundDeselection();
     super.onTapUp(event);
   }
 
@@ -39,17 +36,17 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
       onGameResize(_testSize!);
     }
     else {
-      shopCards = await loadCardsFromJson<ShopCardModel>(
+      shopCards = await CardLoaderService.loadCardsFromJson<ShopCardModel>(
         'assets/data/shop_cards.json',
         ShopCardModel.fromJson,
       );
 
-      playerDeckCards = await loadCardsFromJson<CardModel>(
+      playerDeckCards = await CardLoaderService.loadCardsFromJson<CardModel>(
         'assets/data/hero_starting_cards.json',
         CardModel.fromJson,
       );
 
-      enemyCards = await loadCardsFromJson<CardModel>(
+      enemyCards = await CardLoaderService.loadCardsFromJson<CardModel>(
         'assets/data/enemy_cards.json',
         CardModel.fromJson,
       );
@@ -57,53 +54,8 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
       GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
     }
 
-    GameStateModel.instance.selectedPlayer = GameStateModel.instance.playerTurn.playerModel;
-    GameStateModel.instance.enemyTurnArea.onTurnFinished = _onEnemyTurnFinished;
-
-    _playerTurnScene = PlayerTurnScene(
-      model: GameStateModel.instance.playerTurn, 
-      size: size,
-    );
-
     world.add(
-      router = RouterComponent(
-        routes: {
-          'playerTurn': Route(() => _playerTurnScene),
-          'enemyTurn': Route(() => EnemyTurnScene(model: GameStateModel.instance.enemyTurnArea, size: size)),
-          'confirm': OverlayRoute((context, game) { 
-            return ConfirmDialog(
-              title: 'You still have cards in your hand!',
-              onCancel: () {
-                router.pop();
-              },
-              onConfirm: () {
-                router.pop();
-                GameStateModel.instance.playerTurn.endTurn();
-                //_playerTurnScene.onTurnEnded?.call();
-              },
-            );
-          }),
-        },
-        initialRoute: 'playerTurn',
-      ),
+      router = _sceneManager.createRouter(size),
     );
-
   }
-  
-  void _onEnemyTurnFinished() {
-    Future.delayed(const Duration(seconds: 1), () {
-      router.pop();
-    });
-  }
-
-  // /// Saves the current game state to JSON
-  // Map<String, dynamic> saveGame() {
-  //   return _gameState.toJson();
-  // }
-
-  // /// Loads a game from JSON data
-  // static CardBattlerGame loadGame(Map<String, dynamic> jsonData) {
-  //   final gameState = GameStateModel.fromJson(jsonData);
-  //   return CardBattlerGame.withState(gameState);
-  // }
 }

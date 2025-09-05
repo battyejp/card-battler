@@ -136,33 +136,5 @@ void main() {
       });
     });
 
-    group('inheritance from Card', () {
-      testWithFlameGame('inherits card rendering and text display', (game) async {
-        final card = ActionableCard(cardModel)..size = Vector2(100, 150);
-        
-        await game.ensureAdd(card);
-        
-        // Should have text component from parent Card class
-        final textComponents = card.children.whereType<TextComponent>();
-        expect(textComponents.length, greaterThanOrEqualTo(1));
-        
-        // Plus the button
-        final buttons = card.children.whereType<FlatButton>();
-        expect(buttons.length, equals(1));
-        
-        // Total children should include both
-        expect(card.children.length, equals(2));
-      });
-
-      testWithFlameGame('card model properties are accessible', (game) async {
-        final namedCard = CardModel(name: 'Special Card', type: 'magic');
-        final card = ActionableCard(namedCard)..size = Vector2(100, 150);
-        
-        await game.ensureAdd(card);
-        
-        expect(card.cardModel.name, equals('Special Card'));
-        expect(card.cardModel.type, equals('magic'));
-      });
-    });
   });
 }

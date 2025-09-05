@@ -1,6 +1,7 @@
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:flutter/foundation.dart';
 
+//TODO lots of methods not used
 /// Dedicated service for managing game state transitions and phase management
 /// This extracts state management concerns from the GameStateModel singleton
 class GameStateManager {
@@ -9,7 +10,7 @@ class GameStateManager {
   GameStateManager._internal();
 
   // Current phase state
-  GamePhase _currentPhase = GamePhase.setup;
+  GamePhase _currentPhase = GamePhase.waitingToDrawCards;
 
   // Listeners for phase changes
   final List<Function(GamePhase, GamePhase)> _phaseChangeListeners = [];
@@ -19,21 +20,14 @@ class GameStateManager {
 
   /// Get current game phase
   GamePhase get currentPhase {
-    // Sync with singleton state if not already synced
-    if (_currentPhase != GameStateModel.instance.currentPhase) {
-      _currentPhase = GameStateModel.instance.currentPhase;
-    }
     return _currentPhase;
   }
 
   /// Set game phase with proper notification
-  void setPhase(GamePhase newPhase) {
+  void _setPhase(GamePhase newPhase) {
     if (_currentPhase != newPhase) {
       final previousPhase = _currentPhase;
       _currentPhase = newPhase;
-      
-      // Update the legacy singleton to maintain backward compatibility
-      GameStateModel.instance.currentPhase = newPhase;
       
       // Notify all listeners
       _notifyPhaseChange(previousPhase, newPhase);
@@ -62,17 +56,6 @@ class GameStateManager {
         // print('Error in phase change listener: $e');
       }
     }
-  }
-
-  /// Initialize the state manager with the current state from GameStateModel
-  void initialize() {
-    _currentPhase = GameStateModel.instance.currentPhase;
-  }
-
-  /// Reset the state manager (useful for testing)
-  void reset() {
-    _currentPhase = GamePhase.setup;
-    _phaseChangeListeners.clear();
   }
 
   /// Add a listener for turn confirmation requests
@@ -107,16 +90,25 @@ class GameStateManager {
   /// Advance to the next logical phase
   void nextPhase() {
     switch (_currentPhase) {
-      case GamePhase.setup:
-        setPhase(GamePhase.playerTurn);
+      case GamePhase.waitingToDrawCards:
+        _setPhase(GamePhase.cardsDrawn);
         break;
-      case GamePhase.playerTurn:
-        setPhase(GamePhase.enemyTurn);
+      case GamePhase.cardsDrawn:
+        _setPhase(GamePhase.enemyTurn);
         break;
       case GamePhase.enemyTurn:
-        setPhase(GamePhase.setup);
+        _setPhase(GamePhase.playerTurn);
+        break;
+      case GamePhase.playerTurn:
+        _setPhase(GamePhase.waitingToDrawCards);
         break;
     }
+  }
+
+  /// Reset the state manager (useful for testing)
+  void reset() {
+    _currentPhase = GamePhase.waitingToDrawCards;
+    _phaseChangeListeners.clear();
   }
 
   /// Get debug information about current state

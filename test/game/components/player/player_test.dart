@@ -14,6 +14,9 @@ import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
 
 List<CardModel> _generateCards(int count) {
   return List.generate(count, (index) => CardModel(
@@ -41,6 +44,8 @@ void main() {
         handModel: handModel,
         deckModel: deckModel,
         discardModel: discardModel,
+        gameStateService: DefaultGameStateService(GameStateManager()),
+        cardSelectionService: DefaultCardSelectionService(),
       );
       
       return Player(
@@ -258,6 +263,8 @@ void main() {
           handModel: handModel,
           deckModel: deckModel,
           discardModel: discardModel,
+          gameStateService: DefaultGameStateService(GameStateManager()),
+          cardSelectionService: DefaultCardSelectionService(),
         );
         
         final player = Player(playerModel: playerModel)..size = Vector2(600, 300);
@@ -299,6 +306,8 @@ void main() {
           handModel: handModel,
           deckModel: deckModel,
           discardModel: discardModel,
+          gameStateService: DefaultGameStateService(GameStateManager()),
+          cardSelectionService: DefaultCardSelectionService(),
         );
         
         final player = Player(playerModel: playerModel)..size = Vector2(600, 300);

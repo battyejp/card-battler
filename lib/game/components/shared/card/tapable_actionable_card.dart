@@ -1,13 +1,27 @@
 import 'package:card_battler/game/components/shared/card/actionable_card.dart';
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
+import 'package:card_battler/game/services/card_interaction_service.dart';
+import 'package:card_battler/game/services/card_selection_service.dart';
 import 'package:flame/events.dart';
 
 class TapableActionableCard extends ActionableCard with TapCallbacks {
   CardInteractionController? _interaction;
   bool Function()? _determineIfButtonEnabled;
+  CardInteractionService? _cardInteractionService;
+  CardSelectionService? _cardSelectionService;
 
-  TapableActionableCard(super.cardModel, {super.onButtonPressed, bool Function()? determineIfButtonEnabled}) {
+  TapableActionableCard(
+    super.cardModel, 
+    {
+      super.onButtonPressed, 
+      bool Function()? determineIfButtonEnabled,
+      CardInteractionService? cardInteractionService,
+      CardSelectionService? cardSelectionService,
+    }
+  ) {
     _determineIfButtonEnabled = determineIfButtonEnabled;
+    _cardInteractionService = cardInteractionService;
+    _cardSelectionService = cardSelectionService;
   }
 
   @override
@@ -16,6 +30,17 @@ class TapableActionableCard extends ActionableCard with TapCallbacks {
   @override
   void onLoad() {
     super.onLoad();
-    _interaction = CardInteractionController(this, _determineIfButtonEnabled);
+    _interaction = CardInteractionController.withServices(
+      this, 
+      determineIfButtonEnabled: _determineIfButtonEnabled,
+      cardInteractionService: _cardInteractionService,
+      cardSelectionService: _cardSelectionService,
+    );
+  }
+  
+  @override
+  void onRemove() {
+    _interaction?.dispose();
+    super.onRemove();
   }
 }

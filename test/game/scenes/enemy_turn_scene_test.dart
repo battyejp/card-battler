@@ -10,6 +10,8 @@ import 'package:card_battler/game/components/team/player_stats.dart';
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
 
 List<CardModel> _generateTestCards(int count) {
   return List.generate(count, (index) => CardModel(
@@ -42,6 +44,7 @@ EnemyTurnAreaModel _createTestModel({
   return EnemyTurnAreaModel(
     enemyCards: CardPileModel(cards: cards ?? _generateTestCards(3)),
     playerStats: players ?? [_createTestPlayerStats('Player1', isActive: true)],
+    gameStateService: DefaultGameStateService(GameStateManager()),
   );
 }
 
@@ -355,6 +358,7 @@ void main() {
         final model = EnemyTurnAreaModel(
           enemyCards: CardPileModel.empty(),
           playerStats: [_createTestPlayerStats('Player1')],
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
         final size = Vector2(800, 600);
         

@@ -14,9 +14,24 @@ import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/card_selection_service.dart';
 
 /// Represents the different phases of the game
-enum GamePhase { setup, enemyTurn, playerTurn }
+enum GamePhase {
+  /// Initial phase when waiting for player to draw cards
+  waitingToDrawCards,
+  
+  /// Phase after player has drawn their cards but before enemy turn
+  cardsDrawn,
+  
+  /// Enemy's turn to play cards and take actions
+  enemyTurn,
+  
+  /// Player's turn to play cards and take actions
+  playerTurn
+}
 
 /// Centralized model that contains all game state
 /// This serves as the single source of truth for the entire game
@@ -25,12 +40,12 @@ class GameStateModel {
   
   final EnemyTurnAreaModel enemyTurnArea;
   final PlayerTurnModel playerTurn;
-  PlayerModel? selectedPlayer;
-  GamePhase currentPhase = GamePhase.setup;
+  final PlayerModel? selectedPlayer;
 
   GameStateModel._({
     required this.enemyTurnArea,
     required this.playerTurn,
+    this.selectedPlayer,
   });
 
   /// Gets the singleton instance of GameStateModel
@@ -77,6 +92,9 @@ class GameStateModel {
 
   /// Creates a new game with default starting values
   static GameStateModel _newGame(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards, List<CardModel> enemyCards) {
+    // Create shared services
+    final gameStateService = DefaultGameStateService(GameStateManager());
+    final cardSelectionService = DefaultCardSelectionService();
     final players = <PlayerModel>[
       PlayerModel(
         infoModel: InfoModel(
@@ -89,6 +107,8 @@ class GameStateModel {
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
+        gameStateService: gameStateService,
+        cardSelectionService: cardSelectionService,
       ),
       PlayerModel(
         infoModel: InfoModel(
@@ -100,6 +120,8 @@ class GameStateModel {
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
+        gameStateService: gameStateService,
+        cardSelectionService: cardSelectionService,
       ),
       PlayerModel(
         infoModel: InfoModel(
@@ -111,6 +133,8 @@ class GameStateModel {
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
+        gameStateService: gameStateService,
+        cardSelectionService: cardSelectionService,
       ),
       PlayerModel(
         infoModel: InfoModel(
@@ -122,6 +146,8 @@ class GameStateModel {
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
+        gameStateService: gameStateService,
+        cardSelectionService: cardSelectionService,
       ),
     ];
 
@@ -153,11 +179,14 @@ class GameStateModel {
           enemyCards: enemyCards,
         ),
         shopModel: ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: shopCards),
+        gameStateService: gameStateService,
       ),
       enemyTurnArea: EnemyTurnAreaModel(
         enemyCards: CardPileModel(cards: enemyCards),
         playerStats: playerStats,
-      )
+        gameStateService: gameStateService,
+      ),
+      selectedPlayer: players.first,
     );
   }
 

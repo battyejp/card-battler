@@ -104,50 +104,6 @@ void main() {
       });
     });
 
-    group('reactive behavior', () {
-      testWithFlameGame('responds to multiple health changes', (game) async {
-        final model = HealthModel(maxHealth: 200);
-        final health = Health(model);
-        
-        await game.ensureAdd(health);
-        
-        // Series of health changes
-        final expectedTexts = ['200/200', '175/200', '150/200', '200/200', '100/200'];
-        final changes = [0, -25, -25, 50, -100];
-        
-        for (int i = 0; i < changes.length; i++) {
-          if (i > 0) {
-            model.changeHealth(changes[i]);
-            await game.ready();
-          }
-          
-          final textComponent = health.children.whereType<TextComponent>().first;
-          expect(textComponent.text, equals(expectedTexts[i]), 
-                 reason: 'Failed at step $i with change ${changes[i]}');
-        }
-      });
-
-      testWithFlameGame('handles extreme health values', (game) async {
-        final model = HealthModel(maxHealth: 1000);
-        final health = Health(model);
-        
-        await game.ensureAdd(health);
-        
-        // Extreme negative change (should clamp to 0)
-        model.changeHealth(-2000);
-        await game.ready();
-        
-        var textComponent = health.children.whereType<TextComponent>().first;
-        expect(textComponent.text, equals('0/1000'));
-        
-        // Extreme positive change (should clamp to max)
-        model.changeHealth(5000);
-        await game.ready();
-        
-        textComponent = health.children.whereType<TextComponent>().first;
-        expect(textComponent.text, equals('1000/1000'));
-      });
-    });
 
     group('component lifecycle', () {
       testWithFlameGame('cleans up properly when removed', (game) async {

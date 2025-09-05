@@ -341,20 +341,39 @@ void main() {
     });
   });
 
-  group('loadCardsFromJson function', () {
-    // Note: These tests would require mocking rootBundle.loadString
-    // For now, we'll test the function signature and expected behavior
-    
-    test('loadCardsFromJson is available', () {
-      expect(loadCardsFromJson, isNotNull);
-      expect(loadCardsFromJson, isA<Function>());
+  group('loadCardsFromJsonString function', () {
+    test('loadCardsFromJsonString is available', () {
+      expect(loadCardsFromJsonString, isNotNull);
+      expect(loadCardsFromJsonString, isA<Function>());
     });
 
-    // In a real test environment with proper mocking, you would test:
-    // - Loading valid JSON files
-    // - Handling invalid JSON
-    // - Handling missing files
-    // - Parsing arrays of card data correctly
-    // - Error handling for malformed card data
+    test('loadCardsFromJsonString parses valid JSON array', () {
+      const jsonString = '''[
+        {"name": "Test Card 1", "type": "Player"},
+        {"name": "Test Card 2", "type": "Enemy"}
+      ]''';
+      
+      final cards = loadCardsFromJsonString<CardModel>(
+        jsonString,
+        CardModel.fromJson,
+      );
+      
+      expect(cards, hasLength(2));
+      expect(cards[0].name, equals('Test Card 1'));
+      expect(cards[0].type, equals('Player'));
+      expect(cards[1].name, equals('Test Card 2'));
+      expect(cards[1].type, equals('Enemy'));
+    });
+
+    test('loadCardsFromJsonString handles empty array', () {
+      const jsonString = '[]';
+      
+      final cards = loadCardsFromJsonString<CardModel>(
+        jsonString,
+        CardModel.fromJson,
+      );
+      
+      expect(cards, isEmpty);
+    });
   });
 }

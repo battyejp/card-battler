@@ -14,6 +14,9 @@ import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/card_selection_service.dart';
 
 void main() {
   group('PlayerTurnModel', () {
@@ -23,8 +26,10 @@ void main() {
     late ShopModel shopModel;
     late PlayerTurnModel playerTurnModel;
 
-    setUp(() {
-      GameStateModel.instance.selectedPlayer = null;
+    setUp(() { 
+      // Reset GameStateManager to known state
+      final gameStateManager = GameStateManager();
+      gameStateManager.reset();
 
       final infoModel = InfoModel(
         attack: ValueImageLabelModel(value: 50, label: 'Attack'),
@@ -42,6 +47,8 @@ void main() {
         handModel: handModel,
         deckModel: deckModel,
         discardModel: discardModel,
+        gameStateService: DefaultGameStateService(gameStateManager),
+        cardSelectionService: DefaultCardSelectionService(),
       );
 
       teamModel = TeamModel(bases: BasesModel(bases: []), players: []);
@@ -61,11 +68,13 @@ void main() {
         cards: shopCards
       );
 
+      final gameStateService = DefaultGameStateService(gameStateManager);
       playerTurnModel = PlayerTurnModel(
         playerModel: playerModel,
         teamModel: teamModel,
         enemiesModel: enemiesModel,
         shopModel: shopModel,
+        gameStateService: gameStateService,
       );
     });
 
@@ -82,8 +91,9 @@ void main() {
         expect(shopModel.cardPlayed, isNotNull);
       });
 
-      test('selectedPlayer starts as null', () {
-        expect(GameStateModel.instance.selectedPlayer, isNull);
+      test('selectedPlayer is initialized to first player', () {
+        expect(GameStateModel.instance.selectedPlayer, isNotNull);
+        expect(GameStateModel.instance.selectedPlayer?.infoModel.name, equals('Player 1'));
       });
     });
 
@@ -211,27 +221,112 @@ void main() {
       });
     });
 
-    group('static selectedPlayer', () {
-      test('can be set and retrieved', () {
-        final newPlayer = PlayerModel(
-          infoModel: InfoModel(
-            attack: ValueImageLabelModel(value: 30, label: 'Attack'),
-            credits: ValueImageLabelModel(value: 50, label: 'Credits'),
-            healthModel: HealthModel(maxHealth: 80),
-            name: 'NewPlayer',
-          ),
-          handModel: CardHandModel(),
-          deckModel: CardPileModel.empty(),
-          discardModel: CardPileModel.empty(),
-        );
-
-        GameStateModel.instance.selectedPlayer = newPlayer;
-        expect(GameStateModel.instance.selectedPlayer, equals(newPlayer));
+    group('handleTurnButtonPress method', () {
+      late GameStateManager gameStateManager;
+      
+      setUp(() {
+        gameStateManager = GameStateManager();
+        gameStateManager.reset();
       });
 
-      test('can be set to null', () {
-        GameStateModel.instance.selectedPlayer = null;
-        expect(GameStateModel.instance.selectedPlayer, isNull);
+      test('advances to next phase when not in playerTurn', () {
+        // Test from waitingToDrawCards
+        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
+        playerTurnModel.handleTurnButtonPress();
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
+
+        // Test from cardsDrawn
+        playerTurnModel.handleTurnButtonPress();
+        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn));
+
+        // Test from enemyTurn
+        playerTurnModel.handleTurnButtonPress();
+        expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
+      });
+
+      test('requests confirmation when in playerTurn with cards in hand', () {
+        // Setup: advance to playerTurn phase and add cards to hand
+        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
+        gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
+        gameStateManager.nextPhase(); // enemyTurn -> playerTurn
+
+        final card = CardModel(name: 'Test Card', type: 'basic');
+        playerModel.handModel.addCard(card);
+
+        bool confirmationRequested = false;
+        gameStateManager.addConfirmationRequestListener(() {
+          confirmationRequested = true;
+        });
+
+        playerTurnModel.handleTurnButtonPress();
+
+        expect(confirmationRequested, isTrue);
+        expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn)); // Phase should not change
+      });
+
+      test('ends turn directly when in playerTurn with empty hand', () {
+        // Setup: advance to playerTurn phase with empty hand
+        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
+        gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
+        gameStateManager.nextPhase(); // enemyTurn -> playerTurn
+
+        expect(playerModel.handModel.cards.isEmpty, isTrue);
+
+        playerTurnModel.handleTurnButtonPress();
+
+        // Should advance to waitingToDrawCards (endTurn calls nextPhase)
+        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
+      });
+
+      test('endTurn method advances phase and resets hand', () {
+        // Setup: advance to playerTurn phase and add cards
+        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
+        gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
+        gameStateManager.nextPhase(); // enemyTurn -> playerTurn
+
+        final card1 = CardModel(name: 'Card 1', type: 'basic');
+        final card2 = CardModel(name: 'Card 2', type: 'basic');
+        playerModel.handModel.addCards([card1, card2]);
+        
+        expect(playerModel.handModel.cards.length, equals(2));
+
+        playerTurnModel.endTurn();
+
+        expect(playerModel.handModel.cards.isEmpty, isTrue);
+        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
+        expect(playerModel.discardModel.allCards.length, equals(2)); // Cards moved to discard
+      });
+
+      test('turn button behavior varies correctly by phase', () {
+        final phases = [
+          GamePhase.waitingToDrawCards,
+          GamePhase.cardsDrawn,
+          GamePhase.enemyTurn,
+          GamePhase.playerTurn
+        ];
+
+        for (int i = 0; i < phases.length; i++) {
+          // Reset and advance to the current phase
+          gameStateManager.reset();
+          for (int j = 0; j < i; j++) {
+            gameStateManager.nextPhase();
+          }
+
+          expect(gameStateManager.currentPhase, equals(phases[i]));
+
+          if (phases[i] == GamePhase.playerTurn) {
+            // In playerTurn, behavior depends on hand state
+            expect(playerModel.handModel.cards.isEmpty, isTrue);
+            
+            playerTurnModel.handleTurnButtonPress();
+            expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
+          } else {
+            // In other phases, should advance to next phase
+            final nextPhaseIndex = (i + 1) % phases.length;
+            playerTurnModel.handleTurnButtonPress();
+            expect(gameStateManager.currentPhase, equals(phases[nextPhaseIndex]));
+          }
+        }
       });
     });
   });
