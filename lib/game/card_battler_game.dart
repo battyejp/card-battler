@@ -4,7 +4,6 @@ import 'package:card_battler/game/services/card_loader_service.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/scene_manager.dart';
 import 'package:flame/game.dart';
-import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:flame/events.dart';
 
 class CardBattlerGame extends FlameGame with TapCallbacks {
@@ -23,8 +22,8 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
 
   @override
   void onTapUp(TapUpEvent event) {
-    // Deselect any selected card if the background is tapped
-    CardInteractionController.deselectAny();
+    // Handle background tap deselection through scene manager
+    _sceneManager.handleBackgroundDeselection();
     super.onTapUp(event);
   }
 

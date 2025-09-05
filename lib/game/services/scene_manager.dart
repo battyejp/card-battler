@@ -123,6 +123,13 @@ class SceneManager {
     GameStateModel.instance.playerTurn.handleTurnButtonPress();
   }
 
+  /// Handle background tap to deselect any selected cards
+  void handleBackgroundDeselection() {
+    // For now, only handle player turn scene deselection
+    // This can be extended for other scenes if needed
+    _playerTurnScene.cardSelectionService.deselectCard();
+  }
+
   /// Get debug information about current routing state
   String get debugInfo => 'SceneManager: router initialized';
 }

@@ -4,6 +4,7 @@ import 'package:card_battler/game/components/player/card_hand.dart';
 import 'package:card_battler/game/components/player/info.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/services/card_interaction_service.dart';
+import 'package:card_battler/game/services/card_selection_service.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
@@ -14,6 +15,7 @@ class Player extends PositionComponent {
   final PlayerModel _playerModel;
   final void Function()? onCardsDrawn;
   final CardInteractionService? _cardInteractionService;
+  final CardSelectionService? _cardSelectionService;
 
   late final CardDeck _deck;
   late final CardHand _hand;
@@ -25,8 +27,10 @@ class Player extends PositionComponent {
     required PlayerModel playerModel,
     this.onCardsDrawn,
     CardInteractionService? cardInteractionService,
+    CardSelectionService? cardSelectionService,
   })  : _playerModel = playerModel,
-        _cardInteractionService = cardInteractionService;
+        _cardInteractionService = cardInteractionService,
+        _cardSelectionService = cardSelectionService;
 
   @override
   void onLoad() {
@@ -48,6 +52,7 @@ class Player extends PositionComponent {
     _hand = CardHand(
       _playerModel.handModel,
       cardInteractionService: _cardInteractionService,
+      cardSelectionService: _cardSelectionService,
     )
       ..size = Vector2(size.x * handWidthFactor, size.y - infoHeight)
       ..position = Vector2(_deck.x + _deck.width, infoHeight);

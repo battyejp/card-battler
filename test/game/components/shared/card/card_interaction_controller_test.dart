@@ -7,6 +7,9 @@ import 'package:card_battler/game/components/shared/card/card_interaction_contro
 import 'package:card_battler/game/components/shared/card/actionable_card.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/card_interaction_service.dart';
 
 // Mock TapUpEvent that includes the local position directly
 class MockTapUpEvent extends TapUpEvent {
@@ -24,27 +27,28 @@ void main() {
     late CardModel cardModel;
     late ActionableCard card;
     late CardInteractionController controller;
+    late CardSelectionService cardSelectionService;
 
-    // Helper to ensure complete cleanup of static state
-    void forceResetStaticState() {
-      // Keep trying until we clear the static state
-      int attempts = 0;
-      while (CardInteractionController.selectedController != null && attempts < 10) {
-        CardInteractionController.deselectAny();
-        attempts++;
-      }
+    // Helper to ensure complete cleanup of selection state
+    void forceResetSelectionState() {
+      cardSelectionService.deselectCard();
     }
 
     setUp(() {
       cardModel = CardModel(name: 'Test Card', type: 'test');
       card = ActionableCard(cardModel);
-      controller = CardInteractionController(card, null);
-      forceResetStaticState();
+      cardSelectionService = DefaultCardSelectionService();
+      controller = CardInteractionController.withServices(
+        card,
+        cardSelectionService: cardSelectionService,
+      );
+      forceResetSelectionState();
     });
 
     tearDown(() {
-      // Reset static state between tests
-      forceResetStaticState();
+      // Reset selection state between tests
+      forceResetSelectionState();
+      controller.dispose();
     });
 
     group('constructor and initialization', () {
@@ -68,13 +72,13 @@ void main() {
 
     group('static state management', () {
       testWithFlameGame('selectedController is null initially', (game) async {
-        expect(CardInteractionController.selectedController, isNull);
-        expect(CardInteractionController.isAnyCardSelected, isFalse);
+        expect(cardSelectionService.selectedCard, isNull);
+        expect(cardSelectionService.hasSelection, isFalse);
       });
 
       testWithFlameGame('deselectAny works when no card is selected', (game) async {
-        CardInteractionController.deselectAny();
-        expect(CardInteractionController.selectedController, isNull);
+        cardSelectionService.deselectCard();
+        expect(cardSelectionService.selectedCard, isNull);
       });
 
       testWithFlameGame('isAnyCardSelected returns true when card is selected', (game) async {
@@ -91,8 +95,8 @@ void main() {
         await game.ready();
         game.update(1.0); // Complete animation
         
-        expect(CardInteractionController.isAnyCardSelected, isTrue);
-        expect(CardInteractionController.selectedController, equals(controller));
+        expect(cardSelectionService.hasSelection, isTrue);
+        expect(cardSelectionService.selectedCard, equals(cardModel));
       });
     });
 
@@ -110,14 +114,14 @@ void main() {
         expect(handled, isTrue);
         expect(controller.isSelected, isTrue);
         expect(controller.isAnimating, isTrue);
-        expect(CardInteractionController.selectedController, equals(controller));
+        expect(cardSelectionService.selectedCard, equals(cardModel));
         
         // Complete the animation to ensure clean state for next test
         game.update(1.0);
         expect(controller.isAnimating, isFalse);
         
         // Manually deselect to ensure clean state
-        CardInteractionController.deselectAny();
+        cardSelectionService.deselectCard();
         game.update(1.0); // Complete deselect animation too
       });
 
@@ -142,7 +146,7 @@ void main() {
         expect(handled, isTrue);
         
         // Manual cleanup
-        CardInteractionController.deselectAny();
+        cardSelectionService.deselectCard();
         game.update(1.0);
       });
 
@@ -161,7 +165,7 @@ void main() {
         controller.onTapUp(tapEvent1);
         
         expect(controller.isSelected, isTrue);
-        expect(CardInteractionController.selectedController, equals(controller));
+        expect(cardSelectionService.selectedCard, equals(cardModel));
         
         // Try to select second card
         final tapEvent2 = MockTapUpEvent(1, game, Vector2.zero());
@@ -169,10 +173,10 @@ void main() {
         
         expect(handled, isTrue);
         expect(controller2.isSelected, isFalse); // Second card should not be selected
-        expect(CardInteractionController.selectedController, equals(controller)); // First card still selected
+        expect(cardSelectionService.selectedCard, equals(cardModel)); // First card still selected
         
         // Manual cleanup
-        CardInteractionController.deselectAny();
+        cardSelectionService.deselectCard();
         game.update(1.0);
       });
 
@@ -196,7 +200,7 @@ void main() {
         
         // Manual cleanup - wait for animation to complete first
         game.update(1.0);
-        CardInteractionController.deselectAny();
+        cardSelectionService.deselectCard();
         game.update(1.0);
       });
     });
@@ -221,7 +225,7 @@ void main() {
         
         expect(controller.isSelected, isTrue);
         expect(controller.isAnimating, isFalse);
-        expect(CardInteractionController.selectedController, equals(controller));
+        expect(cardSelectionService.selectedCard, equals(cardModel));
         
         // Try to select second card - should be ignored
         final tapEvent2 = MockTapUpEvent(1, game, Vector2.zero());
@@ -230,10 +234,10 @@ void main() {
         expect(handled, isTrue);
         expect(controller.isSelected, isTrue); // First card still selected
         expect(controller2.isSelected, isFalse); // Second card not selected
-        expect(CardInteractionController.selectedController, equals(controller)); // First card still selected
+        expect(cardSelectionService.selectedCard, equals(cardModel)); // First card still selected
         
         // Manual cleanup
-        CardInteractionController.deselectAny();
+        cardSelectionService.deselectCard();
         game.update(1.0);
       });
     });
@@ -289,7 +293,7 @@ void main() {
         expect(card.buttonDisabled, isFalse);
         
         // Manual cleanup
-        CardInteractionController.deselectAny();
+        cardSelectionService.deselectCard();
         game.update(1.0);
       });
     });
@@ -299,6 +303,18 @@ void main() {
         final gameStateManager = GameStateManager();
         gameStateManager.reset(); // Start at waitingToDrawCards
         
+        // Create services using this specific gameStateManager
+        final gameStateService = DefaultGameStateService(gameStateManager);
+        final cardInteractionService = DefaultCardInteractionService(gameStateService);
+        final testCardSelectionService = DefaultCardSelectionService();
+        
+        // Create controller with proper services
+        final testController = CardInteractionController.withServices(
+          card,
+          cardInteractionService: cardInteractionService,
+          cardSelectionService: testCardSelectionService,
+        );
+        
         game.onGameResize(Vector2(800, 600));
         card.size = Vector2(100, 150);
         await game.ensureAdd(card);
@@ -306,7 +322,7 @@ void main() {
         expect(card.isButtonVisible, isFalse);
         
         final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
-        controller.onTapUp(tapEvent);
+        testController.onTapUp(tapEvent);
         
         expect(card.isButtonVisible, isFalse); // Still false during animation
         
@@ -320,18 +336,16 @@ void main() {
         gameStateManager.nextPhase(); // enemyTurn -> playerTurn
         
         // Select card again during playerTurn
-        CardInteractionController.deselectAny();
+        testCardSelectionService.deselectCard();
         game.update(1.0);
         
-        controller.onTapUp(tapEvent);
+        testController.onTapUp(tapEvent);
         game.update(1.0);
         
         expect(card.isButtonVisible, isTrue); // Now visible during playerTurn
         
         // Clean up
-        CardInteractionController.deselectAny();
-        game.update(1.0);
-        gameStateManager.reset();
+        testController.dispose();
       });
 
       testWithFlameGame('card priority is increased during selection', (game) async {
@@ -345,7 +359,7 @@ void main() {
         expect(card.priority, equals(99999)); // High priority during selection
         
         // Manual cleanup
-        CardInteractionController.deselectAny();
+        cardSelectionService.deselectCard();
         game.update(1.0);
       });
 
@@ -364,7 +378,7 @@ void main() {
         expect(card.priority, equals(99999));
         
         // Deselect card
-        CardInteractionController.deselectAny();
+        cardSelectionService.deselectCard();
         
         // Complete deselection animation
         game.update(1.0);
@@ -406,7 +420,7 @@ void main() {
         expect(controller.isAnimating, isFalse);
         
         // Deselect
-        CardInteractionController.deselectAny();
+        cardSelectionService.deselectCard();
         
         expect(controller.isAnimating, isTrue);
         

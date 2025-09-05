@@ -1,4 +1,3 @@
-import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
@@ -44,7 +43,6 @@ class PlayerTurnModel {
     }
 
     playerModel.discardModel.addCard(card);
-    CardInteractionController.deselectAny();
 
     applyCardEffects(card);
   }

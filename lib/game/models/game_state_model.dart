@@ -16,6 +16,7 @@ import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/card_selection_service.dart';
 
 /// Represents the different phases of the game
 enum GamePhase { waitingToDrawCards, cardsDrawn, enemyTurn, playerTurn }
@@ -79,8 +80,9 @@ class GameStateModel {
 
   /// Creates a new game with default starting values
   static GameStateModel _newGame(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards, List<CardModel> enemyCards) {
-    // Create shared GameStateService
+    // Create shared services
     final gameStateService = DefaultGameStateService(GameStateManager());
+    final cardSelectionService = DefaultCardSelectionService();
     final players = <PlayerModel>[
       PlayerModel(
         infoModel: InfoModel(
@@ -94,6 +96,7 @@ class GameStateModel {
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
         gameStateService: gameStateService,
+        cardSelectionService: cardSelectionService,
       ),
       PlayerModel(
         infoModel: InfoModel(
@@ -106,6 +109,7 @@ class GameStateModel {
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
         gameStateService: gameStateService,
+        cardSelectionService: cardSelectionService,
       ),
       PlayerModel(
         infoModel: InfoModel(

@@ -1,14 +1,22 @@
 import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/services/card_interaction_service.dart';
+import 'package:card_battler/game/services/card_selection_service.dart';
 import 'package:flame/components.dart';
 import 'package:card_battler/game/components/shop/shop_card.dart';
 
 class Shop extends ReactivePositionComponent<ShopModel> {
   final CardInteractionService? _cardInteractionService;
+  final CardSelectionService? _cardSelectionService;
   
-  Shop(super.model, {CardInteractionService? cardInteractionService}) 
-    : _cardInteractionService = cardInteractionService;
+  Shop(
+    super.model, 
+    {
+      CardInteractionService? cardInteractionService,
+      CardSelectionService? cardSelectionService,
+    }
+  ) : _cardInteractionService = cardInteractionService,
+      _cardSelectionService = cardSelectionService;
 
   static const double cardHeightFactor = 0.38;
   static const double hSpacingFactor = 0.2;
@@ -40,6 +48,7 @@ class Shop extends ReactivePositionComponent<ShopModel> {
           final card = ShopCard(
             cardModel,
             cardInteractionService: _cardInteractionService,
+            cardSelectionService: _cardSelectionService,
           )
             ..size = Vector2(cardWidth, cardHeight)
             ..position = Vector2(x, y);

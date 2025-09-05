@@ -4,21 +4,25 @@ import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/components/shared/flat_button.dart';
-import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_interaction_service.dart';
+import 'package:card_battler/game/services/card_selection_service.dart';
 import 'package:card_battler/game/services/scene_manager.dart';
 import 'package:flame/components.dart';
 
-class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
+class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame> {
   final PlayerTurnModel _model;
   final Vector2 _size;
   final GameStateManager _gameStateManager = GameStateManager();
   final SceneManager _sceneManager = SceneManager();
   late final CardInteractionService _cardInteractionService;
+  late final CardSelectionService _cardSelectionService;
+
+  /// Expose CardSelectionService for external access (e.g., background deselection)
+  CardSelectionService get cardSelectionService => _cardSelectionService;
   late final FlatButton turnButton;
 
   PlayerTurnScene({required PlayerTurnModel model, required Vector2 size, /*this.onTurnEnded*/})
@@ -31,9 +35,11 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
   @override
   Future<void> onMount() async {
     super.onMount();
+    
     _cardInteractionService = DefaultCardInteractionService(
       DefaultGameStateService(_gameStateManager)
     );
+    _cardSelectionService = DefaultCardSelectionService();
     _loadGameComponents();
     _createTurnButton();
     _setupGameStateListener();
@@ -44,6 +50,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
     _gameStateManager.removePhaseChangeListener(_onGamePhaseChanged);
     super.onRemove();
   }
+
 
   void _setupGameStateListener() {
     _gameStateManager.addPhaseChangeListener(_onGamePhaseChanged);
@@ -60,6 +67,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
     final player = Player(
       playerModel: _model.playerModel,
       cardInteractionService: _cardInteractionService,
+      cardSelectionService: _cardSelectionService,
     )
       ..size = Vector2(availableWidth, bottomLayoutHeight)
       ..position = Vector2(
@@ -82,6 +90,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
     final shop = Shop(
       _model.shopModel,
       cardInteractionService: _cardInteractionService,
+      cardSelectionService: _cardSelectionService,
     )
       ..size = Vector2(shopWidth, topLayoutHeight)
       ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
@@ -124,7 +133,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame>{
       position: Vector2(0, ((_size.y / 2) * -1) + (_size.y * 0.1)),
       onReleased: () {
         if (!turnButton.disabled && turnButton.isVisible) {
-          CardInteractionController.deselectAny();
+          _cardSelectionService.deselectCard();
           _sceneManager.handleTurnButtonPress();
         }
       }
