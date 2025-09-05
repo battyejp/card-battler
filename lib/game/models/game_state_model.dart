@@ -1,22 +1,8 @@
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
-import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/player/card_hand_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
-import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/shared/health_model.dart';
-import 'package:card_battler/game/models/team/base_model.dart';
-import 'package:card_battler/game/models/team/player_stats_model.dart';
-import 'package:card_battler/game/models/team/team_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
-import 'package:card_battler/game/models/team/bases_model.dart';
-import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/game_state_facade.dart';
 import 'package:card_battler/game/services/player_turn_coordinator.dart';
 
 /// Represents the different phases of the game
@@ -34,233 +20,37 @@ enum GamePhase {
   playerTurn
 }
 
-/// Centralized model that contains all game state
-/// This serves as the single source of truth for the entire game
+/// Simplified game state model that delegates to the facade
+/// This model now follows SRP by focusing solely on providing backward compatibility
+/// All complex logic has been moved to appropriate services (Factory and Facade)
 class GameStateModel {
-  static GameStateModel? _instance;
-  
-  final EnemyTurnAreaModel enemyTurnArea;
-  final PlayerTurnCoordinator playerTurn;
-  final PlayerModel? selectedPlayer;
-
-  GameStateModel._({
-    required this.enemyTurnArea,
-    required this.playerTurn,
-    this.selectedPlayer,
-  });
+  static final GameStateFacade _facade = GameStateFacade.instance;
 
   /// Gets the singleton instance of GameStateModel
-  static GameStateModel get instance {
-    if (_instance == null) {
-      var shopCards = List.generate(
-          10,
-          (index) => ShopCardModel(name: 'Test Card ${index + 1}', cost: 1),
-        );
+  /// This maintains backward compatibility while using the new architecture
+  static GameStateModel get instance => GameStateModel();
 
-      var playerDeckCards = List.generate(
-          10,
-          (index) => CardModel(
-            name: 'Card ${index + 1}',
-            type: 'Player',
-            isFaceUp: false,
-          ),
-        );
-
-        var enemyCards = List.generate(
-          10,
-          (index) => CardModel(
-            name: 'Enemy Card ${index + 1}',
-            type: 'Enemy',
-            isFaceUp: false,
-          ),
-        );
-
-      _instance = GameStateModel._newGame(shopCards, playerDeckCards, enemyCards);
-    }
-    return _instance!;
-  }
-
-  /// Initializes the singleton instance with a new game
+  /// Initializes the game state with provided cards
+  /// Delegates to the facade which manages the complexity
   static GameStateModel initialize(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards, List<CardModel> enemyCards) {
-    _instance = GameStateModel._newGame(shopCards, playerDeckCards, enemyCards);
-    return _instance!;
+    _facade.initialize(shopCards, playerDeckCards, enemyCards);
+    return instance;
   }
 
-  /// Resets the singleton instance (useful for testing or starting a new game)
+  /// Resets the game state (useful for testing or starting a new game)
   static void reset() {
-    _instance = null;
+    _facade.reset();
   }
 
-  /// Creates a new game with default starting values
-  static GameStateModel _newGame(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards, List<CardModel> enemyCards) {
-    // Create shared services
-    final gameStateService = DefaultGameStateService(GameStateManager());
-    final cardSelectionService = DefaultCardSelectionService();
-    final players = <PlayerModel>[
-      PlayerModel(
-        infoModel: InfoModel(
-          name: 'Player 1',
-          attack: ValueImageLabelModel(value: 0, label: 'Attack'),
-          credits: ValueImageLabelModel(value: 0, label: 'Credits'),
-          healthModel: HealthModel(maxHealth: 10),
-          isActive: true,
-        ),
-        handModel: CardHandModel(),
-        deckModel: CardPileModel(cards: playerDeckCards),
-        discardModel: CardPileModel.empty(),
-        gameStateService: gameStateService,
-        cardSelectionService: cardSelectionService,
-      ),
-      PlayerModel(
-        infoModel: InfoModel(
-          name: 'Player 2',
-          attack: ValueImageLabelModel(value: 0, label: 'Attack'),
-          credits: ValueImageLabelModel(value: 0, label: 'Credits'),
-          healthModel: HealthModel(maxHealth: 10),
-        ),
-        handModel: CardHandModel(),
-        deckModel: CardPileModel(cards: playerDeckCards),
-        discardModel: CardPileModel.empty(),
-        gameStateService: gameStateService,
-        cardSelectionService: cardSelectionService,
-      ),
-      PlayerModel(
-        infoModel: InfoModel(
-          name: 'Player 3',
-          attack: ValueImageLabelModel(value: 0, label: 'Attack'),
-          credits: ValueImageLabelModel(value: 0, label: 'Credits'),
-          healthModel: HealthModel(maxHealth: 10),
-        ),
-        handModel: CardHandModel(),
-        deckModel: CardPileModel(cards: playerDeckCards),
-        discardModel: CardPileModel.empty(),
-        gameStateService: gameStateService,
-        cardSelectionService: cardSelectionService,
-      ),
-      PlayerModel(
-        infoModel: InfoModel(
-          name: 'Player 4',
-          attack: ValueImageLabelModel(value: 0, label: 'Attack'),
-          credits: ValueImageLabelModel(value: 0, label: 'Credits'),
-          healthModel: HealthModel(maxHealth: 10),
-        ),
-        handModel: CardHandModel(),
-        deckModel: CardPileModel(cards: playerDeckCards),
-        discardModel: CardPileModel.empty(),
-        gameStateService: gameStateService,
-        cardSelectionService: cardSelectionService,
-      ),
-    ];
+  /// Gets the enemy turn area - delegates to facade
+  EnemyTurnAreaModel get enemyTurnArea => _facade.enemyTurnArea;
 
-    final playerStats = players.map((player) {
-      return PlayerStatsModel(
-        name: player.infoModel.name,
-        health: player.infoModel.healthModel,
-        isActive: player.infoModel.isActive,
-      );
-    }).toList();
+  /// Gets the player turn coordinator - delegates to facade
+  PlayerTurnCoordinator get playerTurn => _facade.playerTurn;
 
-    final playerTurnState = PlayerTurnState(
-      playerModel: players.first,
-      teamModel: TeamModel(
-        bases: BasesModel(
-          bases: [
-            BaseModel(name: 'Base 1', maxHealth: 5),
-            BaseModel(name: 'Base 2', maxHealth: 5),
-            BaseModel(name: 'Base 3', maxHealth: 5),
-          ],
-        ),
-        players: playerStats,
-      ),
-      enemiesModel: EnemiesModel(
-        totalEnemies: 4,
-        maxNumberOfEnemiesInPlay: 3,
-        maxEnemyHealth: 5,
-        enemyCards: enemyCards,
-      ),
-      shopModel: ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: shopCards),
-    );
+  /// Gets the selected player - delegates to facade
+  PlayerModel? get selectedPlayer => _facade.selectedPlayer;
 
-    return GameStateModel._(
-      playerTurn: PlayerTurnCoordinator(
-        state: playerTurnState,
-        gameStateService: gameStateService,
-      ),
-      enemyTurnArea: EnemyTurnAreaModel(
-        enemyCards: CardPileModel(cards: enemyCards),
-        playerStats: playerStats,
-        gameStateService: gameStateService,
-      ),
-      selectedPlayer: players.first,
-    );
-  }
-
-  /// Serializes the entire game state to JSON for save/load functionality
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'playerInfo': playerInfo.toJson(),
-  //     'playerHand': playerHand.toJson(),
-  //     'playerDeck': playerDeck.toJson(),
-  //     'playerDiscard': playerDiscard.toJson(),
-  //     'enemies': enemies.toJson(),
-  //     'shop': shop.toJson(),
-  //     'bases': bases.toJson()
-  //   };
-  // }
-
-  /// Creates a GameStateModel from JSON data for load functionality
-  // factory GameStateModel.fromJson(Map<String, dynamic> json) {
-  //   try {
-  //     return GameStateModel(
-  //       playerInfo: InfoModel.fromJson(json['playerInfo'] ?? {}),
-  //       playerHand: CardHandModel.fromJson(json['playerHand'] ?? {}),
-  //       playerDeck: CardPileModel.fromJson(json['playerDeck'] ?? {}),
-  //       playerDiscard: CardPileModel.fromJson(json['playerDiscard'] ?? {}),
-  //       enemies: EnemiesModel.fromJson(json['enemies'] ?? {}),
-  //       shop: ShopModel.fromJson(json['shop'] ?? {}),
-  //       bases: BasesModel.fromJson(json['bases'] ?? {}),
-  //     );
-  //   } catch (e) {
-  //     // If JSON parsing fails, return a new game
-  //     return GameStateModel.newGame();
-  //   }
-  // }
-
-  /// Advances to the next game phase
-  // void nextPhase() {
-  //   switch (currentPhase) {
-  //     case GamePhase.setup:
-  //       currentPhase = GamePhase.playerTurn;
-  //       break;
-  //     case GamePhase.playerTurn:
-  //       currentPhase = GamePhase.enemyTurn;
-  //       isPlayerTurn = false;
-  //       break;
-  //     case GamePhase.enemyTurn:
-  //       currentPhase = GamePhase.shopping;
-  //       break;
-  //     case GamePhase.shopping:
-  //       currentPhase = GamePhase.battleEnd;
-  //       break;
-  //     case GamePhase.battleEnd:
-  //       break;
-  //     case GamePhase.gameOver:
-  //       // Game is over, no next phase
-  //       break;
-  //   }
-  // }
-
-  /// Gets a summary of the current game state for debugging
-  //   String get gameStateDebugInfo {
-  //     return '''
-  // Game State Debug Info:
-  // - Player Health: ${playerInfo.health.value}
-  // - Player Attack: ${playerInfo.attack.value}
-  // - Player Credits: ${playerInfo.credits.value}
-  // - Cards in Hand: ${playerHand.cards.length}
-  // - Cards in Deck: ${playerDeck.allCards.length}
-  // - Cards in Discard: ${playerDiscard.allCards.length}
-  // - Enemies Remaining: ${enemies.aliveEnemies.length}/${enemies.allEnemies.length}
-  // ''';
-  //   }
+  /// Gets debug information about the current game state
+  String get debugInfo => _facade.debugInfo;
 }
