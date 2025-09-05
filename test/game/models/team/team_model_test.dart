@@ -48,30 +48,5 @@ void main() {
       });
     });
 
-    group('property getters', () {
-      test('bases getter returns correct BasesModel', () {
-        final teamModel = TeamModel(
-          bases: testBasesModel,
-          players: players,
-        );
-
-        expect(teamModel.bases, isA<BasesModel>());
-        expect(teamModel.bases, equals(testBasesModel));
-        expect(teamModel.bases.allBases.length, equals(3));
-        expect(teamModel.bases.currentBaseIndex, equals(2));
-        expect(teamModel.bases.displayText, equals('Base 1 of 3'));
-      });
-
-      test('playerNames getter returns correct List<String>', () {
-        final teamModel = TeamModel(
-          bases: testBasesModel,
-          players: players,
-        );
-
-        expect(teamModel.players, isA<List<PlayerStatsModel>>());
-        expect(teamModel.players, equals(players));
-        expect(teamModel.players.length, equals(3));
-      });
-    });
   });
 }

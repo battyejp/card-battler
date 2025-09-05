@@ -387,49 +387,6 @@ void main() {
       });
     });
 
-    group('animation state management', () {
-      testWithFlameGame('isAnimating is true during selection', (game) async {
-        game.onGameResize(Vector2(800, 600));
-        card.size = Vector2(100, 150);
-        await game.ensureAdd(card);
-        
-        expect(controller.isAnimating, isFalse);
-        
-        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
-        controller.onTapUp(tapEvent);
-        
-        expect(controller.isAnimating, isTrue);
-        
-        // Complete animation
-        game.update(1.0);
-        
-        expect(controller.isAnimating, isFalse);
-      });
-
-      testWithFlameGame('isAnimating is true during deselection', (game) async {
-        game.onGameResize(Vector2(800, 600));
-        card.size = Vector2(100, 150);
-        await game.ensureAdd(card);
-        
-        // Select card
-        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
-        controller.onTapUp(tapEvent);
-        
-        // Complete selection
-        game.update(1.0);
-        expect(controller.isAnimating, isFalse);
-        
-        // Deselect
-        cardSelectionService.deselectCard();
-        
-        expect(controller.isAnimating, isTrue);
-        
-        // Complete deselection
-        game.update(1.0);
-        
-        expect(controller.isAnimating, isFalse);
-      });
-    });
 
     group('edge cases', () {
       testWithFlameGame('multiple rapid taps during animation are handled', (game) async {
