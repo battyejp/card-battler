@@ -22,7 +22,6 @@ class CardBattlerGame extends FlameGame with TapCallbacks {
 
   @override
   void onTapUp(TapUpEvent event) {
-    // Handle background tap deselection through scene manager
     _sceneManager.handleBackgroundDeselection();
     super.onTapUp(event);
   }

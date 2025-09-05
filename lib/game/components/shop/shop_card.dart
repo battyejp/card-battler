@@ -20,7 +20,7 @@ class ShopCard extends TapableActionableCard {
   ) : super(
         shopCardModel, 
         onButtonPressed: () {
-          // Deselect immediately when button is pressed, then play card
+          // TODO could this any of this be in tappableactionablecard?
           cardSelectionService?.deselectCard();
           shopCardModel.playCard();
         },

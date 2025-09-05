@@ -38,7 +38,7 @@ class CardHand extends ReactivePositionComponent<CardHandModel> {
       final card = TapableActionableCard(
         cardModel, 
         onButtonPressed: () {
-          // Deselect immediately when button is pressed, then play card
+          // TODO could this any of this be in tappableactionablecard?
           _cardSelectionService?.deselectCard();
           cardModel.playCard();
         }, 

@@ -20,6 +20,7 @@ class DefaultCardUIService implements CardUIService {
     return _businessLogicCheck?.call() ?? true;
   }
   
+  //TODO is this needed?
   @override
   bool areInteractionsAllowed() {
     // UI-specific rules for allowing interactions

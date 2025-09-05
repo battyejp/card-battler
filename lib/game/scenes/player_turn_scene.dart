@@ -13,6 +13,7 @@ import 'package:card_battler/game/services/card_selection_service.dart';
 import 'package:card_battler/game/services/scene_manager.dart';
 import 'package:flame/components.dart';
 
+//TODO is with HasGameReference<CardBattlerGame> needed here?
 class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame> {
   final PlayerTurnModel _model;
   final Vector2 _size;

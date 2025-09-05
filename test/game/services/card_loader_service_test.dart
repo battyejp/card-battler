@@ -1,67 +1,31 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/foundation.dart';
 import 'package:card_battler/game/services/card_loader_service.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 
 void main() {
   group('CardLoaderService', () {
-    TestWidgetsFlutterBinding.ensureInitialized();
-
-    setUpAll(() {
-      // Setup test asset bundle for loadString calls
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(
-        const MethodChannel('flutter/assets'),
-        (MethodCall methodCall) async {
-          if (methodCall.method == 'loadString') {
-            final String key = methodCall.arguments as String;
-            if (key == 'test_cards.json') {
-              return '''[
-                {
-                  "id": "test_card_1",
-                  "name": "Test Card",
-                  "cardDescription": "A test card",
-                  "cost": 2,
-                  "effects": []
-                }
-              ]''';
-            }
-            if (key == 'test_shop_cards.json') {
-              return '''[
-                {
-                  "id": "shop_card_1",
-                  "name": "Shop Card",
-                  "cardDescription": "A shop card",
-                  "cost": 10,
-                  "effects": []
-                }
-              ]''';
-            }
-            if (key == 'invalid.json') {
-              return 'invalid json content';
-            }
-            if (key == 'empty.json') {
-              return '[]';
-            }
-            throw FlutterError('Asset not found: $key');
-          }
-          return null;
-        },
-      );
-    });
-
-    tearDownAll(() {
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(
-        const MethodChannel('flutter/assets'),
-        null,
-      );
-    });
-
+    
     group('loadCardsFromJson', () {
-      test('loads CardModel instances successfully', () async {
+      testWidgets('loads CardModel instances successfully', (tester) async {
+        // Mock the asset bundle
+        tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          const MethodChannel('flutter/assets'),
+          (MethodCall methodCall) async {
+            if (methodCall.method == 'loadString' && methodCall.arguments == 'test_cards.json') {
+              return '''[
+                {
+                  "name": "Test Card",
+                  "type": "Action",
+                  "effects": []
+                }
+              ]''';
+            }
+            return null;
+          },
+        );
+
         final cards = await CardLoaderService.loadCardsFromJson<CardModel>(
           'test_cards.json',
           CardModel.fromJson,
@@ -72,7 +36,24 @@ void main() {
         expect(cards.first.type, equals('Action'));
       });
 
-      test('loads ShopCardModel instances successfully', () async {
+      testWidgets('loads ShopCardModel instances successfully', (tester) async {
+        tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          const MethodChannel('flutter/assets'),
+          (MethodCall methodCall) async {
+            if (methodCall.method == 'loadString' && methodCall.arguments == 'test_shop_cards.json') {
+              return '''[
+                {
+                  "name": "Shop Card",
+                  "type": "Action",
+                  "cost": 10,
+                  "effects": []
+                }
+              ]''';
+            }
+            return null;
+          },
+        );
+
         final cards = await CardLoaderService.loadCardsFromJson<ShopCardModel>(
           'test_shop_cards.json',
           ShopCardModel.fromJson,
@@ -80,11 +61,20 @@ void main() {
 
         expect(cards, hasLength(1));
         expect(cards.first.name, equals('Shop Card'));
-        expect(cards.first.name, equals('Shop Card'));
         expect(cards.first.cost, equals(10));
       });
 
-      test('handles empty JSON array', () async {
+      testWidgets('handles empty JSON array', (tester) async {
+        tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          const MethodChannel('flutter/assets'),
+          (MethodCall methodCall) async {
+            if (methodCall.method == 'loadString' && methodCall.arguments == 'empty.json') {
+              return '[]';
+            }
+            return null;
+          },
+        );
+
         final cards = await CardLoaderService.loadCardsFromJson<CardModel>(
           'empty.json',
           CardModel.fromJson,
@@ -93,17 +83,40 @@ void main() {
         expect(cards, isEmpty);
       });
 
-      test('throws error for non-existent file', () async {
+      testWidgets('throws error for non-existent file', (tester) async {
+        tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          const MethodChannel('flutter/assets'),
+          (MethodCall methodCall) async {
+            if (methodCall.method == 'loadString') {
+              throw PlatformException(
+                code: 'flutter/assets',
+                message: 'Asset not found: ${methodCall.arguments}',
+              );
+            }
+            return null;
+          },
+        );
+
         expect(
           () => CardLoaderService.loadCardsFromJson<CardModel>(
             'non_existent.json',
             CardModel.fromJson,
           ),
-          throwsA(isA<FlutterError>()),
+          throwsA(isA<PlatformException>()),
         );
       });
 
-      test('throws error for invalid JSON', () async {
+      testWidgets('throws error for invalid JSON', (tester) async {
+        tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          const MethodChannel('flutter/assets'),
+          (MethodCall methodCall) async {
+            if (methodCall.method == 'loadString' && methodCall.arguments == 'invalid.json') {
+              return 'invalid json content';
+            }
+            return null;
+          },
+        );
+
         expect(
           () => CardLoaderService.loadCardsFromJson<CardModel>(
             'invalid.json',
@@ -113,7 +126,23 @@ void main() {
         );
       });
 
-      test('supports generic type loading with custom fromJson', () async {
+      testWidgets('supports generic type loading with custom fromJson', (tester) async {
+        tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          const MethodChannel('flutter/assets'),
+          (MethodCall methodCall) async {
+            if (methodCall.method == 'loadString' && methodCall.arguments == 'test_cards.json') {
+              return '''[
+                {
+                  "name": "Test Card",
+                  "type": "Action",
+                  "effects": []
+                }
+              ]''';
+            }
+            return null;
+          },
+        );
+
         // Test with a custom fromJson function
         final cards = await CardLoaderService.loadCardsFromJson<CardModel>(
           'test_cards.json',
@@ -129,10 +158,8 @@ void main() {
       test('delegates to loadCardsFromJsonString correctly', () {
         const jsonString = '''[
           {
-            "id": "direct_card",
             "name": "Direct Card",
-            "cardDescription": "Direct JSON card",
-            "cost": 3,
+            "type": "Action",
             "effects": []
           }
         ]''';
@@ -144,7 +171,7 @@ void main() {
 
         expect(cards, hasLength(1));
         expect(cards.first.name, equals('Direct Card'));
-        expect(cards.first.name, equals('Direct Card'));
+        expect(cards.first.type, equals('Action'));
       });
     });
 
@@ -162,7 +189,9 @@ void main() {
       test('propagates fromJson factory errors', () {
         const jsonString = '''[
           {
-            "invalid": "data"
+            "name": null,
+            "type": null,
+            "effects": []
           }
         ]''';
 
@@ -171,7 +200,7 @@ void main() {
             jsonString,
             CardModel.fromJson,
           ),
-          throwsException,
+          throwsA(isA<TypeError>()),
         );
       });
     });
