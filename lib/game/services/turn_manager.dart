@@ -1,6 +1,8 @@
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/services/game_state_facade.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/scene_manager.dart';
 
 /// Service responsible for managing turn state and transitions
 /// Follows the Single Responsibility Principle by focusing solely on turn management logic
@@ -18,6 +20,7 @@ abstract class TurnManager {
 /// Default implementation of TurnManager
 class DefaultTurnManager implements TurnManager {
   final GameStateService _gameStateService;
+  final SceneManager _sceneManager = SceneManager();
 
   DefaultTurnManager(this._gameStateService);
 
@@ -38,17 +41,47 @@ class DefaultTurnManager implements TurnManager {
     _gameStateService.nextPhase(); // Should be waitingToDrawCards
   }
 
+  void _handleSwitchToNextPlayer() {
+    final newPlayer = GameStateFacade.instance.switchToNextPlayer();
+    
+    // Inform PlayerTurnScene to update player component with the new active player
+    if (newPlayer != null) {
+      _sceneManager.playerTurnScene?.addPlayerComponent(newPlayer);
+    }
+
+    if (!GameStateFacade.instance.selectedPlayer!.hasHadATurn) {
+      GameStateFacade.instance.selectedPlayer!.hasHadATurn = true;
+      _gameStateService.setPhase(GamePhase.waitingToDrawCards);
+    }
+  }
+
+  void _handleEndPlayerTurn(PlayerTurnState state) {
+    if (state.playerModel.handModel.cards.isNotEmpty) {
+      _gameStateService.requestConfirmation();
+    }
+    else {
+      endTurn(state);
+    }
+  }
+
+  void _handleStartEnemyTurn() {
+    _gameStateService.setPhase(GamePhase.enemyTurn);
+  }
+
   @override
   void handleTurnButtonPress(PlayerTurnState state) {
-    if (_gameStateService.currentPhase == GamePhase.playerTurn) {
-      if (state.playerModel.handModel.cards.isNotEmpty) {
-        _gameStateService.requestConfirmation();
+    switch (_gameStateService.currentPhase) {
+      case GamePhase.playerTurn:
+        _handleEndPlayerTurn(state);
+        break;
+      case GamePhase.enemyTurn:
+        _handleStartEnemyTurn();
+        break;
+      case GamePhase.switchToNextPlayer:
+        _handleSwitchToNextPlayer();
+        break;
+      default:
         return;
-      }
-
-      endTurn(state);
-    } else {
-      _gameStateService.nextPhase();
     }
   }
 }

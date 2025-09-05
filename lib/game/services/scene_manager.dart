@@ -1,6 +1,7 @@
 import 'package:card_battler/game/services/router_service.dart';
 import 'package:card_battler/game/services/dialog_manager_service.dart';
 import 'package:card_battler/game/services/game_action_coordinator.dart';
+import 'package:card_battler/game/scenes/player_turn_scene.dart';
 import 'package:flame/game.dart';
 
 /// Orchestrates scene management by coordinating specialized services
@@ -53,6 +54,9 @@ class SceneManager {
   void handleBackgroundDeselection() {
     _gameActionCoordinator.handleBackgroundDeselection();
   }
+
+  /// Get the current player turn scene for updating components
+  PlayerTurnScene? get playerTurnScene => _routerService.playerTurnScene;
 
   /// Get debug information about current scene management state
   String get debugInfo => 'SceneManager: ${_routerService.debugInfo}, ${_dialogManager.debugInfo}, ${_gameActionCoordinator.debugInfo}';

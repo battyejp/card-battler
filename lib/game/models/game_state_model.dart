@@ -17,7 +17,10 @@ enum GamePhase {
   enemyTurn,
   
   /// Player's turn to play cards and take actions
-  playerTurn
+  playerTurn,
+
+  /// Switches to the next player in the rotation
+  switchToNextPlayer
 }
 
 /// Simplified game state model that delegates to the facade

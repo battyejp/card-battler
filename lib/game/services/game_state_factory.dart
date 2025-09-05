@@ -54,7 +54,7 @@ class GameStateFactory {
     final playerStats = _createPlayerStats(players);
 
     // Create player turn state with all necessary models
-    final playerTurnState = _createPlayerTurnState(
+    final playerTurnState = createPlayerTurnState(
       players.first,
       playerStats,
       enemyCards,
@@ -126,7 +126,7 @@ class GameStateFactory {
     }).toList();
   }
 
-  PlayerTurnState _createPlayerTurnState(
+  PlayerTurnState createPlayerTurnState(
     PlayerModel activePlayer,
     List<PlayerStatsModel> playerStats,
     List<CardModel> enemyCards,

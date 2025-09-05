@@ -3,6 +3,8 @@ import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/game_state_factory.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/player_turn_coordinator.dart';
 
 /// Facade that provides a clean, simplified API for accessing game state
@@ -56,6 +58,48 @@ class GameStateFacade {
 
   /// Gets all players in the game
   List<PlayerModel> get allPlayers => _ensuredComponents.allPlayers;
+
+  /// Switches to the next player in the rotation
+  /// Returns the new active player, or null if no switch occurred
+  PlayerModel? switchToNextPlayer() {
+    if (_components == null) return null;
+    
+    final currentPlayer = _components!.selectedPlayer;
+    final players = _components!.allPlayers;
+    
+    if (currentPlayer == null || players.isEmpty) return null;
+    
+    // Find current player index
+    final currentIndex = players.indexOf(currentPlayer);
+    if (currentIndex == -1) return null;
+    
+    // Get next player (cycling back to 0 if at end)
+    final nextIndex = (currentIndex + 1) % players.length;
+    final nextPlayer = players[nextIndex];
+    
+    // Create new PlayerTurnState and Coordinator with the next player
+    final newPlayerTurnState = _factory.createPlayerTurnState(
+      nextPlayer,
+      _components!.playerTurn.state.teamModel.players,
+      [], // We don't need enemy cards for this recreation
+      _components!.playerTurn.state.shopModel.selectableCards,
+    );
+    
+    final newPlayerTurn = PlayerTurnCoordinator(
+      state: newPlayerTurnState,
+      gameStateService: DefaultGameStateService(GameStateManager()),
+    );
+    
+    // Create new components with the next player as selected
+    _components = GameStateComponents(
+      playerTurn: newPlayerTurn,
+      enemyTurnArea: _components!.enemyTurnArea,
+      selectedPlayer: nextPlayer,
+      allPlayers: _components!.allPlayers,
+    );
+    
+    return nextPlayer;
+  }
 
   /// Checks if the game state has been initialized
   bool get isInitialized => _components != null;

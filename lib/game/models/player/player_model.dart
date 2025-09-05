@@ -12,7 +12,8 @@ class PlayerModel {
   final CardPileModel _discardModel;
   final GameStateService? _gameStateService;
   final CardSelectionService? _cardSelectionService;
-
+  
+  bool hasHadATurn = false;
   static const cardsToDrawOnTap = 5;
   Function(CardModel)? cardPlayed;
 

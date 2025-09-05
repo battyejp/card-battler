@@ -87,20 +87,32 @@ class GameStateManager {
     _confirmationRequestListeners.clear();
   }
 
+  bool _hasCardsBeenDrawnThisRound = false;
+
+  /// Set the game phase directly
+  /// This should be used sparingly; prefer nextPhase() for normal flow
+  void setPhase(GamePhase newPhase) {
+    _setPhase(newPhase);
+  }
+
   /// Advance to the next logical phase
   void nextPhase() {
     switch (_currentPhase) {
-      case GamePhase.waitingToDrawCards:
-        _setPhase(GamePhase.cardsDrawn);
-        break;
-      case GamePhase.cardsDrawn:
-        _setPhase(GamePhase.enemyTurn);
-        break;
       case GamePhase.enemyTurn:
         _setPhase(GamePhase.playerTurn);
         break;
       case GamePhase.playerTurn:
         _setPhase(GamePhase.waitingToDrawCards);
+        break;
+      case GamePhase.waitingToDrawCards:
+        _setPhase(GamePhase.cardsDrawn);
+        break;
+      case GamePhase.cardsDrawn:
+        _setPhase(_hasCardsBeenDrawnThisRound ? GamePhase.switchToNextPlayer : GamePhase.enemyTurn);
+        _hasCardsBeenDrawnThisRound = !_hasCardsBeenDrawnThisRound;
+        break;
+      case GamePhase.switchToNextPlayer:
+        _setPhase(GamePhase.cardsDrawn);
         break;
     }
   }

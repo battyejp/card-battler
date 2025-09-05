@@ -255,6 +255,9 @@ class DummyGameStateService implements GameStateService {
   
   @override
   void requestConfirmation() {}
+  
+  @override
+  void setPhase(GamePhase newPhase) {}
 }
 
 class MockCardSelectionService implements CardSelectionService {
