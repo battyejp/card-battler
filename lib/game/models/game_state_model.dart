@@ -19,7 +19,19 @@ import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
 
 /// Represents the different phases of the game
-enum GamePhase { waitingToDrawCards, cardsDrawn, enemyTurn, playerTurn }
+enum GamePhase {
+  /// Initial phase when waiting for player to draw cards
+  waitingToDrawCards,
+  
+  /// Phase after player has drawn their cards but before enemy turn
+  cardsDrawn,
+  
+  /// Enemy's turn to play cards and take actions
+  enemyTurn,
+  
+  /// Player's turn to play cards and take actions
+  playerTurn
+}
 
 /// Centralized model that contains all game state
 /// This serves as the single source of truth for the entire game
@@ -122,6 +134,7 @@ class GameStateModel {
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
         gameStateService: gameStateService,
+        cardSelectionService: cardSelectionService,
       ),
       PlayerModel(
         infoModel: InfoModel(
@@ -134,6 +147,7 @@ class GameStateModel {
         deckModel: CardPileModel(cards: playerDeckCards),
         discardModel: CardPileModel.empty(),
         gameStateService: gameStateService,
+        cardSelectionService: cardSelectionService,
       ),
     ];
 

@@ -47,6 +47,7 @@ void main() {
         handModel: handModel,
         deckModel: deckModel,
         discardModel: discardModel,
+        gameStateService: DefaultGameStateService(gameStateManager),
         cardSelectionService: DefaultCardSelectionService(),
       );
 

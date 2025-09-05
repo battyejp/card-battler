@@ -76,6 +76,7 @@ PlayerModel _createTestPlayerModel({String name = 'Test Player', bool isActive =
     handModel: CardHandModel(),
     deckModel: CardPileModel(cards: _generatePlayerCards(20)),
     discardModel: CardPileModel.empty(),
+    gameStateService: DefaultGameStateService(GameStateManager()),
     cardSelectionService: DefaultCardSelectionService(),
   );
 }

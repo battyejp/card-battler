@@ -6,6 +6,7 @@ import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
+import 'package:card_battler/game/services/game_state_service.dart';
 
 List<CardModel> _generateTestCards(int count) {
   return List.generate(count, (index) => CardModel(
@@ -41,6 +42,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         expect(enemyTurnArea.enemyCards, equals(enemyCards));
@@ -55,6 +57,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         expect(enemyTurnArea.playedCards.hasNoCards, isTrue);
@@ -72,6 +75,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         expect(enemyTurnArea.playerStats.length, equals(3));
@@ -90,6 +94,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final initialEnemyCount = enemyTurnArea.enemyCards.allCards.length;
@@ -109,6 +114,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         // Verify card starts face down
@@ -131,6 +137,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final damageCard = CardModel(
@@ -161,6 +168,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final damageCard = CardModel(
@@ -190,6 +198,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final multiEffectCard = CardModel(
@@ -222,6 +231,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final drawCard = CardModel(
@@ -250,6 +260,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final allPlayersCard = CardModel(
@@ -278,6 +289,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final noEffectCard = CardModel(
@@ -316,6 +328,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         // Verify initial state
@@ -343,6 +356,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         enemyTurnArea.drawCardsFromDeck();
@@ -360,6 +374,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         // Should not throw and should complete turn
@@ -376,6 +391,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final zeroDamageCard = CardModel(
@@ -406,6 +422,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final healingCard = CardModel(
@@ -433,6 +450,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         final overkillCard = CardModel(
@@ -456,9 +474,11 @@ void main() {
 
     group('GameStateManager integration', () {
       late GameStateManager gameStateManager;
+      late GameStateService gameStateService;
 
       setUp(() {
         gameStateManager = GameStateManager();
+        gameStateService = DefaultGameStateService(gameStateManager);
       });
 
       test('calls nextPhase when turn finishes', () {
@@ -489,6 +509,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: gameStateService,
         );
 
         enemyTurnArea.drawCardsFromDeck();
@@ -522,6 +543,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: gameStateService,
         );
 
         enemyTurnArea.drawCardsFromDeck();
@@ -554,6 +576,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: gameStateService,
         );
 
         enemyTurnArea.drawCardsFromDeck();
@@ -598,6 +621,7 @@ void main() {
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
           playerStats: playerStats,
+          gameStateService: gameStateService,
         );
 
         // Draw first card - should finish turn and advance phase

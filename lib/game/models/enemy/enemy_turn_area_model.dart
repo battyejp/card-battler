@@ -13,7 +13,7 @@ class EnemyTurnAreaModel {
   EnemyTurnAreaModel({
     required this.enemyCards,
     required this.playerStats,
-    GameStateService? gameStateService,
+    required GameStateService gameStateService,
   })  : playedCards = CardPileModel.empty(),
         _turnFinished = false,
         _gameStateService = gameStateService;

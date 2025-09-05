@@ -1,4 +1,5 @@
 import 'package:card_battler/game/models/game_state_model.dart';
+import 'package:card_battler/game/services/game_state_manager.dart';
 
 /// Interface for game state operations
 /// This abstracts game state management away from domain models
@@ -16,7 +17,7 @@ abstract class GameStateService {
 /// Default implementation that delegates to GameStateManager
 /// This allows models to be decoupled from the concrete GameStateManager
 class DefaultGameStateService implements GameStateService {
-  final dynamic _gameStateManager;
+  final GameStateManager _gameStateManager;
   
   DefaultGameStateService(this._gameStateManager);
   
