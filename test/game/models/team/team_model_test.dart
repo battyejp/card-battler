@@ -18,9 +18,9 @@ void main() {
       ];
       testBasesModel = BasesModel(bases: bases);
       players = [
-        PlayerStatsModel(name: 'Player 1', health: HealthModel(maxHealth: 100)),
-        PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 100)),
-        PlayerStatsModel(name: 'Player 3', health: HealthModel(maxHealth: 100)),
+        PlayerStatsModel(name: 'Player 1', health: HealthModel(maxHealth: 100), isActive: false),
+        PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 100), isActive: false),
+        PlayerStatsModel(name: 'Player 3', health: HealthModel(maxHealth: 100), isActive: false),
       ];
 
     });

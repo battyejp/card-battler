@@ -77,10 +77,16 @@ class GameStateFacade {
     final nextIndex = (currentIndex + 1) % players.length;
     final nextPlayer = players[nextIndex];
 
+    // Update PlayerStatsModel isActive flags
+    final playerStats = _components!.playerTurn.state.teamModel.players;
+    for (int i = 0; i < playerStats.length; i++) {
+      playerStats[i].isActive = (i == nextIndex);
+    }
+
     // Create new PlayerTurnState and Coordinator with the next player
     final newPlayerTurnState = _factory.createPlayerTurnState(
       nextPlayer,
-      _components!.playerTurn.state.teamModel.players,
+      playerStats,
       [], // We don't need enemy cards for this recreation
       _components!.playerTurn.state.shopModel.selectableCards,
     );

@@ -40,9 +40,9 @@ void main() {
       ];
       final basesModel = BasesModel(bases: baseList);
       final teamModel = TeamModel(bases: basesModel, players: [
-        PlayerStatsModel(name: 'Player 1', health: HealthModel(maxHealth: 100)),
-        PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 100)),
-        PlayerStatsModel(name: 'Player 3', health: HealthModel(maxHealth: 100)),
+        PlayerStatsModel(name: 'Player 1', health: HealthModel(maxHealth: 100), isActive: false),
+        PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 100), isActive: true),
+        PlayerStatsModel(name: 'Player 3', health: HealthModel(maxHealth: 100), isActive: true),
       ]);
       final team = Team(teamModel)..size = testCase['teamSize'] as Vector2;
 

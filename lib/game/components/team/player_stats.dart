@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 class PlayerStats extends ReactivePositionComponent<PlayerStatsModel> {
   PlayerStats(super.model);
 
+  bool _wasRemoved = false;
+
   @override
   void updateDisplay() {
     super.updateDisplay();
@@ -30,5 +32,20 @@ class PlayerStats extends ReactivePositionComponent<PlayerStatsModel> {
       ..position = Vector2(size.x / 2, size.y / 2);
 
     add(healthComponent);
+  }
+
+  @override
+  void onMount(){
+    super.onMount();
+
+    if (_wasRemoved) {
+      updateDisplay();
+    }
+  }
+
+  @override
+  void onRemove() {
+    super.onRemove();
+    _wasRemoved = true;
   }
 }
