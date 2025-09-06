@@ -107,7 +107,6 @@ class GameStateFactory {
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
           healthModel: HealthModel(maxHealth: _playerMaxHealth),
-          isActive: index == 0, // Only first player is active initially
         ),
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCopy),
@@ -123,7 +122,7 @@ class GameStateFactory {
       return PlayerStatsModel(
         name: player.infoModel.name,
         health: player.infoModel.healthModel,
-        isActive: player.infoModel.isActive,
+        isActive: player == players.first,
       );
     }).toList();
   }

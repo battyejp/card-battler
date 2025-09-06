@@ -17,7 +17,7 @@ class Team extends PositionComponent {
       var player = model.players[i];
 
       if (!player.isActive) {
-        final playerStats = PlayerStats(model: player)
+        final playerStats = PlayerStats(player)
           ..size = Vector2(size.x, statsHeight)
           ..position = Vector2(0, currentY);
         add(playerStats);

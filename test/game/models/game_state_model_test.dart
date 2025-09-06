@@ -132,7 +132,6 @@ void main() {
 
         expect(GameStateModel.instance.playerTurn.playerModel, isNotNull);
         expect(GameStateModel.instance.playerTurn.playerModel.infoModel.name, equals('Player 1'));
-        expect(GameStateModel.instance.playerTurn.playerModel.infoModel.isActive, isTrue);
       });
 
       test('player turn has team model with correct players', () {

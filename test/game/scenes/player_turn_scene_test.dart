@@ -72,7 +72,6 @@ PlayerModel _createTestPlayerModel({String name = 'Test Player', bool isActive =
       attack: ValueImageLabelModel(value: 10, label: 'Attack'),
       credits: ValueImageLabelModel(value: 5, label: 'Credits'),
       healthModel: HealthModel(maxHealth: 100),
-      isActive: isActive,
     ),
     handModel: CardHandModel(),
     deckModel: CardPileModel(cards: _generatePlayerCards(20)),

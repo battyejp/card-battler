@@ -15,7 +15,7 @@ void main() {
 
       for (final testCase in testCases) {
         testWithFlameGame('size and position for size ${testCase['size']} pos ${testCase['pos']}', (game) async {
-          final stats = PlayerStats(model: PlayerStatsModel(name: 'Test Player', health: HealthModel(maxHealth: 100)))
+          final stats = PlayerStats(PlayerStatsModel(name: 'Test Player', health: HealthModel(maxHealth: 100)))
             ..size = testCase['size'] as Vector2
             ..position = testCase['pos'] as Vector2;
 
@@ -28,7 +28,7 @@ void main() {
       }
 
       testWithFlameGame('adds text component on load', (game) async {
-        final stats = PlayerStats(model: PlayerStatsModel(name: 'Test Player', health: HealthModel(maxHealth: 100)));
+        final stats = PlayerStats(PlayerStatsModel(name: 'Test Player', health: HealthModel(maxHealth: 100)));
         await game.ensureAdd(stats);
         
         expect(stats.children.whereType<TextComponent>().length, equals(1));

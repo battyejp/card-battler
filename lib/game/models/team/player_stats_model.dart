@@ -1,6 +1,7 @@
 import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game/models/shared/reactive_model.dart';
 
-class PlayerStatsModel {
+class PlayerStatsModel with ReactiveModel<PlayerStatsModel> {
   final HealthModel _health;
   final String _name;
   final bool isActive;

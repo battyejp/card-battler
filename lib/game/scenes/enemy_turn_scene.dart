@@ -46,7 +46,7 @@ class EnemyTurnScene extends Component with HasGameReference<CardBattlerGame>{
     for (int i = 0; i < _model.playerStats.length; i++) {
       var player = _model.playerStats[i];
 
-      final playerStats = PlayerStats(model: player)
+      final playerStats = PlayerStats(player)
         ..size = Vector2(_size.x, statsHeight)
         ..position = Vector2(0, currentY);
       playArea.add(playerStats);
