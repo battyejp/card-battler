@@ -74,9 +74,6 @@ class GameStateFactory {
       gameStateService: gameStateService,
     );
 
-    print( 'GameStateFactory: Created game state with ${players.length} players, '
-        '${players[3].deckModel.allCards.length} shop cards, and ${enemyCards.length} enemy cards.');
-
     return GameStateComponents(
       playerTurn: playerTurn,
       enemyTurnArea: enemyTurnArea,
