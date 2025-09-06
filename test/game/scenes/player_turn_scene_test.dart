@@ -1,5 +1,6 @@
 import 'package:card_battler/game/scenes/player_turn_scene.dart';
-import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/services/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
@@ -123,18 +124,21 @@ ShopModel _createTestShopModel() {
   );
 }
 
-PlayerTurnModel _createTestPlayerTurnModel({
+PlayerTurnCoordinator _createTestPlayerTurnModel({
   PlayerModel? playerModel,
   TeamModel? teamModel,
   EnemiesModel? enemiesModel,
   ShopModel? shopModel,
 }) {
   final gameStateService = DefaultGameStateService(GameStateManager());
-  return PlayerTurnModel(
+  final state = PlayerTurnState(
     playerModel: playerModel ?? _createTestPlayerModel(),
     teamModel: teamModel ?? _createTestTeamModel(),
     enemiesModel: enemiesModel ?? _createTestEnemiesModel(),
     shopModel: shopModel ?? _createTestShopModel(),
+  );
+  return PlayerTurnCoordinator(
+    state: state,
     gameStateService: gameStateService,
   );
 }

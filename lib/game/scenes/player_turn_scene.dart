@@ -1,11 +1,11 @@
-import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/components/shared/flat_button.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/services/player_turn_coordinator.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_interaction_service.dart';
@@ -13,9 +13,8 @@ import 'package:card_battler/game/services/card_selection_service.dart';
 import 'package:card_battler/game/services/scene_manager.dart';
 import 'package:flame/components.dart';
 
-//TODO is with HasGameReference<CardBattlerGame> needed here?
-class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame> {
-  final PlayerTurnModel _model;
+class PlayerTurnScene extends Component {
+  final PlayerTurnCoordinator _model;
   final Vector2 _size;
   final GameStateManager _gameStateManager = GameStateManager();
   final SceneManager _sceneManager = SceneManager();
@@ -25,8 +24,11 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame> {
   /// Expose CardSelectionService for external access (e.g., background deselection)
   CardSelectionService get cardSelectionService => _cardSelectionService;
   late final FlatButton turnButton;
+  Player? _player;
+  double _availableWidth = 0.0;
+  double _bottomLayoutHeight = 0.0;
 
-  PlayerTurnScene({required PlayerTurnModel model, required Vector2 size, /*this.onTurnEnded*/})
+  PlayerTurnScene({required PlayerTurnCoordinator model, required Vector2 size, /*this.onTurnEnded*/})
       : _model = model,
         _size = size;
 
@@ -59,27 +61,17 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame> {
 
   void _loadGameComponents() {
     final availableHeight = _size.y - (margin * 2);
-    final availableWidth = _size.x - (margin * 2);
     final topLayoutHeight = availableHeight * topLayoutHeightFactor;
-    final bottomLayoutHeight = availableHeight - topLayoutHeight;
     final topPositionY = -1 * (_size.y / 2) + margin;
 
-    // Create player component with models from game state
-    final player = Player(
-      playerModel: _model.playerModel,
-      cardInteractionService: _cardInteractionService,
-      cardSelectionService: _cardSelectionService,
-    )
-      ..size = Vector2(availableWidth, bottomLayoutHeight)
-      ..position = Vector2(
-        (0 - _size.x / 2) + margin,
-        (_size.y / 2) - margin - bottomLayoutHeight,
-      );
+    _availableWidth = _size.x - (margin * 2);
+    _bottomLayoutHeight = availableHeight - topLayoutHeight;
 
-    add(player);
+    // Create player component with models from game state
+    addPlayerComponent(_model.playerModel);
 
     // Create enemies component with model from game state
-    final enemiesWidth = availableWidth * 0.5;
+    final enemiesWidth = _availableWidth * 0.5;
     final enemies = Enemies(model: _model.enemiesModel)
       ..size = Vector2(enemiesWidth, topLayoutHeight)
       ..position = Vector2((0 - enemiesWidth / 2), topPositionY);
@@ -87,7 +79,7 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame> {
     add(enemies);
 
     // Create shop component with model from game state
-    final shopWidth = availableWidth * 0.5 / 2;
+    final shopWidth = _availableWidth * 0.5 / 2;
     final shop = Shop(
       _model.shopModel,
       cardInteractionService: _cardInteractionService,
@@ -109,22 +101,38 @@ class PlayerTurnScene extends Component with HasGameReference<CardBattlerGame> {
   void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
     switch (newPhase) {
       case GamePhase.waitingToDrawCards:
-        turnButton.text = 'Take Enemy Turn';
-        turnButton.isVisible = false;
         break;
-      case GamePhase.cardsDrawn:
+      case GamePhase.cardsDrawnWaitingForEnemyTurn:
         turnButton.text = 'Take Enemy Turn';
-        turnButton.isVisible = true;
         break;
       case GamePhase.enemyTurn:
-        turnButton.text = 'End Turn';
-        turnButton.isVisible = true;
         break;
       case GamePhase.playerTurn:
         turnButton.text = 'End Turn';
-        turnButton.isVisible = true;
+        break;
+      case GamePhase.cardsDrawnWaitingForPlayerSwitch:
+        turnButton.text = 'Switch Player';
         break;
     }
+
+    turnButton.isVisible = newPhase != GamePhase.waitingToDrawCards && newPhase != GamePhase.enemyTurn;
+  }
+
+  void addPlayerComponent(PlayerModel playerModel) {
+    _player?.removeFromParent();
+
+    _player = Player(
+      playerModel: playerModel,
+      cardInteractionService: _cardInteractionService,
+      cardSelectionService: _cardSelectionService,
+    )
+      ..size = Vector2(_availableWidth, _bottomLayoutHeight)
+      ..position = Vector2(
+        (0 - _size.x / 2) + margin,
+        (_size.y / 2) - margin - _bottomLayoutHeight,
+      );
+
+    add(_player!);
   }
 
   void _createTurnButton() {

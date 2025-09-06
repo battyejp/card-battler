@@ -12,9 +12,10 @@ class PlayerModel {
   final CardPileModel _discardModel;
   final GameStateService? _gameStateService;
   final CardSelectionService? _cardSelectionService;
-
+  
   static const cardsToDrawOnTap = 5;
   Function(CardModel)? cardPlayed;
+  bool turnOver = false;
 
   PlayerModel({
     required InfoModel infoModel,

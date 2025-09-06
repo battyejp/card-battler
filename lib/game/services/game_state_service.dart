@@ -9,6 +9,8 @@ abstract class GameStateService {
   
   /// Advance to the next game phase
   void nextPhase();
+
+  void setPhase(GamePhase newPhase);
   
   /// Request confirmation dialog (for when player wants to end turn with cards)
   void requestConfirmation();
@@ -29,4 +31,7 @@ class DefaultGameStateService implements GameStateService {
   
   @override
   void requestConfirmation() => _gameStateManager.requestConfirmation();
+
+  @override
+  void setPhase(GamePhase newPhase) => _gameStateManager.setPhase(newPhase);
 }

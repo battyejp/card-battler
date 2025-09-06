@@ -5,7 +5,8 @@ import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
-import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/services/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
@@ -17,14 +18,15 @@ import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/game_state_facade.dart';
 
 void main() {
-  group('PlayerTurnModel', () {
+  group('PlayerTurnCoordinator', () {
     late PlayerModel playerModel;
     late TeamModel teamModel;
     late EnemiesModel enemiesModel;
     late ShopModel shopModel;
-    late PlayerTurnModel playerTurnModel;
+    late PlayerTurnCoordinator playerTurnModel;
 
     setUp(() { 
       // Reset GameStateManager to known state
@@ -69,11 +71,14 @@ void main() {
       );
 
       final gameStateService = DefaultGameStateService(gameStateManager);
-      playerTurnModel = PlayerTurnModel(
+      final playerTurnState = PlayerTurnState(
         playerModel: playerModel,
         teamModel: teamModel,
         enemiesModel: enemiesModel,
         shopModel: shopModel,
+      );
+      playerTurnModel = PlayerTurnCoordinator(
+        state: playerTurnState,
         gameStateService: gameStateService,
       );
     });
@@ -233,7 +238,7 @@ void main() {
         // Test from waitingToDrawCards
         expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
         playerTurnModel.handleTurnButtonPress();
-        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
 
         // Test from cardsDrawn
         playerTurnModel.handleTurnButtonPress();
@@ -293,14 +298,14 @@ void main() {
         playerTurnModel.endTurn();
 
         expect(playerModel.handModel.cards.isEmpty, isTrue);
-        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawnWaitingForPlayerSwitch));
         expect(playerModel.discardModel.allCards.length, equals(2)); // Cards moved to discard
       });
 
       test('turn button behavior varies correctly by phase', () {
         final phases = [
           GamePhase.waitingToDrawCards,
-          GamePhase.cardsDrawn,
+          GamePhase.cardsDrawnWaitingForEnemyTurn,
           GamePhase.enemyTurn,
           GamePhase.playerTurn
         ];
@@ -308,6 +313,8 @@ void main() {
         for (int i = 0; i < phases.length; i++) {
           // Reset and advance to the current phase
           gameStateManager.reset();
+          // Reset turnOver flag to ensure proper phase progression
+          GameStateFacade.instance.selectedPlayer?.turnOver = false;
           for (int j = 0; j < i; j++) {
             gameStateManager.nextPhase();
           }

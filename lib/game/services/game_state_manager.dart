@@ -1,4 +1,5 @@
 import 'package:card_battler/game/models/game_state_model.dart';
+import 'package:card_battler/game/services/game_state_facade.dart';
 import 'package:flutter/foundation.dart';
 
 //TODO lots of methods not used
@@ -87,13 +88,16 @@ class GameStateManager {
     _confirmationRequestListeners.clear();
   }
 
+  /// Set the game phase directly
+  /// This should be used sparingly; prefer nextPhase() for normal flow
+  void setPhase(GamePhase newPhase) {
+    _setPhase(newPhase);
+  }
+
   /// Advance to the next logical phase
   void nextPhase() {
     switch (_currentPhase) {
-      case GamePhase.waitingToDrawCards:
-        _setPhase(GamePhase.cardsDrawn);
-        break;
-      case GamePhase.cardsDrawn:
+      case GamePhase.cardsDrawnWaitingForEnemyTurn:
         _setPhase(GamePhase.enemyTurn);
         break;
       case GamePhase.enemyTurn:
@@ -101,6 +105,15 @@ class GameStateManager {
         break;
       case GamePhase.playerTurn:
         _setPhase(GamePhase.waitingToDrawCards);
+        break;
+      case GamePhase.waitingToDrawCards:
+        if (GameStateFacade.instance.selectedPlayer!.turnOver) {
+          _setPhase(GamePhase.cardsDrawnWaitingForPlayerSwitch);
+        } else {
+          _setPhase(GamePhase.cardsDrawnWaitingForEnemyTurn);
+        }
+        break;
+      case GamePhase.cardsDrawnWaitingForPlayerSwitch: //Taken card of else where
         break;
     }
   }

@@ -28,7 +28,7 @@ void main() {
         instance1.nextPhase(); // From waitingToDrawCards to cardsDrawn
         
         final instance2 = GameStateManager();
-        expect(instance2.currentPhase, equals(GamePhase.cardsDrawn));
+        expect(instance2.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
       });
     });
 
@@ -51,12 +51,12 @@ void main() {
       test('advances from waitingToDrawCards to cardsDrawn', () {
         expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
         gameStateManager.nextPhase();
-        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
       });
 
       test('advances from cardsDrawn to enemyTurn', () {
         gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
-        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
         gameStateManager.nextPhase();
         expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn));
       });
@@ -81,7 +81,7 @@ void main() {
       test('creates complete phase cycle', () {
         final expectedPhases = [
           GamePhase.waitingToDrawCards, // Initial
-          GamePhase.cardsDrawn,         // After first nextPhase
+          GamePhase.cardsDrawnWaitingForEnemyTurn,         // After first nextPhase
           GamePhase.enemyTurn,          // After second nextPhase
           GamePhase.playerTurn,         // After third nextPhase
           GamePhase.waitingToDrawCards, // After fourth nextPhase (full cycle)
@@ -114,7 +114,7 @@ void main() {
 
         expect(listenerCalled, isTrue);
         expect(previousPhase, equals(GamePhase.waitingToDrawCards));
-        expect(newPhase, equals(GamePhase.cardsDrawn));
+        expect(newPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
       });
 
       test('handles multiple listeners', () {
@@ -140,9 +140,9 @@ void main() {
 
         expect(listener1Count, equals(2));
         expect(listener2Count, equals(2));
-        expect(listener1PrevPhase, equals(GamePhase.cardsDrawn));
+        expect(listener1PrevPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
         expect(listener1NewPhase, equals(GamePhase.enemyTurn));
-        expect(listener2PrevPhase, equals(GamePhase.cardsDrawn));
+        expect(listener2PrevPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
         expect(listener2NewPhase, equals(GamePhase.enemyTurn));
       });
 
@@ -353,7 +353,7 @@ void main() {
         gameStateManager.nextPhase(); // enemyTurn -> playerTurn
 
         expect(phaseHistory, equals([
-          GamePhase.cardsDrawn,
+          GamePhase.cardsDrawnWaitingForEnemyTurn,
           GamePhase.enemyTurn,
           GamePhase.playerTurn,
         ]));
@@ -368,14 +368,14 @@ void main() {
         });
 
         // Complete one full cycle
-        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
-        gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
+        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawnWaitingForEnemyTurn
+        gameStateManager.nextPhase(); // cardsDrawnWaitingForEnemyTurn -> enemyTurn
         gameStateManager.nextPhase(); // enemyTurn -> playerTurn
         gameStateManager.nextPhase(); // playerTurn -> waitingToDrawCards
 
         expect(transitionLog, equals([
-          'GamePhase.waitingToDrawCards -> GamePhase.cardsDrawn',
-          'GamePhase.cardsDrawn -> GamePhase.enemyTurn',
+          'GamePhase.waitingToDrawCards -> GamePhase.cardsDrawnWaitingForEnemyTurn',
+          'GamePhase.cardsDrawnWaitingForEnemyTurn -> GamePhase.enemyTurn',
           'GamePhase.enemyTurn -> GamePhase.playerTurn',
           'GamePhase.playerTurn -> GamePhase.waitingToDrawCards',
         ]));
@@ -412,7 +412,7 @@ void main() {
         // This should not throw and should call the successful listener
         expect(() => gameStateManager.nextPhase(), returnsNormally);
         expect(successfulListenerCalled, isTrue);
-        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
       });
 
       test('maintains consistency after listener management operations', () {
@@ -429,7 +429,7 @@ void main() {
 
         gameStateManager.nextPhase();
         expect(callCount, equals(1));
-        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawn));
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
       });
     });
   });
