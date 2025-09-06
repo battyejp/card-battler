@@ -218,7 +218,7 @@ class MockPlayerTurnScene extends PlayerTurnScene {
               ),
               teamModel: TeamModel(
                 bases: BasesModel(bases: []),
-                players: [],
+                playersModel: [],
               ),
               enemiesModel: EnemiesModel(
                 totalEnemies: 1,

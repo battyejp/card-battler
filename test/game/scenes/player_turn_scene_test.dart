@@ -103,7 +103,7 @@ TeamModel _createTestTeamModel() {
     ),
   ];
 
-  return TeamModel(bases: bases, players: players);
+  return TeamModel(bases: bases, playersModel: players);
 }
 
 EnemiesModel _createTestEnemiesModel() {
@@ -397,7 +397,7 @@ void main() {
               BaseModel(name: 'Custom Base 2', maxHealth: 25),
             ],
           ),
-          players: [
+          playersModel: [
             PlayerStatsModel(
               name: 'Custom Player 1',
               health: HealthModel(maxHealth: 150),

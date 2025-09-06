@@ -1,7 +1,7 @@
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/components/shared/card/card_deck.dart';
 import 'package:card_battler/game/components/shared/card/card_pile.dart';
-import 'package:card_battler/game/components/team/player_stats.dart';
+import 'package:card_battler/game/components/team/players.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
@@ -41,16 +41,9 @@ class EnemyTurnScene extends Component with HasGameReference<CardBattlerGame>{
 
     playArea.add(playedCards);
 
-    final statsHeight = _size.y / 2 * 0.15;
-    double currentY = _size.y / 2;
-    for (int i = 0; i < _model.playerStats.length; i++) {
-      var player = _model.playerStats[i];
-
-      final playerStats = PlayerStats(player)
-        ..size = Vector2(_size.x, statsHeight)
-        ..position = Vector2(0, currentY);
-      playArea.add(playerStats);
-      currentY += statsHeight;
-    }    
+    final players = Players(_model.playersModel, showActivePlayer: true)
+      ..size = Vector2(_size.x, _size.y / 2)
+      ..position = Vector2(0, _size.y / 2);
+    playArea.add(players);   
   }
 }

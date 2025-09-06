@@ -1,18 +1,21 @@
+
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
-import 'package:card_battler/game/models/team/player_stats_model.dart';
+import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
 
 class EnemyTurnAreaModel {
   final CardPileModel enemyCards;
   final CardPileModel playedCards;
-  final List<PlayerStatsModel> playerStats;
+  //final List<PlayerStatsModel> playerStats;
+  final PlayersModel playersModel;
   final GameStateService? _gameStateService;
   bool _turnFinished;
 
   EnemyTurnAreaModel({
     required this.enemyCards,
-    required this.playerStats,
+    //required this.playerStats,
+    required this.playersModel,
     required GameStateService gameStateService,
   })  : playedCards = CardPileModel.empty(),
         _turnFinished = false,
@@ -44,17 +47,17 @@ class EnemyTurnAreaModel {
         case EffectType.attack:
           switch (effect.target) {
             case EffectTarget.activePlayer:
-              for (final stats in playerStats.where((player) => player.isActive)) {
+              for (final stats in playersModel.players.where((player) => player.isActive)) {
 	                stats.health.changeHealth(-effect.value);
 	            }
               break;
             case EffectTarget.otherPlayers:
-              for (final stats in playerStats.where((player) => !player.isActive)) {
+              for (final stats in playersModel.players.where((player) => !player.isActive)) {
 	                stats.health.changeHealth(-effect.value);
 	            }
               break;
             case EffectTarget.allPlayers:
-              for (var stats in playerStats) {
+              for (var stats in playersModel.players) {
                 stats.health.changeHealth(-effect.value);
               }
               break;

@@ -1,5 +1,5 @@
 import 'package:card_battler/game/components/team/bases.dart';
-import 'package:card_battler/game/components/team/player_stats.dart';
+import 'package:card_battler/game/components/team/players.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:flame/components.dart';
 
@@ -10,25 +10,16 @@ class Team extends PositionComponent {
 
   @override
   void onLoad() {
-    final statsHeight = size.y * 0.15;
-    double currentY = 0;
-    
-    for (int i = 0; i < model.players.length; i++) {
-      var player = model.players[i];
 
-      if (!player.isActive) {
-        final playerStats = PlayerStats(player)
-          ..size = Vector2(size.x, statsHeight)
-          ..position = Vector2(0, currentY);
-        add(playerStats);
-        currentY += statsHeight;
-      }
-    }
+    final playersHeight = size.y / 2;
+    final players = Players(model.playersModel, showActivePlayer: false)
+      ..size = Vector2(size.x, playersHeight)
+      ..position = Vector2(0, 0);
+    add(players);
 
-    // Use provided basesModel or create default for backward compatibility
     final bases = Bases(model: model.bases)
-      ..size = Vector2(size.x, size.y - currentY)
-      ..position = Vector2(0, currentY);
+      ..size = Vector2(size.x, size.y - playersHeight)
+      ..position = Vector2(0, players.size.y);
     add(bases);
   }
 }

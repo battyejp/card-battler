@@ -142,9 +142,9 @@ void main() {
         GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
 
         expect(GameStateModel.instance.playerTurn.teamModel, isNotNull);
-        expect(GameStateModel.instance.playerTurn.teamModel.players.length, equals(4));
-        expect(GameStateModel.instance.playerTurn.teamModel.players[0].name, equals('Player 1'));
-        expect(GameStateModel.instance.playerTurn.teamModel.players[0].isActive, isTrue);
+        expect(GameStateModel.instance.playerTurn.teamModel.playersModel.length, equals(4));
+        expect(GameStateModel.instance.playerTurn.teamModel.playersModel[0].name, equals('Player 1'));
+        expect(GameStateModel.instance.playerTurn.teamModel.playersModel[0].isActive, isTrue);
       });
 
       test('player turn has team model with correct bases', () {
@@ -278,7 +278,7 @@ void main() {
         GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
 
         final enemyAreaPlayers = GameStateModel.instance.enemyTurnArea.playerStats;
-        final teamPlayers = GameStateModel.instance.playerTurn.teamModel.players;
+        final teamPlayers = GameStateModel.instance.playerTurn.teamModel.playersModel;
 
         expect(enemyAreaPlayers.length, equals(teamPlayers.length));
         for (int i = 0; i < enemyAreaPlayers.length; i++) {

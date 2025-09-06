@@ -53,7 +53,7 @@ void main() {
         cardSelectionService: DefaultCardSelectionService(),
       );
 
-      teamModel = TeamModel(bases: BasesModel(bases: []), players: []);
+      teamModel = TeamModel(bases: BasesModel(bases: []), playersModel: []);
       enemiesModel = EnemiesModel(
         totalEnemies: 0,
         maxNumberOfEnemiesInPlay: 3,

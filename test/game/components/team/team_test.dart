@@ -39,7 +39,7 @@ void main() {
         BaseModel(name: 'Base 3', maxHealth: 5),
       ];
       final basesModel = BasesModel(bases: baseList);
-      final teamModel = TeamModel(bases: basesModel, players: [
+      final teamModel = TeamModel(bases: basesModel, playersModel: [
         PlayerStatsModel(name: 'Player 1', health: HealthModel(maxHealth: 100), isActive: false),
         PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 100), isActive: true),
         PlayerStatsModel(name: 'Player 3', health: HealthModel(maxHealth: 100), isActive: true),

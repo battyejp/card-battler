@@ -29,22 +29,22 @@ void main() {
       test('creates with required parameters', () {
         final teamModel = TeamModel(
           bases: testBasesModel,
-          players: players,
+          playersModel: players,
         );
 
         expect(teamModel.bases, equals(testBasesModel));
-        expect(teamModel.players, equals(players));
+        expect(teamModel.playersModel, equals(players));
       });
 
       test('stores references to provided models', () {
         final teamModel = TeamModel(
           bases: testBasesModel,
-          players: players,
+          playersModel: players,
         );
 
         // Verify that the same instances are returned
         expect(identical(teamModel.bases, testBasesModel), isTrue);
-        expect(identical(teamModel.players, players), isTrue);
+        expect(identical(teamModel.playersModel, players), isTrue);
       });
     });
 
