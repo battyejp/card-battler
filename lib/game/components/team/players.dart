@@ -1,19 +1,20 @@
+import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:card_battler/game/components/team/player_stats.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:flame/components.dart';
 
-class Players extends PositionComponent {
-  final PlayersModel model;
+class Players extends ReactivePositionComponent<PlayersModel> {
   final bool showActivePlayer;
 
-  Players(this.model, {required this.showActivePlayer});
+  Players(super.model, {required this.showActivePlayer});
+
+  // @override
+  // get debugMode => true;
 
   @override
-  get debugMode => true;
-
-  @override
-  void onLoad() {
+  void updateDisplay() {
+    super.updateDisplay();
     late List<PlayerStatsModel> playersToShow = model.players.where((player) => showActivePlayer || !player.isActive).toList();
     double playerHeight = size.y / playersToShow.length;
     double currentY = 0;
