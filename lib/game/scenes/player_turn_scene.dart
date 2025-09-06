@@ -10,6 +10,7 @@ import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_interaction_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/player_action_service.dart';
 import 'package:card_battler/game/services/scene_manager.dart';
 import 'package:flame/components.dart';
 
@@ -20,6 +21,7 @@ class PlayerTurnScene extends Component {
   final SceneManager _sceneManager = SceneManager();
   late final CardInteractionService _cardInteractionService;
   late final CardSelectionService _cardSelectionService;
+  late final PlayerActionService _playerActionService;
 
   /// Expose CardSelectionService for external access (e.g., background deselection)
   CardSelectionService get cardSelectionService => _cardSelectionService;
@@ -43,6 +45,10 @@ class PlayerTurnScene extends Component {
       DefaultGameStateService(_gameStateManager)
     );
     _cardSelectionService = DefaultCardSelectionService();
+    _playerActionService = PlayerActionService(
+      gameStateService: DefaultGameStateService(_gameStateManager),
+      cardSelectionService: _cardSelectionService,
+    );
     _loadGameComponents();
     _createTurnButton();
     _setupGameStateListener();
@@ -125,6 +131,7 @@ class PlayerTurnScene extends Component {
       playerModel: playerModel,
       cardInteractionService: _cardInteractionService,
       cardSelectionService: _cardSelectionService,
+      playerActionService: _playerActionService,
     )
       ..size = Vector2(_availableWidth, _bottomLayoutHeight)
       ..position = Vector2(

@@ -16,6 +16,8 @@ import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/card_interaction_service.dart';
+import 'package:card_battler/game/services/player_action_service.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 
 List<CardModel> _generateCards(int count) {
@@ -44,12 +46,16 @@ void main() {
         handModel: handModel,
         deckModel: deckModel,
         discardModel: discardModel,
-        gameStateService: DefaultGameStateService(GameStateManager()),
-        cardSelectionService: DefaultCardSelectionService(),
       );
       
       return Player(
         playerModel: playerModel,
+        cardInteractionService: DefaultCardInteractionService(DefaultGameStateService(GameStateManager())),
+        cardSelectionService: DefaultCardSelectionService(),
+        playerActionService: PlayerActionService(
+          gameStateService: DefaultGameStateService(GameStateManager()),
+          cardSelectionService: DefaultCardSelectionService(),
+        ),
       );
     }
     group('layout and positioning', () {
@@ -263,11 +269,17 @@ void main() {
           handModel: handModel,
           deckModel: deckModel,
           discardModel: discardModel,
-          gameStateService: DefaultGameStateService(GameStateManager()),
-          cardSelectionService: DefaultCardSelectionService(),
         );
         
-        final player = Player(playerModel: playerModel)..size = Vector2(600, 300);
+        final player = Player(
+          playerModel: playerModel,
+          cardInteractionService: DefaultCardInteractionService(DefaultGameStateService(GameStateManager())),
+          cardSelectionService: DefaultCardSelectionService(),
+          playerActionService: PlayerActionService(
+          gameStateService: DefaultGameStateService(GameStateManager()),
+          cardSelectionService: DefaultCardSelectionService(),
+        ),
+        )..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 
@@ -306,11 +318,17 @@ void main() {
           handModel: handModel,
           deckModel: deckModel,
           discardModel: discardModel,
-          gameStateService: DefaultGameStateService(GameStateManager()),
-          cardSelectionService: DefaultCardSelectionService(),
         );
         
-        final player = Player(playerModel: playerModel)..size = Vector2(600, 300);
+        final player = Player(
+          playerModel: playerModel,
+          cardInteractionService: DefaultCardInteractionService(DefaultGameStateService(GameStateManager())),
+          cardSelectionService: DefaultCardSelectionService(),
+          playerActionService: PlayerActionService(
+          gameStateService: DefaultGameStateService(GameStateManager()),
+          cardSelectionService: DefaultCardSelectionService(),
+        ),
+        )..size = Vector2(600, 300);
 
         await game.ensureAdd(player);
 

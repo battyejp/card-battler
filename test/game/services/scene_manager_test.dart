@@ -213,8 +213,6 @@ class MockPlayerTurnScene extends PlayerTurnScene {
                 handModel: CardHandModel(),
                 deckModel: CardPileModel(),
                 discardModel: CardPileModel(),
-                gameStateService: DummyGameStateService(),
-                cardSelectionService: DefaultCardSelectionService(),
               ),
               teamModel: TeamModel(
                 bases: BasesModel(bases: []),

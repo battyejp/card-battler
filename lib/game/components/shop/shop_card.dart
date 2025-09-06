@@ -2,6 +2,7 @@ import 'package:card_battler/game/components/shared/card/tapable_actionable_card
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/card_interaction_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/card_action_service.dart';
 import 'package:flutter/material.dart' hide Card;
 import 'package:flame/components.dart';
 
@@ -16,13 +17,14 @@ class ShopCard extends TapableActionableCard {
       bool Function()? determineIfButtonEnabled,
       CardInteractionService? cardInteractionService,
       CardSelectionService? cardSelectionService,
+      CardActionService? cardActionService,
     }
   ) : super(
         shopCardModel, 
         onButtonPressed: () {
           // TODO could this any of this be in tappableactionablecard?
           cardSelectionService?.deselectCard();
-          shopCardModel.playCard();
+          cardActionService?.playCard(shopCardModel);
         },
         determineIfButtonEnabled: determineIfButtonEnabled ?? 
           (() => cardInteractionService?.canPurchaseShopCard(shopCardModel) ?? true),

@@ -17,7 +17,6 @@ import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
 import 'package:card_battler/game/services/game_state_facade.dart';
 
 void main() {
@@ -49,8 +48,6 @@ void main() {
         handModel: handModel,
         deckModel: deckModel,
         discardModel: discardModel,
-        gameStateService: DefaultGameStateService(gameStateManager),
-        cardSelectionService: DefaultCardSelectionService(),
       );
 
       teamModel = TeamModel(bases: BasesModel(bases: []), players: []);

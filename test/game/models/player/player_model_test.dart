@@ -10,6 +10,7 @@ import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/player_action_service.dart';
 
 List<CardModel> _generateCards(int count) {
   return List.generate(count, (index) => CardModel(
@@ -27,6 +28,7 @@ void main() {
     late CardPileModel testDiscardModel;
     late GameStateService gameStateService;
     late CardSelectionService cardSelectionService;
+    late PlayerActionService playerActionService;
 
     setUp(() {
       testInfoModel = InfoModel(
@@ -44,6 +46,10 @@ void main() {
       gameStateManager.reset(); // Start in a known state
       gameStateService = DefaultGameStateService(gameStateManager);
       cardSelectionService = DefaultCardSelectionService();
+      playerActionService = PlayerActionService(
+        gameStateService: gameStateService,
+        cardSelectionService: cardSelectionService,
+      );
     });
 
     group('constructor and initialization', () {
@@ -53,8 +59,6 @@ void main() {
           handModel: testHandModel,
           deckModel: testDeckModel,
           discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
         );
 
         expect(playerModel.infoModel, equals(testInfoModel));
@@ -71,8 +75,6 @@ void main() {
           handModel: testHandModel,
           deckModel: testDeckModel,
           discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
         );
 
         expect(playerModel.infoModel, isA<InfoModel>());
@@ -88,8 +90,6 @@ void main() {
           handModel: testHandModel,
           deckModel: testDeckModel,
           discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
         );
 
         expect(playerModel.handModel, isA<CardHandModel>());
@@ -103,8 +103,6 @@ void main() {
           handModel: testHandModel,
           deckModel: testDeckModel,
           discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
         );
 
         expect(playerModel.deckModel, isA<CardPileModel>());
@@ -119,8 +117,6 @@ void main() {
           handModel: testHandModel,
           deckModel: testDeckModel,
           discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
         );
 
         expect(playerModel.discardModel, isA<CardPileModel>());
@@ -130,39 +126,45 @@ void main() {
       });
     });
 
-    group('drawCardsFromDeck functionality', () {
-      test('sets onCardPlayed callback on drawn cards', () {
+    group('PlayerActionService integration', () {
+      test('drawCardsFromDeck sets onCardPlayed callback on drawn cards', () {
         final playerModel = PlayerModel(
           infoModel: testInfoModel,
           handModel: testHandModel,
           deckModel: testDeckModel,
           discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
         );
 
-        playerModel.drawCardsFromDeck();
+        playerActionService.drawCardsFromDeck(
+          deckModel: playerModel.deckModel,
+          handModel: playerModel.handModel,
+          cardsToDraw: PlayerModel.cardsToDrawOnTap,
+          onCardPlayed: (card) {},
+        );
 
         for (final card in playerModel.handModel.cards) {
           expect(card.onCardPlayed, isNotNull);
         }
       });
 
-      test('calls GameStateService.nextPhase() after drawing cards', () {
+      test('drawCardsFromDeck calls GameStateService.nextPhase() after drawing cards', () {
         final playerModel = PlayerModel(
           infoModel: testInfoModel,
           handModel: testHandModel,
           deckModel: testDeckModel,
           discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
         );
 
         // Verify initial state
         expect(gameStateService.currentPhase, equals(GamePhase.waitingToDrawCards));
 
         // Draw cards should trigger phase advancement
-        playerModel.drawCardsFromDeck();
+        playerActionService.drawCardsFromDeck(
+          deckModel: playerModel.deckModel,
+          handModel: playerModel.handModel,
+          cardsToDraw: PlayerModel.cardsToDrawOnTap,
+          onCardPlayed: (card) {},
+        );
 
         // Should now be in cardsDrawn phase
         expect(gameStateService.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
@@ -174,14 +176,16 @@ void main() {
           handModel: testHandModel,
           deckModel: testDeckModel,
           discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
         );
 
         CardModel? playedCard;
-        playerModel.cardPlayed = (card) => playedCard = card;
-
-        playerModel.drawCardsFromDeck();
+        
+        playerActionService.drawCardsFromDeck(
+          deckModel: playerModel.deckModel,
+          handModel: playerModel.handModel,
+          cardsToDraw: PlayerModel.cardsToDrawOnTap,
+          onCardPlayed: (card) => playedCard = card,
+        );
         
         final drawnCard = playerModel.handModel.cards.first;
         drawnCard.onCardPlayed?.call();
@@ -189,25 +193,29 @@ void main() {
         expect(playedCard, equals(drawnCard));
       });
 
-      test('onCardPlayed callback is cleared after card is played', () {
+      test('handleCardPlayed clears callback after card is played', () {
         final playerModel = PlayerModel(
           infoModel: testInfoModel,
           handModel: testHandModel,
           deckModel: testDeckModel,
           discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
         );
 
-        playerModel.drawCardsFromDeck();
+        playerActionService.drawCardsFromDeck(
+          deckModel: playerModel.deckModel,
+          handModel: playerModel.handModel,
+          cardsToDraw: PlayerModel.cardsToDrawOnTap,
+          onCardPlayed: (card) {},
+        );
         
         final drawnCard = playerModel.handModel.cards.first;
         expect(drawnCard.onCardPlayed, isNotNull);
 
-        playerModel.cardPlayed = (card) {};
-        drawnCard.onCardPlayed?.call();
+        CardModel? receivedCard;
+        playerActionService.handleCardPlayed(drawnCard, (card) => receivedCard = card);
 
         expect(drawnCard.onCardPlayed, isNull);
+        expect(receivedCard, equals(drawnCard));
       });
     });
 
@@ -218,8 +226,6 @@ void main() {
           handModel: testHandModel,
           deckModel: testDeckModel,
           discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
         );
 
         CardModel? receivedCard;
@@ -237,8 +243,6 @@ void main() {
           handModel: testHandModel,
           deckModel: testDeckModel,
           discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
         );
 
         final playedCards = <CardModel>[];

@@ -5,6 +5,7 @@ import 'package:card_battler/game/components/player/info.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/services/card_interaction_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/player_action_service.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
@@ -13,8 +14,9 @@ class Player extends PositionComponent {
   static const infoHeightFactor = 0.1;
 
   final PlayerModel _playerModel;
-  final CardInteractionService? _cardInteractionService;
-  final CardSelectionService? _cardSelectionService;
+  final CardInteractionService _cardInteractionService;
+  final CardSelectionService _cardSelectionService;
+  final PlayerActionService _playerActionService;
 
   late final CardDeck _deck;
   late final CardHand _hand;
@@ -24,17 +26,24 @@ class Player extends PositionComponent {
   // Default constructor for backward compatibility
   Player({
     required PlayerModel playerModel,
-    CardInteractionService? cardInteractionService,
-    CardSelectionService? cardSelectionService,
+    required CardInteractionService cardInteractionService,
+    required CardSelectionService cardSelectionService,
+    required PlayerActionService playerActionService,
   })  : _playerModel = playerModel,
         _cardInteractionService = cardInteractionService,
-        _cardSelectionService = cardSelectionService;
+        _cardSelectionService = cardSelectionService,
+        _playerActionService = playerActionService;
 
   @override
   void onLoad() {
 
     _deck = CardDeck(_playerModel.deckModel, onTap: () => {
-      _playerModel.drawCardsFromDeck(),
+      _playerActionService.drawCardsFromDeck(
+        deckModel: _playerModel.deckModel,
+        handModel: _playerModel.handModel,
+        cardsToDraw: PlayerModel.cardsToDrawOnTap,
+        onCardPlayed: (card) => _playerModel.cardPlayed?.call(card),
+      ),
     })
       ..size = Vector2(size.x * pileWidthFactor, size.y);
 

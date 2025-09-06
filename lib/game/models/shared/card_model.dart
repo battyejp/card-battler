@@ -66,7 +66,6 @@ class CardModel {
       type: _type,
       effects: _effects.map((e) => e.copy()).toList(),
       isFaceUp: isFaceUp,
-      onCardPlayed: onCardPlayed,
     );
   }
 
@@ -81,7 +80,6 @@ class CardModel {
     required String type,
     List<EffectModel>? effects,
     this.isFaceUp = false,
-    this.onCardPlayed,
   }) : _name = name,
        _type = type,
        _effects = effects ?? [];

@@ -21,7 +21,6 @@ import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
 import 'package:card_battler/game/components/shared/flat_button.dart';
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
@@ -77,8 +76,6 @@ PlayerModel _createTestPlayerModel({String name = 'Test Player', bool isActive =
     handModel: CardHandModel(),
     deckModel: CardPileModel(cards: _generatePlayerCards(20)),
     discardModel: CardPileModel.empty(),
-    gameStateService: DefaultGameStateService(GameStateManager()),
-    cardSelectionService: DefaultCardSelectionService(),
   );
 }
 

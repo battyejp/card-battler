@@ -3,20 +3,24 @@ import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:card_battler/game/services/card_interaction_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/card_action_service.dart';
 import 'package:flame/components.dart';
 
 class CardHand extends ReactivePositionComponent<CardHandModel> {
   final CardInteractionService? _cardInteractionService;
   final CardSelectionService? _cardSelectionService;
+  final CardActionService? _cardActionService;
 
   CardHand(
     super.model, 
     {
       CardInteractionService? cardInteractionService,
       CardSelectionService? cardSelectionService,
+      CardActionService? cardActionService,
     }
   ) : _cardInteractionService = cardInteractionService,
-      _cardSelectionService = cardSelectionService;
+      _cardSelectionService = cardSelectionService,
+      _cardActionService = cardActionService;
 
   @override
   void updateDisplay() {
@@ -40,7 +44,7 @@ class CardHand extends ReactivePositionComponent<CardHandModel> {
         onButtonPressed: () {
           // TODO could this any of this be in tappableactionablecard?
           _cardSelectionService?.deselectCard();
-          cardModel.playCard();
+          _cardActionService?.playCard(cardModel);
         }, 
         cardInteractionService: _cardInteractionService,
         cardSelectionService: _cardSelectionService,

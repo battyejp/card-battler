@@ -112,8 +112,6 @@ class GameStateFactory {
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCopy),
         discardModel: CardPileModel.empty(),
-        gameStateService: gameStateService,
-        cardSelectionService: cardSelectionService,
       );
     });
   }
