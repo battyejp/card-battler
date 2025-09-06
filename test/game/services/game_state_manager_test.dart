@@ -368,14 +368,14 @@ void main() {
         });
 
         // Complete one full cycle
-        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawn
-        gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
+        gameStateManager.nextPhase(); // waitingToDrawCards -> cardsDrawnWaitingForEnemyTurn
+        gameStateManager.nextPhase(); // cardsDrawnWaitingForEnemyTurn -> enemyTurn
         gameStateManager.nextPhase(); // enemyTurn -> playerTurn
         gameStateManager.nextPhase(); // playerTurn -> waitingToDrawCards
 
         expect(transitionLog, equals([
-          'GamePhase.waitingToDrawCards -> GamePhase.cardsDrawn',
-          'GamePhase.cardsDrawn -> GamePhase.enemyTurn',
+          'GamePhase.waitingToDrawCards -> GamePhase.cardsDrawnWaitingForEnemyTurn',
+          'GamePhase.cardsDrawnWaitingForEnemyTurn -> GamePhase.enemyTurn',
           'GamePhase.enemyTurn -> GamePhase.playerTurn',
           'GamePhase.playerTurn -> GamePhase.waitingToDrawCards',
         ]));

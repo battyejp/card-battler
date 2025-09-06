@@ -18,6 +18,7 @@ import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/game_state_facade.dart';
 
 void main() {
   group('PlayerTurnCoordinator', () {
@@ -297,7 +298,7 @@ void main() {
         playerTurnModel.endTurn();
 
         expect(playerModel.handModel.cards.isEmpty, isTrue);
-        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
+        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawnWaitingForPlayerSwitch));
         expect(playerModel.discardModel.allCards.length, equals(2)); // Cards moved to discard
       });
 
@@ -312,6 +313,8 @@ void main() {
         for (int i = 0; i < phases.length; i++) {
           // Reset and advance to the current phase
           gameStateManager.reset();
+          // Reset turnOver flag to ensure proper phase progression
+          GameStateFacade.instance.selectedPlayer?.turnOver = false;
           for (int j = 0; j < i; j++) {
             gameStateManager.nextPhase();
           }
