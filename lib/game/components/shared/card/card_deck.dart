@@ -4,7 +4,7 @@ import 'package:flame/events.dart';
 class CardDeck extends CardPile with TapCallbacks {
   final void Function()? onTap;
 
-  CardDeck(super.model, {this.onTap});
+  CardDeck(super.model, {required this.onTap});
 
   @override
   bool onTapUp(TapUpEvent event) {
