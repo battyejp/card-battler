@@ -470,6 +470,51 @@ void main() {
         cardSelectionService.deselectCard();
         game.update(1.0);
       });
+
+      testWithFlameGame('rapid tapping followed by external deselection works correctly', (game) async {
+        game.onGameResize(Vector2(800, 600));
+        card.size = Vector2(100, 150);
+        card.position = Vector2(100, 200); // Set specific starting position
+        await game.ensureAdd(card);
+        
+        final originalPosition = card.position.clone();
+        
+        // Select the card
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
+        controller.onTapUp(tapEvent);
+        
+        // Complete selection animation
+        game.update(1.0);
+        expect(controller.isSelected, isTrue);
+        expect(controller.isAnimating, isFalse);
+        
+        // Store the selected position to verify it's different from original
+        final selectedPosition = card.position.clone();
+        expect(selectedPosition.x, isNot(closeTo(originalPosition.x, 0.1)));
+        expect(selectedPosition.y, isNot(closeTo(originalPosition.y, 0.1)));
+        
+        // Rapid tapping on the selected card (simulating user behavior)
+        for (int i = 0; i < 5; i++) {
+          controller.onTapUp(tapEvent);
+        }
+        
+        // Verify card is still selected and in the correct position
+        expect(controller.isSelected, isTrue);
+        expect(card.position.x, closeTo(selectedPosition.x, 0.1));
+        expect(card.position.y, closeTo(selectedPosition.y, 0.1));
+        
+        // External deselection (e.g., clicking background)
+        cardSelectionService.deselectCard();
+        
+        // Complete deselection animation
+        game.update(1.0);
+        
+        // Verify card is deselected and returned to original position
+        expect(controller.isSelected, isFalse);
+        expect(controller.isAnimating, isFalse);
+        expect(card.position.x, closeTo(originalPosition.x, 0.1));
+        expect(card.position.y, closeTo(originalPosition.y, 0.1));
+      });
     });
   });
 }

@@ -104,8 +104,8 @@ class CardInteractionController {
       targetPosition = screenCenter;
     }
 
-    targetPosition.x = targetPosition.x - gameSize.x / 2 - card.size.x / 2 * _scaleFactor;
-    targetPosition.y = targetPosition.y - gameSize.y / 2 - card.size.y / 2 * _scaleFactor;
+    targetPosition.x = targetPosition.x - card.size.x / 2 * _scaleFactor;
+    targetPosition.y = targetPosition.y - card.size.y / 2 * _scaleFactor;
     _originalPos = card.position.clone();
 
     final moveEffect = MoveEffect.to(
