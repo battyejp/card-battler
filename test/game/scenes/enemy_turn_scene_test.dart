@@ -8,6 +8,7 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/components/shared/card/card_deck.dart';
 import 'package:card_battler/game/components/shared/card/card_pile.dart';
 import 'package:card_battler/game/components/team/player_stats.dart';
+import 'package:card_battler/game/components/team/players.dart';
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -155,7 +156,8 @@ void main() {
         await game.ensureAdd(scene);
         
         final playArea = scene.children.first as RectangleComponent;
-        final playerStatsComponents = playArea.children.whereType<PlayerStats>();
+        final playersComponent = playArea.children.whereType<Players>().first;
+        final playerStatsComponents = playersComponent.children.whereType<PlayerStats>();
         
         expect(playerStatsComponents.length, equals(3));
       });
@@ -168,7 +170,8 @@ void main() {
         await game.ensureAdd(scene);
         
         final playArea = scene.children.first as RectangleComponent;
-        final playerStatsComponents = playArea.children.whereType<PlayerStats>();
+        final playersComponent = playArea.children.whereType<Players>().first;
+        final playerStatsComponents = playersComponent.children.whereType<PlayerStats>();
         
         expect(playerStatsComponents.length, equals(0));
       });
@@ -184,11 +187,12 @@ void main() {
         await game.ensureAdd(scene);
         
         final playArea = scene.children.first as RectangleComponent;
-        final playerStats = playArea.children.whereType<PlayerStats>().first;
+        final playersComponent = playArea.children.whereType<Players>().first;
+        final playerStats = playersComponent.children.whereType<PlayerStats>().first;
         
-        final expectedHeight = 600 / 2 * 0.15; // 45
+        final expectedHeight = 600 / 2; // 300 - Players component height divided by 1 player
         expect(playerStats.size, equals(Vector2(800, expectedHeight)));
-        expect(playerStats.position, equals(Vector2(0, 300))); // size.y / 2
+        expect(playerStats.position, equals(Vector2(0, 0))); // relative to Players component
       });
 
       testWithFlameGame('positions player stats correctly for multiple players', (game) async {
@@ -204,14 +208,14 @@ void main() {
         await game.ensureAdd(scene);
         
         final playArea = scene.children.first as RectangleComponent;
-        final playerStatsComponents = playArea.children.whereType<PlayerStats>().toList();
+        final playersComponent = playArea.children.whereType<Players>().first;
+        final playerStatsComponents = playersComponent.children.whereType<PlayerStats>().toList();
         
-        final expectedHeight = 800 / 2 * 0.15; // 60
-        final startY = 800 / 2; // 400
+        final expectedHeight = (800 / 2) / 3; // 400 / 3 players = 133.33
         
-        expect(playerStatsComponents[0].position, equals(Vector2(0, startY)));
-        expect(playerStatsComponents[1].position, equals(Vector2(0, startY + expectedHeight)));
-        expect(playerStatsComponents[2].position, equals(Vector2(0, startY + 2 * expectedHeight)));
+        expect(playerStatsComponents[0].position, equals(Vector2(0, 0)));
+        expect(playerStatsComponents[1].position, equals(Vector2(0, expectedHeight)));
+        expect(playerStatsComponents[2].position, equals(Vector2(0, 2 * expectedHeight)));
         
         for (final playerStats in playerStatsComponents) {
           expect(playerStats.size, equals(Vector2(1000, expectedHeight)));
@@ -309,7 +313,8 @@ void main() {
         await game.ensureAdd(scene);
         
         final playArea = scene.children.first as RectangleComponent;
-        final playerStatsComponents = playArea.children.whereType<PlayerStats>().toList();
+        final playersComponent = playArea.children.whereType<Players>().first;
+        final playerStatsComponents = playersComponent.children.whereType<PlayerStats>().toList();
         
         expect(playerStatsComponents.length, equals(2));
         // Each PlayerStats component should be created with its corresponding model
@@ -325,7 +330,8 @@ void main() {
         
         // Initial state verification
         final playArea = scene.children.first as RectangleComponent;
-        final initialPlayerStatsCount = playArea.children.whereType<PlayerStats>().length;
+        final playersComponent = playArea.children.whereType<Players>().first;
+        final initialPlayerStatsCount = playersComponent.children.whereType<PlayerStats>().length;
         
         expect(initialPlayerStatsCount, equals(1));
         
@@ -381,7 +387,8 @@ void main() {
         await game.ensureAdd(scene);
         
         final playArea = scene.children.first as RectangleComponent;
-        final playerStatsComponents = playArea.children.whereType<PlayerStats>();
+        final playersComponent = playArea.children.whereType<Players>().first;
+        final playerStatsComponents = playersComponent.children.whereType<PlayerStats>();
         
         expect(playerStatsComponents.length, equals(100));
       });
@@ -400,14 +407,14 @@ void main() {
         
         final playArea = scene.children.first as RectangleComponent;
         
-        // Play area should contain: deck, pile, and player stats
+        // Play area should contain: deck, pile, and players component
         final deckCount = playArea.children.whereType<CardDeck>().length;
         final pileCount = playArea.children.whereType<CardPile>().where((pile) => pile is! CardDeck).length;
-        final playerStatsCount = playArea.children.whereType<PlayerStats>().length;
+        final playersCount = playArea.children.whereType<Players>().length;
         
         expect(deckCount, equals(1));
         expect(pileCount, equals(1));
-        expect(playerStatsCount, greaterThanOrEqualTo(0)); // Depends on model
+        expect(playersCount, equals(1));
       });
 
       testWithFlameGame('all components are properly parented', (game) async {

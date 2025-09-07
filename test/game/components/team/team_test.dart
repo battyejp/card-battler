@@ -5,6 +5,7 @@ import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/components/team/player_stats.dart';
+import 'package:card_battler/game/components/team/players.dart';
 import 'package:card_battler/game/components/team/bases.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/base_model.dart';
@@ -16,20 +17,20 @@ void main() {
     {
       'teamSize': Vector2(200, 300),
       'playerStats': [
-        {'size': Vector2(200, 45), 'pos': Vector2(0, 0)},
-        {'size': Vector2(200, 45), 'pos': Vector2(0, 45)},
-        {'size': Vector2(200, 45), 'pos': Vector2(0, 90)},
+        {'size': Vector2(200, 50), 'pos': Vector2(0, 0)},
+        {'size': Vector2(200, 50), 'pos': Vector2(0, 50)},
+        {'size': Vector2(200, 50), 'pos': Vector2(0, 100)},
       ],
-      'base': {'size': Vector2(200, 165), 'pos': Vector2(0, 135)},
+      'base': {'size': Vector2(200, 150), 'pos': Vector2(0, 150)},
     },
     {
       'teamSize': Vector2(400, 600),
       'playerStats': [
-        {'size': Vector2(400, 90), 'pos': Vector2(0, 0)},
-        {'size': Vector2(400, 90), 'pos': Vector2(0, 90)},
-        {'size': Vector2(400, 90), 'pos': Vector2(0, 180)},
+        {'size': Vector2(400, 100), 'pos': Vector2(0, 0)},
+        {'size': Vector2(400, 100), 'pos': Vector2(0, 100)},
+        {'size': Vector2(400, 100), 'pos': Vector2(0, 200)},
       ],
-      'base': {'size': Vector2(400, 330), 'pos': Vector2(0, 270)},
+      'base': {'size': Vector2(400, 300), 'pos': Vector2(0, 300)},
     },
   ];
   for (final testCase in testCases) {
@@ -42,15 +43,16 @@ void main() {
       final basesModel = BasesModel(bases: baseList);
       final playersModel = PlayersModel(players: [
         PlayerStatsModel(name: 'Player 1', health: HealthModel(maxHealth: 100), isActive: false),
-        PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 100), isActive: true),
-        PlayerStatsModel(name: 'Player 3', health: HealthModel(maxHealth: 100), isActive: true),
+        PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 100), isActive: false),
+        PlayerStatsModel(name: 'Player 3', health: HealthModel(maxHealth: 100), isActive: false),
       ]);
       final teamModel = TeamModel(bases: basesModel, playersModel: playersModel);
       final team = Team(teamModel)..size = testCase['teamSize'] as Vector2;
 
       await game.ensureAdd(team);
 
-      final stats = team.children.whereType<PlayerStats>().toList();
+      final playersComponent = team.children.whereType<Players>().first;
+      final stats = playersComponent.children.whereType<PlayerStats>().toList();
       final base = team.children.whereType<Bases>().first;
       expect(stats.length, 3);
       expect(team.children.whereType<Bases>().length, 1);
