@@ -12,6 +12,7 @@ import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/base_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
+import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
@@ -103,7 +104,7 @@ TeamModel _createTestTeamModel() {
     ),
   ];
 
-  return TeamModel(bases: bases, playersModel: players);
+  return TeamModel(bases: bases, playersModel: PlayersModel(players: players));
 }
 
 EnemiesModel _createTestEnemiesModel() {
@@ -397,13 +398,13 @@ void main() {
               BaseModel(name: 'Custom Base 2', maxHealth: 25),
             ],
           ),
-          playersModel: [
+          playersModel: PlayersModel(players: [
             PlayerStatsModel(
               name: 'Custom Player 1',
               health: HealthModel(maxHealth: 150),
               isActive: true,
             ),
-          ],
+          ]),
         );
         final model = _createTestPlayerTurnModel(teamModel: customTeamModel);
         final size = Vector2(800, 600);

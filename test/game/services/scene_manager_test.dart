@@ -16,6 +16,7 @@ import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
+import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
@@ -218,7 +219,7 @@ class MockPlayerTurnScene extends PlayerTurnScene {
               ),
               teamModel: TeamModel(
                 bases: BasesModel(bases: []),
-                playersModel: [],
+                playersModel: PlayersModel(players: []),
               ),
               enemiesModel: EnemiesModel(
                 totalEnemies: 1,

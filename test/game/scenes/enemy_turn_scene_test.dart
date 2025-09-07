@@ -2,6 +2,7 @@ import 'package:card_battler/game/scenes/enemy_turn_scene.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
+import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/components/shared/card/card_deck.dart';
@@ -43,7 +44,7 @@ EnemyTurnAreaModel _createTestModel({
 }) {
   return EnemyTurnAreaModel(
     enemyCards: CardPileModel(cards: cards ?? _generateTestCards(3)),
-    playerStats: players ?? [_createTestPlayerStats('Player1', isActive: true)],
+    playersModel: PlayersModel(players: players ?? [_createTestPlayerStats('Player1', isActive: true)]),
     gameStateService: DefaultGameStateService(GameStateManager()),
   );
 }
@@ -357,7 +358,7 @@ void main() {
       testWithFlameGame('handles model with no cards', (game) async {
         final model = EnemyTurnAreaModel(
           enemyCards: CardPileModel.empty(),
-          playerStats: [_createTestPlayerStats('Player1')],
+          playersModel: PlayersModel(players: [_createTestPlayerStats('Player1')]),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
         final size = Vector2(800, 600);

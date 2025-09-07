@@ -15,6 +15,7 @@ import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
+import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
@@ -53,7 +54,7 @@ void main() {
         cardSelectionService: DefaultCardSelectionService(),
       );
 
-      teamModel = TeamModel(bases: BasesModel(bases: []), playersModel: []);
+      teamModel = TeamModel(bases: BasesModel(bases: []), playersModel: PlayersModel(players: []));
       enemiesModel = EnemiesModel(
         totalEnemies: 0,
         maxNumberOfEnemiesInPlay: 3,

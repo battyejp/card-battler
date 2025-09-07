@@ -106,8 +106,8 @@ void main() {
 
         GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
 
-        expect(GameStateModel.instance.enemyTurnArea.playerStats, isNotNull);
-        expect(GameStateModel.instance.enemyTurnArea.playerStats.length, equals(4)); // 4 players created
+        expect(GameStateModel.instance.enemyTurnArea.playersModel.players, isNotNull);
+        expect(GameStateModel.instance.enemyTurnArea.playersModel.players.length, equals(4)); // 4 players created
       });
 
       test('enemy turn area initializes with empty played cards', () {
@@ -142,9 +142,9 @@ void main() {
         GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
 
         expect(GameStateModel.instance.playerTurn.teamModel, isNotNull);
-        expect(GameStateModel.instance.playerTurn.teamModel.playersModel.length, equals(4));
-        expect(GameStateModel.instance.playerTurn.teamModel.playersModel[0].name, equals('Player 1'));
-        expect(GameStateModel.instance.playerTurn.teamModel.playersModel[0].isActive, isTrue);
+        expect(GameStateModel.instance.playerTurn.teamModel.playersModel.players.length, equals(4));
+        expect(GameStateModel.instance.playerTurn.teamModel.playersModel.players[0].name, equals('Player 1'));
+        expect(GameStateModel.instance.playerTurn.teamModel.playersModel.players[0].isActive, isTrue);
       });
 
       test('player turn has team model with correct bases', () {
@@ -194,7 +194,7 @@ void main() {
 
         GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
 
-        final playerStats = GameStateModel.instance.enemyTurnArea.playerStats;
+        final playerStats = GameStateModel.instance.enemyTurnArea.playersModel.players;
         for (final player in playerStats) {
           expect(player.health.maxHealth, equals(10));
           expect(player.health.currentHealth, equals(10));
@@ -208,7 +208,7 @@ void main() {
 
         GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
 
-        final playerStats = GameStateModel.instance.enemyTurnArea.playerStats;
+        final playerStats = GameStateModel.instance.enemyTurnArea.playersModel.players;
         expect(playerStats[0].isActive, isTrue);
         expect(playerStats[1].isActive, isFalse);
         expect(playerStats[2].isActive, isFalse);
@@ -222,7 +222,7 @@ void main() {
 
         GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
 
-        final playerStats = GameStateModel.instance.enemyTurnArea.playerStats;
+        final playerStats = GameStateModel.instance.enemyTurnArea.playersModel.players;
         expect(playerStats[0].name, equals('Player 1'));
         expect(playerStats[1].name, equals('Player 2'));
         expect(playerStats[2].name, equals('Player 3'));
@@ -277,8 +277,8 @@ void main() {
 
         GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
 
-        final enemyAreaPlayers = GameStateModel.instance.enemyTurnArea.playerStats;
-        final teamPlayers = GameStateModel.instance.playerTurn.teamModel.playersModel;
+        final enemyAreaPlayers = GameStateModel.instance.enemyTurnArea.playersModel.players;
+        final teamPlayers = GameStateModel.instance.playerTurn.teamModel.playersModel.players;
 
         expect(enemyAreaPlayers.length, equals(teamPlayers.length));
         for (int i = 0; i < enemyAreaPlayers.length; i++) {

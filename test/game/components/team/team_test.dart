@@ -1,5 +1,6 @@
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
+import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/team/team.dart';
@@ -39,11 +40,12 @@ void main() {
         BaseModel(name: 'Base 3', maxHealth: 5),
       ];
       final basesModel = BasesModel(bases: baseList);
-      final teamModel = TeamModel(bases: basesModel, playersModel: [
+      final playersModel = PlayersModel(players: [
         PlayerStatsModel(name: 'Player 1', health: HealthModel(maxHealth: 100), isActive: false),
         PlayerStatsModel(name: 'Player 2', health: HealthModel(maxHealth: 100), isActive: true),
         PlayerStatsModel(name: 'Player 3', health: HealthModel(maxHealth: 100), isActive: true),
       ]);
+      final teamModel = TeamModel(bases: basesModel, playersModel: playersModel);
       final team = Team(teamModel)..size = testCase['teamSize'] as Vector2;
 
       await game.ensureAdd(team);
