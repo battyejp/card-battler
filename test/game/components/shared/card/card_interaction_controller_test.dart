@@ -404,6 +404,72 @@ void main() {
         expect(controller.isSelected, isTrue);
         expect(controller.isAnimating, isTrue);
       });
+
+      testWithFlameGame('card returns to correct position after rapid taps and deselection', (game) async {
+        game.onGameResize(Vector2(800, 600));
+        card.size = Vector2(100, 150);
+        card.position = Vector2(50, 100); // Set specific starting position
+        await game.ensureAdd(card);
+        
+        final originalPosition = card.position.clone();
+        
+        // First selection
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
+        controller.onTapUp(tapEvent);
+        
+        // Complete animation
+        game.update(1.0);
+        
+        expect(controller.isSelected, isTrue);
+        expect(controller.isAnimating, isFalse);
+        
+        // Multiple rapid taps on selected card
+        controller.onTapUp(tapEvent);
+        controller.onTapUp(tapEvent);
+        controller.onTapUp(tapEvent);
+        
+        // Deselect card (simulating click outside)
+        cardSelectionService.deselectCard();
+        
+        // Complete deselection animation
+        game.update(1.0);
+        
+        expect(controller.isSelected, isFalse);
+        expect(controller.isAnimating, isFalse);
+        
+        // Card should return to original position
+        expect(card.position.x, closeTo(originalPosition.x, 0.1));
+        expect(card.position.y, closeTo(originalPosition.y, 0.1));
+      });
+
+      testWithFlameGame('card selection target position calculation is correct', (game) async {
+        game.onGameResize(Vector2(800, 600));
+        card.size = Vector2(100, 150);
+        card.position = Vector2(200, 300); // Set specific starting position
+        await game.ensureAdd(card);
+        
+        // Calculate what the target position should be
+        final gameSize = Vector2(800, 600);
+        final scaleFactor = 2.5;
+        final expectedCenterX = gameSize.x / 2 - card.size.x / 2 * scaleFactor;
+        final expectedCenterY = gameSize.y / 2 - card.size.y / 2 * scaleFactor;
+        
+        // Select the card
+        final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
+        controller.onTapUp(tapEvent);
+        
+        // Complete animation
+        game.update(1.0);
+        
+        // Check if card is positioned correctly (approximately centered)
+        // The card should be roughly in the center, accounting for scaling
+        expect(card.position.x, closeTo(expectedCenterX, 50)); // Allow some tolerance
+        expect(card.position.y, closeTo(expectedCenterY, 50));
+        
+        // Manual cleanup
+        cardSelectionService.deselectCard();
+        game.update(1.0);
+      });
     });
   });
 }
