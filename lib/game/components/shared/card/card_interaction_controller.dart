@@ -2,6 +2,7 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/services/card_interaction_service.dart';
 import 'package:card_battler/game/services/card_ui_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/constants/priority_constants.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
@@ -92,7 +93,7 @@ class CardInteractionController {
     _isAnimating = true;
 
     _originalPriority = card.priority;
-    card.priority = 99999;
+    card.priority = PriorityConstants.selectedCard;
 
     final gameSize = card.findGame()?.size;
     final screenCenter = Vector2(gameSize!.x / 2, gameSize.y / 2);
