@@ -7,7 +7,7 @@ void main() {
     group('constructor and initialization', () {
       test('creates with required parameters', () {
         final health = HealthModel(maxHealth: 100);
-        final model = PlayerStatsModel(name: 'Player1', health: health);
+        final model = PlayerStatsModel(name: 'Player1', health: health, isActive: false);
         
         expect(model.name, equals('Player1'));
         expect(model.health, equals(health));
@@ -25,7 +25,7 @@ void main() {
 
       test('defaults isActive to false', () {
         final health = HealthModel(maxHealth: 50);
-        final model = PlayerStatsModel(name: 'TestPlayer', health: health);
+        final model = PlayerStatsModel(name: 'TestPlayer', health: health, isActive: false);
         
         expect(model.isActive, equals(false));
       });
@@ -34,14 +34,14 @@ void main() {
     group('property access', () {
       test('name getter returns correct value', () {
         final health = HealthModel(maxHealth: 75);
-        final model = PlayerStatsModel(name: 'PlayerName', health: health);
+        final model = PlayerStatsModel(name: 'PlayerName', health: health, isActive: false);
         
         expect(model.name, equals('PlayerName'));
       });
 
       test('health getter returns correct HealthModel instance', () {
         final health = HealthModel(maxHealth: 120);
-        final model = PlayerStatsModel(name: 'Player', health: health);
+        final model = PlayerStatsModel(name: 'Player', health: health, isActive: false);
         
         expect(model.health, equals(health));
         expect(model.health.maxHealth, equals(120));
@@ -51,7 +51,7 @@ void main() {
       test('isActive reflects constructor parameter', () {
         final health = HealthModel(maxHealth: 100);
         
-        final inactiveModel = PlayerStatsModel(name: 'Player1', health: health);
+        final inactiveModel = PlayerStatsModel(name: 'Player1', health: health, isActive: false);
         expect(inactiveModel.isActive, equals(false));
         
         final activeModel = PlayerStatsModel(name: 'Player2', health: health, isActive: true);
@@ -62,8 +62,8 @@ void main() {
     group('health interaction', () {
       test('health changes are reflected through health getter', () {
         final health = HealthModel(maxHealth: 100);
-        final model = PlayerStatsModel(name: 'Player', health: health);
-        
+        final model = PlayerStatsModel(name: 'Player', health: health, isActive: false);
+
         expect(model.health.currentHealth, equals(100));
         
         model.health.changeHealth(-25);
@@ -75,8 +75,8 @@ void main() {
 
       test('health display is accessible through health getter', () {
         final health = HealthModel(maxHealth: 80);
-        final model = PlayerStatsModel(name: 'Player', health: health);
-        
+        final model = PlayerStatsModel(name: 'Player', health: health, isActive: false);
+
         expect(model.health.healthDisplay, equals('80/80'));
         
         model.health.changeHealth(-30);
@@ -87,24 +87,24 @@ void main() {
     group('edge cases', () {
       test('handles empty name string', () {
         final health = HealthModel(maxHealth: 100);
-        final model = PlayerStatsModel(name: '', health: health);
-        
+        final model = PlayerStatsModel(name: '', health: health, isActive: false);
+
         expect(model.name, equals(''));
       });
 
       test('handles very long name string', () {
         final health = HealthModel(maxHealth: 100);
         final longName = 'A' * 1000;
-        final model = PlayerStatsModel(name: longName, health: health);
-        
+        final model = PlayerStatsModel(name: longName, health: health, isActive: false);
+
         expect(model.name, equals(longName));
         expect(model.name.length, equals(1000));
       });
 
       test('handles health with zero max health', () {
         final health = HealthModel(maxHealth: 0);
-        final model = PlayerStatsModel(name: 'Player', health: health);
-        
+        final model = PlayerStatsModel(name: 'Player', health: health, isActive: false);
+
         expect(model.health.maxHealth, equals(0));
         expect(model.health.currentHealth, equals(0));
       });

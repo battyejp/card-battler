@@ -6,13 +6,11 @@ class InfoModel {
   final ValueImageLabelModel credits;
   final HealthModel healthModel;
   final String name;
-  final bool isActive;
 
   InfoModel({
     required this.attack,
     required this.credits,
     required this.name,
     required this.healthModel,
-    this.isActive = false,
   });
 }

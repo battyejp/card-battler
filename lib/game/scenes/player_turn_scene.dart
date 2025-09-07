@@ -28,7 +28,7 @@ class PlayerTurnScene extends Component {
   double _availableWidth = 0.0;
   double _bottomLayoutHeight = 0.0;
 
-  PlayerTurnScene({required PlayerTurnCoordinator model, required Vector2 size, /*this.onTurnEnded*/})
+  PlayerTurnScene({required PlayerTurnCoordinator model, required Vector2 size})
       : _model = model,
         _size = size;
 

@@ -5,52 +5,63 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class Info extends PositionComponent {
-  final InfoModel model;
-
-  late Health _healthLabel;
-  late ValueImageLabel _attackLabel;
-  late ValueImageLabel _creditsLabel;
-  
   Info(this.model);
+
+  final InfoModel model;
 
   @override
   void onLoad() {
     super.onLoad();
 
     var comp1 = PositionComponent()
-      ..size = Vector2(size.x / 3, size.y)
-      ..position = Vector2(0, 0)
-      ..debugColor = const Color(0xFF00FF00);
+      ..size = Vector2(size.x / 4, size.y)
+      ..position = Vector2(0, 0);
 
     var comp2 = PositionComponent()
-      ..size = Vector2(size.x / 3, size.y)
-      ..position = Vector2(size.x / 3, 0)
-      ..debugColor = const Color.fromARGB(255, 179, 9, 49);
+      ..size = Vector2(size.x / 4, size.y)
+      ..position = Vector2(size.x / 4, 0);
 
     var comp3 = PositionComponent()
-      ..size = Vector2(size.x / 3, size.y)
-      ..position = Vector2((size.x / 3) * 2, 0)
-      ..debugColor = const Color.fromARGB(255, 15, 23, 191);
+      ..size = Vector2(size.x / 4, size.y)
+      ..position = Vector2((size.x / 4) * 2, 0);
 
-    _healthLabel = Health(
+    var comp4 = PositionComponent()
+      ..size = Vector2(size.x / 4, size.y)
+      ..position = Vector2((size.x / 4) * 3, 0);
+
+    var healthLabel = Health(
       model.healthModel,
       Anchor.topLeft,
     );
 
-    _attackLabel = ValueImageLabel(
+    var attackLabel = ValueImageLabel(
       model.attack,
     );
 
-    _creditsLabel = ValueImageLabel(
+    var creditsLabel = ValueImageLabel(
       model.credits,
     );
 
-    comp1.add(_healthLabel);
-    comp2.add(_attackLabel);
-    comp3.add(_creditsLabel);
+    var nameLabel = TextComponent(
+      text: model.name,
+      position: Vector2(comp1.size.x / 2, comp1.size.y / 2),
+      anchor: Anchor.center,
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontSize: 20,
+          color: Colors.white,
+        ),
+      ),
+    );
+
+    comp1.add(nameLabel);
+    comp2.add(healthLabel);
+    comp3.add(attackLabel);
+    comp4.add(creditsLabel);
 
     add(comp1);
     add(comp2);
     add(comp3);
+    add(comp4);
   }
 }

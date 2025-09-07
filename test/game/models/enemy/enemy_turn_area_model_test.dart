@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
 import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
+import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
@@ -41,12 +42,12 @@ void main() {
         
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
         expect(enemyTurnArea.enemyCards, equals(enemyCards));
-        expect(enemyTurnArea.playerStats, equals(playerStats));
+        expect(enemyTurnArea.playersModel.players, equals(playerStats));
         expect(enemyTurnArea.playedCards.hasNoCards, isTrue);
       });
 
@@ -56,7 +57,7 @@ void main() {
         
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -74,14 +75,14 @@ void main() {
         
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
-        expect(enemyTurnArea.playerStats.length, equals(3));
-        expect(enemyTurnArea.playerStats[0].name, equals('Player1'));
-        expect(enemyTurnArea.playerStats[0].isActive, isTrue);
-        expect(enemyTurnArea.playerStats[1].isActive, isFalse);
+        expect(enemyTurnArea.playersModel.players.length, equals(3));
+        expect(enemyTurnArea.playersModel.players[0].name, equals('Player1'));
+        expect(enemyTurnArea.playersModel.players[0].isActive, isTrue);
+        expect(enemyTurnArea.playersModel.players[1].isActive, isFalse);
       });
     });
 
@@ -93,7 +94,7 @@ void main() {
         
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -113,7 +114,7 @@ void main() {
         
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -136,7 +137,7 @@ void main() {
         final enemyCards = CardPileModel.empty();
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -167,7 +168,7 @@ void main() {
         final enemyCards = CardPileModel.empty();
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -197,7 +198,7 @@ void main() {
         final enemyCards = CardPileModel.empty();
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -230,7 +231,7 @@ void main() {
         final enemyCards = CardPileModel.empty();
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -259,7 +260,7 @@ void main() {
         final enemyCards = CardPileModel.empty();
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -288,7 +289,7 @@ void main() {
         final enemyCards = CardPileModel.empty();
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -327,7 +328,7 @@ void main() {
         
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -355,7 +356,7 @@ void main() {
         
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -373,7 +374,7 @@ void main() {
         
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -390,7 +391,7 @@ void main() {
         final enemyCards = CardPileModel.empty();
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -421,7 +422,7 @@ void main() {
         final enemyCards = CardPileModel.empty();
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -449,7 +450,7 @@ void main() {
         final enemyCards = CardPileModel.empty();
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );
 
@@ -508,7 +509,7 @@ void main() {
         
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: gameStateService,
         );
 
@@ -542,7 +543,7 @@ void main() {
         
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: gameStateService,
         );
 
@@ -575,7 +576,7 @@ void main() {
         
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: gameStateService,
         );
 
@@ -620,7 +621,7 @@ void main() {
         
         final enemyTurnArea = EnemyTurnAreaModel(
           enemyCards: enemyCards,
-          playerStats: playerStats,
+          playersModel: PlayersModel(players: playerStats),
           gameStateService: gameStateService,
         );
 
@@ -629,11 +630,72 @@ void main() {
         expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
         expect(playerStats[0].health.currentHealth, equals(90)); // 100 - 10
 
+        // Reset turn to simulate natural game flow before next enemy turn
+        enemyTurnArea.resetTurn();
+        
         // Draw second card - this will draw another card and advance phase again
         enemyTurnArea.drawCardsFromDeck();
         expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards)); // nextPhase from playerTurn goes to waitingToDrawCards
         expect(playerStats[0].health.currentHealth, equals(75)); // 90 - 15
       });
+    });
+  });
+
+  group('turn management', () {
+    test('resetTurn sets _turnFinished to false', () {
+      // Create a card without drawCard effect so turn will finish
+      final card = CardModel(
+        name: 'Test Card',
+        type: 'enemy',
+        isFaceUp: false,
+        effects: [
+          EffectModel(
+            type: EffectType.attack,
+            target: EffectTarget.activePlayer,
+            value: 10,
+          ),
+        ],
+      );
+      
+      final cardPile = CardPileModel(cards: [card]);
+      final players = [_createTestPlayerStats('TestPlayer')];
+      final playersModel = PlayersModel(players: players);
+      final gameStateService = DefaultGameStateService(GameStateManager());
+      
+      final enemyTurnArea = EnemyTurnAreaModel(
+        enemyCards: cardPile,
+        playersModel: playersModel,
+        gameStateService: gameStateService,
+      );
+
+      // Draw a card to finish the turn (since card has no drawCard effect)
+      enemyTurnArea.drawCardsFromDeck();
+      
+      // Reset the turn
+      enemyTurnArea.resetTurn();
+      
+      // Verify that we can draw another card (turn is not finished)
+      final initialPlayedCardsCount = enemyTurnArea.playedCards.allCards.length;
+      
+      // Add another card to test with
+      final anotherCard = CardModel(
+        name: 'Another Card',
+        type: 'enemy', 
+        isFaceUp: false,
+        effects: [
+          EffectModel(
+            type: EffectType.attack,
+            target: EffectTarget.activePlayer,
+            value: 5,
+          ),
+        ],
+      );
+      enemyTurnArea.enemyCards.addCard(anotherCard);
+      
+      enemyTurnArea.drawCardsFromDeck(); // This should work if turn was reset
+      
+      // If turn was properly reset, we should have added another card
+      expect(enemyTurnArea.playedCards.allCards.length, equals(initialPlayedCardsCount + 1));
     });
   });
 }

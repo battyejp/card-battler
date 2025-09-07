@@ -15,15 +15,6 @@ class RouterService {
   PlayerTurnScene? _playerTurnScene;
   final GameStateManager _gameStateManager = GameStateManager();
 
-  /// Initialize the router service with required components
-  void initialize({
-    required RouterComponent router,
-    required PlayerTurnScene playerTurnScene,
-  }) {
-    _router = router;
-    _playerTurnScene = playerTurnScene;
-  }
-
   /// Create and configure the router component with scene routes
   RouterComponent createRouter(Vector2 gameSize, {Map<String, Route>? additionalRoutes}) {
     _playerTurnScene = PlayerTurnScene(
@@ -70,6 +61,8 @@ class RouterService {
   /// Handle enemy turn completion with delay (called via phase transitions)
   void _handleEnemyTurnToPlayerTurn() {
     Future.delayed(const Duration(seconds: 1), () {
+      // Reset the enemy turn state for the next enemy turn
+      GameStateModel.instance.enemyTurnArea.resetTurn();
       _router?.pop();
     });
   }

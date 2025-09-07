@@ -8,6 +8,7 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/team/base_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
+import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
@@ -51,17 +52,17 @@ class GameStateFactory {
     );
 
     // Create player statistics for UI components
-    final playerStats = _createPlayerStats(players);
+    final playersModel = PlayersModel(players: _createPlayerStats(players));
 
     // Create player turn state with all necessary models
     final playerTurnState = createPlayerTurnState(
       players.first,
-      playerStats,
+      playersModel,
       enemyCards,
       shopCards,
     );
 
-    // Create player turn coordinator
+    // Create player turn coordinator to manage turn logic  
     final playerTurn = PlayerTurnCoordinator(
       state: playerTurnState,
       gameStateService: gameStateService,
@@ -70,7 +71,7 @@ class GameStateFactory {
     // Create enemy turn area
     final enemyTurnArea = EnemyTurnAreaModel(
       enemyCards: CardPileModel(cards: enemyCards),
-      playerStats: playerStats,
+      playersModel: playersModel,
       gameStateService: gameStateService,
     );
 
@@ -107,7 +108,6 @@ class GameStateFactory {
           attack: ValueImageLabelModel(value: 0, label: 'Attack'),
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
           healthModel: HealthModel(maxHealth: _playerMaxHealth),
-          isActive: index == 0, // Only first player is active initially
         ),
         handModel: CardHandModel(),
         deckModel: CardPileModel(cards: playerDeckCopy),
@@ -123,14 +123,14 @@ class GameStateFactory {
       return PlayerStatsModel(
         name: player.infoModel.name,
         health: player.infoModel.healthModel,
-        isActive: player.infoModel.isActive,
+        isActive: player == players.first,
       );
     }).toList();
   }
 
   PlayerTurnState createPlayerTurnState(
     PlayerModel activePlayer,
-    List<PlayerStatsModel> playerStats,
+    PlayersModel playersModel,
     List<CardModel> enemyCards,
     List<ShopCardModel> shopCards,
   ) {
@@ -140,7 +140,7 @@ class GameStateFactory {
         bases: BasesModel(
           bases: _createBases(),
         ),
-        players: playerStats,
+        playersModel: playersModel,
       ),
       enemiesModel: EnemiesModel(
         totalEnemies: _totalEnemies,
