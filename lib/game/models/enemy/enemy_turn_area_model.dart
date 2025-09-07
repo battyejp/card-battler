@@ -7,11 +7,11 @@ import 'package:card_battler/game/services/game_state_service.dart';
 class EnemyTurnAreaModel {
   final CardPileModel enemyCards;
   final CardPileModel playedCards;
-  //final List<PlayerStatsModel> playerStats;
   final PlayersModel playersModel;
   final GameStateService? _gameStateService;
   bool _turnFinished;
 
+  //TODO break this class down
   EnemyTurnAreaModel({
     required this.enemyCards,
     //required this.playerStats,
@@ -25,6 +25,7 @@ class EnemyTurnAreaModel {
     if (_turnFinished) return;
 
     final drawnCard = enemyCards.drawCard();
+    _turnFinished = drawnCard?.effects.any((effect) => effect.type == EffectType.drawCard) == false;
 
     if (drawnCard != null) {
       drawnCard.isFaceUp = true;
@@ -33,12 +34,13 @@ class EnemyTurnAreaModel {
       updatePlayersStats(drawnCard);
     }
 
-    _turnFinished = drawnCard?.effects.any((effect) => effect.type == EffectType.drawCard) == false;
-
     if (_turnFinished) {
-      _turnFinished = false;
       _gameStateService?.nextPhase(); //Should be playerTurn
     }
+  }
+
+  void resetTurn() {
+    _turnFinished = false;
   }
 
   void updatePlayersStats(CardModel drawnCard) {
