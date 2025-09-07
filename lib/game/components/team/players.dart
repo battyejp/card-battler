@@ -9,9 +9,6 @@ class Players extends ReactivePositionComponent<PlayersModel> {
 
   Players(super.model, {required this.showActivePlayer});
 
-  // @override
-  // get debugMode => true;
-
   @override
   void updateDisplay() {
     super.updateDisplay();
