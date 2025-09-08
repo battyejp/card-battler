@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
-import '../../models/shared/card_model.dart';
 
 /// Service responsible for loading cards from JSON files
 /// This isolates Flutter dependencies from domain models

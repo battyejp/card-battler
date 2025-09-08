@@ -14,9 +14,6 @@ abstract class CardPlayOrchestrator {
 class DefaultCardPlayOrchestrator implements CardPlayOrchestrator {
   @override
   void playCard(CardModel card, PlayerTurnState state, EffectProcessor effectProcessor) {
-    // Set card face down as it's being played
-    card.isFaceUp = false;
-
     // Handle different types of cards
     if (card is ShopCardModel) {
       _handleShopCard(card, state);
@@ -33,12 +30,14 @@ class DefaultCardPlayOrchestrator implements CardPlayOrchestrator {
 
   void _handleShopCard(ShopCardModel card, PlayerTurnState state) {
     // Remove from shop and deduct cost
+    card.isFaceUp = false;
     state.shopModel.removeSelectableCardFromShop(card);
     state.playerModel.infoModel.credits.changeValue(-card.cost);
   }
 
   void _handlePlayerCard(CardModel card, PlayerTurnState state) {
     // Remove from player's hand
+    card.isFaceUp = false;
     state.playerModel.handCards.removeCard(card);
   }
 }

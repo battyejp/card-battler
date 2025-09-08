@@ -30,8 +30,6 @@ class EnemyTurnAreaModel {
     _turnFinished = drawnCard?.effects.any((effect) => effect.type == EffectType.drawCard) == false;
 
     if (drawnCard != null) {
-      drawnCard.isFaceUp = true;
-
       playedCards.addCard(drawnCard);
       updatePlayersStats(drawnCard);
     }

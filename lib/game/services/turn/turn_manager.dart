@@ -26,6 +26,10 @@ class DefaultTurnManager implements TurnManager {
 
   @override
   void discardHand(PlayerTurnState state) {
+    for (var card in state.playerModel.handCards.cards) {
+      card.isFaceUp = false;
+    }
+
     state.playerModel.discardCards.addCards(state.playerModel.handCards.cards);
     state.playerModel.handCards.clearCards();
   }

@@ -48,7 +48,6 @@ class PlayerModel {
 
     if (drawnCards.isNotEmpty) {
       for (final card in drawnCards) {
-        card.isFaceUp = true;
         card.onCardPlayed = () => _onCardPlayed(card);
       }
       _handCards.addCards(drawnCards);

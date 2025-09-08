@@ -43,16 +43,6 @@ class PlayerTurnCoordinator {
     _cardPlayOrchestrator.playCard(card, state, _effectProcessor);
   }
 
-  /// Discards all cards from hand - delegates to turn manager
-  void discardHand() {
-    _turnManager.discardHand(state);
-  }
-
-  /// Applies card effects - delegates to effect processor
-  void applyCardEffects(CardModel card) {
-    _effectProcessor.applyCardEffects(card, state);
-  }
-
   /// Ends the current turn - delegates to turn manager
   void endTurn() {
     _turnManager.endTurn(state);

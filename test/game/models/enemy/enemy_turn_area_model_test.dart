@@ -107,7 +107,7 @@ void main() {
         expect(enemyTurnArea.playedCards.allCards.length, equals(initialPlayedCount + 1));
       });
 
-      test('sets drawn card to face up', () {
+      test('drawn card is automatically set to face up by CardsModel', () {
         final testCards = _generateTestCards(1);
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
@@ -123,7 +123,7 @@ void main() {
 
         enemyTurnArea.drawCardsFromDeck();
 
-        // Verify played card is now face up
+        // Verify played card is now face up (handled by CardsModel.drawCard())
         expect(enemyTurnArea.playedCards.allCards.first.isFaceUp, isTrue);
       });
     });

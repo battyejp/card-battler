@@ -27,7 +27,9 @@ class CardsModel<T extends CardModel> with ReactiveModel<CardsModel<T>> {
     final cardsToTake = count > _cards.length ? _cards.length : count;
     final drawnCards = _cards.take(cardsToTake).toList();
     _cards.removeRange(0, cardsToTake);
-    
+    for (var card in drawnCards) {
+      card.isFaceUp = true;
+    }
     notifyChange();
     return drawnCards;
   }
@@ -37,6 +39,7 @@ class CardsModel<T extends CardModel> with ReactiveModel<CardsModel<T>> {
   T? drawCard() {
     if (_cards.isEmpty) return null;
     final card = _cards.removeAt(0);
+    card.isFaceUp = true;
     notifyChange();
     return card;
   }

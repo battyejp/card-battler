@@ -11,7 +11,6 @@ import 'package:card_battler/game/services/turn/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
-import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';

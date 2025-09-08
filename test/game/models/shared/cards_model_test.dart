@@ -138,6 +138,21 @@ void main() {
           expect(model.allCards.first.name, equals('Bottom Card'));
         });
 
+        test('sets drawn cards to face up', () {
+          final cards = [
+            CardModel(name: 'Card 1', type: 'test', isFaceUp: false),
+            CardModel(name: 'Card 2', type: 'test', isFaceUp: false),
+            CardModel(name: 'Card 3', type: 'test', isFaceUp: false),
+          ];
+          final model = CardPileModel(cards: cards);
+          
+          final drawnCards = model.drawCards(2);
+          
+          expect(drawnCards[0].isFaceUp, isTrue);
+          expect(drawnCards[1].isFaceUp, isTrue);
+          expect(model.allCards.first.isFaceUp, isFalse); // Remaining card should stay face down
+        });
+
         test('returns empty list when drawing zero cards', () {
           final model = CardPileModel(cards: _generateCards(5));
           
@@ -208,6 +223,19 @@ void main() {
           
           expect(drawnCard!.name, equals('Top Card'));
           expect(model.allCards.first.name, equals('Bottom Card'));
+        });
+
+        test('sets drawn card to face up', () {
+          final cards = [
+            CardModel(name: 'Test Card', type: 'test', isFaceUp: false),
+            CardModel(name: 'Other Card', type: 'test', isFaceUp: false),
+          ];
+          final model = CardPileModel(cards: cards);
+          
+          final drawnCard = model.drawCard();
+          
+          expect(drawnCard!.isFaceUp, isTrue);
+          expect(model.allCards.first.isFaceUp, isFalse); // Remaining card should stay face down
         });
 
         test('returns null when drawing from empty pile', () {

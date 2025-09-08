@@ -91,6 +91,28 @@ void main() {
         expect(state.playerModel.discardCards.cards, containsAll(initialDiscardCards));
       });
 
+      test('sets hand cards to face down before discarding', () {
+        final handCards = _generateCards(3, prefix: 'Hand');
+        // Set hand cards to face up (as they would be when drawn)
+        for (final card in handCards) {
+          card.isFaceUp = true;
+        }
+        
+        final state = _createTestPlayerTurnState(
+          handCards: handCards,
+          discardCards: [],
+        );
+
+        turnManager.discardHand(state);
+
+        expect(state.playerModel.handCards.cards, isEmpty);
+        expect(state.playerModel.discardCards.cards.length, equals(3));
+        // Verify all discarded cards are now face down
+        for (final card in state.playerModel.discardCards.cards) {
+          expect(card.isFaceUp, isFalse);
+        }
+      });
+
       test('handles empty hand gracefully', () {
         final initialDiscardCards = _generateCards(2, prefix: 'Discard');
         final state = _createTestPlayerTurnState(
