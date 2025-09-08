@@ -1,10 +1,9 @@
 import 'package:card_battler/game/scenes/player_turn_scene.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/services/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/turn/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/player/card_hand_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
@@ -20,9 +19,9 @@ import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/components/shared/flat_button.dart';
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
@@ -74,7 +73,7 @@ PlayerModel _createTestPlayerModel({String name = 'Test Player', bool isActive =
       credits: ValueImageLabelModel(value: 5, label: 'Credits'),
       healthModel: HealthModel(maxHealth: 100),
     ),
-    handModel: CardHandModel(),
+    handModel: CardsModel<CardModel>(),
     deckModel: CardPileModel(cards: _generatePlayerCards(20)),
     discardModel: CardPileModel.empty(),
     gameStateService: DefaultGameStateService(GameStateManager()),

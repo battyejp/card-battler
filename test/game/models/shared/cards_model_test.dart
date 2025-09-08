@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 
 List<CardModel> _generateCards(int count) {
@@ -138,6 +138,21 @@ void main() {
           expect(model.allCards.first.name, equals('Bottom Card'));
         });
 
+        test('sets drawn cards to face up', () {
+          final cards = [
+            CardModel(name: 'Card 1', type: 'test', isFaceUp: false),
+            CardModel(name: 'Card 2', type: 'test', isFaceUp: false),
+            CardModel(name: 'Card 3', type: 'test', isFaceUp: false),
+          ];
+          final model = CardPileModel(cards: cards);
+          
+          final drawnCards = model.drawCards(2);
+          
+          expect(drawnCards[0].isFaceUp, isTrue);
+          expect(drawnCards[1].isFaceUp, isTrue);
+          expect(model.allCards.first.isFaceUp, isFalse); // Remaining card should stay face down
+        });
+
         test('returns empty list when drawing zero cards', () {
           final model = CardPileModel(cards: _generateCards(5));
           
@@ -210,6 +225,19 @@ void main() {
           expect(model.allCards.first.name, equals('Bottom Card'));
         });
 
+        test('sets drawn card to face up', () {
+          final cards = [
+            CardModel(name: 'Test Card', type: 'test', isFaceUp: false),
+            CardModel(name: 'Other Card', type: 'test', isFaceUp: false),
+          ];
+          final model = CardPileModel(cards: cards);
+          
+          final drawnCard = model.drawCard();
+          
+          expect(drawnCard!.isFaceUp, isTrue);
+          expect(model.allCards.first.isFaceUp, isFalse); // Remaining card should stay face down
+        });
+
         test('returns null when drawing from empty pile', () {
           final model = CardPileModel.empty();
           
@@ -232,6 +260,58 @@ void main() {
           expect(fourthCard, isNull);
           expect(model.hasNoCards, isTrue);
         });
+      });
+    });
+
+    group('shuffle method', () {
+      test('shuffle changes card order', () {
+        final cards = [
+          CardModel(name: 'Card 1', type: 'test'),
+          CardModel(name: 'Card 2', type: 'test'),
+          CardModel(name: 'Card 3', type: 'test'),
+          CardModel(name: 'Card 4', type: 'test'),
+          CardModel(name: 'Card 5', type: 'test'),
+        ];
+        final model = CardPileModel(cards: List.from(cards));
+        final originalOrder = model.allCards.map((c) => c.name).toList();
+        
+        model.shuffle();
+        
+        expect(model.allCards.length, equals(5));
+        final shuffledOrder = model.allCards.map((c) => c.name).toList();
+        expect(shuffledOrder, isNot(equals(originalOrder)));
+      });
+
+      test('shuffle preserves all cards', () {
+        final cards = [
+          CardModel(name: 'Card A', type: 'test'),
+          CardModel(name: 'Card B', type: 'test'),
+          CardModel(name: 'Card C', type: 'test'),
+        ];
+        final model = CardPileModel(cards: List.from(cards));
+        final originalNames = model.allCards.map((c) => c.name).toSet();
+        
+        model.shuffle();
+        
+        final shuffledNames = model.allCards.map((c) => c.name).toSet();
+        expect(shuffledNames, equals(originalNames));
+        expect(model.allCards.length, equals(3));
+      });
+
+      test('shuffle works with single card', () {
+        final model = CardPileModel(cards: [CardModel(name: 'Single', type: 'test')]);
+        
+        model.shuffle();
+        
+        expect(model.allCards.length, equals(1));
+        expect(model.allCards.first.name, equals('Single'));
+      });
+
+      test('shuffle works with empty pile', () {
+        final model = CardPileModel.empty();
+        
+        expect(() => model.shuffle(), returnsNormally);
+        expect(model.allCards, isEmpty);
       });
     });
   });

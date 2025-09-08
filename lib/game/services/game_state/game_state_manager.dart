@@ -1,5 +1,5 @@
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/services/game_state_facade.dart';
+import 'package:card_battler/game/services/game_state/game_state_facade.dart';
 import 'package:flutter/foundation.dart';
 
 //TODO lots of methods not used

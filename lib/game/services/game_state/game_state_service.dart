@@ -1,5 +1,5 @@
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 
 /// Interface for game state operations
 /// This abstracts game state management away from domain models

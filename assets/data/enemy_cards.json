@@ -1,6 +1,16 @@
 [
   {"name": "Active Player Hurt 2 and Others 1", "type": "Enemy", "effects": [ {"type": "Attack", "value": 2, "target": "ActivePlayer"}, {"type": "Attack", "value": 1, "target": "OtherPlayers"} ]},
   {"name": "All Players Hurt", "type": "Enemy", "effects": [ {"type": "Attack", "value": 1, "target": "AllPlayers"} ]},
+  {"name": "Active Player Hurt 2 and Others 1", "type": "Enemy", "effects": [ {"type": "Attack", "value": 2, "target": "ActivePlayer"}, {"type": "Attack", "value": 1, "target": "OtherPlayers"} ]},
+  {"name": "All Players Hurt", "type": "Enemy", "effects": [ {"type": "Attack", "value": 1, "target": "AllPlayers"} ]},
+  {"name": "Active Player Hurt 2 and Others 1", "type": "Enemy", "effects": [ {"type": "Attack", "value": 2, "target": "ActivePlayer"}, {"type": "Attack", "value": 1, "target": "OtherPlayers"} ]},
+  {"name": "All Players Hurt", "type": "Enemy", "effects": [ {"type": "Attack", "value": 1, "target": "AllPlayers"} ]},
+  {"name": "Active Player Hurt 2 and Others 1", "type": "Enemy", "effects": [ {"type": "Attack", "value": 2, "target": "ActivePlayer"}, {"type": "Attack", "value": 1, "target": "OtherPlayers"} ]},
+  {"name": "All Players Hurt", "type": "Enemy", "effects": [ {"type": "Attack", "value": 1, "target": "AllPlayers"} ]},
+  {"name": "Active Player Hurt 2 and Others 1", "type": "Enemy", "effects": [ {"type": "Attack", "value": 2, "target": "ActivePlayer"}, {"type": "Attack", "value": 1, "target": "OtherPlayers"} ]},
+  {"name": "All Players Hurt", "type": "Enemy", "effects": [ {"type": "Attack", "value": 1, "target": "AllPlayers"} ]},
+  {"name": "Active Player Hurt 2 and Others 1", "type": "Enemy", "effects": [ {"type": "Attack", "value": 2, "target": "ActivePlayer"}, {"type": "Attack", "value": 1, "target": "OtherPlayers"} ]},
+  {"name": "All Players Hurt", "type": "Enemy", "effects": [ {"type": "Attack", "value": 1, "target": "AllPlayers"} ]},
   {"name": "Damage Base", "type": "Enemy", "effects": [ {"type": "Attack", "value": 1, "target": "Base"} ]},
   {"name": "Damage Base And Active Player", "type": "Enemy", "effects": [ {"type": "Attack", "value": 2, "target": "ActivePlayer"}, {"type": "Attack", "value": 1, "target": "Base"} ]},
   {"name": "Damage Active Player And Another Turn", "type": "Enemy", "effects": [ {"type": "Attack", "value": 2, "target": "ActivePlayer"}, {"type": "DrawCard", "value": 1, "target": "Base"} ]}

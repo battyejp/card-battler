@@ -7,16 +7,15 @@ import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/player/card_hand.dart';
 import 'package:card_battler/game/components/player/info.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/player/card_hand_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 
 List<CardModel> _generateCards(int count) {
   return List.generate(count, (index) => CardModel(
@@ -35,7 +34,7 @@ void main() {
         healthModel: HealthModel(maxHealth: 100),
         name: 'TestPlayer',
       );
-      final handModel = CardHandModel();
+      final handModel = CardsModel<CardModel>();
       final deckModel = CardPileModel(cards: _generateCards(20));
       final discardModel = CardPileModel.empty();
       
@@ -254,7 +253,7 @@ void main() {
           healthModel: HealthModel(maxHealth: 100),
           name: 'TestPlayer',
         );
-        final handModel = CardHandModel();
+        final handModel = CardsModel<CardModel>();
         final deckModel = CardPileModel(cards: _generateCards(3)); // Only 3 cards
         final discardModel = CardPileModel.empty();
         
@@ -297,7 +296,7 @@ void main() {
           healthModel: HealthModel(maxHealth: 100),
           name: 'TestPlayer',
         );
-        final handModel = CardHandModel();
+        final handModel = CardsModel<CardModel>();
         final deckModel = CardPileModel.empty(); // Start with empty deck
         final discardModel = CardPileModel.empty();
         

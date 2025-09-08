@@ -1,4 +1,4 @@
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/shared/card/card_pile.dart';

@@ -1,7 +1,7 @@
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/scenes/enemy_turn_scene.dart';
 import 'package:card_battler/game/scenes/player_turn_scene.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:flame/game.dart';
 
 /// Service responsible for managing scene transitions and routing operations
@@ -58,15 +58,6 @@ class RouterService {
     _router?.pop();
   }
 
-  /// Handle enemy turn completion with delay (called via phase transitions)
-  void _handleEnemyTurnToPlayerTurn() {
-    Future.delayed(const Duration(seconds: 1), () {
-      // Reset the enemy turn state for the next enemy turn
-      GameStateModel.instance.enemyTurnArea.resetTurn();
-      _router?.pop();
-    });
-  }
-
   /// Set up phase change listener for automatic scene transitions
   void _setupPhaseListener() {
     _gameStateManager.addPhaseChangeListener((previousPhase, newPhase) {
@@ -75,6 +66,15 @@ class RouterService {
       } else if (previousPhase == GamePhase.enemyTurn && newPhase == GamePhase.playerTurn) {
         _handleEnemyTurnToPlayerTurn();
       }
+    });
+  }
+
+  /// Handle enemy turn completion with delay (called via phase transitions)
+  void _handleEnemyTurnToPlayerTurn() {
+    Future.delayed(const Duration(seconds: 1), () {
+      // Reset the enemy turn state for the next enemy turn
+      GameStateModel.instance.enemyTurnArea.resetTurn();
+      _router?.pop();
     });
   }
 

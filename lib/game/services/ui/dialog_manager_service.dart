@@ -1,6 +1,6 @@
 import 'package:card_battler/game/components/shared/confirm_dialog.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:flame/game.dart';
 
 /// Service responsible for managing dialog interactions and confirmations

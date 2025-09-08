@@ -1,8 +1,8 @@
 
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
 
 class EnemyTurnAreaModel {
   final CardPileModel enemyCards;
@@ -19,7 +19,9 @@ class EnemyTurnAreaModel {
     required GameStateService gameStateService,
   })  : playedCards = CardPileModel.empty(),
         _turnFinished = false,
-        _gameStateService = gameStateService;
+        _gameStateService = gameStateService {
+    enemyCards.shuffle();
+  }
 
   void drawCardsFromDeck() {
     if (_turnFinished) return;
@@ -28,8 +30,6 @@ class EnemyTurnAreaModel {
     _turnFinished = drawnCard?.effects.any((effect) => effect.type == EffectType.drawCard) == false;
 
     if (drawnCard != null) {
-      drawnCard.isFaceUp = true;
-
       playedCards.addCard(drawnCard);
       updatePlayersStats(drawnCard);
     }

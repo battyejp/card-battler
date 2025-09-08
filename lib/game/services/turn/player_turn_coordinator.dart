@@ -4,10 +4,10 @@ import 'package:card_battler/game/models/player/player_turn_state.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
-import 'package:card_battler/game/services/card_play_orchestrator.dart';
-import 'package:card_battler/game/services/effect_processor.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/turn_manager.dart';
+import 'package:card_battler/game/services/card/card_play_orchestrator.dart';
+import 'package:card_battler/game/services/card/effect_processor.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game/services/turn/turn_manager.dart';
 
 /// Coordinator service that manages player turn operations
 /// This replaces the PlayerTurnModel and delegates responsibilities to specialized services
@@ -41,16 +41,6 @@ class PlayerTurnCoordinator {
   /// Handles when a card is played - delegates to the card play orchestrator
   void onCardPlayed(CardModel card) {
     _cardPlayOrchestrator.playCard(card, state, _effectProcessor);
-  }
-
-  /// Discards all cards from hand - delegates to turn manager
-  void discardHand() {
-    _turnManager.discardHand(state);
-  }
-
-  /// Applies card effects - delegates to effect processor
-  void applyCardEffects(CardModel card) {
-    _effectProcessor.applyCardEffects(card, state);
   }
 
   /// Ends the current turn - delegates to turn manager

@@ -2,13 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/models/player/card_hand_model.dart';
+import 'package:card_battler/game/services/game_state/game_state_facade.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/services/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/turn/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
@@ -16,10 +16,9 @@ import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
-import 'package:card_battler/game/services/game_state_facade.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 
 void main() {
   group('PlayerTurnCoordinator', () {
@@ -30,9 +29,10 @@ void main() {
     late PlayerTurnCoordinator playerTurnModel;
 
     setUp(() { 
-      // Reset GameStateManager to known state
+      // Reset GameStateManager and GameStateFacade to known state
       final gameStateManager = GameStateManager();
       gameStateManager.reset();
+      GameStateFacade.instance.reset();
 
       final infoModel = InfoModel(
         attack: ValueImageLabelModel(value: 50, label: 'Attack'),
@@ -41,7 +41,7 @@ void main() {
         name: 'TestPlayer',
       );
 
-      final handModel = CardHandModel();
+      final handModel = CardsModel<CardModel>();
       final deckModel = CardPileModel.empty();
       final discardModel = CardPileModel.empty();
 
@@ -107,32 +107,32 @@ void main() {
       test('handles regular card play correctly', () {
         final card = CardModel(name: 'Test Card', type: 'attack');
         card.isFaceUp = true;
-        playerModel.handModel.addCard(card);
+        playerModel.handCards.addCard(card);
 
-        final initialHandSize = playerModel.handModel.cards.length;
-        final initialDiscardSize = playerModel.discardModel.allCards.length;
+        final initialHandSize = playerModel.handCards.cards.length;
+        final initialDiscardSize = playerModel.discardCards.allCards.length;
 
         playerTurnModel.onCardPlayed(card);
 
         expect(card.isFaceUp, isFalse);
-        expect(playerModel.handModel.cards.length, equals(initialHandSize - 1));
-        expect(playerModel.discardModel.allCards.length, equals(initialDiscardSize + 1));
-        expect(playerModel.discardModel.allCards.contains(card), isTrue);
+        expect(playerModel.handCards.cards.length, equals(initialHandSize - 1));
+        expect(playerModel.discardCards.allCards.length, equals(initialDiscardSize + 1));
+        expect(playerModel.discardCards.allCards.contains(card), isTrue);
       });
 
       test('handles shop card play correctly', () {
         final shopCard = shopModel.selectableCards.first;
         final initialCredits = playerModel.infoModel.credits.value;
         final initialShopSize = shopModel.selectableCards.length;
-        final initialDiscardSize = playerModel.discardModel.allCards.length;
+        final initialDiscardSize = playerModel.discardCards.allCards.length;
 
         playerTurnModel.onCardPlayed(shopCard);
 
         expect(shopCard.isFaceUp, isFalse);
         expect(shopModel.selectableCards.length, equals(initialShopSize - 1));
         expect(playerModel.infoModel.credits.value, equals(initialCredits - shopCard.cost));
-        expect(playerModel.discardModel.allCards.length, equals(initialDiscardSize + 1));
-        expect(playerModel.discardModel.allCards.contains(shopCard), isTrue);
+        expect(playerModel.discardCards.allCards.length, equals(initialDiscardSize + 1));
+        expect(playerModel.discardCards.allCards.contains(shopCard), isTrue);
       });
 
       test('calls applyCardEffects after handling card', () {
@@ -141,89 +141,13 @@ void main() {
           type: 'utility',
           effects: [EffectModel(type: EffectType.credits, target: EffectTarget.self, value: 25)]
         );
-        playerModel.handModel.addCard(card);
+        playerModel.handCards.addCard(card);
 
         final initialCredits = playerModel.infoModel.credits.value;
 
         playerTurnModel.onCardPlayed(card);
 
         expect(playerModel.infoModel.credits.value, equals(initialCredits + 25));
-      });
-    });
-
-    group('applyCardEffects method', () {
-      test('applies credits effect correctly', () {
-        final card = CardModel(
-          name: 'Credit Card',
-          type: 'utility',
-          effects: [EffectModel(type: EffectType.credits, target: EffectTarget.self, value: 50)]
-        );
-
-        final initialCredits = playerModel.infoModel.credits.value;
-
-        playerTurnModel.applyCardEffects(card);
-
-        expect(playerModel.infoModel.credits.value, equals(initialCredits + 50));
-      });
-
-      test('applies negative credits effect correctly', () {
-        final card = CardModel(
-          name: 'Expensive Card',
-          type: 'utility',
-          effects: [EffectModel(type: EffectType.credits, target: EffectTarget.self, value: -30)]
-        );
-
-        final initialCredits = playerModel.infoModel.credits.value;
-
-        playerTurnModel.applyCardEffects(card);
-
-        expect(playerModel.infoModel.credits.value, equals(initialCredits - 30));
-      });
-
-      test('handles multiple effects on single card', () {
-        final card = CardModel(
-          name: 'Multi Effect Card',
-          type: 'utility',
-          effects: [
-            EffectModel(type: EffectType.credits, target: EffectTarget.self, value: 20),
-            EffectModel(type: EffectType.credits, target: EffectTarget.self, value: 10)
-          ]
-        );
-
-        final initialCredits = playerModel.infoModel.credits.value;
-
-        playerTurnModel.applyCardEffects(card);
-
-        expect(playerModel.infoModel.credits.value, equals(initialCredits + 30));
-      });
-
-      test('handles cards with no effects', () {
-        final card = CardModel(
-          name: 'Simple Card',
-          type: 'basic'
-        );
-
-        final initialCredits = playerModel.infoModel.credits.value;
-
-        playerTurnModel.applyCardEffects(card);
-
-        expect(playerModel.infoModel.credits.value, equals(initialCredits));
-      });
-
-      test('handles unimplemented effect types gracefully', () {
-        final card = CardModel(
-          name: 'Attack Card',
-          type: 'attack',
-          effects: [
-            EffectModel(type: EffectType.attack, target: EffectTarget.otherPlayers, value: 10),
-            EffectModel(type: EffectType.heal, target: EffectTarget.self, value: 5),
-            EffectModel(type: EffectType.damageLimit, target: EffectTarget.self, value: 3),
-            EffectModel(type: EffectType.drawCard, target: EffectTarget.self, value: 1)
-          ]
-        );
-
-        // Should not throw, even though these effects aren't implemented yet
-        expect(() => playerTurnModel.applyCardEffects(card), returnsNormally);
       });
     });
 
@@ -257,7 +181,7 @@ void main() {
         gameStateManager.nextPhase(); // enemyTurn -> playerTurn
 
         final card = CardModel(name: 'Test Card', type: 'basic');
-        playerModel.handModel.addCard(card);
+        playerModel.handCards.addCard(card);
 
         bool confirmationRequested = false;
         gameStateManager.addConfirmationRequestListener(() {
@@ -276,7 +200,7 @@ void main() {
         gameStateManager.nextPhase(); // cardsDrawn -> enemyTurn
         gameStateManager.nextPhase(); // enemyTurn -> playerTurn
 
-        expect(playerModel.handModel.cards.isEmpty, isTrue);
+        expect(playerModel.handCards.cards.isEmpty, isTrue);
 
         playerTurnModel.handleTurnButtonPress();
 
@@ -292,15 +216,16 @@ void main() {
 
         final card1 = CardModel(name: 'Card 1', type: 'basic');
         final card2 = CardModel(name: 'Card 2', type: 'basic');
-        playerModel.handModel.addCards([card1, card2]);
+        playerModel.handCards.addCards([card1, card2]);
         
-        expect(playerModel.handModel.cards.length, equals(2));
+        expect(playerModel.handCards.cards.length, equals(2));
 
         playerTurnModel.endTurn();
 
-        expect(playerModel.handModel.cards.isEmpty, isTrue);
-        expect(gameStateManager.currentPhase, equals(GamePhase.cardsDrawnWaitingForPlayerSwitch));
-        expect(playerModel.discardModel.allCards.length, equals(2)); // Cards moved to discard
+        expect(playerModel.handCards.cards.isEmpty, isTrue);
+        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));
+        expect(playerModel.discardCards.allCards.length, equals(0)); // Cards moved to deck due to reshuffle
+        expect(playerModel.deckCards.allCards.length, equals(2)); // Cards reshuffled into deck
       });
 
       test('turn button behavior varies correctly by phase', () {
@@ -324,7 +249,7 @@ void main() {
 
           if (phases[i] == GamePhase.playerTurn) {
             // In playerTurn, behavior depends on hand state
-            expect(playerModel.handModel.cards.isEmpty, isTrue);
+            expect(playerModel.handCards.cards.isEmpty, isTrue);
             
             playerTurnModel.handleTurnButtonPress();
             expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards));

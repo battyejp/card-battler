@@ -24,18 +24,27 @@ void main() {
         expect(shop.selectableCards.length, equals(6));
       });
 
-      test('selectable cards are first 6 cards from generated set', () {
+      test('selectable cards are shuffled subset from generated set', () {
         final testCards = List.generate(
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
         final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         
-        for (int i = 0; i < shop.selectableCards.length; i++) {
-          expect(shop.selectableCards[i].name, equals('Card ${i + 1}'));
-          expect(shop.selectableCards[i].cost, equals(1));
-          expect(shop.selectableCards[i].isFaceUp, isTrue);
+        // Verify we have the right number of selectable cards
+        expect(shop.selectableCards.length, equals(6));
+        
+        // Verify all selectable cards have correct properties
+        for (final card in shop.selectableCards) {
+          expect(card.cost, equals(1));
+          expect(card.isFaceUp, isTrue);
+          expect(card.name, startsWith('Card '));
         }
+        
+        // Verify all selectable cards are from the original set
+        final originalNames = testCards.map((c) => c.name).toSet();
+        final selectableNames = shop.selectableCards.map((c) => c.name).toSet();
+        expect(selectableNames.difference(originalNames), isEmpty);
       });
     });
 
@@ -67,12 +76,14 @@ void main() {
         final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         final allGeneratedCards = [...shop.selectableCards];
         
-        for (int i = 0; i < allGeneratedCards.length; i++) {
-          final card = allGeneratedCards[i];
-          expect(card.name, equals('Card ${i + 1}'));
+        // Verify all cards have expected properties (regardless of order due to shuffling)
+        for (final card in allGeneratedCards) {
+          expect(card.name, startsWith('Card '));
           expect(card.cost, equals(1));
           expect(card.isFaceUp, isTrue);
         }
+        
+        expect(allGeneratedCards.length, equals(6));
       });
 
       test('cards are properly partitioned between lists', () {
@@ -82,9 +93,11 @@ void main() {
         );
         final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         final selectableCardNames = shop.selectableCards.map((c) => c.name).toSet();
-           
-        final expectedSelectableNames = {'Card 1', 'Card 2', 'Card 3', 'Card 4', 'Card 5', 'Card 6'};  
-        expect(selectableCardNames, equals(expectedSelectableNames));
+        final allCardNames = testCards.map((c) => c.name).toSet();
+        
+        // Verify selectable cards are exactly 6 cards from the original set
+        expect(selectableCardNames.length, equals(6));
+        expect(selectableCardNames.difference(allCardNames), isEmpty);
       });
     });
 

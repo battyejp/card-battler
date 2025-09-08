@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
 
 List<CardModel> _generateTestCards(int count) {
   return List.generate(count, (index) => CardModel(
@@ -107,7 +107,7 @@ void main() {
         expect(enemyTurnArea.playedCards.allCards.length, equals(initialPlayedCount + 1));
       });
 
-      test('sets drawn card to face up', () {
+      test('drawn card is automatically set to face up by CardsModel', () {
         final testCards = _generateTestCards(1);
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
@@ -123,7 +123,7 @@ void main() {
 
         enemyTurnArea.drawCardsFromDeck();
 
-        // Verify played card is now face up
+        // Verify played card is now face up (handled by CardsModel.drawCard())
         expect(enemyTurnArea.playedCards.allCards.first.isFaceUp, isTrue);
       });
     });
@@ -626,9 +626,13 @@ void main() {
         );
 
         // Draw first card - should finish turn and advance phase
+        final initialHealth = playerStats[0].health.currentHealth;
         enemyTurnArea.drawCardsFromDeck();
         expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
-        expect(playerStats[0].health.currentHealth, equals(90)); // 100 - 10
+        
+        final healthAfterFirstCard = playerStats[0].health.currentHealth;
+        final firstDamage = initialHealth - healthAfterFirstCard;
+        expect([10, 15], contains(firstDamage)); // Cards shuffled, could be either damage value
 
         // Reset turn to simulate natural game flow before next enemy turn
         enemyTurnArea.resetTurn();
@@ -636,7 +640,10 @@ void main() {
         // Draw second card - this will draw another card and advance phase again
         enemyTurnArea.drawCardsFromDeck();
         expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards)); // nextPhase from playerTurn goes to waitingToDrawCards
-        expect(playerStats[0].health.currentHealth, equals(75)); // 90 - 15
+        
+        final finalHealth = playerStats[0].health.currentHealth;
+        final totalDamage = initialHealth - finalHealth;
+        expect(totalDamage, equals(25)); // Total damage should be 10 + 15 = 25
       });
     });
   });

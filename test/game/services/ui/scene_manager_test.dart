@@ -1,17 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flame/game.dart';
-import 'package:card_battler/game/services/scene_manager.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/ui/scene_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/scenes/player_turn_scene.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/services/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/turn/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/player/card_hand_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
@@ -20,7 +19,7 @@ import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
 
 // Test data generators
 List<ShopCardModel> _generateShopCards() {
@@ -211,7 +210,7 @@ class MockPlayerTurnScene extends PlayerTurnScene {
                   name: 'Test Player',
                   healthModel: HealthModel(maxHealth: 10),
                 ),
-                handModel: CardHandModel(),
+                handModel: CardsModel<CardModel>(),
                 deckModel: CardPileModel(),
                 discardModel: CardPileModel(),
                 gameStateService: DummyGameStateService(),

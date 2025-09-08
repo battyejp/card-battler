@@ -1,7 +1,6 @@
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/player/card_hand_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
@@ -15,15 +14,15 @@ import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
-import 'package:card_battler/game/services/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
+import 'package:card_battler/game/services/turn/player_turn_coordinator.dart';
 
 /// Factory service responsible for creating and initializing game components
 /// Follows the Factory pattern and Single Responsibility Principle by focusing solely on game creation logic
 class GameStateFactory {
-  static const int _numberOfPlayers = 4;
+  static const int _numberOfPlayers = 2;
   static const int _playerMaxHealth = 10;
   static const int _numberOfBases = 3;
   static const int _baseMaxHealth = 5;
@@ -109,7 +108,7 @@ class GameStateFactory {
           credits: ValueImageLabelModel(value: 0, label: 'Credits'),
           healthModel: HealthModel(maxHealth: _playerMaxHealth),
         ),
-        handModel: CardHandModel(),
+        handModel: CardsModel<CardModel>(),
         deckModel: CardPileModel(cards: playerDeckCopy),
         discardModel: CardPileModel.empty(),
         gameStateService: gameStateService,

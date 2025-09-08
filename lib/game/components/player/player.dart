@@ -3,8 +3,8 @@ import 'package:card_battler/game/components/shared/card/card_pile.dart';
 import 'package:card_battler/game/components/player/card_hand.dart';
 import 'package:card_battler/game/components/player/info.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
-import 'package:card_battler/game/services/card_interaction_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/card/card_interaction_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
@@ -21,7 +21,7 @@ class Player extends PositionComponent {
   late final CardPile _discard;
   late final Info _info;
 
-  // Default constructor for backward compatibility
+  //TODO make services required
   Player({
     required PlayerModel playerModel,
     CardInteractionService? cardInteractionService,
@@ -33,7 +33,7 @@ class Player extends PositionComponent {
   @override
   void onLoad() {
 
-    _deck = CardDeck(_playerModel.deckModel, onTap: () => {
+    _deck = CardDeck(_playerModel.deckCards, onTap: () => {
       _playerModel.drawCardsFromDeck(),
     })
       ..size = Vector2(size.x * pileWidthFactor, size.y);
@@ -48,7 +48,7 @@ class Player extends PositionComponent {
     add(_info);
 
     _hand = CardHand(
-      _playerModel.handModel,
+      _playerModel.handCards,
       cardInteractionService: _cardInteractionService,
       cardSelectionService: _cardSelectionService,
     )
@@ -57,7 +57,7 @@ class Player extends PositionComponent {
 
     add(_hand);
 
-    _discard = CardPile(_playerModel.discardModel)
+    _discard = CardPile(_playerModel.discardCards)
       ..size = Vector2(size.x * pileWidthFactor, size.y)
       ..position = Vector2(_hand.x + _hand.width, 0);
 

@@ -1,8 +1,8 @@
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/services/card_loader_service.dart';
+import 'package:card_battler/game/services/card/card_loader_service.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/services/scene_manager.dart';
+import 'package:card_battler/game/services/ui/scene_manager.dart';
 import 'package:flame/game.dart';
 import 'package:flame/events.dart';
 
