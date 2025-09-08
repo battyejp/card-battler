@@ -52,28 +52,6 @@ void main() {
       });
     });
 
-    group('areInteractionsAllowed', () {
-      test('always returns true by default', () {
-        final service = DefaultCardUIService();
-        expect(service.areInteractionsAllowed(), isTrue);
-      });
-
-      test('returns true regardless of business logic check', () {
-        final service = DefaultCardUIService(
-          businessLogicCheck: () => false,
-        );
-        expect(service.areInteractionsAllowed(), isTrue);
-      });
-
-      test('consistent behavior across multiple calls', () {
-        final service = DefaultCardUIService();
-        
-        for (int i = 0; i < 10; i++) {
-          expect(service.areInteractionsAllowed(), isTrue);
-        }
-      });
-    });
-
     group('constructor behavior', () {
       test('accepts null business logic check', () {
         expect(() => DefaultCardUIService(businessLogicCheck: null), returnsNormally);
@@ -126,7 +104,6 @@ void main() {
         
         // Should not throw - methods exist and are callable
         expect(() => service.isButtonEnabled(), returnsNormally);
-        expect(() => service.areInteractionsAllowed(), returnsNormally);
       });
     });
 
@@ -155,9 +132,6 @@ void main() {
 
         // Button is disabled by business logic
         expect(service.isButtonEnabled(), isFalse);
-        
-        // But interactions are always allowed (UI-level decision)
-        expect(service.areInteractionsAllowed(), isTrue);
       });
     });
   });
