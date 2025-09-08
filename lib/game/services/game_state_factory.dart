@@ -23,7 +23,7 @@ import 'package:card_battler/game/services/player_turn_coordinator.dart';
 /// Factory service responsible for creating and initializing game components
 /// Follows the Factory pattern and Single Responsibility Principle by focusing solely on game creation logic
 class GameStateFactory {
-  static const int _numberOfPlayers = 4;
+  static const int _numberOfPlayers = 2;
   static const int _playerMaxHealth = 10;
   static const int _numberOfBases = 3;
   static const int _baseMaxHealth = 5;

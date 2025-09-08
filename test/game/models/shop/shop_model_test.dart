@@ -201,5 +201,67 @@ void main() {
         expect(playedCards, containsAll([firstCard, secondCard]));
       });
     });
+
+    group('shuffleReserveCards method', () {
+      test('shuffleReserveCards changes card order in reserve', () {
+        final testCards = List.generate(10, (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1));
+        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        
+        // Consume all selectable cards to access reserve cards through refillShop
+        for (final card in [...shop.selectableCards]) {
+          shop.removeSelectableCardFromShop(card);
+        }
+        
+        // Get names of reserve cards before shuffling by refilling to see what order they come in
+        shop.refillShop();
+        final preShuffleOrder = shop.selectableCards.map((c) => c.name).toList();
+        
+        // Remove selectable cards again and shuffle reserve
+        for (final card in [...shop.selectableCards]) {
+          shop.removeSelectableCardFromShop(card);
+        }
+        
+        shop.shuffleReserveCards();
+        shop.refillShop();
+        
+        final postShuffleOrder = shop.selectableCards.map((c) => c.name).toList();
+        expect(postShuffleOrder, isNot(equals(preShuffleOrder)));
+      });
+
+      test('shuffleReserveCards preserves all cards', () {
+        final testCards = List.generate(8, (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1));
+        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        
+        // Remove selectable cards to access reserve
+        for (final card in [...shop.selectableCards]) {
+          shop.removeSelectableCardFromShop(card);
+        }
+        
+        final preShuffleCount = 8 - 6; // Total cards minus initial selectable cards
+        
+        shop.shuffleReserveCards();
+        shop.refillShop();
+        
+        expect(shop.selectableCards.length, equals(preShuffleCount));
+      });
+
+      test('shuffleReserveCards emits change notification', () async {
+        final testCards = List.generate(10, (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1));
+        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        
+        final changes = <ShopModel>[];
+        final subscription = shop.changes.listen(changes.add);
+        
+        shop.shuffleReserveCards();
+        
+        await Future.delayed(Duration.zero);
+        
+        expect(changes.length, equals(1));
+        expect(changes.first, equals(shop));
+        
+        await subscription.cancel();
+        shop.dispose();
+      });
+    });
   });
 }

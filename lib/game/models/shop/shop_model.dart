@@ -1,7 +1,9 @@
+import 'dart:math';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/reactive_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 
+//TODO split the class up
 class ShopModel with ReactiveModel<ShopModel> {
   final List<ShopCardModel> _reserveCards;
   final int _numberOfRows;
@@ -59,6 +61,18 @@ class ShopModel with ReactiveModel<ShopModel> {
     }
 
     return cards;
+  }
+
+  /// Shuffles the reserve cards using Fisher-Yates algorithm
+  void shuffleReserveCards() {
+    final random = Random();
+    for (int i = _reserveCards.length - 1; i > 0; i--) {
+      int j = random.nextInt(i + 1);
+      final temp = _reserveCards[i];
+      _reserveCards[i] = _reserveCards[j];
+      _reserveCards[j] = temp;
+    }
+    notifyChange();
   }
 
   List<ShopCardModel> get selectableCards => _selectableCards;

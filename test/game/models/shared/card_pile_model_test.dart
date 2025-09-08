@@ -234,5 +234,57 @@ void main() {
         });
       });
     });
+
+    group('shuffle method', () {
+      test('shuffle changes card order', () {
+        final cards = [
+          CardModel(name: 'Card 1', type: 'test'),
+          CardModel(name: 'Card 2', type: 'test'),
+          CardModel(name: 'Card 3', type: 'test'),
+          CardModel(name: 'Card 4', type: 'test'),
+          CardModel(name: 'Card 5', type: 'test'),
+        ];
+        final model = CardPileModel(cards: List.from(cards));
+        final originalOrder = model.allCards.map((c) => c.name).toList();
+        
+        model.shuffle();
+        
+        expect(model.allCards.length, equals(5));
+        final shuffledOrder = model.allCards.map((c) => c.name).toList();
+        expect(shuffledOrder, isNot(equals(originalOrder)));
+      });
+
+      test('shuffle preserves all cards', () {
+        final cards = [
+          CardModel(name: 'Card A', type: 'test'),
+          CardModel(name: 'Card B', type: 'test'),
+          CardModel(name: 'Card C', type: 'test'),
+        ];
+        final model = CardPileModel(cards: List.from(cards));
+        final originalNames = model.allCards.map((c) => c.name).toSet();
+        
+        model.shuffle();
+        
+        final shuffledNames = model.allCards.map((c) => c.name).toSet();
+        expect(shuffledNames, equals(originalNames));
+        expect(model.allCards.length, equals(3));
+      });
+
+      test('shuffle works with single card', () {
+        final model = CardPileModel(cards: [CardModel(name: 'Single', type: 'test')]);
+        
+        model.shuffle();
+        
+        expect(model.allCards.length, equals(1));
+        expect(model.allCards.first.name, equals('Single'));
+      });
+
+      test('shuffle works with empty pile', () {
+        final model = CardPileModel.empty();
+        
+        expect(() => model.shuffle(), returnsNormally);
+        expect(model.allCards, isEmpty);
+      });
+    });
   });
 }

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/reactive_model.dart';
 
@@ -45,6 +46,18 @@ class CardPileModel with ReactiveModel<CardPileModel> {
 
   void addCards(List<CardModel> cards) {
     _cards.addAll(cards);
+    notifyChange();
+  }
+
+  /// Shuffles the cards in the pile using Fisher-Yates algorithm
+  void shuffle() {
+    final random = Random();
+    for (int i = _cards.length - 1; i > 0; i--) {
+      int j = random.nextInt(i + 1);
+      final temp = _cards[i];
+      _cards[i] = _cards[j];
+      _cards[j] = temp;
+    }
     notifyChange();
   }
 }
