@@ -2,23 +2,23 @@ import 'dart:math';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/reactive_model.dart';
 
-class CardPileModel with ReactiveModel<CardPileModel> {
-  final List<CardModel> _cards;
+class CardsModel<T extends CardModel> with ReactiveModel<CardsModel<T>> {
+  final List<T> _cards;
 
-  CardPileModel({List<CardModel> cards = const []})
-      : _cards = cards;
+  CardsModel({List<T>? cards})
+      : _cards = cards ?? <T>[];
 
-  CardPileModel.empty() : _cards = [];
+  CardsModel.empty() : _cards = [];
 
   /// Gets all cards (including defeated ones)
-  List<CardModel> get allCards => List.unmodifiable(_cards);
+  List<T> get allCards => List.unmodifiable(_cards);
 
   /// Checks if the card pile is empty
   bool get hasNoCards => _cards.isEmpty;
 
   /// Draws a specified number of cards from the top of the pile
   /// Returns the drawn cards and removes them from the pile
-  List<CardModel> drawCards(int count) {
+  List<T> drawCards(int count) {
     if (count <= 0) return [];
     
     final cardsToTake = count > _cards.length ? _cards.length : count;
@@ -31,7 +31,7 @@ class CardPileModel with ReactiveModel<CardPileModel> {
 
   /// Draws a single card from the top of the pile
   /// Returns null if the pile is empty
-  CardModel? drawCard() {
+  T? drawCard() {
     if (_cards.isEmpty) return null;
     final card = _cards.removeAt(0);
     notifyChange();
@@ -39,12 +39,12 @@ class CardPileModel with ReactiveModel<CardPileModel> {
   }
 
   /// Adds a single card to the pile
-  void addCard(CardModel card) {
+  void addCard(T card) {
     _cards.add(card);
     notifyChange();
   }
 
-  void addCards(List<CardModel> cards) {
+  void addCards(List<T> cards) {
     _cards.addAll(cards);
     notifyChange();
   }
@@ -58,6 +58,9 @@ class CardPileModel with ReactiveModel<CardPileModel> {
       _cards[i] = _cards[j];
       _cards[j] = temp;
     }
-    notifyChange();
   }
 }
+
+// Backward compatibility typedef
+// TODO remove this and update all references
+typedef CardPileModel = CardsModel<CardModel>;

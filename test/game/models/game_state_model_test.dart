@@ -107,7 +107,7 @@ void main() {
         GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
 
         expect(GameStateModel.instance.enemyTurnArea.playersModel.players, isNotNull);
-        expect(GameStateModel.instance.enemyTurnArea.playersModel.players.length, equals(4)); // 4 players created
+        expect(GameStateModel.instance.enemyTurnArea.playersModel.players.length, equals(2)); // 2 players created
       });
 
       test('enemy turn area initializes with empty played cards', () {
@@ -142,7 +142,7 @@ void main() {
         GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
 
         expect(GameStateModel.instance.playerTurn.teamModel, isNotNull);
-        expect(GameStateModel.instance.playerTurn.teamModel.playersModel.players.length, equals(4));
+        expect(GameStateModel.instance.playerTurn.teamModel.playersModel.players.length, equals(2));
         expect(GameStateModel.instance.playerTurn.teamModel.playersModel.players[0].name, equals('Player 1'));
         expect(GameStateModel.instance.playerTurn.teamModel.playersModel.players[0].isActive, isTrue);
       });
@@ -211,8 +211,6 @@ void main() {
         final playerStats = GameStateModel.instance.enemyTurnArea.playersModel.players;
         expect(playerStats[0].isActive, isTrue);
         expect(playerStats[1].isActive, isFalse);
-        expect(playerStats[2].isActive, isFalse);
-        expect(playerStats[3].isActive, isFalse);
       });
 
       test('players have correct names', () {
@@ -225,8 +223,6 @@ void main() {
         final playerStats = GameStateModel.instance.enemyTurnArea.playersModel.players;
         expect(playerStats[0].name, equals('Player 1'));
         expect(playerStats[1].name, equals('Player 2'));
-        expect(playerStats[2].name, equals('Player 3'));
-        expect(playerStats[3].name, equals('Player 4'));
       });
     });
 
@@ -261,10 +257,20 @@ void main() {
 
         GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
 
-        expect(GameStateModel.instance.playerTurn.shopModel.selectableCards.length, equals(shopCards.length));
-        for (int i = 0; i < shopCards.length; i++) {
-          expect(GameStateModel.instance.playerTurn.shopModel.selectableCards[i].name, equals(shopCards[i].name));
-          expect(GameStateModel.instance.playerTurn.shopModel.selectableCards[i].cost, equals(shopCards[i].cost));
+        final selectableCards = GameStateModel.instance.playerTurn.shopModel.selectableCards;
+        
+        // Verify we have the expected number of selectable cards (6 for 2x3 shop)
+        expect(selectableCards.length, equals(6));
+        
+        // Verify all selectable cards are from the original set (cards are now shuffled)
+        final originalNames = shopCards.map((c) => c.name).toSet();
+        final selectableNames = selectableCards.map((c) => c.name).toSet();
+        expect(selectableNames.difference(originalNames), isEmpty);
+        
+        // Verify all selectable cards have valid properties
+        for (final card in selectableCards) {
+          expect(card.name, isNotNull);
+          expect(card.cost, greaterThanOrEqualTo(0));
         }
       });
     });

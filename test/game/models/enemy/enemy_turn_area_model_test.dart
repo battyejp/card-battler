@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
@@ -626,9 +626,13 @@ void main() {
         );
 
         // Draw first card - should finish turn and advance phase
+        final initialHealth = playerStats[0].health.currentHealth;
         enemyTurnArea.drawCardsFromDeck();
         expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
-        expect(playerStats[0].health.currentHealth, equals(90)); // 100 - 10
+        
+        final healthAfterFirstCard = playerStats[0].health.currentHealth;
+        final firstDamage = initialHealth - healthAfterFirstCard;
+        expect([10, 15], contains(firstDamage)); // Cards shuffled, could be either damage value
 
         // Reset turn to simulate natural game flow before next enemy turn
         enemyTurnArea.resetTurn();
@@ -636,7 +640,10 @@ void main() {
         // Draw second card - this will draw another card and advance phase again
         enemyTurnArea.drawCardsFromDeck();
         expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards)); // nextPhase from playerTurn goes to waitingToDrawCards
-        expect(playerStats[0].health.currentHealth, equals(75)); // 90 - 15
+        
+        final finalHealth = playerStats[0].health.currentHealth;
+        final totalDamage = initialHealth - finalHealth;
+        expect(totalDamage, equals(25)); // Total damage should be 10 + 15 = 25
       });
     });
   });

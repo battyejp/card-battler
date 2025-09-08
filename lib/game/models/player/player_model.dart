@@ -1,6 +1,6 @@
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
@@ -29,7 +29,9 @@ class PlayerModel {
        _deckModel = deckModel,
        _discardModel = discardModel,
        _gameStateService = gameStateService,
-       _cardSelectionService = cardSelectionService;
+       _cardSelectionService = cardSelectionService {
+    _deckModel.shuffle();
+  }
 
   // Expose models for use in the game components
   InfoModel get infoModel => _infoModel;

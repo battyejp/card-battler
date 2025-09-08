@@ -1,6 +1,6 @@
 import 'package:card_battler/game/scenes/enemy_turn_scene.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
-import 'package:card_battler/game/models/shared/card_pile_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
