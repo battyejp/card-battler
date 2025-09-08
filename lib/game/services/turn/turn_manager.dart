@@ -7,9 +7,6 @@ import 'package:card_battler/game/services/ui/scene_manager.dart';
 /// Service responsible for managing turn state and transitions
 /// Follows the Single Responsibility Principle by focusing solely on turn management logic
 abstract class TurnManager {
-  /// Discards all cards from player's hand
-  void discardHand(PlayerTurnState state);
-  
   /// Ends the current turn and transitions to next phase
   void endTurn(PlayerTurnState state);
   
@@ -25,31 +22,17 @@ class DefaultTurnManager implements TurnManager {
   DefaultTurnManager(this._gameStateService);
 
   @override
-  void discardHand(PlayerTurnState state) {
-    for (var card in state.playerModel.handCards.cards) {
-      card.isFaceUp = false;
-    }
-
-    state.playerModel.discardCards.addCards(state.playerModel.handCards.cards);
-    state.playerModel.handCards.clearCards();
-  }
-
-  @override
   void endTurn(PlayerTurnState state) {
     //TODO clear coins
     //TODO clear Attack
 
     GameStateFacade.instance.selectedPlayer!.turnOver = true;
-    discardHand(state);
+    state.playerModel.discardHand();
     state.shopModel.refillShop();
     _gameStateService.nextPhase(); // Should be waitingToDrawCards
 
     if (state.playerModel.deckCards.hasNoCards) {
-      // Reshuffle discard into deck if deck is empty
-      final discardCards = state.playerModel.discardCards.allCards;
-      state.playerModel.deckCards.addCards(discardCards);
-      state.playerModel.discardCards.clearCards();
-      state.playerModel.deckCards.shuffle();
+      state.playerModel.moveDiscardCardsToDeck();
     }
   }
 

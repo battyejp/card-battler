@@ -130,6 +130,95 @@ void main() {
     });
 
     group('drawCardsFromDeck functionality', () {
+      test('draws 5 cards from deck when enough cards available', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: cardSelectionService,
+        );
+
+        expect(playerModel.handCards.cards.length, equals(0));
+        expect(playerModel.deckCards.allCards.length, equals(20));
+
+        playerModel.drawCardsFromDeck();
+
+        expect(playerModel.handCards.cards.length, equals(5));
+        expect(playerModel.deckCards.allCards.length, equals(15));
+      });
+
+      test('reshuffles discard pile when deck has insufficient cards', () {
+        // Create a deck with only 3 cards
+        final smallDeckModel = CardPileModel(cards: _generateCards(3));
+        // Add some cards to discard pile
+        final discardCards = _generateCards(5);
+        testDiscardModel.addCards(discardCards);
+
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: smallDeckModel,
+          discardModel: testDiscardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: cardSelectionService,
+        );
+
+        expect(playerModel.deckCards.allCards.length, equals(3));
+        expect(playerModel.discardCards.allCards.length, equals(5));
+        expect(playerModel.handCards.cards.length, equals(0));
+
+        playerModel.drawCardsFromDeck();
+
+        // Should still draw 5 cards total
+        expect(playerModel.handCards.cards.length, equals(5));
+        // Discard pile should be empty (moved to deck)
+        expect(playerModel.discardCards.allCards.length, equals(0));
+        // Remaining cards in deck should be 3 (original 3 + 5 from discard - 5 drawn)
+        expect(playerModel.deckCards.allCards.length, equals(3));
+      });
+
+      test('does not draw cards when card selection service has selection', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: cardSelectionService,
+        );
+
+        // Simulate card selection service having a selection
+        cardSelectionService.selectCard(CardModel(name: 'Selected Card', type: 'test'));
+        expect(cardSelectionService.hasSelection, isTrue);
+
+        playerModel.drawCardsFromDeck();
+
+        // No cards should be drawn
+        expect(playerModel.handCards.cards.length, equals(0));
+      });
+
+      test('does not draw cards when hand is not empty', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: cardSelectionService,
+        );
+
+        // Add a card to hand first
+        testHandModel.addCards([CardModel(name: 'Existing Card', type: 'test')]);
+        expect(playerModel.handCards.cards.length, equals(1));
+
+        playerModel.drawCardsFromDeck();
+
+        // Should still have only 1 card (no additional cards drawn)
+        expect(playerModel.handCards.cards.length, equals(1));
+      });
+
       test('sets onCardPlayed callback on drawn cards', () {
         final playerModel = PlayerModel(
           infoModel: testInfoModel,
@@ -165,6 +254,28 @@ void main() {
 
         // Should now be in cardsDrawn phase
         expect(gameStateService.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
+      });
+
+      test('does not call GameStateService.nextPhase() when drawing is prevented', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: cardSelectionService,
+        );
+
+        // Add a card to hand to prevent drawing
+        testHandModel.addCards([CardModel(name: 'Existing Card', type: 'test')]);
+
+        // Verify initial state
+        expect(gameStateService.currentPhase, equals(GamePhase.waitingToDrawCards));
+
+        playerModel.drawCardsFromDeck();
+
+        // Phase should not advance when drawing is prevented by existing cards
+        expect(gameStateService.currentPhase, equals(GamePhase.waitingToDrawCards));
       });
 
       test('drawn cards trigger cardPlayed callback when played', () {
@@ -207,6 +318,155 @@ void main() {
         drawnCard.onCardPlayed?.call();
 
         expect(drawnCard.onCardPlayed, isNull);
+      });
+    });
+
+    group('discardHand functionality', () {
+      test('moves all hand cards to discard pile and clears hand', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: cardSelectionService,
+        );
+
+        // Add some cards to hand
+        final handCards = _generateCards(3);
+        testHandModel.addCards(handCards);
+        expect(playerModel.handCards.cards.length, equals(3));
+        expect(playerModel.discardCards.allCards.length, equals(0));
+
+        // Discard hand
+        playerModel.discardHand();
+
+        // Hand should be empty, discard should have the cards
+        expect(playerModel.handCards.cards.length, equals(0));
+        expect(playerModel.discardCards.allCards.length, equals(3));
+      });
+
+      test('sets all hand cards to face down before discarding', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: cardSelectionService,
+        );
+
+        // Add face-up cards to hand
+        final handCards = _generateCards(3);
+        for (final card in handCards) {
+          card.isFaceUp = true;
+        }
+        testHandModel.addCards(handCards);
+
+        // Discard hand
+        playerModel.discardHand();
+
+        // All cards in discard should be face down
+        for (final card in playerModel.discardCards.allCards) {
+          expect(card.isFaceUp, isFalse);
+        }
+      });
+
+      test('handles empty hand gracefully', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: cardSelectionService,
+        );
+
+        // Initially empty hand
+        expect(playerModel.handCards.cards.length, equals(0));
+        expect(playerModel.discardCards.allCards.length, equals(0));
+
+        // Should not throw
+        expect(() => playerModel.discardHand(), returnsNormally);
+
+        // Both should still be empty
+        expect(playerModel.handCards.cards.length, equals(0));
+        expect(playerModel.discardCards.allCards.length, equals(0));
+      });
+    });
+
+    group('moveDiscardCardsToDeck functionality', () {
+      test('moves all discard cards to deck and shuffles', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: cardSelectionService,
+        );
+
+        // Add cards to discard pile
+        final discardCards = _generateCards(5);
+        testDiscardModel.addCards(discardCards);
+        final originalDeckSize = playerModel.deckCards.allCards.length;
+        
+        expect(playerModel.discardCards.allCards.length, equals(5));
+        expect(playerModel.deckCards.allCards.length, equals(originalDeckSize));
+
+        // Move discard to deck
+        playerModel.moveDiscardCardsToDeck();
+
+        // Discard should be empty, deck should have more cards
+        expect(playerModel.discardCards.allCards.length, equals(0));
+        expect(playerModel.deckCards.allCards.length, equals(originalDeckSize + 5));
+        expect(playerModel.discardCards.hasNoCards, isTrue);
+      });
+
+      test('returns early when discard pile is empty', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: cardSelectionService,
+        );
+
+        final originalDeckSize = playerModel.deckCards.allCards.length;
+        expect(playerModel.discardCards.hasNoCards, isTrue);
+
+        // Should not throw and deck size should remain same
+        expect(() => playerModel.moveDiscardCardsToDeck(), returnsNormally);
+        expect(playerModel.deckCards.allCards.length, equals(originalDeckSize));
+      });
+
+      test('shuffles deck after adding discard cards', () {
+        final playerModel = PlayerModel(
+          infoModel: testInfoModel,
+          handModel: testHandModel,
+          deckModel: testDeckModel,
+          discardModel: testDiscardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: cardSelectionService,
+        );
+
+        // Add cards to discard pile with known order
+        final discardCards = [
+          CardModel(name: 'Discard 1', type: 'test'),
+          CardModel(name: 'Discard 2', type: 'test'),
+          CardModel(name: 'Discard 3', type: 'test'),
+        ];
+        testDiscardModel.addCards(discardCards);
+
+        // Move discard to deck
+        playerModel.moveDiscardCardsToDeck();
+
+        // Check that deck was shuffled (cards are still there but order may be different)
+        final deckCards = playerModel.deckCards.allCards;
+        expect(deckCards.any((card) => card.name == 'Discard 1'), isTrue);
+        expect(deckCards.any((card) => card.name == 'Discard 2'), isTrue);
+        expect(deckCards.any((card) => card.name == 'Discard 3'), isTrue);
       });
     });
 

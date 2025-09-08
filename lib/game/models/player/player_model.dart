@@ -46,6 +46,12 @@ class PlayerModel {
 
     final drawnCards = _deckCards.drawCards(cardsToDrawOnTap);
 
+    if (drawnCards.length < cardsToDrawOnTap) {
+      moveDiscardCardsToDeck();
+      final additionalCards = _deckCards.drawCards(cardsToDrawOnTap - drawnCards.length);
+      drawnCards.addAll(additionalCards);
+    }
+
     if (drawnCards.isNotEmpty) {
       for (final card in drawnCards) {
         card.onCardPlayed = () => _onCardPlayed(card);
@@ -54,6 +60,26 @@ class PlayerModel {
     }
 
     _gameStateService?.nextPhase();
+  }
+
+  void discardHand() {
+    for (var card in handCards.cards) {
+      card.isFaceUp = false;
+    }
+
+    _discardCards.addCards(handCards.cards);
+    handCards.clearCards();
+  }
+
+  void moveDiscardCardsToDeck() {
+    if (_discardCards.hasNoCards) {
+      return;
+    }
+
+    final discardCards = _discardCards.allCards;
+    _deckCards.addCards(discardCards);
+    _discardCards.clearCards();
+    _deckCards.shuffle();
   }
 
   void _onCardPlayed(CardModel card) {

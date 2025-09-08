@@ -74,60 +74,6 @@ void main() {
       turnManager = DefaultTurnManager(mockGameStateService);
     });
 
-    group('discardHand', () {
-      test('moves all cards from hand to discard pile', () {
-        final handCards = _generateCards(3, prefix: 'Hand');
-        final initialDiscardCards = _generateCards(2, prefix: 'Discard');
-        final state = _createTestPlayerTurnState(
-          handCards: handCards,
-          discardCards: initialDiscardCards,
-        );
-
-        turnManager.discardHand(state);
-
-        expect(state.playerModel.handCards.cards, isEmpty);
-        expect(state.playerModel.discardCards.cards.length, equals(5));
-        expect(state.playerModel.discardCards.cards, containsAll(handCards));
-        expect(state.playerModel.discardCards.cards, containsAll(initialDiscardCards));
-      });
-
-      test('sets hand cards to face down before discarding', () {
-        final handCards = _generateCards(3, prefix: 'Hand');
-        // Set hand cards to face up (as they would be when drawn)
-        for (final card in handCards) {
-          card.isFaceUp = true;
-        }
-        
-        final state = _createTestPlayerTurnState(
-          handCards: handCards,
-          discardCards: [],
-        );
-
-        turnManager.discardHand(state);
-
-        expect(state.playerModel.handCards.cards, isEmpty);
-        expect(state.playerModel.discardCards.cards.length, equals(3));
-        // Verify all discarded cards are now face down
-        for (final card in state.playerModel.discardCards.cards) {
-          expect(card.isFaceUp, isFalse);
-        }
-      });
-
-      test('handles empty hand gracefully', () {
-        final initialDiscardCards = _generateCards(2, prefix: 'Discard');
-        final state = _createTestPlayerTurnState(
-          handCards: [],
-          discardCards: initialDiscardCards,
-        );
-
-        turnManager.discardHand(state);
-
-        expect(state.playerModel.handCards.cards, isEmpty);
-        expect(state.playerModel.discardCards.cards.length, equals(2));
-        expect(state.playerModel.discardCards.cards, containsAll(initialDiscardCards));
-      });
-    });
-
     group('endTurn', () {
       test('discards hand, refills shop and advances phase when deck has cards', () {
         final handCards = _generateCards(2, prefix: 'Hand');
@@ -308,7 +254,10 @@ void main() {
 
 // Mock classes for testing
 class MockGameStateService implements GameStateService {
+
+  @override
   GamePhase currentPhase = GamePhase.playerTurn;
+
   bool nextPhaseCalled = false;
   bool requestConfirmationCalled = false;
   bool setPhaseCalled = false;
