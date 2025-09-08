@@ -10,6 +10,7 @@ import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/services/card_selection_service.dart';
 import 'package:card_battler/game/services/game_state_service.dart';
 import 'package:card_battler/game/services/card_interaction_service.dart';
+import 'package:card_battler/game/constants/priority_constants.dart';
 
 // Mock TapUpEvent that includes the local position directly
 class MockTapUpEvent extends TapUpEvent {
@@ -356,7 +357,7 @@ void main() {
         final tapEvent = MockTapUpEvent(1, game, Vector2.zero());
         controller.onTapUp(tapEvent);
         
-        expect(card.priority, equals(99999)); // High priority during selection
+        expect(card.priority, equals(PriorityConstants.selectedCard)); // High priority during selection
         
         // Manual cleanup
         cardSelectionService.deselectCard();
@@ -375,7 +376,7 @@ void main() {
         // Complete selection animation
         game.update(1.0);
         
-        expect(card.priority, equals(99999));
+        expect(card.priority, equals(PriorityConstants.selectedCard));
         
         // Deselect card
         cardSelectionService.deselectCard();
