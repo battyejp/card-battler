@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/services/router_service.dart';
 import 'package:card_battler/game/services/game_state_manager.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flame/game.dart';
 import 'package:flame/components.dart';
 
