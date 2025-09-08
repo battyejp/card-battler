@@ -40,13 +40,13 @@ class DefaultTurnManager implements TurnManager {
     state.shopModel.refillShop();
     _gameStateService.nextPhase(); // Should be waitingToDrawCards
 
-    // if (state.playerModel.deckModel.hasNoCards) {
-
-    //   final discardCards = state.playerModel.discardModel.allCards;
-    //   state.playerModel.deckModel.addCards(discardCards);
-    //   state.playerModel.discardModel.clearCards();
-    //   state.playerModel.deckModel.shuffle();
-    // }
+    if (state.playerModel.deckCards.hasNoCards) {
+      // Reshuffle discard into deck if deck is empty
+      final discardCards = state.playerModel.discardCards.allCards;
+      state.playerModel.deckCards.addCards(discardCards);
+      state.playerModel.discardCards.clearCards();
+      state.playerModel.deckCards.shuffle();
+    }
   }
 
   void _handleSwitchToNextPlayer() {
