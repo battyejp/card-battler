@@ -1,4 +1,4 @@
-import 'package:card_battler/game/scenes/enemy_turn_scene.dart';
+import 'package:card_battler/game/components/scenes/enemy_turn_scene.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';

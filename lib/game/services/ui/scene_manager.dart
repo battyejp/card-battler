@@ -1,7 +1,7 @@
 import 'package:card_battler/game/services/ui/router_service.dart';
 import 'package:card_battler/game/services/ui/dialog_manager_service.dart';
 import 'package:card_battler/game/services/turn/game_action_coordinator.dart';
-import 'package:card_battler/game/scenes/player_turn_scene.dart';
+import 'package:card_battler/game/components/scenes/player_turn_scene.dart';
 import 'package:flame/game.dart';
 
 /// Orchestrates scene management by coordinating specialized services

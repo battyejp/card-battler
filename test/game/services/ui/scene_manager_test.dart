@@ -5,7 +5,7 @@ import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/scenes/player_turn_scene.dart';
+import 'package:card_battler/game/components/scenes/player_turn_scene.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
 import 'package:card_battler/game/services/turn/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
