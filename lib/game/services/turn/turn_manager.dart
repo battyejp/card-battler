@@ -45,7 +45,7 @@ class DefaultTurnManager implements TurnManager {
       _sceneManager.playerTurnScene?.addPlayerComponent(newPlayer);
     }
 
-    if (!GameStateFacade.instance.selectedPlayer!.handCards.cards.isNotEmpty) {
+    if (GameStateFacade.instance.selectedPlayer!.handCards.cards.isEmpty) {
       _gameStateService.setPhase(GamePhase.waitingToDrawCards);
     }
     else {
