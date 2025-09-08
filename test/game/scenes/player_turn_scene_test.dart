@@ -3,7 +3,7 @@ import 'package:card_battler/game/models/player/player_turn_state.dart';
 import 'package:card_battler/game/services/turn/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/player/card_hand_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
@@ -74,7 +74,7 @@ PlayerModel _createTestPlayerModel({String name = 'Test Player', bool isActive =
       credits: ValueImageLabelModel(value: 5, label: 'Credits'),
       healthModel: HealthModel(maxHealth: 100),
     ),
-    handModel: CardHandModel(),
+    handModel: CardsModel<CardModel>(),
     deckModel: CardPileModel(cards: _generatePlayerCards(20)),
     discardModel: CardPileModel.empty(),
     gameStateService: DefaultGameStateService(GameStateManager()),

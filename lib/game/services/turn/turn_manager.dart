@@ -26,20 +26,27 @@ class DefaultTurnManager implements TurnManager {
 
   @override
   void discardHand(PlayerTurnState state) {
-    state.playerModel.discardModel.addCards(state.playerModel.handModel.cards);
-    state.playerModel.handModel.clearCards();
+    state.playerModel.discardCards.addCards(state.playerModel.handCards.cards);
+    state.playerModel.handCards.clearCards();
   }
 
   @override
   void endTurn(PlayerTurnState state) {
     //TODO clear coins
     //TODO clear Attack
-    //TODO might need to shuffle discard back into deck
 
     GameStateFacade.instance.selectedPlayer!.turnOver = true;
     discardHand(state);
     state.shopModel.refillShop();
     _gameStateService.nextPhase(); // Should be waitingToDrawCards
+
+    // if (state.playerModel.deckModel.hasNoCards) {
+
+    //   final discardCards = state.playerModel.discardModel.allCards;
+    //   state.playerModel.deckModel.addCards(discardCards);
+    //   state.playerModel.discardModel.clearCards();
+    //   state.playerModel.deckModel.shuffle();
+    // }
   }
 
   void _handleSwitchToNextPlayer() {
@@ -51,7 +58,7 @@ class DefaultTurnManager implements TurnManager {
       _sceneManager.playerTurnScene?.addPlayerComponent(newPlayer);
     }
 
-    if (!GameStateFacade.instance.selectedPlayer!.handModel.cards.isNotEmpty) {
+    if (!GameStateFacade.instance.selectedPlayer!.handCards.cards.isNotEmpty) {
       _gameStateService.setPhase(GamePhase.waitingToDrawCards);
     }
     else {
@@ -60,7 +67,7 @@ class DefaultTurnManager implements TurnManager {
   }
 
   void _handleEndPlayerTurn(PlayerTurnState state) {
-    if (state.playerModel.handModel.cards.isNotEmpty) {
+    if (state.playerModel.handCards.cards.isNotEmpty) {
       _gameStateService.requestConfirmation();
     }
     else {

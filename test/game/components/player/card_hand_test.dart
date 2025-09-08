@@ -1,4 +1,4 @@
-import 'package:card_battler/game/models/player/card_hand_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/components/shared/card/card.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,7 +17,7 @@ void main() {
       
       for (final testCase in testCases) {
         testWithFlameGame('Hand size and position for size ${testCase['size']} pos ${testCase['pos']}', (game) async {
-          final hand = CardHand(CardHandModel())
+          final hand = CardHand(CardsModel<CardModel>())
             ..size = testCase['size'] as Vector2
             ..position = testCase['pos'] as Vector2;
 
@@ -32,7 +32,7 @@ void main() {
 
     group('empty hand display', () {
       testWithFlameGame('displays no cards when hand is empty', (game) async {
-        final model = CardHandModel();
+        final model = CardsModel<CardModel>();
         final hand = CardHand(model)..size = Vector2(300, 150);
 
         await game.ensureAdd(hand);
@@ -42,7 +42,7 @@ void main() {
       });
 
       testWithFlameGame('reactive updates handle empty hand correctly', (game) async {
-        final model = CardHandModel();
+        final model = CardsModel<CardModel>();
         final hand = CardHand(model)..size = Vector2(300, 150);
 
         await game.ensureAdd(hand);
@@ -60,7 +60,7 @@ void main() {
 
     group('card display and layout', () {
       testWithFlameGame('displays cards with correct layout parameters', (game) async {
-        final model = CardHandModel();
+        final model = CardsModel<CardModel>();
         model.addCards([
           CardModel(name: 'Card 1', type: 'Player'),
           CardModel(name: 'Card 2', type: 'Player'),
@@ -84,7 +84,7 @@ void main() {
       });
 
       testWithFlameGame('positions cards with correct spacing', (game) async {
-        final model = CardHandModel();
+        final model = CardsModel<CardModel>();
         model.addCards([
           CardModel(name: 'Card 1', type: 'Player'),
           CardModel(name: 'Card 2', type: 'Player'),
@@ -109,7 +109,7 @@ void main() {
       });
 
       testWithFlameGame('centers cards vertically', (game) async {
-        final model = CardHandModel();
+        final model = CardsModel<CardModel>();
         model.addCard(CardModel(name: 'Test Card', type: 'Player'));
         final hand = CardHand(model)..size = Vector2(400, 200);
 
@@ -125,7 +125,7 @@ void main() {
       });
 
       testWithFlameGame('handles single card layout', (game) async {
-        final model = CardHandModel();
+        final model = CardsModel<CardModel>();
         model.addCard(CardModel(name: 'Single Card', type: 'Player'));
         final hand = CardHand(model)..size = Vector2(300, 150);
 
@@ -148,7 +148,7 @@ void main() {
         ];
 
         for (final testCase in testCases) {
-          final model = CardHandModel();
+          final model = CardsModel<CardModel>();
           final cardCount = testCase['cardCount'] as int;
           
           for (int i = 0; i < cardCount; i++) {
@@ -181,7 +181,7 @@ void main() {
 
     group('reactive updates', () {
       testWithFlameGame('automatically updates card positions after model changes', (game) async {
-        final model = CardHandModel();
+        final model = CardsModel<CardModel>();
         model.addCard(CardModel(name: 'Initial Card', type: 'Player'));
         final hand = CardHand(model)..size = Vector2(400, 200);
 
@@ -202,7 +202,7 @@ void main() {
       });
 
       testWithFlameGame('automatically clears old cards before adding new ones', (game) async {
-        final model = CardHandModel();
+        final model = CardsModel<CardModel>();
         model.addCards([
           CardModel(name: 'Card 1', type: 'Player'),
           CardModel(name: 'Card 2', type: 'Player'),
@@ -225,7 +225,7 @@ void main() {
       });
 
       testWithFlameGame('handles multiple model changes reactively', (game) async {
-        final model = CardHandModel();
+        final model = CardsModel<CardModel>();
         final hand = CardHand(model)..size = Vector2(400, 200);
 
         await game.ensureAdd(hand);
@@ -250,7 +250,7 @@ void main() {
       });
 
       testWithFlameGame('cleans up stream subscription on component removal', (game) async {
-        final model = CardHandModel();
+        final model = CardsModel<CardModel>();
         final hand = CardHand(model)..size = Vector2(400, 200);
 
         await game.ensureAdd(hand);
@@ -270,9 +270,9 @@ void main() {
       });
     });
 
-    group('integration with CardHandModel', () {
+    group('integration with CardsModel<CardModel>', () {
       testWithFlameGame('displays cards from model correctly', (game) async {
-        final model = CardHandModel();
+        final model = CardsModel<CardModel>();
         final testCards = [
           CardModel(name: 'Test Card A', type: 'Player'),
           CardModel(name: 'Test Card B', type: 'Player'),
@@ -294,7 +294,7 @@ void main() {
       });
 
       testWithFlameGame('handles model changes correctly', (game) async {
-        final model = CardHandModel();
+        final model = CardsModel<CardModel>();
         final hand = CardHand(model)..size = Vector2(400, 200);
 
         await game.ensureAdd(hand);

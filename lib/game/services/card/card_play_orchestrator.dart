@@ -25,7 +25,7 @@ class DefaultCardPlayOrchestrator implements CardPlayOrchestrator {
     }
 
     // Move card to discard pile
-    state.playerModel.discardModel.addCard(card);
+    state.playerModel.discardCards.addCard(card);
 
     // Apply card effects through the effect processor
     effectProcessor.applyCardEffects(card, state);
@@ -39,6 +39,6 @@ class DefaultCardPlayOrchestrator implements CardPlayOrchestrator {
 
   void _handlePlayerCard(CardModel card, PlayerTurnState state) {
     // Remove from player's hand
-    state.playerModel.handModel.removeCard(card);
+    state.playerModel.handCards.removeCard(card);
   }
 }

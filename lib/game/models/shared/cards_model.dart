@@ -13,6 +13,9 @@ class CardsModel<T extends CardModel> with ReactiveModel<CardsModel<T>> {
   /// Gets all cards (including defeated ones)
   List<T> get allCards => List.unmodifiable(_cards);
 
+  /// Gets all cards (alias for backward compatibility)
+  List<T> get cards => allCards;
+
   /// Checks if the card pile is empty
   bool get hasNoCards => _cards.isEmpty;
 
@@ -46,6 +49,18 @@ class CardsModel<T extends CardModel> with ReactiveModel<CardsModel<T>> {
 
   void addCards(List<T> cards) {
     _cards.addAll(cards);
+    notifyChange();
+  }
+
+  /// Removes a specific card from the pile
+  void removeCard(T card) {
+    _cards.remove(card);
+    notifyChange();
+  }
+
+  /// Clears all cards from the pile
+  void clearCards() {
+    _cards.clear();
     notifyChange();
   }
 

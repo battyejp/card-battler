@@ -235,7 +235,7 @@ void main() {
         GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
 
         // Note: All players get the same deck cards reference in the current implementation
-        final firstPlayerDeck = GameStateModel.instance.playerTurn.playerModel.deckModel;
+        final firstPlayerDeck = GameStateModel.instance.playerTurn.playerModel.deckCards;
         expect(firstPlayerDeck.allCards.length, equals(playerDeckCards.length));
       });
 

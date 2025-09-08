@@ -10,7 +10,7 @@ import 'package:card_battler/game/models/player/player_turn_state.dart';
 import 'package:card_battler/game/services/turn/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/player/card_hand_model.dart';
+import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
@@ -211,7 +211,7 @@ class MockPlayerTurnScene extends PlayerTurnScene {
                   name: 'Test Player',
                   healthModel: HealthModel(maxHealth: 10),
                 ),
-                handModel: CardHandModel(),
+                handModel: CardsModel<CardModel>(),
                 deckModel: CardPileModel(),
                 discardModel: CardPileModel(),
                 gameStateService: DummyGameStateService(),
