@@ -3,13 +3,13 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 
 /// Service responsible for processing card effects
 /// Follows the Single Responsibility Principle by focusing solely on effect application logic
-abstract class EffectProcessor {
+abstract class PlayerEffectProcessor {
   /// Applies all effects from a card to the game state
   void applyCardEffects(CardModel card, PlayerTurnState state);
 }
 
 /// Default implementation of EffectProcessor
-class DefaultEffectProcessor implements EffectProcessor {
+class DefaultPlayerEffectProcessor implements PlayerEffectProcessor {
   @override
   void applyCardEffects(CardModel card, PlayerTurnState state) {
     for (final effect in card.effects) {

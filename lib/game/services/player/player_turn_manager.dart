@@ -6,7 +6,7 @@ import 'package:card_battler/game/services/ui/scene_manager.dart';
 
 /// Service responsible for managing turn state and transitions
 /// Follows the Single Responsibility Principle by focusing solely on turn management logic
-abstract class TurnManager {
+abstract class PlayerTurnManager {
   /// Ends the current turn and transitions to next phase
   void endTurn(PlayerTurnState state);
   
@@ -15,11 +15,11 @@ abstract class TurnManager {
 }
 
 /// Default implementation of TurnManager
-class DefaultTurnManager implements TurnManager {
+class DefaultPlayerTurnManager implements PlayerTurnManager {
   final GameStateService _gameStateService;
   final SceneManager _sceneManager = SceneManager();
 
-  DefaultTurnManager(this._gameStateService);
+  DefaultPlayerTurnManager(this._gameStateService);
 
   @override
   void endTurn(PlayerTurnState state) {

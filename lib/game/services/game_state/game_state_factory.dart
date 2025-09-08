@@ -1,4 +1,4 @@
-import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
+import 'package:card_battler/game/services/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
@@ -17,7 +17,7 @@ import 'package:card_battler/game/models/player/player_turn_state.dart';
 import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
-import 'package:card_battler/game/services/turn/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/player/player_turn_coordinator.dart';
 
 /// Factory service responsible for creating and initializing game components
 /// Follows the Factory pattern and Single Responsibility Principle by focusing solely on game creation logic
@@ -68,7 +68,7 @@ class GameStateFactory {
     );
 
     // Create enemy turn area
-    final enemyTurnArea = EnemyTurnAreaModel(
+    final enemyTurnArea = EnemyTurnCoordinator(
       enemyCards: CardPileModel(cards: enemyCards),
       playersModel: playersModel,
       gameStateService: gameStateService,
@@ -199,7 +199,7 @@ class GameStateFactory {
 /// This separates the concerns of component storage from creation logic
 class GameStateComponents {
   final PlayerTurnCoordinator playerTurn;
-  final EnemyTurnAreaModel enemyTurnArea;
+  final EnemyTurnCoordinator enemyTurnArea;
   final PlayerModel? selectedPlayer;
   final List<PlayerModel> allPlayers;
 

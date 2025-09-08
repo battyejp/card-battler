@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
+import 'package:card_battler/game/services/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
@@ -34,13 +34,13 @@ PlayerStatsModel _createTestPlayerStats(String name, {bool isActive = false, int
 }
 
 void main() {
-  group('EnemyTurnAreaModel', () {
+  group('EnemyTurnCoordinator', () {
     group('constructor and initialization', () {
       test('creates with required parameters', () {
         final enemyCards = CardPileModel(cards: _generateTestCards(5));
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
         
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -55,7 +55,7 @@ void main() {
         final enemyCards = CardPileModel(cards: _generateTestCards(3));
         final playerStats = [_createTestPlayerStats('Player1')];
         
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -73,7 +73,7 @@ void main() {
           _createTestPlayerStats('Player3'),
         ];
         
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -92,7 +92,7 @@ void main() {
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
         
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -112,7 +112,7 @@ void main() {
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
         
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -135,7 +135,7 @@ void main() {
         final playerStats = [activePlayer, inactivePlayer];
         
         final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -166,7 +166,7 @@ void main() {
         final playerStats = [activePlayer1, activePlayer2, inactivePlayer];
         
         final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -196,7 +196,7 @@ void main() {
         final playerStats = [activePlayer];
         
         final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -229,7 +229,7 @@ void main() {
         final playerStats = [activePlayer];
         
         final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -258,7 +258,7 @@ void main() {
         final playerStats = [activePlayer];
         
         final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -287,7 +287,7 @@ void main() {
         final playerStats = [activePlayer];
         
         final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -326,7 +326,7 @@ void main() {
         final activePlayer = _createTestPlayerStats('Hero', isActive: true, health: 100);
         final playerStats = [activePlayer];
         
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -354,7 +354,7 @@ void main() {
           _createTestPlayerStats('Player2', isActive: false, health: 80),
         ];
         
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -372,7 +372,7 @@ void main() {
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = <PlayerStatsModel>[];
         
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -389,7 +389,7 @@ void main() {
         final playerStats = [activePlayer];
         
         final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -420,7 +420,7 @@ void main() {
         activePlayer.health.changeHealth(-30); // Now at 70/100
         
         final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -448,7 +448,7 @@ void main() {
         final playerStats = [activePlayer];
         
         final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -507,7 +507,7 @@ void main() {
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
         
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: gameStateService,
@@ -541,7 +541,7 @@ void main() {
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
         
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: gameStateService,
@@ -574,7 +574,7 @@ void main() {
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
         
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: gameStateService,
@@ -619,7 +619,7 @@ void main() {
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true, health: 100)];
         
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: gameStateService,
@@ -669,7 +669,7 @@ void main() {
       final playersModel = PlayersModel(players: players);
       final gameStateService = DefaultGameStateService(GameStateManager());
       
-      final enemyTurnArea = EnemyTurnAreaModel(
+      final enemyTurnArea = EnemyTurnCoordinator(
         enemyCards: cardPile,
         playersModel: playersModel,
         gameStateService: gameStateService,
