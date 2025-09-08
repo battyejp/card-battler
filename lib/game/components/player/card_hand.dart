@@ -1,8 +1,8 @@
 import 'package:card_battler/game/components/shared/card/tapable_actionable_card.dart';
 import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/components/shared/reactive_position_component.dart';
-import 'package:card_battler/game/services/card_interaction_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/card/card_interaction_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:flame/components.dart';
 
 class CardHand extends ReactivePositionComponent<CardHandModel> {

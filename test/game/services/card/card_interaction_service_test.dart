@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/services/card_interaction_service.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/card/card_interaction_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 

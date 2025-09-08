@@ -14,9 +14,9 @@ import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 
 List<CardModel> _generateCards(int count) {
   return List.generate(count, (index) => CardModel(

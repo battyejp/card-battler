@@ -2,8 +2,8 @@ import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/services/game_state_facade.dart';
-import 'package:card_battler/game/services/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/game_state/game_state_facade.dart';
+import 'package:card_battler/game/services/turn/player_turn_coordinator.dart';
 
 /// Represents the different phases of the game
 enum GamePhase {

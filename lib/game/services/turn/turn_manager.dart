@@ -1,8 +1,8 @@
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/services/game_state_facade.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/scene_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_facade.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game/services/ui/scene_manager.dart';
 
 /// Service responsible for managing turn state and transitions
 /// Follows the Single Responsibility Principle by focusing solely on turn management logic

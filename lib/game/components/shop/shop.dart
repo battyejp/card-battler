@@ -1,7 +1,7 @@
 import 'package:card_battler/game/components/shared/reactive_position_component.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
-import 'package:card_battler/game/services/card_interaction_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/card/card_interaction_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:flame/components.dart';
 import 'package:card_battler/game/components/shop/shop_card.dart';
 

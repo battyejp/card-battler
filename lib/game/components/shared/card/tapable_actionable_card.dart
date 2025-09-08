@@ -1,7 +1,7 @@
 import 'package:card_battler/game/components/shared/card/actionable_card.dart';
 import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
-import 'package:card_battler/game/services/card_interaction_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/card/card_interaction_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:flame/events.dart';
 
 class TapableActionableCard extends ActionableCard with TapCallbacks {

@@ -2,9 +2,10 @@ import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 
+//TODO break up class
 class PlayerModel {
   final InfoModel _infoModel;
   final CardHandModel _handModel;

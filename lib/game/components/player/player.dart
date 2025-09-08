@@ -3,8 +3,8 @@ import 'package:card_battler/game/components/shared/card/card_pile.dart';
 import 'package:card_battler/game/components/player/card_hand.dart';
 import 'package:card_battler/game/components/player/info.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
-import 'package:card_battler/game/services/card_interaction_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
+import 'package:card_battler/game/services/card/card_interaction_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
@@ -21,7 +21,7 @@ class Player extends PositionComponent {
   late final CardPile _discard;
   late final Info _info;
 
-  // Default constructor for backward compatibility
+  //TODO make services required
   Player({
     required PlayerModel playerModel,
     CardInteractionService? cardInteractionService,

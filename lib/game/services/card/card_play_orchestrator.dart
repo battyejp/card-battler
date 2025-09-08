@@ -1,7 +1,7 @@
 import 'package:card_battler/game/models/player/player_turn_state.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/services/effect_processor.dart';
+import 'package:card_battler/game/services/card/effect_processor.dart';
 
 /// Service responsible for orchestrating card play across different models
 /// Follows the Single Responsibility Principle by focusing solely on coordinating card play logic

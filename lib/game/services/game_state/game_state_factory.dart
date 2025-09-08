@@ -15,10 +15,10 @@ import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
-import 'package:card_battler/game/services/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
+import 'package:card_battler/game/services/turn/player_turn_coordinator.dart';
 
 /// Factory service responsible for creating and initializing game components
 /// Follows the Factory pattern and Single Responsibility Principle by focusing solely on game creation logic

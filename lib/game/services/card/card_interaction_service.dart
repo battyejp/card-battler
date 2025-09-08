@@ -1,6 +1,6 @@
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
 
 /// Service responsible for card interaction business logic
 /// This separates business rules from UI presentation concerns

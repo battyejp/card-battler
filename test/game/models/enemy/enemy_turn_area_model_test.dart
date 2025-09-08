@@ -5,9 +5,9 @@ import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
 
 List<CardModel> _generateTestCards(int count) {
   return List.generate(count, (index) => CardModel(

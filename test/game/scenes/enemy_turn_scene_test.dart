@@ -12,8 +12,8 @@ import 'package:card_battler/game/components/team/players.dart';
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 
 List<CardModel> _generateTestCards(int count) {
   return List.generate(count, (index) => CardModel(

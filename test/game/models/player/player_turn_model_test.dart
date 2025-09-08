@@ -6,7 +6,7 @@ import 'package:card_battler/game/models/player/card_hand_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/services/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/turn/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
@@ -16,10 +16,10 @@ import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
-import 'package:card_battler/game/services/game_state_manager.dart';
-import 'package:card_battler/game/services/game_state_service.dart';
-import 'package:card_battler/game/services/card_selection_service.dart';
-import 'package:card_battler/game/services/game_state_facade.dart';
+import 'package:card_battler/game/services/game_state/game_state_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
+import 'package:card_battler/game/services/game_state/game_state_facade.dart';
 
 void main() {
   group('PlayerTurnCoordinator', () {
