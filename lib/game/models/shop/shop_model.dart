@@ -31,7 +31,6 @@ class ShopModel with ReactiveModel<ShopModel> {
     _selectableCards.addCards(newCards);
   }
 
-  //TODO is this needed, could it just use base
   void _onCardPlayed(ShopCardModel card) {
     card.onCardPlayed = null;
     cardPlayed?.call(card);

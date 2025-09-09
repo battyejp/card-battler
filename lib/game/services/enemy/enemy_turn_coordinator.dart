@@ -71,7 +71,6 @@ class EnemyTurnCoordinator {
     _turnManager.resetTurn();
   }
 
-  // TODO See if these can be removed 
   // Expose state and effect processor for test access
   CardsModel<CardModel> get enemyCards => _state.enemyCards;
   CardsModel<CardModel> get playedCards => _state.playedCards;
