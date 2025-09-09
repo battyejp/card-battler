@@ -1,6 +1,8 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 
+//TODO HandService and ShopCardHandler have similar code, consider refactoring
+
 /// Manages hand card operations
 /// Single responsibility: Hand card management including adding, clearing, and callback setup
 class HandService {
@@ -37,14 +39,26 @@ class HandService {
 
   /// Sets up card played callbacks for cards
   void _setupCardCallbacks(List<CardModel> cards) {
+  if (cards.isEmpty) return;
+
     for (final card in cards) {
       card.onCardPlayed = () => _onCardPlayedInternal(card);
+    }
+  }
+
+ // TODO figure out when this should be called
+  /// Clears callbacks from a list of cards
+  void clearCardCallbacks(List<CardModel> cards) {
+    for (final card in cards) {
+      card.onCardPlayed = null;
     }
   }
 
   /// Internal handler for when a card is played
   void _onCardPlayedInternal(CardModel card) {
     card.onCardPlayed = null;
+
+    //TODO check this is used
     onCardPlayed?.call(card);
   }
 }

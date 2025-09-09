@@ -15,8 +15,6 @@ class PlayerCoordinator {
   final HandService handService;
   final DiscardService discardService;
   
-  static const cardsToDrawOnTap = 5;
-  
   /// Flag to track if turn is over
   bool turnOver = false;
 
@@ -49,16 +47,16 @@ class PlayerCoordinator {
   }
 
   /// Draws cards from deck following game rules
-  void drawCardsFromDeck() {
-    if (_shouldPreventDrawing()) {
+  void drawCardsFromDeck(int numberOfCards) {
+    if (_isDrawingCardsPrevented()) {
       return;
     }
 
-    final drawnCards = deckService.drawCards(cardsToDrawOnTap);
+    final drawnCards = deckService.drawCards(numberOfCards);
 
-    if (drawnCards.length < cardsToDrawOnTap) {
+    if (drawnCards.length < numberOfCards) {
       moveDiscardCardsToDeck();
-      final additionalCards = deckService.drawCards(cardsToDrawOnTap - drawnCards.length);
+      final additionalCards = deckService.drawCards(numberOfCards - drawnCards.length);
       drawnCards.addAll(additionalCards);
     }
 
@@ -87,10 +85,9 @@ class PlayerCoordinator {
   }
 
   /// Checks if drawing should be prevented
-  bool _shouldPreventDrawing() {
-    return (state.cardSelectionService.hasSelection) || handService.hasCards;
+  bool _isDrawingCardsPrevented() {
+    return state.cardSelectionService.hasSelection || handService.hasCards;
   }
-
 
   // Expose state properties for external access
   InfoModel get infoModel => state.infoModel;

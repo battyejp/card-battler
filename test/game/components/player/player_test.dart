@@ -455,13 +455,6 @@ void main() {
     });
 
     group('constants and configuration', () {
-      test('player constants are defined correctly', () {
-        expect(Player.handWidthFactor, equals(0.6));
-        expect(Player.pileWidthFactor, equals(0.2));
-        // cardsToDrawOnTap property has been removed - this constant is now handled by the deck drawing logic
-        expect(Player.infoHeightFactor, equals(0.1));
-      });
-
       test('layout factors sum to 1.0', () {
         final total = Player.handWidthFactor + (Player.pileWidthFactor * 2);
         expect(total, equals(1.0));

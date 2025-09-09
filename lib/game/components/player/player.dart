@@ -11,6 +11,7 @@ class Player extends PositionComponent {
   static const handWidthFactor = 0.6;
   static const pileWidthFactor = (1 - handWidthFactor) / 2;
   static const infoHeightFactor = 0.1;
+  static const cardsToDrawPerTurn = 5;
 
   final PlayerCoordinator _playerModel;
   final CardInteractionService _cardInteractionService;
@@ -33,7 +34,7 @@ class Player extends PositionComponent {
   void onLoad() {
 
     _deck = CardDeck(_playerModel.deckCards, onTap: () => {
-      _playerModel.drawCardsFromDeck(),
+      _playerModel.drawCardsFromDeck(cardsToDrawPerTurn),
     })
       ..size = Vector2(size.x * pileWidthFactor, size.y);
 

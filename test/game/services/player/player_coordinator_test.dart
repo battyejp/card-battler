@@ -156,7 +156,7 @@ void main() {
         expect(playerModel.handCards.cards.length, equals(0));
         expect(playerModel.deckCards.allCards.length, equals(20));
 
-        playerModel.drawCardsFromDeck();
+        playerModel.drawCardsFromDeck(5);
 
         expect(playerModel.handCards.cards.length, equals(5));
         expect(playerModel.deckCards.allCards.length, equals(15));
@@ -184,7 +184,7 @@ void main() {
         expect(playerModel.discardCards.allCards.length, equals(5));
         expect(playerModel.handCards.cards.length, equals(0));
 
-        playerModel.drawCardsFromDeck();
+        playerModel.drawCardsFromDeck(5);
 
         // Should still draw 5 cards total
         expect(playerModel.handCards.cards.length, equals(5));
@@ -210,7 +210,7 @@ void main() {
         cardSelectionService.selectCard(CardModel(name: 'Selected Card', type: 'test'));
         expect(cardSelectionService.hasSelection, isTrue);
 
-        playerModel.drawCardsFromDeck();
+        playerModel.drawCardsFromDeck(5);
 
         // No cards should be drawn
         expect(playerModel.handCards.cards.length, equals(0));
@@ -232,7 +232,7 @@ void main() {
         testHandModel.addCards([CardModel(name: 'Existing Card', type: 'test')]);
         expect(playerModel.handCards.cards.length, equals(1));
 
-        playerModel.drawCardsFromDeck();
+        playerModel.drawCardsFromDeck(5);
 
         // Should still have only 1 card (no additional cards drawn)
         expect(playerModel.handCards.cards.length, equals(1));
@@ -250,7 +250,7 @@ void main() {
           ),
         );
 
-        playerModel.drawCardsFromDeck();
+        playerModel.drawCardsFromDeck(5);
 
         for (final card in playerModel.handCards.cards) {
           expect(card.onCardPlayed, isNotNull);
@@ -273,7 +273,7 @@ void main() {
         expect(gameStateService.currentPhase, equals(GamePhase.waitingToDrawCards));
 
         // Draw cards should trigger phase advancement
-        playerModel.drawCardsFromDeck();
+        playerModel.drawCardsFromDeck(5);
 
         // Should now be in cardsDrawn phase
         expect(gameStateService.currentPhase, equals(GamePhase.cardsDrawnWaitingForEnemyTurn));
@@ -297,7 +297,7 @@ void main() {
         // Verify initial state
         expect(gameStateService.currentPhase, equals(GamePhase.waitingToDrawCards));
 
-        playerModel.drawCardsFromDeck();
+        playerModel.drawCardsFromDeck(5);
 
         // Phase should not advance when drawing is prevented by existing cards
         expect(gameStateService.currentPhase, equals(GamePhase.waitingToDrawCards));
@@ -318,7 +318,7 @@ void main() {
         CardModel? playedCard;
         playerModel.cardPlayed = (card) => playedCard = card;
 
-        playerModel.drawCardsFromDeck();
+        playerModel.drawCardsFromDeck(5);
         
         final drawnCard = playerModel.handCards.cards.first;
         drawnCard.onCardPlayed?.call();
@@ -338,7 +338,7 @@ void main() {
           ),
         );
 
-        playerModel.drawCardsFromDeck();
+        playerModel.drawCardsFromDeck(5);
         
         final drawnCard = playerModel.handCards.cards.first;
         expect(drawnCard.onCardPlayed, isNotNull);

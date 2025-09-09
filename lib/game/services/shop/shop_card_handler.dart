@@ -6,6 +6,14 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 class ShopCardHandler {
   Function(CardModel)? _cardPlayedCallback;
 
+  // TODO figure out when this should be called
+  /// Clears callbacks from a list of cards
+  void clearCardCallbacks(List<ShopCardModel> cards) {
+    for (final card in cards) {
+      card.onCardPlayed = null;
+    }
+  }
+
   /// Sets the callback to be invoked when a card is played
   void setCardPlayedCallback(Function(CardModel)? callback) {
     _cardPlayedCallback = callback;
@@ -24,6 +32,7 @@ class ShopCardHandler {
     card.onCardPlayed = null;
     
     // Notify the external callback if it exists
+    // TODO test this occurs, might be able to delete
     _cardPlayedCallback?.call(card);
   }
 }
