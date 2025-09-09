@@ -1,5 +1,4 @@
 
-import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_state.dart';
@@ -71,15 +70,8 @@ class EnemyTurnCoordinator {
     _turnManager.resetTurn();
   }
 
-  // Expose state properties for backward compatibility
+  // Expose state and effect processor for test access
   CardPileModel get enemyCards => _state.enemyCards;
   CardPileModel get playedCards => _state.playedCards;
   PlayersModel get playersModel => _state.playersModel;
-
-  /// Deprecated method - Use _effectProcessor.processCardEffects instead
-  /// Maintained for backward compatibility
-  @Deprecated('Use EnemyEffectProcessor.processCardEffects instead')
-  void updatePlayersStats(CardModel drawnCard) {
-    _effectProcessor.processCardEffects(drawnCard, _state);
-  }
 }
