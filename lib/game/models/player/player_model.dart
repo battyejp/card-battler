@@ -7,7 +7,7 @@ import 'package:card_battler/game/services/card/card_selection_service.dart';
 /// Simple data holder for player state
 /// Contains only the player components needed without any behavior
 /// This class follows the Single Responsibility Principle by focusing solely on data storage
-class PlayerState {
+class PlayerModel {
   final InfoModel infoModel;
   final CardsModel<CardModel> handCards;
   final CardsModel<CardModel> deckCards;
@@ -15,7 +15,7 @@ class PlayerState {
   final GameStateService gameStateService;
   final CardSelectionService cardSelectionService;
 
-  const PlayerState({
+  const PlayerModel({
     required this.infoModel,
     required this.handCards,
     required this.deckCards,
@@ -24,7 +24,7 @@ class PlayerState {
     required this.cardSelectionService,
   });
 
-  factory PlayerState.create({
+  factory PlayerModel.create({
     required InfoModel infoModel,
     required CardsModel<CardModel> handModel,
     required CardsModel<CardModel> deckModel,
@@ -35,7 +35,7 @@ class PlayerState {
     // Initialize deck with shuffle
     deckModel.shuffle();
     
-    return PlayerState(
+    return PlayerModel(
       infoModel: infoModel,
       handCards: handModel,
       deckCards: deckModel,

@@ -3,7 +3,7 @@ import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/services/player/player_coordinator.dart';
-import 'package:card_battler/game/models/player/player_state.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/team/base_model.dart';
@@ -14,11 +14,11 @@ import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
-import 'package:card_battler/game/services/playerTurn/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/player_turn/player_turn_coordinator.dart';
 
 /// Factory service responsible for creating and initializing game components
 /// Follows the Factory pattern and Single Responsibility Principle by focusing solely on game creation logic
@@ -103,7 +103,7 @@ class GameStateFactory {
       // Create a new copy of the card list for each player to avoid shared references
       final playerDeckCopy = List<CardModel>.from(playerDeckCards.map((card) => card.copy()));
       return PlayerCoordinator.create(
-        state: PlayerState.create(
+        state: PlayerModel.create(
           infoModel: InfoModel(
             name: 'Player $playerNumber',
             attack: ValueImageLabelModel(value: 0, label: 'Attack'),
@@ -130,13 +130,13 @@ class GameStateFactory {
     }).toList();
   }
 
-  PlayerTurnState createPlayerTurnState(
+  PlayerTurnModel createPlayerTurnState(
     PlayerCoordinator activePlayer,
     PlayersModel playersModel,
     List<CardModel> enemyCards,
     List<ShopCardModel> shopCards,
   ) {
-    return PlayerTurnState(
+    return PlayerTurnModel(
       playerModel: activePlayer,
       teamModel: TeamModel(
         bases: BasesModel(

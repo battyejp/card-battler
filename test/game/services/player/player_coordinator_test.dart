@@ -1,7 +1,7 @@
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/services/player/player_coordinator.dart';
-import 'package:card_battler/game/models/player/player_state.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
@@ -49,7 +49,7 @@ void main() {
     group('constructor and initialization', () {
       test('creates with required parameters', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -69,7 +69,7 @@ void main() {
     group('property getters', () {
       test('infoModel getter returns correct InfoModel', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -88,7 +88,7 @@ void main() {
 
       test('handModel getter returns correct CardsModel<CardModel>', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -105,7 +105,7 @@ void main() {
 
       test('deckModel getter returns correct CardsModel<CardModel>', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -123,7 +123,7 @@ void main() {
 
       test('discardModel getter returns correct CardsModel<CardModel>', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -143,7 +143,7 @@ void main() {
     group('drawCardsFromDeck functionality', () {
       test('draws 5 cards from deck when enough cards available', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -170,7 +170,7 @@ void main() {
         testDiscardModel.addCards(discardCards);
 
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: smallDeckModel,
@@ -196,7 +196,7 @@ void main() {
 
       test('does not draw cards when card selection service has selection', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -218,7 +218,7 @@ void main() {
 
       test('does not draw cards when hand is not empty', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -240,7 +240,7 @@ void main() {
 
       test('sets onCardPlayed callback on drawn cards', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -259,7 +259,7 @@ void main() {
 
       test('calls GameStateService.nextPhase() after drawing cards', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -281,7 +281,7 @@ void main() {
 
       test('does not call GameStateService.nextPhase() when drawing is prevented', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -305,7 +305,7 @@ void main() {
 
       test('drawn cards trigger cardPlayed callback when played', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -328,7 +328,7 @@ void main() {
 
       test('onCardPlayed callback is cleared after card is played', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -353,7 +353,7 @@ void main() {
     group('discardHand functionality', () {
       test('moves all hand cards to discard pile and clears hand', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -379,7 +379,7 @@ void main() {
 
       test('sets all hand cards to face down before discarding', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -407,7 +407,7 @@ void main() {
 
       test('handles empty hand gracefully', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -433,7 +433,7 @@ void main() {
     group('moveDiscardCardsToDeck functionality', () {
       test('moves all discard cards to deck and shuffles', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -462,7 +462,7 @@ void main() {
 
       test('returns early when discard pile is empty', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -482,7 +482,7 @@ void main() {
 
       test('shuffles deck after adding discard cards', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -514,7 +514,7 @@ void main() {
     group('cardPlayed callback functionality', () {
       test('cardPlayed callback can be set and called', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,
@@ -535,7 +535,7 @@ void main() {
 
       test('multiple cards can be played through callback', () {
         final playerModel = PlayerCoordinator.create(
-          state: PlayerState.create(
+          state: PlayerModel.create(
             infoModel: testInfoModel,
             handModel: testHandModel,
             deckModel: testDeckModel,

@@ -5,7 +5,7 @@ import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/game_state/game_state_factory.dart';
 import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
-import 'package:card_battler/game/services/playerTurn/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/player_turn/player_turn_coordinator.dart';
 
 /// Facade that provides a clean, simplified API for accessing game state
 /// Follows the Facade pattern and Single Responsibility Principle by managing access to game components

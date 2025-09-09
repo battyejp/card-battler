@@ -1,7 +1,7 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/player/player_state.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/services/player/deck_service.dart';
 import 'package:card_battler/game/services/player/hand_service.dart';
 import 'package:card_battler/game/services/player/discard_service.dart';
@@ -10,7 +10,7 @@ import 'package:card_battler/game/services/player/discard_service.dart';
 /// Single responsibility: Coordination and orchestration of player game flow
 /// Delegates specific card management tasks to specialized services following SRP
 class PlayerCoordinator {
-  final PlayerState state;
+  final PlayerModel state;
   final DeckService deckService;
   final HandService handService;
   final DiscardService discardService;
@@ -34,7 +34,7 @@ class PlayerCoordinator {
   Function(CardModel)? cardPlayed;
 
   factory PlayerCoordinator.create({
-    required PlayerState state,
+    required PlayerModel state,
   }) {
     final deckService = DeckService(deckCards: state.deckCards);
     final handService = HandService(handCards: state.handCards);

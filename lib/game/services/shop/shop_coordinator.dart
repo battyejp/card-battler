@@ -1,13 +1,13 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/reactive_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/models/shop/shop_state.dart';
+import 'package:card_battler/game/models/shop/shop_model.dart';
 
 /// Coordinator service that manages shop operations
 /// This replaces the business logic from ShopModel and delegates responsibilities to specialized services
 /// Follows the Single Responsibility Principle by focusing on coordination rather than implementation
 class ShopCoordinator with ReactiveModel<ShopCoordinator> {
-  final ShopState state;
+  final ShopModel state;
 
   /// External callback for when cards are played
   Function(CardModel)? cardPlayed;
@@ -32,7 +32,7 @@ class ShopCoordinator with ReactiveModel<ShopCoordinator> {
     required int numberOfColumns,
     required List<ShopCardModel> cards,
   }) {
-    final state = ShopState.create(
+    final state = ShopModel.create(
       numberOfRows: numberOfRows,
       numberOfColumns: numberOfColumns,
       cards: cards,

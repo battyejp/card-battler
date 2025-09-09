@@ -7,9 +7,9 @@ import 'package:card_battler/game/services/game_state/game_state_facade.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/services/player/player_coordinator.dart';
-import 'package:card_battler/game/models/player/player_state.dart';
-import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/services/playerTurn/player_turn_coordinator.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/services/player_turn/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
@@ -48,7 +48,7 @@ void main() {
       final discardModel = CardsModel<CardModel>.empty();
 
       playerModel = PlayerCoordinator.create(
-        state: PlayerState.create(
+        state: PlayerModel.create(
           infoModel: infoModel,
           handModel: handModel,
           deckModel: deckModel,
@@ -76,7 +76,7 @@ void main() {
       );
 
       final gameStateService = DefaultGameStateService(gameStateManager);
-      final playerTurnState = PlayerTurnState(
+      final playerTurnState = PlayerTurnModel(
         playerModel: playerModel,
         teamModel: teamModel,
         enemiesModel: enemiesModel,

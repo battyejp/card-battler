@@ -1,5 +1,5 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/enemy/enemy_turn_state.dart';
+import 'package:card_battler/game/models/enemy/enemy_turn_model.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 
@@ -7,13 +7,13 @@ import 'package:card_battler/game/models/team/players_model.dart';
 /// Follows the Single Responsibility Principle by focusing solely on effect processing logic
 abstract class EnemyEffectProcessor {
   /// Applies all effects from an enemy card to the players
-  void processCardEffects(CardModel card, EnemyTurnState state);
+  void processCardEffects(CardModel card, EnemyTurnModel state);
 }
 
 /// Default implementation of EnemyEffectProcessor
 class DefaultEnemyEffectProcessor implements EnemyEffectProcessor {
   @override
-  void processCardEffects(CardModel card, EnemyTurnState state) {
+  void processCardEffects(CardModel card, EnemyTurnModel state) {
     for (var effect in card.effects) {
       _processEffect(effect, state.playersModel);
     }

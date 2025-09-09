@@ -1,5 +1,5 @@
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:card_battler/game/services/game_state/game_state_facade.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 import 'package:card_battler/game/services/ui/scene_manager.dart';
@@ -8,10 +8,10 @@ import 'package:card_battler/game/services/ui/scene_manager.dart';
 /// Follows the Single Responsibility Principle by focusing solely on turn management logic
 abstract class PlayerTurnManager {
   /// Ends the current turn and transitions to next phase
-  void endTurn(PlayerTurnState state);
+  void endTurn(PlayerTurnModel state);
   
   /// Handles turn button press logic based on current game state
-  void handleTurnButtonPress(PlayerTurnState state);
+  void handleTurnButtonPress(PlayerTurnModel state);
 }
 
 /// Default implementation of TurnManager
@@ -22,7 +22,7 @@ class DefaultPlayerTurnManager implements PlayerTurnManager {
   DefaultPlayerTurnManager(this._gameStateService);
 
   @override
-  void endTurn(PlayerTurnState state) {
+  void endTurn(PlayerTurnModel state) {
     //TODO clear coins
     //TODO clear Attack
 
@@ -53,7 +53,7 @@ class DefaultPlayerTurnManager implements PlayerTurnManager {
     }
   }
 
-  void _handleEndPlayerTurn(PlayerTurnState state) {
+  void _handleEndPlayerTurn(PlayerTurnModel state) {
     if (state.playerModel.handCards.cards.isNotEmpty) {
       _gameStateService.requestConfirmation();
     }
@@ -63,7 +63,7 @@ class DefaultPlayerTurnManager implements PlayerTurnManager {
   }
 
   @override
-  void handleTurnButtonPress(PlayerTurnState state) {
+  void handleTurnButtonPress(PlayerTurnModel state) {
     switch (_gameStateService.currentPhase) { //currentPhase is the last state as it is about to change
       case GamePhase.playerTurn:
         _handleEndPlayerTurn(state);

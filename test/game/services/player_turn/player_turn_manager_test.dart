@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/services/playerTurn/player_turn_manager.dart';
+import 'package:card_battler/game/services/player_turn/player_turn_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:card_battler/game/services/player/player_coordinator.dart';
-import 'package:card_battler/game/models/player/player_state.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
@@ -26,13 +26,13 @@ List<CardModel> _generateCards(int count, {String prefix = 'Card'}) {
   ));
 }
 
-PlayerTurnState _createTestPlayerTurnState({
+PlayerTurnModel _createTestPlayerTurnState({
   List<CardModel>? handCards,
   List<CardModel>? deckCards,
   List<CardModel>? discardCards,
 }) {
   final player = PlayerCoordinator.create(
-    state: PlayerState.create(
+    state: PlayerModel.create(
       infoModel: InfoModel(
         attack: ValueImageLabelModel(value: 0, label: 'Attack'),
         credits: ValueImageLabelModel(value: 0, label: 'Credits'),
@@ -47,7 +47,7 @@ PlayerTurnState _createTestPlayerTurnState({
     ),
   );
 
-  return PlayerTurnState(
+  return PlayerTurnModel(
     playerModel: player,
     teamModel: TeamModel(
       bases: BasesModel(bases: []),

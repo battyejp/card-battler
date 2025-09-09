@@ -1,9 +1,9 @@
 import 'package:card_battler/game/components/scenes/player_turn_scene.dart';
-import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
-import 'package:card_battler/game/services/playerTurn/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/player_turn/player_turn_coordinator.dart';
 import 'package:card_battler/game/services/player/player_coordinator.dart';
-import 'package:card_battler/game/models/player/player_state.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
@@ -69,7 +69,7 @@ List<ShopCardModel> _generateShopCards(int count) {
 
 PlayerCoordinator _createTestPlayerModel({String name = 'Test Player', bool isActive = true}) {
   return PlayerCoordinator.create(
-    state: PlayerState.create(
+    state: PlayerModel.create(
       infoModel: InfoModel(
         name: name,
         attack: ValueImageLabelModel(value: 10, label: 'Attack'),
@@ -134,7 +134,7 @@ PlayerTurnCoordinator _createTestPlayerTurnModel({
   ShopCoordinator? shopModel,
 }) {
   final gameStateService = DefaultGameStateService(GameStateManager());
-  final state = PlayerTurnState(
+  final state = PlayerTurnModel(
     playerModel: playerModel ?? _createTestPlayerModel(),
     teamModel: teamModel ?? _createTestTeamModel(),
     enemiesModel: enemiesModel ?? _createTestEnemiesModel(),

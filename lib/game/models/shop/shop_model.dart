@@ -7,20 +7,20 @@ import 'package:card_battler/game/services/shop/shop_card_handler.dart';
 /// Simple data holder for shop state
 /// Contains only the shop services needed without any behavior
 /// This class follows the Single Responsibility Principle by focusing solely on data storage
-class ShopState {
+class ShopModel {
   final ShopInventory inventory;
   final ShopDisplay display;
   final ShopLayout layout;
   final ShopCardHandler cardHandler;
 
-  ShopState({
+  ShopModel({
     required this.inventory,
     required this.display, 
     required this.layout,
     required this.cardHandler,
   });
 
-  factory ShopState.create({
+  factory ShopModel.create({
     required int numberOfRows,
     required int numberOfColumns,
     required List<ShopCardModel> cards,
@@ -30,7 +30,7 @@ class ShopState {
     final layout = ShopLayout(numberOfRows: numberOfRows, numberOfColumns: numberOfColumns);
     final cardHandler = ShopCardHandler();
     
-    return ShopState(
+    return ShopModel(
       inventory: inventory,
       display: display,
       layout: layout,
