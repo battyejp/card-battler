@@ -3,13 +3,13 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 
 /// Service responsible for processing card effects
 /// Follows the Single Responsibility Principle by focusing solely on effect application logic
-abstract class EffectProcessor {
+abstract class PlayerEffectProcessor {
   /// Applies all effects from a card to the game state
   void applyCardEffects(CardModel card, PlayerTurnState state);
 }
 
 /// Default implementation of EffectProcessor
-class DefaultEffectProcessor implements EffectProcessor {
+class DefaultPlayerEffectProcessor implements PlayerEffectProcessor {
   @override
   void applyCardEffects(CardModel card, PlayerTurnState state) {
     for (final effect in card.effects) {
@@ -34,13 +34,9 @@ class DefaultEffectProcessor implements EffectProcessor {
   }
 
   void _handleAttackEffect(EffectModel effect, PlayerTurnState state) {
-    // TODO: Implement attack effect handling
-    // This would involve determining targets and applying damage
   }
 
   void _handleHealEffect(EffectModel effect, PlayerTurnState state) {
-    // TODO: Implement heal effect handling
-    // This would involve determining targets and applying healing
   }
 
   void _handleCreditsEffect(EffectModel effect, PlayerTurnState state) {
@@ -48,12 +44,8 @@ class DefaultEffectProcessor implements EffectProcessor {
   }
 
   void _handleDamageLimitEffect(EffectModel effect, PlayerTurnState state) {
-    // TODO: Implement damage limit effect handling
-    // This would involve setting damage reduction/caps
   }
 
   void _handleDrawCardEffect(EffectModel effect, PlayerTurnState state) {
-    // TODO: Implement draw card effect handling
-    // This would involve moving cards from deck to hand
   }
 }

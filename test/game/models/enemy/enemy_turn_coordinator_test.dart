@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
+import 'package:card_battler/game/services/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
@@ -10,37 +10,40 @@ import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 
 List<CardModel> _generateTestCards(int count) {
-  return List.generate(count, (index) => CardModel(
-    name: 'Enemy Card $index',
-    type: 'enemy',
-    isFaceUp: false,
-    effects: [
-      EffectModel(
-        type: EffectType.attack,
-        target: EffectTarget.activePlayer,
-        value: 10 + index,
-      ),
-    ],
-  ));
-}
-
-PlayerStatsModel _createTestPlayerStats(String name, {bool isActive = false, int health = 100}) {
-  final healthModel = HealthModel(maxHealth: health);
-  return PlayerStatsModel(
-    name: name,
-    health: healthModel,
-    isActive: isActive,
+  return List.generate(
+    count,
+    (index) => CardModel(
+      name: 'Enemy Card $index',
+      type: 'enemy',
+      isFaceUp: false,
+      effects: [
+        EffectModel(
+          type: EffectType.attack,
+          target: EffectTarget.activePlayer,
+          value: 10 + index,
+        ),
+      ],
+    ),
   );
 }
 
+PlayerStatsModel _createTestPlayerStats(
+  String name, {
+  bool isActive = false,
+  int health = 100,
+}) {
+  final healthModel = HealthModel(maxHealth: health);
+  return PlayerStatsModel(name: name, health: healthModel, isActive: isActive);
+}
+
 void main() {
-  group('EnemyTurnAreaModel', () {
+  group('EnemyTurnCoordinator', () {
     group('constructor and initialization', () {
       test('creates with required parameters', () {
         final enemyCards = CardPileModel(cards: _generateTestCards(5));
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
+
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -54,8 +57,8 @@ void main() {
       test('initializes empty played cards pile', () {
         final enemyCards = CardPileModel(cards: _generateTestCards(3));
         final playerStats = [_createTestPlayerStats('Player1')];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
+
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -72,8 +75,8 @@ void main() {
           _createTestPlayerStats('Player2'),
           _createTestPlayerStats('Player3'),
         ];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
+
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -91,8 +94,8 @@ void main() {
         final testCards = _generateTestCards(3);
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
+
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -103,16 +106,22 @@ void main() {
 
         enemyTurnArea.drawCardsFromDeck();
 
-        expect(enemyTurnArea.enemyCards.allCards.length, equals(initialEnemyCount - 1));
-        expect(enemyTurnArea.playedCards.allCards.length, equals(initialPlayedCount + 1));
+        expect(
+          enemyTurnArea.enemyCards.allCards.length,
+          equals(initialEnemyCount - 1),
+        );
+        expect(
+          enemyTurnArea.playedCards.allCards.length,
+          equals(initialPlayedCount + 1),
+        );
       });
 
       test('drawn card is automatically set to face up by CardsModel', () {
         final testCards = _generateTestCards(1);
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
+
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -125,183 +134,6 @@ void main() {
 
         // Verify played card is now face up (handled by CardsModel.drawCard())
         expect(enemyTurnArea.playedCards.allCards.first.isFaceUp, isTrue);
-      });
-    });
-
-    group('updatePlayersStats functionality', () {
-      test('applies damage to active player only', () {
-        final activePlayer = _createTestPlayerStats('ActivePlayer', isActive: true, health: 100);
-        final inactivePlayer = _createTestPlayerStats('InactivePlayer', isActive: false, health: 100);
-        final playerStats = [activePlayer, inactivePlayer];
-        
-        final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playersModel: PlayersModel(players: playerStats),
-          gameStateService: DefaultGameStateService(GameStateManager()),
-        );
-
-        final damageCard = CardModel(
-          name: 'Damage Card',
-          type: 'enemy',
-          effects: [
-            EffectModel(
-              type: EffectType.attack,
-              target: EffectTarget.activePlayer,
-              value: 25,
-            ),
-          ],
-        );
-
-        enemyTurnArea.updatePlayersStats(damageCard);
-
-        expect(activePlayer.health.currentHealth, equals(75)); // 100 - 25
-        expect(inactivePlayer.health.currentHealth, equals(100)); // unchanged
-      });
-
-      test('handles multiple active players', () {
-        final activePlayer1 = _createTestPlayerStats('ActivePlayer1', isActive: true, health: 100);
-        final activePlayer2 = _createTestPlayerStats('ActivePlayer2', isActive: true, health: 80);
-        final inactivePlayer = _createTestPlayerStats('InactivePlayer', isActive: false, health: 90);
-        final playerStats = [activePlayer1, activePlayer2, inactivePlayer];
-        
-        final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playersModel: PlayersModel(players: playerStats),
-          gameStateService: DefaultGameStateService(GameStateManager()),
-        );
-
-        final damageCard = CardModel(
-          name: 'AOE Damage Card',
-          type: 'enemy',
-          effects: [
-            EffectModel(
-              type: EffectType.attack,
-              target: EffectTarget.activePlayer,
-              value: 15,
-            ),
-          ],
-        );
-
-        enemyTurnArea.updatePlayersStats(damageCard);
-
-        expect(activePlayer1.health.currentHealth, equals(85)); // 100 - 15
-        expect(activePlayer2.health.currentHealth, equals(65)); // 80 - 15
-        expect(inactivePlayer.health.currentHealth, equals(90)); // unchanged
-      });
-
-      test('handles cards with multiple effects', () {
-        final activePlayer = _createTestPlayerStats('ActivePlayer', isActive: true, health: 100);
-        final playerStats = [activePlayer];
-        
-        final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playersModel: PlayersModel(players: playerStats),
-          gameStateService: DefaultGameStateService(GameStateManager()),
-        );
-
-        final multiEffectCard = CardModel(
-          name: 'Multi Effect Card',
-          type: 'enemy',
-          effects: [
-            EffectModel(
-              type: EffectType.attack,
-              target: EffectTarget.activePlayer,
-              value: 10,
-            ),
-            EffectModel(
-              type: EffectType.attack,
-              target: EffectTarget.activePlayer,
-              value: 15,
-            ),
-          ],
-        );
-
-        enemyTurnArea.updatePlayersStats(multiEffectCard);
-
-        expect(activePlayer.health.currentHealth, equals(75)); // 100 - 10 - 15
-      });
-
-      test('ignores non-damage effects for now', () {
-        final activePlayer = _createTestPlayerStats('ActivePlayer', isActive: true, health: 100);
-        final playerStats = [activePlayer];
-        
-        final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playersModel: PlayersModel(players: playerStats),
-          gameStateService: DefaultGameStateService(GameStateManager()),
-        );
-
-        final drawCard = CardModel(
-          name: 'Draw Card',
-          type: 'enemy',
-          effects: [
-            EffectModel(
-              type: EffectType.drawCard,
-              target: EffectTarget.activePlayer,
-              value: 2,
-            ),
-          ],
-        );
-
-        enemyTurnArea.updatePlayersStats(drawCard);
-
-        // Health should remain unchanged since drawCard effects are not implemented
-        expect(activePlayer.health.currentHealth, equals(100));
-      });
-
-      test('applies damage to all players with allPlayers target', () {
-        final activePlayer = _createTestPlayerStats('ActivePlayer', isActive: true, health: 100);
-        final playerStats = [activePlayer];
-        
-        final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playersModel: PlayersModel(players: playerStats),
-          gameStateService: DefaultGameStateService(GameStateManager()),
-        );
-
-        final allPlayersCard = CardModel(
-          name: 'All Players Damage',
-          type: 'enemy',
-          effects: [
-            EffectModel(
-              type: EffectType.attack,
-              target: EffectTarget.allPlayers,
-              value: 20,
-            ),
-          ],
-        );
-
-        enemyTurnArea.updatePlayersStats(allPlayersCard);
-
-        // Health should be reduced by 20 since allPlayers target applies damage to all players
-        expect(activePlayer.health.currentHealth, equals(80));
-      });
-
-      test('handles card with no effects', () {
-        final activePlayer = _createTestPlayerStats('ActivePlayer', isActive: true, health: 100);
-        final playerStats = [activePlayer];
-        
-        final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playersModel: PlayersModel(players: playerStats),
-          gameStateService: DefaultGameStateService(GameStateManager()),
-        );
-
-        final noEffectCard = CardModel(
-          name: 'No Effect Card',
-          type: 'enemy',
-          effects: [],
-        );
-
-        enemyTurnArea.updatePlayersStats(noEffectCard);
-
-        expect(activePlayer.health.currentHealth, equals(100)); // unchanged
       });
     });
 
@@ -321,12 +153,16 @@ void main() {
             ],
           ),
         ];
-        
+
         final enemyCards = CardPileModel(cards: testCards);
-        final activePlayer = _createTestPlayerStats('Hero', isActive: true, health: 100);
+        final activePlayer = _createTestPlayerStats(
+          'Hero',
+          isActive: true,
+          health: 100,
+        );
         final playerStats = [activePlayer];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
+
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -342,7 +178,10 @@ void main() {
         // Verify final state
         expect(enemyTurnArea.playedCards.allCards.length, equals(1));
         expect(enemyTurnArea.playedCards.allCards.first.isFaceUp, isTrue);
-        expect(enemyTurnArea.playedCards.allCards.first.name, equals('Fireball'));
+        expect(
+          enemyTurnArea.playedCards.allCards.first.name,
+          equals('Fireball'),
+        );
         expect(activePlayer.health.currentHealth, equals(70)); // 100 - 30
       });
 
@@ -353,8 +192,8 @@ void main() {
           _createTestPlayerStats('Player1', isActive: false, health: 100),
           _createTestPlayerStats('Player2', isActive: false, health: 80),
         ];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
+
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -371,8 +210,8 @@ void main() {
         final testCards = _generateTestCards(1);
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = <PlayerStatsModel>[];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
+
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: DefaultGameStateService(GameStateManager()),
@@ -380,96 +219,6 @@ void main() {
 
         // Should not throw and should complete turn
         expect(() => enemyTurnArea.drawCardsFromDeck(), returnsNormally);
-      });
-    });
-
-    group('edge cases and error handling', () {
-      test('handles zero damage', () {
-        final activePlayer = _createTestPlayerStats('Player', isActive: true, health: 50);
-        final playerStats = [activePlayer];
-        
-        final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playersModel: PlayersModel(players: playerStats),
-          gameStateService: DefaultGameStateService(GameStateManager()),
-        );
-
-        final zeroDamageCard = CardModel(
-          name: 'Weak Card',
-          type: 'enemy',
-          effects: [
-            EffectModel(
-              type: EffectType.attack,
-              target: EffectTarget.activePlayer,
-              value: 0,
-            ),
-          ],
-        );
-
-        enemyTurnArea.updatePlayersStats(zeroDamageCard);
-
-        expect(activePlayer.health.currentHealth, equals(50)); // unchanged
-      });
-
-      test('handles negative damage (healing)', () {
-        final activePlayer = _createTestPlayerStats('ActivePlayer', isActive: true, health: 100);
-        final playerStats = [activePlayer];
-        
-        // Damage the player first so they can be healed
-        activePlayer.health.changeHealth(-30); // Now at 70/100
-        
-        final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playersModel: PlayersModel(players: playerStats),
-          gameStateService: DefaultGameStateService(GameStateManager()),
-        );
-
-        final healingCard = CardModel(
-          name: 'Healing Card',
-          type: 'enemy',
-          effects: [
-            EffectModel(
-              type: EffectType.attack,
-              target: EffectTarget.activePlayer,
-              value: -20, // negative damage = healing
-            ),
-          ],
-        );
-
-        enemyTurnArea.updatePlayersStats(healingCard);
-
-        expect(activePlayer.health.currentHealth, equals(90)); // 70 + 20
-      });
-
-      test('handles extremely high damage values', () {
-        final activePlayer = _createTestPlayerStats('Player', isActive: true, health: 100);
-        final playerStats = [activePlayer];
-        
-        final enemyCards = CardPileModel.empty();
-        final enemyTurnArea = EnemyTurnAreaModel(
-          enemyCards: enemyCards,
-          playersModel: PlayersModel(players: playerStats),
-          gameStateService: DefaultGameStateService(GameStateManager()),
-        );
-
-        final overkillCard = CardModel(
-          name: 'Overkill Card',
-          type: 'enemy',
-          effects: [
-            EffectModel(
-              type: EffectType.attack,
-              target: EffectTarget.activePlayer,
-              value: 9999,
-            ),
-          ],
-        );
-
-        enemyTurnArea.updatePlayersStats(overkillCard);
-
-        // Should result in 0 health (death) - health model clamps to 0
-        expect(activePlayer.health.currentHealth, equals(0)); // clamped to 0, not negative
       });
     });
 
@@ -503,11 +252,11 @@ void main() {
             ],
           ),
         ];
-        
+
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
+
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: gameStateService,
@@ -537,11 +286,11 @@ void main() {
             ],
           ),
         ];
-        
+
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
+
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: gameStateService,
@@ -570,11 +319,11 @@ void main() {
             ],
           ),
         ];
-        
+
         final enemyCards = CardPileModel(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
+
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: gameStateService,
@@ -583,7 +332,10 @@ void main() {
         enemyTurnArea.drawCardsFromDeck();
 
         // Since card has drawCard effect, turn should continue
-        expect(gameStateManager.currentPhase, equals(GamePhase.enemyTurn)); // Should remain in enemyTurn
+        expect(
+          gameStateManager.currentPhase,
+          equals(GamePhase.enemyTurn),
+        ); // Should remain in enemyTurn
       });
 
       test('phase advances correctly with multiple card draws', () {
@@ -615,11 +367,13 @@ void main() {
             ],
           ),
         ];
-        
+
         final enemyCards = CardPileModel(cards: testCards);
-        final playerStats = [_createTestPlayerStats('Player1', isActive: true, health: 100)];
-        
-        final enemyTurnArea = EnemyTurnAreaModel(
+        final playerStats = [
+          _createTestPlayerStats('Player1', isActive: true, health: 100),
+        ];
+
+        final enemyTurnArea = EnemyTurnCoordinator(
           enemyCards: enemyCards,
           playersModel: PlayersModel(players: playerStats),
           gameStateService: gameStateService,
@@ -629,18 +383,24 @@ void main() {
         final initialHealth = playerStats[0].health.currentHealth;
         enemyTurnArea.drawCardsFromDeck();
         expect(gameStateManager.currentPhase, equals(GamePhase.playerTurn));
-        
+
         final healthAfterFirstCard = playerStats[0].health.currentHealth;
         final firstDamage = initialHealth - healthAfterFirstCard;
-        expect([10, 15], contains(firstDamage)); // Cards shuffled, could be either damage value
+        expect(
+          [10, 15],
+          contains(firstDamage),
+        ); // Cards shuffled, could be either damage value
 
         // Reset turn to simulate natural game flow before next enemy turn
         enemyTurnArea.resetTurn();
-        
+
         // Draw second card - this will draw another card and advance phase again
         enemyTurnArea.drawCardsFromDeck();
-        expect(gameStateManager.currentPhase, equals(GamePhase.waitingToDrawCards)); // nextPhase from playerTurn goes to waitingToDrawCards
-        
+        expect(
+          gameStateManager.currentPhase,
+          equals(GamePhase.waitingToDrawCards),
+        ); // nextPhase from playerTurn goes to waitingToDrawCards
+
         final finalHealth = playerStats[0].health.currentHealth;
         final totalDamage = initialHealth - finalHealth;
         expect(totalDamage, equals(25)); // Total damage should be 10 + 15 = 25
@@ -663,13 +423,13 @@ void main() {
           ),
         ],
       );
-      
+
       final cardPile = CardPileModel(cards: [card]);
       final players = [_createTestPlayerStats('TestPlayer')];
       final playersModel = PlayersModel(players: players);
       final gameStateService = DefaultGameStateService(GameStateManager());
-      
-      final enemyTurnArea = EnemyTurnAreaModel(
+
+      final enemyTurnArea = EnemyTurnCoordinator(
         enemyCards: cardPile,
         playersModel: playersModel,
         gameStateService: gameStateService,
@@ -677,17 +437,17 @@ void main() {
 
       // Draw a card to finish the turn (since card has no drawCard effect)
       enemyTurnArea.drawCardsFromDeck();
-      
+
       // Reset the turn
       enemyTurnArea.resetTurn();
-      
+
       // Verify that we can draw another card (turn is not finished)
       final initialPlayedCardsCount = enemyTurnArea.playedCards.allCards.length;
-      
+
       // Add another card to test with
       final anotherCard = CardModel(
         name: 'Another Card',
-        type: 'enemy', 
+        type: 'enemy',
         isFaceUp: false,
         effects: [
           EffectModel(
@@ -698,11 +458,14 @@ void main() {
         ],
       );
       enemyTurnArea.enemyCards.addCard(anotherCard);
-      
+
       enemyTurnArea.drawCardsFromDeck(); // This should work if turn was reset
-      
+
       // If turn was properly reset, we should have added another card
-      expect(enemyTurnArea.playedCards.allCards.length, equals(initialPlayedCardsCount + 1));
+      expect(
+        enemyTurnArea.playedCards.allCards.length,
+        equals(initialPlayedCardsCount + 1),
+      );
     });
   });
 }

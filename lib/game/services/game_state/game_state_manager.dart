@@ -2,7 +2,6 @@ import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/game_state/game_state_facade.dart';
 import 'package:flutter/foundation.dart';
 
-//TODO lots of methods not used
 /// Dedicated service for managing game state transitions and phase management
 /// This extracts state management concerns from the GameStateModel singleton
 class GameStateManager {

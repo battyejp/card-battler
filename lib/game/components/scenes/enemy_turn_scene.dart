@@ -2,15 +2,15 @@ import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/components/shared/card/card_deck.dart';
 import 'package:card_battler/game/components/shared/card/card_pile.dart';
 import 'package:card_battler/game/components/team/players.dart';
-import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
+import 'package:card_battler/game/services/enemy/enemy_turn_coordinator.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class EnemyTurnScene extends Component with HasGameReference<CardBattlerGame>{
-  final EnemyTurnAreaModel _model;
+  final EnemyTurnCoordinator _model;
   final Vector2 _size;
 
-  EnemyTurnScene({required EnemyTurnAreaModel model, required Vector2 size})
+  EnemyTurnScene({required EnemyTurnCoordinator model, required Vector2 size})
       : _model = model,
         _size = size {
       _loadGameComponents();

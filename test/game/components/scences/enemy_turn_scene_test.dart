@@ -1,5 +1,5 @@
-import 'package:card_battler/game/scenes/enemy_turn_scene.dart';
-import 'package:card_battler/game/models/enemy/enemy_turn_area_model.dart';
+import 'package:card_battler/game/components/scenes/enemy_turn_scene.dart';
+import 'package:card_battler/game/services/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
@@ -39,11 +39,11 @@ PlayerStatsModel _createTestPlayerStats(String name, {bool isActive = false, int
   );
 }
 
-EnemyTurnAreaModel _createTestModel({
+EnemyTurnCoordinator _createTestModel({
   List<CardModel>? cards,
   List<PlayerStatsModel>? players,
 }) {
-  return EnemyTurnAreaModel(
+  return EnemyTurnCoordinator(
     enemyCards: CardPileModel(cards: cards ?? _generateTestCards(3)),
     playersModel: PlayersModel(players: players ?? [_createTestPlayerStats('Player1', isActive: true)]),
     gameStateService: DefaultGameStateService(GameStateManager()),
@@ -362,7 +362,7 @@ void main() {
       });
 
       testWithFlameGame('handles model with no cards', (game) async {
-        final model = EnemyTurnAreaModel(
+        final model = EnemyTurnCoordinator(
           enemyCards: CardPileModel.empty(),
           playersModel: PlayersModel(players: [_createTestPlayerStats('Player1')]),
           gameStateService: DefaultGameStateService(GameStateManager()),

@@ -1,5 +1,5 @@
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/scenes/player_turn_scene.dart';
+import 'package:card_battler/game/components/scenes/player_turn_scene.dart';
 
 /// Service responsible for coordinating game actions and background interactions
 /// This class handles game logic delegation and user interactions, following the Single Responsibility Principle

@@ -13,19 +13,18 @@ class Player extends PositionComponent {
   static const infoHeightFactor = 0.1;
 
   final PlayerModel _playerModel;
-  final CardInteractionService? _cardInteractionService;
-  final CardSelectionService? _cardSelectionService;
+  final CardInteractionService _cardInteractionService;
+  final CardSelectionService _cardSelectionService;
 
   late final CardDeck _deck;
   late final CardHand _hand;
   late final CardPile _discard;
   late final Info _info;
 
-  //TODO make services required
   Player({
     required PlayerModel playerModel,
-    CardInteractionService? cardInteractionService,
-    CardSelectionService? cardSelectionService,
+    required CardInteractionService cardInteractionService,
+    required CardSelectionService cardSelectionService,
   })  : _playerModel = playerModel,
         _cardInteractionService = cardInteractionService,
         _cardSelectionService = cardSelectionService;

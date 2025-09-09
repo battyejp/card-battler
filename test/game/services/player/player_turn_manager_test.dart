@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/services/turn/turn_manager.dart';
+import 'package:card_battler/game/services/player/player_turn_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
@@ -66,12 +66,12 @@ PlayerTurnState _createTestPlayerTurnState({
 
 void main() {
   group('DefaultTurnManager', () {
-    late DefaultTurnManager turnManager;
+    late DefaultPlayerTurnManager turnManager;
     late MockGameStateService mockGameStateService;
 
     setUp(() {
       mockGameStateService = MockGameStateService();
-      turnManager = DefaultTurnManager(mockGameStateService);
+      turnManager = DefaultPlayerTurnManager(mockGameStateService);
     });
 
     group('endTurn', () {

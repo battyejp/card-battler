@@ -5,9 +5,9 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/services/card/card_play_orchestrator.dart';
-import 'package:card_battler/game/services/card/effect_processor.dart';
+import 'package:card_battler/game/services/player/player_effect_processor.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
-import 'package:card_battler/game/services/turn/turn_manager.dart';
+import 'package:card_battler/game/services/player/player_turn_manager.dart';
 
 /// Coordinator service that manages player turn operations
 /// This replaces the PlayerTurnModel and delegates responsibilities to specialized services
@@ -15,24 +15,25 @@ import 'package:card_battler/game/services/turn/turn_manager.dart';
 class PlayerTurnCoordinator {
   final PlayerTurnState state;
   final CardPlayOrchestrator _cardPlayOrchestrator;
-  final EffectProcessor _effectProcessor;
-  final TurnManager _turnManager;
+  final PlayerEffectProcessor _effectProcessor;
+  final PlayerTurnManager _turnManager;
 
   PlayerTurnCoordinator({
     required this.state,
     required GameStateService gameStateService,
     CardPlayOrchestrator? cardPlayOrchestrator,
-    EffectProcessor? effectProcessor,
-    TurnManager? turnManager,
+    PlayerEffectProcessor? effectProcessor,
+    PlayerTurnManager? turnManager,
   })  : _cardPlayOrchestrator = cardPlayOrchestrator ?? DefaultCardPlayOrchestrator(),
-        _effectProcessor = effectProcessor ?? DefaultEffectProcessor(),
-        _turnManager = turnManager ?? DefaultTurnManager(gameStateService) {
+        _effectProcessor = effectProcessor ?? DefaultPlayerEffectProcessor(),
+        _turnManager = turnManager ?? DefaultPlayerTurnManager(gameStateService) {
     // Set up card played callbacks
     state.playerModel.cardPlayed = onCardPlayed;
     state.shopModel.cardPlayed = onCardPlayed;
   }
 
   // Expose state properties for backward compatibility
+  //TODO - consider removing these getters if direct state access is acceptable
   PlayerModel get playerModel => state.playerModel;
   TeamModel get teamModel => state.teamModel;
   EnemiesModel get enemiesModel => state.enemiesModel;

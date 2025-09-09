@@ -5,7 +5,7 @@ import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/enemy/enemies.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
-import 'package:card_battler/game/scenes/player_turn_scene.dart';
+import 'package:card_battler/game/components/scenes/player_turn_scene.dart';
 import 'package:flame_test/flame_test.dart';
 
 void main() {
