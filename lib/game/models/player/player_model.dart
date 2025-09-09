@@ -20,8 +20,8 @@ class PlayerModel {
   PlayerModel({
     required InfoModel infoModel,
     required CardsModel<CardModel> handModel,
-    required CardPileModel deckModel,
-    required CardPileModel discardModel,
+    required CardsModel<CardModel> deckModel,
+    required CardsModel<CardModel> discardModel,
     required GameStateService gameStateService,
     required CardSelectionService cardSelectionService,
   }) : _infoModel = infoModel,
@@ -36,8 +36,8 @@ class PlayerModel {
   // Expose models for use in the game components
   InfoModel get infoModel => _infoModel;
   CardsModel<CardModel> get handCards => _handCards;
-  CardPileModel get deckCards => _deckCards;
-  CardPileModel get discardCards => _discardCards;
+  CardsModel<CardModel> get deckCards => _deckCards;
+  CardsModel<CardModel> get discardCards => _discardCards;
 
   void drawCardsFromDeck() {
     if ((_cardSelectionService?.hasSelection ?? false) || handCards.cards.isNotEmpty) {

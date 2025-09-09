@@ -69,7 +69,7 @@ class GameStateFactory {
 
     // Create enemy turn area
     final enemyTurnArea = EnemyTurnCoordinator(
-      enemyCards: CardPileModel(cards: enemyCards),
+      enemyCards: CardsModel<CardModel>(cards: enemyCards),
       playersModel: playersModel,
       gameStateService: gameStateService,
     );
@@ -109,8 +109,8 @@ class GameStateFactory {
           healthModel: HealthModel(maxHealth: _playerMaxHealth),
         ),
         handModel: CardsModel<CardModel>(),
-        deckModel: CardPileModel(cards: playerDeckCopy),
-        discardModel: CardPileModel.empty(),
+        deckModel: CardsModel<CardModel>(cards: playerDeckCopy),
+        discardModel: CardsModel<CardModel>.empty(),
         gameStateService: gameStateService,
         cardSelectionService: cardSelectionService,
       );

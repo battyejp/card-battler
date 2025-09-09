@@ -30,7 +30,7 @@ void main() {
       ];
       for (final testCase in testCases) {
         testWithFlameGame('Pile child size and position for pile size ${testCase['deckSize']}', (game) async {
-          final pile = CardPile(CardPileModel(cards: _generateCards(3)))..size = testCase['deckSize'] as Vector2;
+          final pile = CardPile(CardsModel<CardModel>(cards: _generateCards(3)))..size = testCase['deckSize'] as Vector2;
 
           await game.ensureAdd(pile);
 
@@ -51,7 +51,7 @@ void main() {
 
     group('empty pile', () {
       testWithFlameGame('shows "Empty" text when pile is empty', (game) async {
-        final emptyPile = CardPile(CardPileModel.empty())..size = Vector2(100, 150);
+        final emptyPile = CardPile(CardsModel<CardModel>.empty())..size = Vector2(100, 150);
 
         await game.ensureAdd(emptyPile);
 
@@ -65,7 +65,7 @@ void main() {
       });
 
       testWithFlameGame('does not show cards when pile is empty', (game) async {
-        final emptyPile = CardPile(CardPileModel.empty())..size = Vector2(100, 150);
+        final emptyPile = CardPile(CardsModel<CardModel>.empty())..size = Vector2(100, 150);
 
         await game.ensureAdd(emptyPile);
 
@@ -81,7 +81,7 @@ void main() {
         ];
 
         for (final testCase in testCases) {
-          final emptyPile = CardPile(CardPileModel.empty())..size = testCase['size'] as Vector2;
+          final emptyPile = CardPile(CardsModel<CardModel>.empty())..size = testCase['size'] as Vector2;
 
           await game.ensureAdd(emptyPile);
 
@@ -102,7 +102,7 @@ void main() {
         ];
 
         for (final testCase in testCases) {
-          final pile = CardPile(CardPileModel(cards: _generateCards(testCase['numberOfCards'] as int)))
+          final pile = CardPile(CardsModel<CardModel>(cards: _generateCards(testCase['numberOfCards'] as int)))
             ..size = Vector2(100, 150);
 
           await game.ensureAdd(pile);
@@ -120,7 +120,7 @@ void main() {
       });
 
       testWithFlameGame('does not show card count when pile is empty', (game) async {
-        final emptyPile = CardPile(CardPileModel.empty())..size = Vector2(100, 150);
+        final emptyPile = CardPile(CardsModel<CardModel>.empty())..size = Vector2(100, 150);
 
         await game.ensureAdd(emptyPile);
 
@@ -139,7 +139,7 @@ void main() {
         ];
 
         for (final testCase in testCases) {
-          final pile = CardPile(CardPileModel(cards: _generateCards(7)))
+          final pile = CardPile(CardsModel<CardModel>(cards: _generateCards(7)))
             ..size = testCase['size'] as Vector2;
 
           await game.ensureAdd(pile);
@@ -155,7 +155,7 @@ void main() {
 
     group('reactive updates', () {
       testWithFlameGame('updates display automatically when cards are added to model', (game) async {
-        final model = CardPileModel.empty();
+        final model = CardsModel<CardModel>.empty();
         final pile = CardPile(model)..size = Vector2(100, 150);
 
         await game.ensureAdd(pile);
@@ -180,7 +180,7 @@ void main() {
       });
 
       testWithFlameGame('updates display automatically when cards are drawn from model', (game) async {
-        final model = CardPileModel(cards: _generateCards(5));
+        final model = CardsModel<CardModel>(cards: _generateCards(5));
         final pile = CardPile(model)..size = Vector2(100, 150);
 
         await game.ensureAdd(pile);
@@ -205,7 +205,7 @@ void main() {
       });
 
       testWithFlameGame('updates count automatically when individual cards are drawn', (game) async {
-        final model = CardPileModel(cards: _generateCards(3));
+        final model = CardsModel<CardModel>(cards: _generateCards(3));
         final pile = CardPile(model)..size = Vector2(100, 150);
 
         await game.ensureAdd(pile);
@@ -228,7 +228,7 @@ void main() {
       });
 
       testWithFlameGame('cleans up stream subscription on component removal', (game) async {
-        final model = CardPileModel(cards: _generateCards(2));
+        final model = CardsModel<CardModel>(cards: _generateCards(2));
         final pile = CardPile(model)..size = Vector2(100, 150);
 
         await game.ensureAdd(pile);

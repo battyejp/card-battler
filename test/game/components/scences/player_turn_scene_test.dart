@@ -75,8 +75,8 @@ PlayerModel _createTestPlayerModel({String name = 'Test Player', bool isActive =
       healthModel: HealthModel(maxHealth: 100),
     ),
     handModel: CardsModel<CardModel>(),
-    deckModel: CardPileModel(cards: _generatePlayerCards(20)),
-    discardModel: CardPileModel.empty(),
+    deckModel: CardsModel<CardModel>(cards: _generatePlayerCards(20)),
+    discardModel: CardsModel<CardModel>.empty(),
     gameStateService: DefaultGameStateService(GameStateManager()),
     cardSelectionService: DefaultCardSelectionService(),
   );

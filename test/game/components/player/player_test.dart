@@ -37,8 +37,8 @@ void main() {
         name: 'TestPlayer',
       );
       final handModel = CardsModel<CardModel>();
-      final deckModel = CardPileModel(cards: _generateCards(20));
-      final discardModel = CardPileModel.empty();
+      final deckModel = CardsModel<CardModel>(cards: _generateCards(20));
+      final discardModel = CardsModel<CardModel>.empty();
       
       final playerModel = PlayerModel(
         infoModel: infoModel,
@@ -258,8 +258,8 @@ void main() {
           name: 'TestPlayer',
         );
         final handModel = CardsModel<CardModel>();
-        final deckModel = CardPileModel(cards: _generateCards(3)); // Only 3 cards
-        final discardModel = CardPileModel.empty();
+        final deckModel = CardsModel<CardModel>(cards: _generateCards(3)); // Only 3 cards
+        final discardModel = CardsModel<CardModel>.empty();
         
         final playerModel = PlayerModel(
           infoModel: infoModel,
@@ -306,8 +306,8 @@ void main() {
           name: 'TestPlayer',
         );
         final handModel = CardsModel<CardModel>();
-        final deckModel = CardPileModel.empty(); // Start with empty deck
-        final discardModel = CardPileModel.empty();
+        final deckModel = CardsModel<CardModel>.empty(); // Start with empty deck
+        final discardModel = CardsModel<CardModel>.empty();
         
         final playerModel = PlayerModel(
           infoModel: infoModel,

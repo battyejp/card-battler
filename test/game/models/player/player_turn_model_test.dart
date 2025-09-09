@@ -43,8 +43,8 @@ void main() {
       );
 
       final handModel = CardsModel<CardModel>();
-      final deckModel = CardPileModel.empty();
-      final discardModel = CardPileModel.empty();
+      final deckModel = CardsModel<CardModel>.empty();
+      final discardModel = CardsModel<CardModel>.empty();
 
       playerModel = PlayerModel(
         infoModel: infoModel,

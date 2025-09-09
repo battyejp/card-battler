@@ -45,7 +45,7 @@ EnemyTurnCoordinator _createTestModel({
   List<PlayerStatsModel>? players,
 }) {
   return EnemyTurnCoordinator(
-    enemyCards: CardPileModel(cards: cards ?? _generateTestCards(3)),
+    enemyCards: CardsModel<CardModel>(cards: cards ?? _generateTestCards(3)),
     playersModel: PlayersModel(players: players ?? [_createTestPlayerStats('Player1', isActive: true)]),
     gameStateService: DefaultGameStateService(GameStateManager()),
   );
@@ -364,7 +364,7 @@ void main() {
 
       testWithFlameGame('handles model with no cards', (game) async {
         final model = EnemyTurnCoordinator(
-          enemyCards: CardPileModel.empty(),
+          enemyCards: CardsModel<CardModel>.empty(),
           playersModel: PlayersModel(players: [_createTestPlayerStats('Player1')]),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );

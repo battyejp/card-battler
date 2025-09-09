@@ -22,8 +22,8 @@ void main() {
   group('PlayerModel', () {
     late InfoModel testInfoModel;
     late CardsModel<CardModel> testHandModel;
-    late CardPileModel testDeckModel;
-    late CardPileModel testDiscardModel;
+    late CardsModel<CardModel> testDeckModel;
+    late CardsModel<CardModel> testDiscardModel;
     late GameStateService gameStateService;
     late CardSelectionService cardSelectionService;
 
@@ -35,8 +35,8 @@ void main() {
         name: 'TestPlayer',
       );
       testHandModel = CardsModel<CardModel>();
-      testDeckModel = CardPileModel(cards: _generateCards(20));
-      testDiscardModel = CardPileModel.empty();
+      testDeckModel = CardsModel<CardModel>(cards: _generateCards(20));
+      testDiscardModel = CardsModel<CardModel>.empty();
       
       // Create service instances for testing
       final gameStateManager = GameStateManager();
@@ -96,7 +96,7 @@ void main() {
         expect(playerModel.handCards.cards.isEmpty, isTrue);
       });
 
-      test('deckModel getter returns correct CardPileModel', () {
+      test('deckModel getter returns correct CardsModel<CardModel>', () {
         final playerModel = PlayerModel(
           infoModel: testInfoModel,
           handModel: testHandModel,
@@ -106,13 +106,13 @@ void main() {
           cardSelectionService: cardSelectionService,
         );
 
-        expect(playerModel.deckCards, isA<CardPileModel>());
+        expect(playerModel.deckCards, isA<CardsModel<CardModel>>());
         expect(playerModel.deckCards, equals(testDeckModel));
         expect(playerModel.deckCards.allCards.length, equals(20));
         expect(playerModel.deckCards.hasNoCards, isFalse);
       });
 
-      test('discardModel getter returns correct CardPileModel', () {
+      test('discardModel getter returns correct CardsModel<CardModel>', () {
         final playerModel = PlayerModel(
           infoModel: testInfoModel,
           handModel: testHandModel,
@@ -122,7 +122,7 @@ void main() {
           cardSelectionService: cardSelectionService,
         );
 
-        expect(playerModel.discardCards, isA<CardPileModel>());
+        expect(playerModel.discardCards, isA<CardsModel<CardModel>>());
         expect(playerModel.discardCards, equals(testDiscardModel));
         expect(playerModel.discardCards.allCards.isEmpty, isTrue);
         expect(playerModel.discardCards.hasNoCards, isTrue);
@@ -151,7 +151,7 @@ void main() {
 
       test('reshuffles discard pile when deck has insufficient cards', () {
         // Create a deck with only 3 cards
-        final smallDeckModel = CardPileModel(cards: _generateCards(3));
+        final smallDeckModel = CardsModel<CardModel>(cards: _generateCards(3));
         // Add some cards to discard pile
         final discardCards = _generateCards(5);
         testDiscardModel.addCards(discardCards);

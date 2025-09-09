@@ -1,4 +1,5 @@
 
+import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_state.dart';
@@ -28,7 +29,7 @@ class EnemyTurnCoordinator {
   }
 
   factory EnemyTurnCoordinator({
-    required CardPileModel enemyCards,
+    required CardsModel<CardModel> enemyCards,
     required PlayersModel playersModel,
     required GameStateService gameStateService,
     EnemyTurnManager? turnManager,
@@ -37,7 +38,7 @@ class EnemyTurnCoordinator {
   }) {
     final state = EnemyTurnState(
       enemyCards: enemyCards,
-      playedCards: CardPileModel.empty(),
+      playedCards: CardsModel<CardModel>.empty(),
       playersModel: playersModel,
       gameStateService: gameStateService,
     );
@@ -72,7 +73,7 @@ class EnemyTurnCoordinator {
 
   // TODO See if these can be removed 
   // Expose state and effect processor for test access
-  CardPileModel get enemyCards => _state.enemyCards;
-  CardPileModel get playedCards => _state.playedCards;
+  CardsModel<CardModel> get enemyCards => _state.enemyCards;
+  CardsModel<CardModel> get playedCards => _state.playedCards;
   PlayersModel get playersModel => _state.playersModel;
 }
