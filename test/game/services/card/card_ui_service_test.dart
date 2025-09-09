@@ -6,21 +6,21 @@ void main() {
     group('isButtonEnabled', () {
       test('returns true when no business logic check provided', () {
         final service = DefaultCardUIService();
-        expect(service.isButtonEnabled(), isTrue);
+        expect(service.canPlayCard(), isTrue);
       });
 
       test('returns true when business logic check returns true', () {
         final service = DefaultCardUIService(
           businessLogicCheck: () => true,
         );
-        expect(service.isButtonEnabled(), isTrue);
+        expect(service.canPlayCard(), isTrue);
       });
 
       test('returns false when business logic check returns false', () {
         final service = DefaultCardUIService(
           businessLogicCheck: () => false,
         );
-        expect(service.isButtonEnabled(), isFalse);
+        expect(service.canPlayCard(), isFalse);
       });
 
       test('calls business logic check function', () {
@@ -32,7 +32,7 @@ void main() {
           },
         );
 
-        service.isButtonEnabled();
+        service.canPlayCard();
         expect(checkWasCalled, isTrue);
       });
 
@@ -45,9 +45,9 @@ void main() {
           },
         );
 
-        expect(service.isButtonEnabled(), isTrue);  // First call
-        expect(service.isButtonEnabled(), isFalse); // Second call
-        expect(service.isButtonEnabled(), isTrue);  // Third call
+        expect(service.canPlayCard(), isTrue);  // First call
+        expect(service.canPlayCard(), isFalse); // Second call
+        expect(service.canPlayCard(), isTrue);  // Third call
         expect(callCount, equals(3));
       });
     });
@@ -57,7 +57,7 @@ void main() {
         expect(() => DefaultCardUIService(businessLogicCheck: null), returnsNormally);
         
         final service = DefaultCardUIService(businessLogicCheck: null);
-        expect(service.isButtonEnabled(), isTrue);
+        expect(service.canPlayCard(), isTrue);
       });
 
       test('accepts business logic check function', () {
@@ -77,7 +77,7 @@ void main() {
         );
 
         // The exception should propagate since there's no error handling
-        expect(() => service.isButtonEnabled(), throwsException);
+        expect(() => service.canPlayCard(), throwsException);
       });
 
       test('business logic check can access external state', () {
@@ -86,10 +86,10 @@ void main() {
           businessLogicCheck: () => externalFlag,
         );
 
-        expect(service.isButtonEnabled(), isFalse);
+        expect(service.canPlayCard(), isFalse);
         
         externalFlag = true;
-        expect(service.isButtonEnabled(), isTrue);
+        expect(service.canPlayCard(), isTrue);
       });
     });
 
@@ -103,7 +103,7 @@ void main() {
         final service = DefaultCardUIService();
         
         // Should not throw - methods exist and are callable
-        expect(() => service.isButtonEnabled(), returnsNormally);
+        expect(() => service.canPlayCard(), returnsNormally);
       });
     });
 
@@ -117,12 +117,12 @@ void main() {
           },
         );
 
-        expect(service.isButtonEnabled(), isFalse); // counter = 1
-        expect(service.isButtonEnabled(), isFalse); // counter = 2
-        expect(service.isButtonEnabled(), isFalse); // counter = 3
-        expect(service.isButtonEnabled(), isTrue);  // counter = 4
-        expect(service.isButtonEnabled(), isFalse); // counter = 5
-        expect(service.isButtonEnabled(), isTrue);  // counter = 6
+        expect(service.canPlayCard(), isFalse); // counter = 1
+        expect(service.canPlayCard(), isFalse); // counter = 2
+        expect(service.canPlayCard(), isFalse); // counter = 3
+        expect(service.canPlayCard(), isTrue);  // counter = 4
+        expect(service.canPlayCard(), isFalse); // counter = 5
+        expect(service.canPlayCard(), isTrue);  // counter = 6
       });
 
       test('business logic independence from interaction allowance', () {
@@ -131,7 +131,7 @@ void main() {
         );
 
         // Button is disabled by business logic
-        expect(service.isButtonEnabled(), isFalse);
+        expect(service.canPlayCard(), isFalse);
       });
     });
   });

@@ -70,6 +70,7 @@ class EnemyTurnCoordinator {
     _turnManager.resetTurn();
   }
 
+  // TODO See if these can be removed 
   // Expose state and effect processor for test access
   CardPileModel get enemyCards => _state.enemyCards;
   CardPileModel get playedCards => _state.playedCards;

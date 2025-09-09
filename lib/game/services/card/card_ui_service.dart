@@ -2,7 +2,7 @@
 /// This handles UI-specific logic that doesn't belong in business logic
 abstract class CardUIService {
   /// Determines if a button should be enabled based on business rules
-  bool isButtonEnabled();
+  bool canPlayCard();
 }
 
 /// Implementation that delegates to business logic services
@@ -13,7 +13,7 @@ class DefaultCardUIService implements CardUIService {
     : _businessLogicCheck = businessLogicCheck;
   
   @override
-  bool isButtonEnabled() {
+  bool canPlayCard() {
     return _businessLogicCheck?.call() ?? true;
   }
 }

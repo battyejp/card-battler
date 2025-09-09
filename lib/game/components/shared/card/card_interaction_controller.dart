@@ -118,7 +118,7 @@ class CardInteractionController {
       EffectController(duration: _animationSpeed),
     );
 
-    var buttonDisabled = !_cardUIService.isButtonEnabled();
+    var buttonDisabled = !_cardUIService.canPlayCard();
 
     moveEffect.onComplete = () {
       _isAnimating = false;
