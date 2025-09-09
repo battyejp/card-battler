@@ -1,21 +1,23 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
-
-//TODO HandService and ShopCardHandler have similar code, consider refactoring
+import 'package:card_battler/game/services/shared/card_callback_manager.dart';
 
 /// Manages hand card operations
 /// Single responsibility: Hand card management including adding, clearing, and callback setup
 class HandService {
   final CardsModel<CardModel> _handCards;
+  final CardCallbackManager<CardModel> _callbackManager;
 
   /// External callback for when cards are played
-  Function(CardModel)? onCardPlayed;
+  set onCardPlayed(Function(CardModel)? callback) => _callbackManager.setOnCardPlayed(callback);
 
-  HandService({required CardsModel<CardModel> handCards}) : _handCards = handCards;
+  HandService({required CardsModel<CardModel> handCards}) 
+    : _handCards = handCards,
+      _callbackManager = CardCallbackManager<CardModel>();
 
   /// Adds cards to hand and sets up their play callbacks
   void addCards(List<CardModel> cards) {
-    _setupCardCallbacks(cards);
+    _callbackManager.setupCallbacks(cards);
     _handCards.addCards(cards);
   }
 
@@ -27,9 +29,9 @@ class HandService {
   /// Gets all cards currently in hand, prepared for discard
   List<CardModel> prepareCardsForDiscard() {
     final cards = _handCards.cards;
+    _callbackManager.clearCallbacks(cards);
     for (var card in cards) {
       card.isFaceUp = false;
-      card.onCardPlayed = null; // Clear callbacks when discarding
     }
     return cards;
   }
@@ -37,28 +39,8 @@ class HandService {
   /// Checks if hand has cards
   bool get hasCards => _handCards.cards.isNotEmpty;
 
-  /// Sets up card played callbacks for cards
-  void _setupCardCallbacks(List<CardModel> cards) {
-  if (cards.isEmpty) return;
-
-    for (final card in cards) {
-      card.onCardPlayed = () => _onCardPlayedInternal(card);
-    }
-  }
-
- // TODO figure out when this should be called
   /// Clears callbacks from a list of cards
   void clearCardCallbacks(List<CardModel> cards) {
-    for (final card in cards) {
-      card.onCardPlayed = null;
-    }
-  }
-
-  /// Internal handler for when a card is played
-  void _onCardPlayedInternal(CardModel card) {
-    card.onCardPlayed = null;
-
-    //TODO check this is used
-    onCardPlayed?.call(card);
+    _callbackManager.clearCallbacks(cards);
   }
 }
