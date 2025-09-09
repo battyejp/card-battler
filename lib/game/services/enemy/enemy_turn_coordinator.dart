@@ -78,7 +78,7 @@ class EnemyTurnCoordinator {
 
   /// Deprecated method - Use _effectProcessor.processCardEffects instead
   /// Maintained for backward compatibility
-  @deprecated
+  @Deprecated('Use EnemyEffectProcessor.processCardEffects instead')
   void updatePlayersStats(CardModel drawnCard) {
     _effectProcessor.processCardEffects(drawnCard, _state);
   }

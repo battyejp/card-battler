@@ -65,17 +65,11 @@ class DefaultEnemyEffectProcessor implements EnemyEffectProcessor {
   }
 
   void _handleHealEffect(EffectModel effect, PlayersModel playersModel) {
-    // TODO: Implement heal effect handling when needed
-    // This would apply healing to players based on the target
   }
 
   void _handleCreditsEffect(EffectModel effect, PlayersModel playersModel) {
-    // TODO: Implement credits effect handling when needed
-    // This could affect player credits based on the target
   }
 
   void _handleDamageLimitEffect(EffectModel effect, PlayersModel playersModel) {
-    // TODO: Implement damage limit effect handling when needed
-    // This would set damage reduction/caps for players
   }
 }
