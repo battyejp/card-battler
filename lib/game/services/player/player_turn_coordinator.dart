@@ -33,7 +33,6 @@ class PlayerTurnCoordinator {
   }
 
   // Expose state properties for backward compatibility
-  //TODO - consider removing these getters if direct state access is acceptable
   PlayerModel get playerModel => state.playerModel;
   TeamModel get teamModel => state.teamModel;
   EnemiesModel get enemiesModel => state.enemiesModel;
