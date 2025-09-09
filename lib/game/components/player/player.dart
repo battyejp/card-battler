@@ -2,7 +2,7 @@ import 'package:card_battler/game/components/shared/card/card_deck.dart';
 import 'package:card_battler/game/components/shared/card/card_pile.dart';
 import 'package:card_battler/game/components/player/card_hand.dart';
 import 'package:card_battler/game/components/player/info.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
 import 'package:card_battler/game/services/card/card_interaction_service.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:flame/components.dart';
@@ -12,7 +12,7 @@ class Player extends PositionComponent {
   static const pileWidthFactor = (1 - handWidthFactor) / 2;
   static const infoHeightFactor = 0.1;
 
-  final PlayerModel _playerModel;
+  final PlayerCoordinator _playerModel;
   final CardInteractionService _cardInteractionService;
   final CardSelectionService _cardSelectionService;
 
@@ -22,7 +22,7 @@ class Player extends PositionComponent {
   late final Info _info;
 
   Player({
-    required PlayerModel playerModel,
+    required PlayerCoordinator playerModel,
     required CardInteractionService cardInteractionService,
     required CardSelectionService cardSelectionService,
   })  : _playerModel = playerModel,

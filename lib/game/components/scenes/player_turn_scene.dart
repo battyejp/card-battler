@@ -4,8 +4,8 @@ import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/team/team.dart';
 import 'package:card_battler/game/components/shared/flat_button.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
-import 'package:card_battler/game/services/player/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
+import 'package:card_battler/game/services/playerTurn/player_turn_coordinator.dart';
 import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 import 'package:card_battler/game/services/card/card_interaction_service.dart';
@@ -118,7 +118,7 @@ class PlayerTurnScene extends Component {
     turnButton.isVisible = newPhase != GamePhase.waitingToDrawCards && newPhase != GamePhase.enemyTurn;
   }
 
-  void addPlayerComponent(PlayerModel playerModel) {
+  void addPlayerComponent(PlayerCoordinator playerModel) {
     _player?.removeFromParent();
 
     _player = Player(

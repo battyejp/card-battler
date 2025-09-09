@@ -1,13 +1,13 @@
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/services/card/card_play_orchestrator.dart';
-import 'package:card_battler/game/services/player/player_effect_processor.dart';
+import 'package:card_battler/game/services/playerTurn/player_effect_processor.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
-import 'package:card_battler/game/services/player/player_turn_manager.dart';
+import 'package:card_battler/game/services/playerTurn/player_turn_manager.dart';
 
 /// Coordinator service that manages player turn operations
 /// This replaces the PlayerTurnModel and delegates responsibilities to specialized services
@@ -33,7 +33,7 @@ class PlayerTurnCoordinator {
   }
 
   // Expose state properties for backward compatibility
-  PlayerModel get playerModel => state.playerModel;
+  PlayerCoordinator get playerModel => state.playerModel;
   TeamModel get teamModel => state.teamModel;
   EnemiesModel get enemiesModel => state.enemiesModel;
   ShopCoordinator get shopModel => state.shopModel;

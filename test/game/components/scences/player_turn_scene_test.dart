@@ -1,8 +1,9 @@
 import 'package:card_battler/game/components/scenes/player_turn_scene.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
-import 'package:card_battler/game/services/player/player_turn_coordinator.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/services/playerTurn/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
+import 'package:card_battler/game/models/player/player_state.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
@@ -66,19 +67,21 @@ List<ShopCardModel> _generateShopCards(int count) {
   ));
 }
 
-PlayerModel _createTestPlayerModel({String name = 'Test Player', bool isActive = true}) {
-  return PlayerModel(
-    infoModel: InfoModel(
-      name: name,
-      attack: ValueImageLabelModel(value: 10, label: 'Attack'),
-      credits: ValueImageLabelModel(value: 5, label: 'Credits'),
-      healthModel: HealthModel(maxHealth: 100),
+PlayerCoordinator _createTestPlayerModel({String name = 'Test Player', bool isActive = true}) {
+  return PlayerCoordinator.create(
+    state: PlayerState.create(
+      infoModel: InfoModel(
+        name: name,
+        attack: ValueImageLabelModel(value: 10, label: 'Attack'),
+        credits: ValueImageLabelModel(value: 5, label: 'Credits'),
+        healthModel: HealthModel(maxHealth: 100),
+      ),
+      handModel: CardsModel<CardModel>(),
+      deckModel: CardsModel<CardModel>(cards: _generatePlayerCards(20)),
+      discardModel: CardsModel<CardModel>.empty(),
+      gameStateService: DefaultGameStateService(GameStateManager()),
+      cardSelectionService: DefaultCardSelectionService(),
     ),
-    handModel: CardsModel<CardModel>(),
-    deckModel: CardsModel<CardModel>(cards: _generatePlayerCards(20)),
-    discardModel: CardsModel<CardModel>.empty(),
-    gameStateService: DefaultGameStateService(GameStateManager()),
-    cardSelectionService: DefaultCardSelectionService(),
   );
 }
 
@@ -125,7 +128,7 @@ ShopCoordinator _createTestShopCoordinator() {
 }
 
 PlayerTurnCoordinator _createTestPlayerTurnModel({
-  PlayerModel? playerModel,
+  PlayerCoordinator? playerModel,
   TeamModel? teamModel,
   EnemiesModel? enemiesModel,
   ShopCoordinator? shopModel,

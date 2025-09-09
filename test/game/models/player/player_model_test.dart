@@ -1,6 +1,7 @@
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
+import 'package:card_battler/game/models/player/player_state.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
@@ -19,7 +20,7 @@ List<CardModel> _generateCards(int count) {
 }
 
 void main() {
-  group('PlayerModel', () {
+  group('PlayerCoordinator', () {
     late InfoModel testInfoModel;
     late CardsModel<CardModel> testHandModel;
     late CardsModel<CardModel> testDeckModel;
@@ -47,13 +48,15 @@ void main() {
 
     group('constructor and initialization', () {
       test('creates with required parameters', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         expect(playerModel.infoModel, equals(testInfoModel));
@@ -65,13 +68,15 @@ void main() {
 
     group('property getters', () {
       test('infoModel getter returns correct InfoModel', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         expect(playerModel.infoModel, isA<InfoModel>());
@@ -82,13 +87,15 @@ void main() {
       });
 
       test('handModel getter returns correct CardsModel<CardModel>', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         expect(playerModel.handCards, isA<CardsModel<CardModel>>());
@@ -97,13 +104,15 @@ void main() {
       });
 
       test('deckModel getter returns correct CardsModel<CardModel>', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         expect(playerModel.deckCards, isA<CardsModel<CardModel>>());
@@ -113,13 +122,15 @@ void main() {
       });
 
       test('discardModel getter returns correct CardsModel<CardModel>', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         expect(playerModel.discardCards, isA<CardsModel<CardModel>>());
@@ -131,13 +142,15 @@ void main() {
 
     group('drawCardsFromDeck functionality', () {
       test('draws 5 cards from deck when enough cards available', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         expect(playerModel.handCards.cards.length, equals(0));
@@ -156,13 +169,15 @@ void main() {
         final discardCards = _generateCards(5);
         testDiscardModel.addCards(discardCards);
 
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: smallDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: smallDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         expect(playerModel.deckCards.allCards.length, equals(3));
@@ -180,13 +195,15 @@ void main() {
       });
 
       test('does not draw cards when card selection service has selection', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         // Simulate card selection service having a selection
@@ -200,13 +217,15 @@ void main() {
       });
 
       test('does not draw cards when hand is not empty', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         // Add a card to hand first
@@ -220,13 +239,15 @@ void main() {
       });
 
       test('sets onCardPlayed callback on drawn cards', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         playerModel.drawCardsFromDeck();
@@ -237,13 +258,15 @@ void main() {
       });
 
       test('calls GameStateService.nextPhase() after drawing cards', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         // Verify initial state
@@ -257,13 +280,15 @@ void main() {
       });
 
       test('does not call GameStateService.nextPhase() when drawing is prevented', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         // Add a card to hand to prevent drawing
@@ -279,13 +304,15 @@ void main() {
       });
 
       test('drawn cards trigger cardPlayed callback when played', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         CardModel? playedCard;
@@ -300,13 +327,15 @@ void main() {
       });
 
       test('onCardPlayed callback is cleared after card is played', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         playerModel.drawCardsFromDeck();
@@ -323,13 +352,15 @@ void main() {
 
     group('discardHand functionality', () {
       test('moves all hand cards to discard pile and clears hand', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         // Add some cards to hand
@@ -347,13 +378,15 @@ void main() {
       });
 
       test('sets all hand cards to face down before discarding', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         // Add face-up cards to hand
@@ -373,13 +406,15 @@ void main() {
       });
 
       test('handles empty hand gracefully', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         // Initially empty hand
@@ -397,13 +432,15 @@ void main() {
 
     group('moveDiscardCardsToDeck functionality', () {
       test('moves all discard cards to deck and shuffles', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         // Add cards to discard pile
@@ -424,13 +461,15 @@ void main() {
       });
 
       test('returns early when discard pile is empty', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         final originalDeckSize = playerModel.deckCards.allCards.length;
@@ -442,13 +481,15 @@ void main() {
       });
 
       test('shuffles deck after adding discard cards', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         // Add cards to discard pile with known order
@@ -472,13 +513,15 @@ void main() {
 
     group('cardPlayed callback functionality', () {
       test('cardPlayed callback can be set and called', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         CardModel? receivedCard;
@@ -491,13 +534,15 @@ void main() {
       });
 
       test('multiple cards can be played through callback', () {
-        final playerModel = PlayerModel(
-          infoModel: testInfoModel,
-          handModel: testHandModel,
-          deckModel: testDeckModel,
-          discardModel: testDiscardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: cardSelectionService,
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: testInfoModel,
+            handModel: testHandModel,
+            deckModel: testDeckModel,
+            discardModel: testDiscardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: cardSelectionService,
+          ),
         );
 
         final playedCards = <CardModel>[];

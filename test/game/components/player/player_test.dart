@@ -9,7 +9,8 @@ import 'package:card_battler/game/components/player/card_hand.dart';
 import 'package:card_battler/game/components/player/info.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
+import 'package:card_battler/game/models/player/player_state.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:flame_test/flame_test.dart';
@@ -40,13 +41,15 @@ void main() {
       final deckModel = CardsModel<CardModel>(cards: _generateCards(20));
       final discardModel = CardsModel<CardModel>.empty();
       
-      final playerModel = PlayerModel(
-        infoModel: infoModel,
-        handModel: handModel,
-        deckModel: deckModel,
-        discardModel: discardModel,
-        gameStateService: gameStateService,
-        cardSelectionService: DefaultCardSelectionService(),
+      final playerModel = PlayerCoordinator.create(
+        state: PlayerState.create(
+          infoModel: infoModel,
+          handModel: handModel,
+          deckModel: deckModel,
+          discardModel: discardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: DefaultCardSelectionService(),
+        ),
       );
       
       return Player(
@@ -261,13 +264,15 @@ void main() {
         final deckModel = CardsModel<CardModel>(cards: _generateCards(3)); // Only 3 cards
         final discardModel = CardsModel<CardModel>.empty();
         
-        final playerModel = PlayerModel(
-          infoModel: infoModel,
-          handModel: handModel,
-          deckModel: deckModel,
-          discardModel: discardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: DefaultCardSelectionService(),
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: infoModel,
+            handModel: handModel,
+            deckModel: deckModel,
+            discardModel: discardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: DefaultCardSelectionService(),
+          ),
         );
         
         final player = Player(
@@ -309,13 +314,15 @@ void main() {
         final deckModel = CardsModel<CardModel>.empty(); // Start with empty deck
         final discardModel = CardsModel<CardModel>.empty();
         
-        final playerModel = PlayerModel(
-          infoModel: infoModel,
-          handModel: handModel,
-          deckModel: deckModel,
-          discardModel: discardModel,
-          gameStateService: DefaultGameStateService(GameStateManager()),
-          cardSelectionService: DefaultCardSelectionService(),
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerState.create(
+            infoModel: infoModel,
+            handModel: handModel,
+            deckModel: deckModel,
+            discardModel: discardModel,
+            gameStateService: DefaultGameStateService(GameStateManager()),
+            cardSelectionService: DefaultCardSelectionService(),
+          ),
         );
 
         final player = Player(

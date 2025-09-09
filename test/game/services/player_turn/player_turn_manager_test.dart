@@ -1,9 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/services/player/player_turn_manager.dart';
+import 'package:card_battler/game/services/playerTurn/player_turn_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
+import 'package:card_battler/game/models/player/player_state.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
@@ -30,18 +31,20 @@ PlayerTurnState _createTestPlayerTurnState({
   List<CardModel>? deckCards,
   List<CardModel>? discardCards,
 }) {
-  final player = PlayerModel(
-    infoModel: InfoModel(
-      attack: ValueImageLabelModel(value: 0, label: 'Attack'),
-      credits: ValueImageLabelModel(value: 0, label: 'Credits'),
-      name: 'Test Player',
-      healthModel: HealthModel(maxHealth: 10),
+  final player = PlayerCoordinator.create(
+    state: PlayerState.create(
+      infoModel: InfoModel(
+        attack: ValueImageLabelModel(value: 0, label: 'Attack'),
+        credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+        name: 'Test Player',
+        healthModel: HealthModel(maxHealth: 10),
+      ),
+      handModel: CardsModel<CardModel>(cards: handCards ?? []),
+      deckModel: CardsModel<CardModel>(cards: deckCards ?? []),
+      discardModel: CardsModel<CardModel>(cards: discardCards ?? []),
+      gameStateService: MockGameStateService(),
+      cardSelectionService: MockCardSelectionService(),
     ),
-    handModel: CardsModel<CardModel>(cards: handCards ?? []),
-    deckModel: CardsModel<CardModel>(cards: deckCards ?? []),
-    discardModel: CardsModel<CardModel>(cards: discardCards ?? []),
-    gameStateService: MockGameStateService(),
-    cardSelectionService: MockCardSelectionService(),
   );
 
   return PlayerTurnState(

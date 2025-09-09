@@ -1,5 +1,5 @@
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
 import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 
@@ -7,7 +7,7 @@ import 'package:card_battler/game/models/team/team_model.dart';
 /// Contains only the models needed for player turn without any behavior
 /// This class follows the Single Responsibility Principle by focusing solely on data storage
 class PlayerTurnState {
-  final PlayerModel playerModel;
+  final PlayerCoordinator playerModel;
   final TeamModel teamModel;
   final EnemiesModel enemiesModel;
   final ShopCoordinator shopModel;

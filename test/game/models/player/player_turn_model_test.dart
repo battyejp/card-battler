@@ -6,9 +6,10 @@ import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/game_state/game_state_facade.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
+import 'package:card_battler/game/models/player/player_state.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/services/player/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/playerTurn/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
@@ -23,7 +24,7 @@ import 'package:card_battler/game/services/card/card_selection_service.dart';
 
 void main() {
   group('PlayerTurnCoordinator', () {
-    late PlayerModel playerModel;
+    late PlayerCoordinator playerModel;
     late TeamModel teamModel;
     late EnemiesModel enemiesModel;
     late ShopCoordinator shopModel;
@@ -46,13 +47,15 @@ void main() {
       final deckModel = CardsModel<CardModel>.empty();
       final discardModel = CardsModel<CardModel>.empty();
 
-      playerModel = PlayerModel(
-        infoModel: infoModel,
-        handModel: handModel,
-        deckModel: deckModel,
-        discardModel: discardModel,
-        gameStateService: DefaultGameStateService(gameStateManager),
-        cardSelectionService: DefaultCardSelectionService(),
+      playerModel = PlayerCoordinator.create(
+        state: PlayerState.create(
+          infoModel: infoModel,
+          handModel: handModel,
+          deckModel: deckModel,
+          discardModel: discardModel,
+          gameStateService: DefaultGameStateService(gameStateManager),
+          cardSelectionService: DefaultCardSelectionService(),
+        ),
       );
 
       teamModel = TeamModel(bases: BasesModel(bases: []), playersModel: PlayersModel(players: []));

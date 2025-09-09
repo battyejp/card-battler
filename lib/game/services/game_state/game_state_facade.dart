@@ -1,11 +1,11 @@
 import 'package:card_battler/game/services/enemy/enemy_turn_coordinator.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/game_state/game_state_factory.dart';
 import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
-import 'package:card_battler/game/services/player/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/playerTurn/player_turn_coordinator.dart';
 
 /// Facade that provides a clean, simplified API for accessing game state
 /// Follows the Facade pattern and Single Responsibility Principle by managing access to game components
@@ -54,14 +54,14 @@ class GameStateFacade {
   PlayerTurnCoordinator get playerTurn => _ensuredComponents.playerTurn;
 
   /// Gets the currently selected player
-  PlayerModel? get selectedPlayer => _ensuredComponents.selectedPlayer;
+  PlayerCoordinator? get selectedPlayer => _ensuredComponents.selectedPlayer;
 
   /// Gets all players in the game
-  List<PlayerModel> get allPlayers => _ensuredComponents.allPlayers;
+  List<PlayerCoordinator> get allPlayers => _ensuredComponents.allPlayers;
 
   /// Switches to the next player in the rotation
   /// Returns the new active player, or null if no switch occurred
-  PlayerModel? switchToNextPlayer() {
+  PlayerCoordinator? switchToNextPlayer() {
     if (_components == null) return null;
     
     final currentPlayer = _components!.selectedPlayer;
