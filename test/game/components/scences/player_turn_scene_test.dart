@@ -1,5 +1,6 @@
 import 'package:card_battler/game/components/scenes/player_turn_scene.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/services/player/player_turn_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';

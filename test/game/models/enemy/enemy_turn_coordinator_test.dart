@@ -1,3 +1,4 @@
+import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/services/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';

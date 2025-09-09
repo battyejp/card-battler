@@ -1,5 +1,6 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_state.dart';
+import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/services/enemy/enemy_turn_manager.dart';
 
 /// Service responsible for managing enemy card drawing logic with turn completion rules

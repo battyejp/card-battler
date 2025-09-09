@@ -1,5 +1,6 @@
 import 'package:card_battler/game/models/player/player_turn_state.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/shared/effect_model.dart';
 
 /// Service responsible for processing card effects
 /// Follows the Single Responsibility Principle by focusing solely on effect application logic

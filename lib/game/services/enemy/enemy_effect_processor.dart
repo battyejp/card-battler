@@ -1,5 +1,6 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/enemy/enemy_turn_state.dart';
+import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 
 /// Service responsible for processing enemy card effects on players
