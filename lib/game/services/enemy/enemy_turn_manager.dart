@@ -1,10 +1,10 @@
-import 'package:card_battler/game/models/enemy/enemy_turn_state.dart';
+import 'package:card_battler/game/models/enemy/enemy_turn_model.dart';
 
 /// Service responsible for managing enemy turn state and transitions
 /// Follows the Single Responsibility Principle by focusing solely on turn management logic
 abstract class EnemyTurnManager {
   /// Completes the current enemy turn and transitions to next phase
-  void completeTurn(EnemyTurnState state);
+  void completeTurn(EnemyTurnModel state);
   
   /// Resets the turn state for a new turn
   void resetTurn();
@@ -20,7 +20,7 @@ class DefaultEnemyTurnManager implements EnemyTurnManager {
   DefaultEnemyTurnManager();
 
   @override
-  void completeTurn(EnemyTurnState state) {
+  void completeTurn(EnemyTurnModel state) {
     if (_turnFinished) {
       state.gameStateService.nextPhase(); // Should be playerTurn
     }

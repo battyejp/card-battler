@@ -2,6 +2,7 @@ import 'package:card_battler/game/services/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
@@ -9,15 +10,15 @@ import 'package:card_battler/game/models/team/base_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:card_battler/game/services/game_state/game_state_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
-import 'package:card_battler/game/services/player/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/player_turn/player_turn_coordinator.dart';
 
 /// Factory service responsible for creating and initializing game components
 /// Follows the Factory pattern and Single Responsibility Principle by focusing solely on game creation logic
@@ -69,7 +70,7 @@ class GameStateFactory {
 
     // Create enemy turn area
     final enemyTurnArea = EnemyTurnCoordinator(
-      enemyCards: CardPileModel(cards: enemyCards),
+      enemyCards: CardsModel<CardModel>(cards: enemyCards),
       playersModel: playersModel,
       gameStateService: gameStateService,
     );
@@ -92,7 +93,7 @@ class GameStateFactory {
     return createGameState(shopCards, playerDeckCards, enemyCards);
   }
 
-  List<PlayerModel> _createPlayers(
+  List<PlayerCoordinator> _createPlayers(
     List<CardModel> playerDeckCards,
     DefaultGameStateService gameStateService,
     DefaultCardSelectionService cardSelectionService,
@@ -101,23 +102,25 @@ class GameStateFactory {
       final playerNumber = index + 1;
       // Create a new copy of the card list for each player to avoid shared references
       final playerDeckCopy = List<CardModel>.from(playerDeckCards.map((card) => card.copy()));
-      return PlayerModel(
-        infoModel: InfoModel(
-          name: 'Player $playerNumber',
-          attack: ValueImageLabelModel(value: 0, label: 'Attack'),
-          credits: ValueImageLabelModel(value: 0, label: 'Credits'),
-          healthModel: HealthModel(maxHealth: _playerMaxHealth),
+      return PlayerCoordinator.create(
+        state: PlayerModel.create(
+          infoModel: InfoModel(
+            name: 'Player $playerNumber',
+            attack: ValueImageLabelModel(value: 0, label: 'Attack'),
+            credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+            healthModel: HealthModel(maxHealth: _playerMaxHealth),
+          ),
+          handModel: CardsModel<CardModel>(),
+          deckModel: CardsModel<CardModel>(cards: playerDeckCopy),
+          discardModel: CardsModel<CardModel>.empty(),
+          gameStateService: gameStateService,
+          cardSelectionService: cardSelectionService,
         ),
-        handModel: CardsModel<CardModel>(),
-        deckModel: CardPileModel(cards: playerDeckCopy),
-        discardModel: CardPileModel.empty(),
-        gameStateService: gameStateService,
-        cardSelectionService: cardSelectionService,
       );
     });
   }
 
-  List<PlayerStatsModel> _createPlayerStats(List<PlayerModel> players) {
+  List<PlayerStatsModel> _createPlayerStats(List<PlayerCoordinator> players) {
     return players.map((player) {
       return PlayerStatsModel(
         name: player.infoModel.name,
@@ -127,13 +130,13 @@ class GameStateFactory {
     }).toList();
   }
 
-  PlayerTurnState createPlayerTurnState(
-    PlayerModel activePlayer,
+  PlayerTurnModel createPlayerTurnState(
+    PlayerCoordinator activePlayer,
     PlayersModel playersModel,
     List<CardModel> enemyCards,
     List<ShopCardModel> shopCards,
   ) {
-    return PlayerTurnState(
+    return PlayerTurnModel(
       playerModel: activePlayer,
       teamModel: TeamModel(
         bases: BasesModel(
@@ -147,7 +150,7 @@ class GameStateFactory {
         maxEnemyHealth: _maxEnemyHealth,
         enemyCards: enemyCards,
       ),
-      shopModel: ShopModel(
+      shopModel: ShopCoordinator.create(
         numberOfRows: _shopRows,
         numberOfColumns: _shopColumns,
         cards: shopCards,
@@ -200,8 +203,8 @@ class GameStateFactory {
 class GameStateComponents {
   final PlayerTurnCoordinator playerTurn;
   final EnemyTurnCoordinator enemyTurnArea;
-  final PlayerModel? selectedPlayer;
-  final List<PlayerModel> allPlayers;
+  final PlayerCoordinator? selectedPlayer;
+  final List<PlayerCoordinator> allPlayers;
 
   const GameStateComponents({
     required this.playerTurn,

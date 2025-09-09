@@ -1,5 +1,6 @@
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/enemy/enemy_turn_state.dart';
+import 'package:card_battler/game/models/enemy/enemy_turn_model.dart';
+import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/services/enemy/enemy_turn_manager.dart';
 
 /// Service responsible for managing enemy card drawing logic with turn completion rules
@@ -7,7 +8,7 @@ import 'package:card_battler/game/services/enemy/enemy_turn_manager.dart';
 abstract class EnemyCardDrawService {
   /// Draws a card from the enemy deck and determines if turn should continue
   /// Returns the drawn card if successful, null if no cards available
-  CardModel? drawCard(EnemyTurnState state);
+  CardModel? drawCard(EnemyTurnModel state);
   
   /// Checks if a card should cause the turn to end based on its effects
   bool shouldEndTurn(CardModel card);
@@ -25,7 +26,7 @@ class DefaultEnemyCardDrawService implements EnemyCardDrawService {
   }
 
   @override
-  CardModel? drawCard(EnemyTurnState state) {
+  CardModel? drawCard(EnemyTurnModel state) {
     // Don't draw if turn is already finished
     if (_turnManager.isTurnFinished) return null;
 

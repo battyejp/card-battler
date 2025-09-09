@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/components/shop/shop.dart';
 import 'package:card_battler/game/components/shop/shop_card.dart';
 import 'package:card_battler/game/components/shared/card/card.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
@@ -42,7 +42,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shop = Shop(ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards))
+        final shop = Shop(ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards))
           ..size = testCase['shopSize'] as Vector2;
 
         await game.ensureAdd(shop);
@@ -68,7 +68,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        final shopModel = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(300, 200);
         
         await game.ensureAdd(shop);
@@ -89,7 +89,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shopModel = ShopModel(numberOfRows: 1, numberOfColumns: 2, cards: testCards);
+        final shopModel = ShopCoordinator.create(numberOfRows: 1, numberOfColumns: 2, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(200, 100);
         
         await game.ensureAdd(shop);
@@ -114,7 +114,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 2, cards: testCards);
+        final shopModel = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 2, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(200, 150);
         
         await game.ensureAdd(shop);
@@ -138,7 +138,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        final shopModel = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(300, 200);
         
         await game.ensureAdd(shop);
@@ -164,7 +164,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 2, cards: testCards);
+        final shopModel = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 2, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(200, 150);
         
         await game.ensureAdd(shop);
@@ -192,7 +192,7 @@ void main() {
             10,
             (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
           );
-          final shopModel = ShopModel(
+          final shopModel = ShopCoordinator.create(
             numberOfRows: config['rows'] as int,
             numberOfColumns: config['cols'] as int,
             cards: testCards,
@@ -221,7 +221,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shopModel = ShopModel(numberOfRows: 3, numberOfColumns: 3, cards: testCards);
+        final shopModel = ShopCoordinator.create(numberOfRows: 3, numberOfColumns: 3, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(450, 350);
         
         await game.ensureAdd(shop);
@@ -241,7 +241,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shopModel = ShopModel(numberOfRows: 1, numberOfColumns: 3, cards: testCards);
+        final shopModel = ShopCoordinator.create(numberOfRows: 1, numberOfColumns: 3, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(300, 100);
         
         await game.ensureAdd(shop);
@@ -264,7 +264,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 2, cards: testCards);
+        final shopModel = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 2, cards: testCards);
         final shop = Shop(shopModel)..size = Vector2(200, 150);
         
         await game.ensureAdd(shop);
@@ -291,7 +291,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shopModel = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards); // 6 cards max, limited by available (10)
+        final shopModel = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards); // 6 cards max, limited by available (10)
         final shop = Shop(shopModel)..size = Vector2(300, 200);
         
         await game.ensureAdd(shop);
@@ -310,7 +310,7 @@ void main() {
     group('dynamic shop behavior with ShopCards', () {
       testWithFlameGame('shop with fewer selectable cards than grid slots', (game) async {
         // Create a shop model that has fewer cards than grid positions
-        final shopModel = TestShopModel(
+        final shopModel = createTestShopCoordinator(
           numberOfRows: 2,
           numberOfColumns: 3,
           availableCards: 4,
@@ -328,7 +328,7 @@ void main() {
       });
 
       testWithFlameGame('empty shop creates no ShopCards', (game) async {
-        final shopModel = TestShopModel(
+        final shopModel = createTestShopCoordinator(
           numberOfRows: 2,
           numberOfColumns: 3,
           availableCards: 0,
@@ -344,16 +344,18 @@ void main() {
   });
 }
 
-// Test helper class to create shop models with specific card counts
-class TestShopModel extends ShopModel {
-  TestShopModel({
-    required super.numberOfRows,
-    required super.numberOfColumns,
-    required int availableCards,
-  }) : super(
-         cards: List.generate(
-           availableCards,
-           (i) => ShopCardModel(name: 'Test Card ${i + 1}', cost: i + 1),
-         ),
-       );
+// Test helper function to create shop coordinators with specific card counts
+ShopCoordinator createTestShopCoordinator({
+  required int numberOfRows,
+  required int numberOfColumns,
+  required int availableCards,
+}) {
+  return ShopCoordinator.create(
+    numberOfRows: numberOfRows,
+    numberOfColumns: numberOfColumns,
+    cards: List.generate(
+      availableCards,
+      (i) => ShopCardModel(name: 'Test Card ${i + 1}', cost: i + 1),
+    ),
+  );
 }

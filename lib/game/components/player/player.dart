@@ -2,7 +2,7 @@ import 'package:card_battler/game/components/shared/card/card_deck.dart';
 import 'package:card_battler/game/components/shared/card/card_pile.dart';
 import 'package:card_battler/game/components/player/card_hand.dart';
 import 'package:card_battler/game/components/player/info.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
 import 'package:card_battler/game/services/card/card_interaction_service.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:flame/components.dart';
@@ -11,8 +11,9 @@ class Player extends PositionComponent {
   static const handWidthFactor = 0.6;
   static const pileWidthFactor = (1 - handWidthFactor) / 2;
   static const infoHeightFactor = 0.1;
+  static const cardsToDrawPerTurn = 5;
 
-  final PlayerModel _playerModel;
+  final PlayerCoordinator _playerModel;
   final CardInteractionService _cardInteractionService;
   final CardSelectionService _cardSelectionService;
 
@@ -22,7 +23,7 @@ class Player extends PositionComponent {
   late final Info _info;
 
   Player({
-    required PlayerModel playerModel,
+    required PlayerCoordinator playerModel,
     required CardInteractionService cardInteractionService,
     required CardSelectionService cardSelectionService,
   })  : _playerModel = playerModel,
@@ -33,7 +34,7 @@ class Player extends PositionComponent {
   void onLoad() {
 
     _deck = CardDeck(_playerModel.deckCards, onTap: () => {
-      _playerModel.drawCardsFromDeck(),
+      _playerModel.drawCardsFromDeck(cardsToDrawPerTurn),
     })
       ..size = Vector2(size.x * pileWidthFactor, size.y);
 

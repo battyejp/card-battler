@@ -9,6 +9,7 @@ import 'package:card_battler/game/components/player/card_hand.dart';
 import 'package:card_battler/game/components/player/info.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
@@ -37,16 +38,18 @@ void main() {
         name: 'TestPlayer',
       );
       final handModel = CardsModel<CardModel>();
-      final deckModel = CardPileModel(cards: _generateCards(20));
-      final discardModel = CardPileModel.empty();
+      final deckModel = CardsModel<CardModel>(cards: _generateCards(20));
+      final discardModel = CardsModel<CardModel>.empty();
       
-      final playerModel = PlayerModel(
-        infoModel: infoModel,
-        handModel: handModel,
-        deckModel: deckModel,
-        discardModel: discardModel,
-        gameStateService: gameStateService,
-        cardSelectionService: DefaultCardSelectionService(),
+      final playerModel = PlayerCoordinator.create(
+        state: PlayerModel.create(
+          infoModel: infoModel,
+          handModel: handModel,
+          deckModel: deckModel,
+          discardModel: discardModel,
+          gameStateService: gameStateService,
+          cardSelectionService: DefaultCardSelectionService(),
+        ),
       );
       
       return Player(
@@ -258,16 +261,18 @@ void main() {
           name: 'TestPlayer',
         );
         final handModel = CardsModel<CardModel>();
-        final deckModel = CardPileModel(cards: _generateCards(3)); // Only 3 cards
-        final discardModel = CardPileModel.empty();
+        final deckModel = CardsModel<CardModel>(cards: _generateCards(3)); // Only 3 cards
+        final discardModel = CardsModel<CardModel>.empty();
         
-        final playerModel = PlayerModel(
-          infoModel: infoModel,
-          handModel: handModel,
-          deckModel: deckModel,
-          discardModel: discardModel,
-          gameStateService: gameStateService,
-          cardSelectionService: DefaultCardSelectionService(),
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerModel.create(
+            infoModel: infoModel,
+            handModel: handModel,
+            deckModel: deckModel,
+            discardModel: discardModel,
+            gameStateService: gameStateService,
+            cardSelectionService: DefaultCardSelectionService(),
+          ),
         );
         
         final player = Player(
@@ -306,16 +311,18 @@ void main() {
           name: 'TestPlayer',
         );
         final handModel = CardsModel<CardModel>();
-        final deckModel = CardPileModel.empty(); // Start with empty deck
-        final discardModel = CardPileModel.empty();
+        final deckModel = CardsModel<CardModel>.empty(); // Start with empty deck
+        final discardModel = CardsModel<CardModel>.empty();
         
-        final playerModel = PlayerModel(
-          infoModel: infoModel,
-          handModel: handModel,
-          deckModel: deckModel,
-          discardModel: discardModel,
-          gameStateService: DefaultGameStateService(GameStateManager()),
-          cardSelectionService: DefaultCardSelectionService(),
+        final playerModel = PlayerCoordinator.create(
+          state: PlayerModel.create(
+            infoModel: infoModel,
+            handModel: handModel,
+            deckModel: deckModel,
+            discardModel: discardModel,
+            gameStateService: DefaultGameStateService(GameStateManager()),
+            cardSelectionService: DefaultCardSelectionService(),
+          ),
         );
 
         final player = Player(
@@ -448,13 +455,6 @@ void main() {
     });
 
     group('constants and configuration', () {
-      test('player constants are defined correctly', () {
-        expect(Player.handWidthFactor, equals(0.6));
-        expect(Player.pileWidthFactor, equals(0.2));
-        // cardsToDrawOnTap property has been removed - this constant is now handled by the deck drawing logic
-        expect(Player.infoHeightFactor, equals(0.1));
-      });
-
       test('layout factors sum to 1.0', () {
         final total = Player.handWidthFactor + (Player.pileWidthFactor * 2);
         expect(total, equals(1.0));

@@ -1,19 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/services/player/player_turn_manager.dart';
+import 'package:card_battler/game/services/player_turn/player_turn_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 
 // Test data generators
@@ -25,26 +26,28 @@ List<CardModel> _generateCards(int count, {String prefix = 'Card'}) {
   ));
 }
 
-PlayerTurnState _createTestPlayerTurnState({
+PlayerTurnModel _createTestPlayerTurnState({
   List<CardModel>? handCards,
   List<CardModel>? deckCards,
   List<CardModel>? discardCards,
 }) {
-  final player = PlayerModel(
-    infoModel: InfoModel(
-      attack: ValueImageLabelModel(value: 0, label: 'Attack'),
-      credits: ValueImageLabelModel(value: 0, label: 'Credits'),
-      name: 'Test Player',
-      healthModel: HealthModel(maxHealth: 10),
+  final player = PlayerCoordinator.create(
+    state: PlayerModel.create(
+      infoModel: InfoModel(
+        attack: ValueImageLabelModel(value: 0, label: 'Attack'),
+        credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+        name: 'Test Player',
+        healthModel: HealthModel(maxHealth: 10),
+      ),
+      handModel: CardsModel<CardModel>(cards: handCards ?? []),
+      deckModel: CardsModel<CardModel>(cards: deckCards ?? []),
+      discardModel: CardsModel<CardModel>(cards: discardCards ?? []),
+      gameStateService: MockGameStateService(),
+      cardSelectionService: MockCardSelectionService(),
     ),
-    handModel: CardsModel<CardModel>(cards: handCards ?? []),
-    deckModel: CardsModel<CardModel>(cards: deckCards ?? []),
-    discardModel: CardsModel<CardModel>(cards: discardCards ?? []),
-    gameStateService: MockGameStateService(),
-    cardSelectionService: MockCardSelectionService(),
   );
 
-  return PlayerTurnState(
+  return PlayerTurnModel(
     playerModel: player,
     teamModel: TeamModel(
       bases: BasesModel(bases: []),
@@ -56,7 +59,7 @@ PlayerTurnState _createTestPlayerTurnState({
       maxEnemyHealth: 10,
       enemyCards: [],
     ),
-    shopModel: ShopModel(
+    shopModel: ShopCoordinator.create(
       numberOfRows: 1,
       numberOfColumns: 1,
       cards: [],

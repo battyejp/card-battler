@@ -1,6 +1,8 @@
 import 'package:card_battler/game/components/scenes/player_turn_scene.dart';
-import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/services/player/player_turn_coordinator.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/models/shared/effect_model.dart';
+import 'package:card_battler/game/services/player_turn/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
@@ -13,7 +15,7 @@ import 'package:card_battler/game/models/team/base_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/enemy/enemies.dart';
@@ -65,19 +67,21 @@ List<ShopCardModel> _generateShopCards(int count) {
   ));
 }
 
-PlayerModel _createTestPlayerModel({String name = 'Test Player', bool isActive = true}) {
-  return PlayerModel(
-    infoModel: InfoModel(
-      name: name,
-      attack: ValueImageLabelModel(value: 10, label: 'Attack'),
-      credits: ValueImageLabelModel(value: 5, label: 'Credits'),
-      healthModel: HealthModel(maxHealth: 100),
+PlayerCoordinator _createTestPlayerModel({String name = 'Test Player', bool isActive = true}) {
+  return PlayerCoordinator.create(
+    state: PlayerModel.create(
+      infoModel: InfoModel(
+        name: name,
+        attack: ValueImageLabelModel(value: 10, label: 'Attack'),
+        credits: ValueImageLabelModel(value: 5, label: 'Credits'),
+        healthModel: HealthModel(maxHealth: 100),
+      ),
+      handModel: CardsModel<CardModel>(),
+      deckModel: CardsModel<CardModel>(cards: _generatePlayerCards(20)),
+      discardModel: CardsModel<CardModel>.empty(),
+      gameStateService: DefaultGameStateService(GameStateManager()),
+      cardSelectionService: DefaultCardSelectionService(),
     ),
-    handModel: CardsModel<CardModel>(),
-    deckModel: CardPileModel(cards: _generatePlayerCards(20)),
-    discardModel: CardPileModel.empty(),
-    gameStateService: DefaultGameStateService(GameStateManager()),
-    cardSelectionService: DefaultCardSelectionService(),
   );
 }
 
@@ -115,8 +119,8 @@ EnemiesModel _createTestEnemiesModel() {
   );
 }
 
-ShopModel _createTestShopModel() {
-  return ShopModel(
+ShopCoordinator _createTestShopCoordinator() {
+  return ShopCoordinator.create(
     numberOfRows: 2,
     numberOfColumns: 3,
     cards: _generateShopCards(6),
@@ -124,17 +128,17 @@ ShopModel _createTestShopModel() {
 }
 
 PlayerTurnCoordinator _createTestPlayerTurnModel({
-  PlayerModel? playerModel,
+  PlayerCoordinator? playerModel,
   TeamModel? teamModel,
   EnemiesModel? enemiesModel,
-  ShopModel? shopModel,
+  ShopCoordinator? shopModel,
 }) {
   final gameStateService = DefaultGameStateService(GameStateManager());
-  final state = PlayerTurnState(
+  final state = PlayerTurnModel(
     playerModel: playerModel ?? _createTestPlayerModel(),
     teamModel: teamModel ?? _createTestTeamModel(),
     enemiesModel: enemiesModel ?? _createTestEnemiesModel(),
-    shopModel: shopModel ?? _createTestShopModel(),
+    shopModel: shopModel ?? _createTestShopCoordinator(),
   );
   return PlayerTurnCoordinator(
     state: state,
@@ -373,12 +377,12 @@ void main() {
       });
 
       testWithFlameGame('shop component uses correct model', (game) async {
-        final customShopModel = ShopModel(
+        final customShopCoordinator = ShopCoordinator.create(
           numberOfRows: 3,
           numberOfColumns: 4,
           cards: _generateShopCards(12),
         );
-        final model = _createTestPlayerTurnModel(shopModel: customShopModel);
+        final model = _createTestPlayerTurnModel(shopModel: customShopCoordinator);
         final size = Vector2(800, 600);
         
         final scene = PlayerTurnScene(model: model, size: size);

@@ -7,7 +7,6 @@ import 'package:flame/components.dart';
 
 class ShopCard extends TapableActionableCard {
   final ShopCardModel shopCardModel;
-  //final CardInteractionService? _cardInteractionService;
   late TextComponent _costTextComponent;
 
   ShopCard(
@@ -20,7 +19,6 @@ class ShopCard extends TapableActionableCard {
   ) : super(
         shopCardModel, 
         onButtonPressed: () {
-          // TODO could this any of this be in tappableactionablecard?
           cardSelectionService?.deselectCard();
           shopCardModel.playCard();
         },

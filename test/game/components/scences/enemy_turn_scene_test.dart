@@ -1,4 +1,5 @@
 import 'package:card_battler/game/components/scenes/enemy_turn_scene.dart';
+import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/services/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
@@ -44,7 +45,7 @@ EnemyTurnCoordinator _createTestModel({
   List<PlayerStatsModel>? players,
 }) {
   return EnemyTurnCoordinator(
-    enemyCards: CardPileModel(cards: cards ?? _generateTestCards(3)),
+    enemyCards: CardsModel<CardModel>(cards: cards ?? _generateTestCards(3)),
     playersModel: PlayersModel(players: players ?? [_createTestPlayerStats('Player1', isActive: true)]),
     gameStateService: DefaultGameStateService(GameStateManager()),
   );
@@ -363,7 +364,7 @@ void main() {
 
       testWithFlameGame('handles model with no cards', (game) async {
         final model = EnemyTurnCoordinator(
-          enemyCards: CardPileModel.empty(),
+          enemyCards: CardsModel<CardModel>.empty(),
           playersModel: PlayersModel(players: [_createTestPlayerStats('Player1')]),
           gameStateService: DefaultGameStateService(GameStateManager()),
         );

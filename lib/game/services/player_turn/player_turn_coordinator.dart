@@ -1,19 +1,19 @@
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
-import 'package:card_battler/game/models/player/player_turn_state.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/services/card/card_play_orchestrator.dart';
-import 'package:card_battler/game/services/player/player_effect_processor.dart';
+import 'package:card_battler/game/services/player_turn/player_effect_processor.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
-import 'package:card_battler/game/services/player/player_turn_manager.dart';
+import 'package:card_battler/game/services/player_turn/player_turn_manager.dart';
 
 /// Coordinator service that manages player turn operations
 /// This replaces the PlayerTurnModel and delegates responsibilities to specialized services
 /// Follows the Single Responsibility Principle by focusing on coordination rather than implementation
 class PlayerTurnCoordinator {
-  final PlayerTurnState state;
+  final PlayerTurnModel state;
   final CardPlayOrchestrator _cardPlayOrchestrator;
   final PlayerEffectProcessor _effectProcessor;
   final PlayerTurnManager _turnManager;
@@ -33,11 +33,10 @@ class PlayerTurnCoordinator {
   }
 
   // Expose state properties for backward compatibility
-  //TODO - consider removing these getters if direct state access is acceptable
-  PlayerModel get playerModel => state.playerModel;
+  PlayerCoordinator get playerModel => state.playerModel;
   TeamModel get teamModel => state.teamModel;
   EnemiesModel get enemiesModel => state.enemiesModel;
-  ShopModel get shopModel => state.shopModel;
+  ShopCoordinator get shopModel => state.shopModel;
 
   /// Handles when a card is played - delegates to the card play orchestrator
   void onCardPlayed(CardModel card) {

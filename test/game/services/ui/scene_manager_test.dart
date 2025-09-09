@@ -6,8 +6,9 @@ import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/components/scenes/player_turn_scene.dart';
-import 'package:card_battler/game/models/player/player_turn_state.dart';
-import 'package:card_battler/game/services/player/player_turn_coordinator.dart';
+import 'package:card_battler/game/models/player/player_turn_model.dart';
+import 'package:card_battler/game/services/player_turn/player_turn_coordinator.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
@@ -17,8 +18,8 @@ import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 
 // Test data generators
@@ -202,19 +203,21 @@ class MockPlayerTurnScene extends PlayerTurnScene {
   MockPlayerTurnScene()
       : super(
           model: PlayerTurnCoordinator(
-            state: PlayerTurnState(
-              playerModel: PlayerModel(
-                infoModel: InfoModel(
-                  attack: ValueImageLabelModel(value: 0, label: 'Attack'),
-                  credits: ValueImageLabelModel(value: 0, label: 'Credits'),
-                  name: 'Test Player',
-                  healthModel: HealthModel(maxHealth: 10),
+            state: PlayerTurnModel(
+              playerModel: PlayerCoordinator.create(
+                state: PlayerModel.create(
+                  infoModel: InfoModel(
+                    attack: ValueImageLabelModel(value: 0, label: 'Attack'),
+                    credits: ValueImageLabelModel(value: 0, label: 'Credits'),
+                    name: 'Test Player',
+                    healthModel: HealthModel(maxHealth: 10),
+                  ),
+                  handModel: CardsModel<CardModel>(),
+                  deckModel: CardsModel<CardModel>(),
+                  discardModel: CardsModel<CardModel>(),
+                  gameStateService: DummyGameStateService(),
+                  cardSelectionService: DefaultCardSelectionService(),
                 ),
-                handModel: CardsModel<CardModel>(),
-                deckModel: CardPileModel(),
-                discardModel: CardPileModel(),
-                gameStateService: DummyGameStateService(),
-                cardSelectionService: DefaultCardSelectionService(),
               ),
               teamModel: TeamModel(
                 bases: BasesModel(bases: []),
@@ -226,7 +229,7 @@ class MockPlayerTurnScene extends PlayerTurnScene {
                 maxEnemyHealth: 10,
                 enemyCards: [],
               ),
-              shopModel: ShopModel(
+              shopModel: ShopCoordinator.create(
                 numberOfRows: 1,
                 numberOfColumns: 1,
                 cards: [],

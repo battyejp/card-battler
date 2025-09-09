@@ -1,3 +1,4 @@
+import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:card_battler/game/services/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
@@ -40,7 +41,7 @@ void main() {
   group('EnemyTurnCoordinator', () {
     group('constructor and initialization', () {
       test('creates with required parameters', () {
-        final enemyCards = CardPileModel(cards: _generateTestCards(5));
+        final enemyCards = CardsModel<CardModel>(cards: _generateTestCards(5));
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
 
         final enemyTurnArea = EnemyTurnCoordinator(
@@ -55,7 +56,7 @@ void main() {
       });
 
       test('initializes empty played cards pile', () {
-        final enemyCards = CardPileModel(cards: _generateTestCards(3));
+        final enemyCards = CardsModel<CardModel>(cards: _generateTestCards(3));
         final playerStats = [_createTestPlayerStats('Player1')];
 
         final enemyTurnArea = EnemyTurnCoordinator(
@@ -69,7 +70,7 @@ void main() {
       });
 
       test('works with multiple player stats', () {
-        final enemyCards = CardPileModel(cards: _generateTestCards(1));
+        final enemyCards = CardsModel<CardModel>(cards: _generateTestCards(1));
         final playerStats = [
           _createTestPlayerStats('Player1', isActive: true),
           _createTestPlayerStats('Player2'),
@@ -92,7 +93,7 @@ void main() {
     group('drawCardsFromDeck functionality', () {
       test('draws card from enemy deck and adds to played cards', () {
         final testCards = _generateTestCards(3);
-        final enemyCards = CardPileModel(cards: testCards);
+        final enemyCards = CardsModel<CardModel>(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
 
         final enemyTurnArea = EnemyTurnCoordinator(
@@ -118,7 +119,7 @@ void main() {
 
       test('drawn card is automatically set to face up by CardsModel', () {
         final testCards = _generateTestCards(1);
-        final enemyCards = CardPileModel(cards: testCards);
+        final enemyCards = CardsModel<CardModel>(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
 
         final enemyTurnArea = EnemyTurnCoordinator(
@@ -154,7 +155,7 @@ void main() {
           ),
         ];
 
-        final enemyCards = CardPileModel(cards: testCards);
+        final enemyCards = CardsModel<CardModel>(cards: testCards);
         final activePlayer = _createTestPlayerStats(
           'Hero',
           isActive: true,
@@ -187,7 +188,7 @@ void main() {
 
       test('turn with no active players', () {
         final testCards = _generateTestCards(1);
-        final enemyCards = CardPileModel(cards: testCards);
+        final enemyCards = CardsModel<CardModel>(cards: testCards);
         final playerStats = [
           _createTestPlayerStats('Player1', isActive: false, health: 100),
           _createTestPlayerStats('Player2', isActive: false, health: 80),
@@ -208,7 +209,7 @@ void main() {
 
       test('turn with empty player stats list', () {
         final testCards = _generateTestCards(1);
-        final enemyCards = CardPileModel(cards: testCards);
+        final enemyCards = CardsModel<CardModel>(cards: testCards);
         final playerStats = <PlayerStatsModel>[];
 
         final enemyTurnArea = EnemyTurnCoordinator(
@@ -253,7 +254,7 @@ void main() {
           ),
         ];
 
-        final enemyCards = CardPileModel(cards: testCards);
+        final enemyCards = CardsModel<CardModel>(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
 
         final enemyTurnArea = EnemyTurnCoordinator(
@@ -287,7 +288,7 @@ void main() {
           ),
         ];
 
-        final enemyCards = CardPileModel(cards: testCards);
+        final enemyCards = CardsModel<CardModel>(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
 
         final enemyTurnArea = EnemyTurnCoordinator(
@@ -320,7 +321,7 @@ void main() {
           ),
         ];
 
-        final enemyCards = CardPileModel(cards: testCards);
+        final enemyCards = CardsModel<CardModel>(cards: testCards);
         final playerStats = [_createTestPlayerStats('Player1', isActive: true)];
 
         final enemyTurnArea = EnemyTurnCoordinator(
@@ -368,7 +369,7 @@ void main() {
           ),
         ];
 
-        final enemyCards = CardPileModel(cards: testCards);
+        final enemyCards = CardsModel<CardModel>(cards: testCards);
         final playerStats = [
           _createTestPlayerStats('Player1', isActive: true, health: 100),
         ];
@@ -424,7 +425,7 @@ void main() {
         ],
       );
 
-      final cardPile = CardPileModel(cards: [card]);
+      final cardPile = CardsModel<CardModel>(cards: [card]);
       final players = [_createTestPlayerStats('TestPlayer')];
       final playersModel = PlayersModel(players: players);
       final gameStateService = DefaultGameStateService(GameStateManager());

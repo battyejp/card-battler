@@ -1,3 +1,4 @@
+import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
@@ -6,13 +7,13 @@ import 'package:card_battler/game/services/game_state/game_state_service.dart';
 /// Contains only the models needed for enemy turn operations without any behavior
 /// This class follows the Single Responsibility Principle by focusing solely on data storage
 /// and providing consistency with PlayerTurnState architecture
-class EnemyTurnState {
-  final CardPileModel enemyCards;
-  final CardPileModel playedCards;
+class EnemyTurnModel {
+  final CardsModel<CardModel> enemyCards;
+  final CardsModel<CardModel> playedCards;
   final PlayersModel playersModel;
   final GameStateService gameStateService;
 
-  const EnemyTurnState({
+  const EnemyTurnModel({
     required this.enemyCards,
     required this.playedCards,
     required this.playersModel,

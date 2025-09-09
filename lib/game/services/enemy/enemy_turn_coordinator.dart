@@ -1,7 +1,8 @@
 
+import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
-import 'package:card_battler/game/models/enemy/enemy_turn_state.dart';
+import 'package:card_battler/game/models/enemy/enemy_turn_model.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 import 'package:card_battler/game/services/enemy/enemy_turn_manager.dart';
 import 'package:card_battler/game/services/enemy/enemy_effect_processor.dart';
@@ -10,13 +11,13 @@ import 'package:card_battler/game/services/enemy/enemy_card_draw_service.dart';
 /// Refactored EnemyTurnCoordinator following SRP principles
 /// Now acts as a lightweight coordinator using dedicated services
 class EnemyTurnCoordinator {
-  final EnemyTurnState _state;
+  final EnemyTurnModel _state;
   final DefaultEnemyTurnManager _turnManager;
   final EnemyEffectProcessor _effectProcessor;
   final EnemyCardDrawService _cardDrawService;
 
   EnemyTurnCoordinator._internal({
-    required EnemyTurnState state,
+    required EnemyTurnModel state,
     required DefaultEnemyTurnManager turnManager,
     required EnemyEffectProcessor effectProcessor,
     required EnemyCardDrawService cardDrawService,
@@ -28,16 +29,16 @@ class EnemyTurnCoordinator {
   }
 
   factory EnemyTurnCoordinator({
-    required CardPileModel enemyCards,
+    required CardsModel<CardModel> enemyCards,
     required PlayersModel playersModel,
     required GameStateService gameStateService,
     EnemyTurnManager? turnManager,
     EnemyEffectProcessor? effectProcessor,
     EnemyCardDrawService? cardDrawService,
   }) {
-    final state = EnemyTurnState(
+    final state = EnemyTurnModel(
       enemyCards: enemyCards,
-      playedCards: CardPileModel.empty(),
+      playedCards: CardsModel<CardModel>.empty(),
       playersModel: playersModel,
       gameStateService: gameStateService,
     );
@@ -70,9 +71,8 @@ class EnemyTurnCoordinator {
     _turnManager.resetTurn();
   }
 
-  // TODO See if these can be removed 
   // Expose state and effect processor for test access
-  CardPileModel get enemyCards => _state.enemyCards;
-  CardPileModel get playedCards => _state.playedCards;
+  CardsModel<CardModel> get enemyCards => _state.enemyCards;
+  CardsModel<CardModel> get playedCards => _state.playedCards;
   PlayersModel get playersModel => _state.playersModel;
 }

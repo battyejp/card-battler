@@ -78,7 +78,3 @@ class CardsModel<T extends CardModel> with ReactiveModel<CardsModel<T>> {
     }
   }
 }
-
-// Backward compatibility typedef
-// TODO remove this and update all references
-typedef CardPileModel = CardsModel<CardModel>;

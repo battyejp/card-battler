@@ -1,11 +1,11 @@
 import 'package:card_battler/game/components/shared/reactive_position_component.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/services/card/card_interaction_service.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:flame/components.dart';
 import 'package:card_battler/game/components/shop/shop_card.dart';
 
-class Shop extends ReactivePositionComponent<ShopModel> {
+class Shop extends ReactivePositionComponent<ShopCoordinator> {
   final CardInteractionService? _cardInteractionService;
   final CardSelectionService? _cardSelectionService;
   

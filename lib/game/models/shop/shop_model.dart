@@ -1,72 +1,40 @@
-
-import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/shared/reactive_model.dart';
-import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
+import 'package:card_battler/game/services/shop/shop_inventory.dart';
+import 'package:card_battler/game/services/shop/shop_display.dart';
+import 'package:card_battler/game/services/shop/shop_layout.dart';
+import 'package:card_battler/game/services/shop/shop_card_handler.dart';
 
-//TODO split the class up
-class ShopModel with ReactiveModel<ShopModel> {
-  final CardsModel<ShopCardModel> _reserveCards;
-  final int _numberOfRows;
-  final int _numberOfColumns;
-
-  late int _displayCount;
-  late CardsModel<ShopCardModel> _selectableCards;
-
-  Function(CardModel)? cardPlayed;
+/// Simple data holder for shop state
+/// Contains only the shop services needed without any behavior
+/// This class follows the Single Responsibility Principle by focusing solely on data storage
+class ShopModel {
+  final ShopInventory inventory;
+  final ShopDisplay display;
+  final ShopLayout layout;
+  final ShopCardHandler cardHandler;
 
   ShopModel({
+    required this.inventory,
+    required this.display, 
+    required this.layout,
+    required this.cardHandler,
+  });
+
+  factory ShopModel.create({
     required int numberOfRows,
     required int numberOfColumns,
     required List<ShopCardModel> cards,
-  }) : _reserveCards = CardsModel<ShopCardModel>(),
-       _selectableCards = CardsModel<ShopCardModel>(),
-       _numberOfRows = numberOfRows,
-       _numberOfColumns = numberOfColumns {
-    _displayCount = _numberOfRows * _numberOfColumns;
-
-    _reserveCards.addCards(cards);
-    _reserveCards.shuffle();
-    final newCards = _getNewCardsForShopWithListenersAndRemoveFromReserve(_displayCount);
-    _selectableCards.addCards(newCards);
+  }) {
+    final inventory = ShopInventory(cards: cards);
+    final display = ShopDisplay();
+    final layout = ShopLayout(numberOfRows: numberOfRows, numberOfColumns: numberOfColumns);
+    final cardHandler = ShopCardHandler();
+    
+    return ShopModel(
+      inventory: inventory,
+      display: display,
+      layout: layout,
+      cardHandler: cardHandler,
+    );
   }
-
-  //TODO is this needed, could it just use base
-  void _onCardPlayed(ShopCardModel card) {
-    card.onCardPlayed = null;
-    cardPlayed?.call(card);
-  }
-
-  void removeSelectableCardFromShop(ShopCardModel card) {
-    final cards = _selectableCards.allCards.toList();
-    cards.remove(card);
-    _selectableCards = CardsModel<ShopCardModel>(cards: cards);
-    notifyChange();
-  }
-
-  void refillShop() {
-    var countToAdd = _displayCount - _selectableCards.allCards.length;
-
-    if (countToAdd == 0) {
-      return;
-    }
-
-    var newCards = _getNewCardsForShopWithListenersAndRemoveFromReserve(countToAdd);
-    _selectableCards.addCards(newCards);
-    notifyChange();
-  }
-
-  List<ShopCardModel> _getNewCardsForShopWithListenersAndRemoveFromReserve(int countToAdd) {
-    var cards = _reserveCards.drawCards(countToAdd);
-
-    for (final card in cards) {
-      card.onCardPlayed = () => _onCardPlayed(card);
-    }
-
-    return cards;
-  }
-
-  List<ShopCardModel> get selectableCards => _selectableCards.allCards;
-  int get numberOfRows => _numberOfRows;
-  int get numberOfColumns => _numberOfColumns;
 }
