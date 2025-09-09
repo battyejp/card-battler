@@ -1,21 +1,18 @@
 import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/player/info_model.dart';
+import 'package:card_battler/game/models/player/player_state.dart';
+import 'package:card_battler/game/services/player/player_coordinator.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 
-//TODO break up class
+/// Refactored PlayerModel that now delegates to PlayerCoordinator
+/// Maintains backward compatibility while following Single Responsibility Principle
+/// This class now acts as a facade to the new PlayerCoordinator architecture
 class PlayerModel {
-  final InfoModel _infoModel;
-  final CardsModel<CardModel> _handCards;
-  final CardsModel<CardModel> _deckCards;
-  final CardsModel<CardModel> _discardCards;
-  final GameStateService? _gameStateService;
-  final CardSelectionService? _cardSelectionService;
+  final PlayerCoordinator _coordinator;
   
   static const cardsToDrawOnTap = 5;
-  Function(CardModel)? cardPlayed;
-  bool turnOver = false;
 
   PlayerModel({
     required InfoModel infoModel,
@@ -24,66 +21,41 @@ class PlayerModel {
     required CardsModel<CardModel> discardModel,
     required GameStateService gameStateService,
     required CardSelectionService cardSelectionService,
-  }) : _infoModel = infoModel,
-       _handCards = handModel,
-       _deckCards = deckModel,
-       _discardCards = discardModel,
-       _gameStateService = gameStateService,
-       _cardSelectionService = cardSelectionService {
-    _deckCards.shuffle();
-  }
+  }) : _coordinator = PlayerCoordinator.create(
+    state: PlayerState.create(
+      infoModel: infoModel,
+      handModel: handModel,
+      deckModel: deckModel,
+      discardModel: discardModel,
+      gameStateService: gameStateService,
+      cardSelectionService: cardSelectionService,
+    ),
+  );
 
-  // Expose models for use in the game components
-  InfoModel get infoModel => _infoModel;
-  CardsModel<CardModel> get handCards => _handCards;
-  CardsModel<CardModel> get deckCards => _deckCards;
-  CardsModel<CardModel> get discardCards => _discardCards;
+  // Expose models for use in the game components (delegated to coordinator)
+  InfoModel get infoModel => _coordinator.infoModel;
+  CardsModel<CardModel> get handCards => _coordinator.handCards;
+  CardsModel<CardModel> get deckCards => _coordinator.deckCards;
+  CardsModel<CardModel> get discardCards => _coordinator.discardCards;
+  
+  // Delegate cardPlayed callback to coordinator
+  Function(CardModel)? get cardPlayed => _coordinator.cardPlayed;
+  set cardPlayed(Function(CardModel)? value) => _coordinator.cardPlayed = value;
+  
+  // Delegate turnOver flag to coordinator
+  bool get turnOver => _coordinator.turnOver;
+  set turnOver(bool value) => _coordinator.turnOver = value;
 
+  // Delegate all business operations to coordinator
   void drawCardsFromDeck() {
-    if ((_cardSelectionService?.hasSelection ?? false) || handCards.cards.isNotEmpty) {
-      return;
-    }
-
-    final drawnCards = _deckCards.drawCards(cardsToDrawOnTap);
-
-    if (drawnCards.length < cardsToDrawOnTap) {
-      moveDiscardCardsToDeck();
-      final additionalCards = _deckCards.drawCards(cardsToDrawOnTap - drawnCards.length);
-      drawnCards.addAll(additionalCards);
-    }
-
-    if (drawnCards.isNotEmpty) {
-      for (final card in drawnCards) {
-        card.onCardPlayed = () => _onCardPlayed(card);
-      }
-      _handCards.addCards(drawnCards);
-    }
-
-    _gameStateService?.nextPhase();
+    _coordinator.drawCardsFromDeck();
   }
 
   void discardHand() {
-    for (var card in handCards.cards) {
-      card.isFaceUp = false;
-    }
-
-    _discardCards.addCards(handCards.cards);
-    handCards.clearCards();
+    _coordinator.discardHand();
   }
 
   void moveDiscardCardsToDeck() {
-    if (_discardCards.hasNoCards) {
-      return;
-    }
-
-    final discardCards = _discardCards.allCards;
-    _deckCards.addCards(discardCards);
-    _discardCards.clearCards();
-    _deckCards.shuffle();
-  }
-
-  void _onCardPlayed(CardModel card) {
-    card.onCardPlayed = null;
-    cardPlayed?.call(card);
+    _coordinator.moveDiscardCardsToDeck();
   }
 }
