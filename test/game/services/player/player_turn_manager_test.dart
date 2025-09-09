@@ -9,11 +9,11 @@ import 'package:card_battler/game/models/shared/cards_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 
 // Test data generators
@@ -56,7 +56,7 @@ PlayerTurnState _createTestPlayerTurnState({
       maxEnemyHealth: 10,
       enemyCards: [],
     ),
-    shopModel: ShopModel(
+    shopModel: ShopCoordinator.create(
       numberOfRows: 1,
       numberOfColumns: 1,
       cards: [],

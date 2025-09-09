@@ -1,6 +1,6 @@
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 
 /// Simple data holder for player turn state
@@ -10,7 +10,7 @@ class PlayerTurnState {
   final PlayerModel playerModel;
   final TeamModel teamModel;
   final EnemiesModel enemiesModel;
-  final ShopModel shopModel;
+  final ShopCoordinator shopModel;
 
   const PlayerTurnState({
     required this.playerModel,

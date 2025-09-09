@@ -9,7 +9,7 @@ import 'package:card_battler/game/models/team/base_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
@@ -147,7 +147,7 @@ class GameStateFactory {
         maxEnemyHealth: _maxEnemyHealth,
         enemyCards: enemyCards,
       ),
-      shopModel: ShopModel(
+      shopModel: ShopCoordinator.create(
         numberOfRows: _shopRows,
         numberOfColumns: _shopColumns,
         cards: shopCards,

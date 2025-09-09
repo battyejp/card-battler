@@ -2,7 +2,7 @@ import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/player/player_turn_state.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/services/card/card_play_orchestrator.dart';
 import 'package:card_battler/game/services/player/player_effect_processor.dart';
@@ -36,7 +36,7 @@ class PlayerTurnCoordinator {
   PlayerModel get playerModel => state.playerModel;
   TeamModel get teamModel => state.teamModel;
   EnemiesModel get enemiesModel => state.enemiesModel;
-  ShopModel get shopModel => state.shopModel;
+  ShopCoordinator get shopModel => state.shopModel;
 
   /// Handles when a card is played - delegates to the card play orchestrator
   void onCardPlayed(CardModel card) {

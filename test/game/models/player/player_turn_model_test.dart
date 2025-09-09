@@ -13,7 +13,7 @@ import 'package:card_battler/game/models/shared/card_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shared/value_image_label_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
@@ -26,7 +26,7 @@ void main() {
     late PlayerModel playerModel;
     late TeamModel teamModel;
     late EnemiesModel enemiesModel;
-    late ShopModel shopModel;
+    late ShopCoordinator shopModel;
     late PlayerTurnCoordinator playerTurnModel;
 
     setUp(() { 
@@ -66,7 +66,7 @@ void main() {
       final shopCards = List.generate(10, (index) => 
         ShopCardModel(name: 'Shop Card ${index + 1}', cost: 10)
       );
-      shopModel = ShopModel(
+      shopModel = ShopCoordinator.create(
         numberOfRows: 2, 
         numberOfColumns: 3,
         cards: shopCards

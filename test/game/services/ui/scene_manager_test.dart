@@ -17,8 +17,8 @@ import 'package:card_battler/game/models/team/team_model.dart';
 import 'package:card_battler/game/models/team/bases_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/services/game_state/game_state_service.dart';
 
 // Test data generators
@@ -226,7 +226,7 @@ class MockPlayerTurnScene extends PlayerTurnScene {
                 maxEnemyHealth: 10,
                 enemyCards: [],
               ),
-              shopModel: ShopModel(
+              shopModel: ShopCoordinator.create(
                 numberOfRows: 1,
                 numberOfColumns: 1,
                 cards: [],

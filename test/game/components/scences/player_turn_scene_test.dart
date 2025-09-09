@@ -14,7 +14,7 @@ import 'package:card_battler/game/models/team/base_model.dart';
 import 'package:card_battler/game/models/team/player_stats_model.dart';
 import 'package:card_battler/game/models/team/players_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/components/player/player.dart';
 import 'package:card_battler/game/components/enemy/enemies.dart';
@@ -116,8 +116,8 @@ EnemiesModel _createTestEnemiesModel() {
   );
 }
 
-ShopModel _createTestShopModel() {
-  return ShopModel(
+ShopCoordinator _createTestShopCoordinator() {
+  return ShopCoordinator.create(
     numberOfRows: 2,
     numberOfColumns: 3,
     cards: _generateShopCards(6),
@@ -128,14 +128,14 @@ PlayerTurnCoordinator _createTestPlayerTurnModel({
   PlayerModel? playerModel,
   TeamModel? teamModel,
   EnemiesModel? enemiesModel,
-  ShopModel? shopModel,
+  ShopCoordinator? shopModel,
 }) {
   final gameStateService = DefaultGameStateService(GameStateManager());
   final state = PlayerTurnState(
     playerModel: playerModel ?? _createTestPlayerModel(),
     teamModel: teamModel ?? _createTestTeamModel(),
     enemiesModel: enemiesModel ?? _createTestEnemiesModel(),
-    shopModel: shopModel ?? _createTestShopModel(),
+    shopModel: shopModel ?? _createTestShopCoordinator(),
   );
   return PlayerTurnCoordinator(
     state: state,
@@ -374,12 +374,12 @@ void main() {
       });
 
       testWithFlameGame('shop component uses correct model', (game) async {
-        final customShopModel = ShopModel(
+        final customShopCoordinator = ShopCoordinator.create(
           numberOfRows: 3,
           numberOfColumns: 4,
           cards: _generateShopCards(12),
         );
-        final model = _createTestPlayerTurnModel(shopModel: customShopModel);
+        final model = _createTestPlayerTurnModel(shopModel: customShopCoordinator);
         final size = Vector2(800, 600);
         
         final scene = PlayerTurnScene(model: model, size: size);

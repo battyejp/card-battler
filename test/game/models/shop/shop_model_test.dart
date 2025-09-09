@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/shop/shop_model.dart';
+import 'package:card_battler/game/services/shop/shop_coordinator.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/models/shared/reactive_model.dart';
 import 'package:card_battler/game/models/shared/card_model.dart';
 
 void main() {
-  group('ShopModel', () {
+  group('ShopCoordinator', () {
     group('constructor and initialization', () {
       test('creates and initializes shop with generated items', () {
         // Create test cards
@@ -14,10 +14,10 @@ void main() {
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
         
-        final shop = ShopModel(
+        final shop = ShopCoordinator.create(
           numberOfRows: 2, 
           numberOfColumns: 3,
-          cards: testCards
+          cards: testCards,
         );
         
         expect(shop.selectableCards, isNotEmpty);
@@ -29,7 +29,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        final shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         
         // Verify we have the right number of selectable cards
         expect(shop.selectableCards.length, equals(6));
@@ -49,14 +49,14 @@ void main() {
     });
 
     group('property access', () {
-      late ShopModel shop;
+      late ShopCoordinator shop;
       
       setUp(() {
         final testCards = List.generate(
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
       });
 
       test('selectableCards getter returns correct list', () {
@@ -73,7 +73,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        final shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         final allGeneratedCards = [...shop.selectableCards];
         
         // Verify all cards have expected properties (regardless of order due to shuffling)
@@ -91,7 +91,7 @@ void main() {
           10,
           (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1),
         );
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        final shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         final selectableCardNames = shop.selectableCards.map((c) => c.name).toSet();
         final allCardNames = testCards.map((c) => c.name).toSet();
         
@@ -104,21 +104,21 @@ void main() {
     group('ReactiveModel integration', () {
       test('implements ReactiveModel mixin', () {
         final testCards = List.generate(10, (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1));
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
-        expect(shop, isA<ReactiveModel<ShopModel>>());
+        final shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        expect(shop, isA<ReactiveModel<ShopCoordinator>>());
       });
 
       test('has changes stream available', () {
         final testCards = List.generate(10, (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1));
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
-        expect(shop.changes, isA<Stream<ShopModel>>());
+        final shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        expect(shop.changes, isA<Stream<ShopCoordinator>>());
       });
     });
 
     group('card removal functionality', () {
       test('removeSelectableCardFromShop removes card and notifies change', () {
         final testCards = List.generate(10, (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1));
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        final shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         
         final cardToRemove = shop.selectableCards.first;
         final initialCount = shop.selectableCards.length;
@@ -131,9 +131,9 @@ void main() {
 
       test('removeSelectableCardFromShop emits change notification', () async {
         final testCards = List.generate(10, (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1));
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        final shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         
-        final changes = <ShopModel>[];
+        final changes = <ShopCoordinator>[];
         final subscription = shop.changes.listen(changes.add);
         
         final cardToRemove = shop.selectableCards.first;
@@ -150,7 +150,7 @@ void main() {
 
       test('removing non-existent card does not affect shop', () {
         final testCards = List.generate(10, (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1));
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        final shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         
         final nonExistentCard = ShopCardModel(name: 'Non-existent', cost: 999);
         final initialCount = shop.selectableCards.length;
@@ -164,7 +164,7 @@ void main() {
     group('card played callback functionality', () {
       test('sets up onCardPlayed callback on selectable cards during initialization', () {
         final testCards = List.generate(10, (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1));
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        final shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         
         for (final card in shop.selectableCards) {
           expect(card.onCardPlayed, isNotNull);
@@ -173,7 +173,7 @@ void main() {
 
       test('cardPlayed callback is called when shop card is played', () {
         final testCards = List.generate(10, (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1));
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        final shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         
         CardModel? playedCard;
         shop.cardPlayed = (card) => playedCard = card;
@@ -186,7 +186,7 @@ void main() {
 
       test('onCardPlayed callback is cleared after card is played', () {
         final testCards = List.generate(10, (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1));
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        final shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         
         final cardToPlay = shop.selectableCards.first;
         expect(cardToPlay.onCardPlayed, isNotNull);
@@ -199,7 +199,7 @@ void main() {
 
       test('multiple cards can be played through their callbacks', () {
         final testCards = List.generate(10, (index) => ShopCardModel(name: 'Card ${index + 1}', cost: 1));
-        final shop = ShopModel(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
+        final shop = ShopCoordinator.create(numberOfRows: 2, numberOfColumns: 3, cards: testCards);
         
         final playedCards = <CardModel>[];
         shop.cardPlayed = (card) => playedCards.add(card);
