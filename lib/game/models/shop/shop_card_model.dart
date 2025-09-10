@@ -1,5 +1,4 @@
-
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/card/card_model.dart';
 
 class ShopCardModel extends CardModel {
   final int _cost;

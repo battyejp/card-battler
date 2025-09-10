@@ -1,4 +1,4 @@
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/card/card_model.dart';
 
 /// Service responsible for managing card selection state
 /// This separates selection business logic from UI presentation concerns

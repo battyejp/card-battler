@@ -1,4 +1,4 @@
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
