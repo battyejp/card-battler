@@ -2,13 +2,14 @@ import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/card/card_loader_service.dart';
 import 'package:card_battler/game/services/game_state_facade.dart';
+import 'package:card_battler/game/services/ui/scene_service.dart';
 import 'package:flame/game.dart';
 import 'package:flame/events.dart';
 
 class CardBattlerGameNew extends FlameGame with TapCallbacks {
   Vector2? _testSize;
-  // late final RouterComponent router;
-  // final SceneManager _sceneManager = SceneManager();
+  late final RouterComponent router;
+  final SceneService _sceneManager = SceneService();
 
   // Default constructor with new game state
   CardBattlerGameNew();
@@ -53,8 +54,8 @@ class CardBattlerGameNew extends FlameGame with TapCallbacks {
       GameStateFacade.instance.initialize(shopCards, playerDeckCards, enemyCards);
     }
 
-    // world.add(
-    //   router = _sceneManager.createRouter(size),
-    // );
+    world.add(
+      router = _sceneManager.createRouter(size),
+    );
   }
 }
