@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/components/enemy/enemies.dart';
-import 'package:card_battler/game/components/enemy/enemy.dart';
-import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game_legacy/components/enemy/enemies.dart';
+import 'package:card_battler/game_legacy/components/enemy/enemy.dart';
+import 'package:card_battler/game_legacy/models/enemy/enemies_model.dart';
+import 'package:card_battler/game_legacy/models/shared/card_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 

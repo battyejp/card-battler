@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flame_test/flame_test.dart';
-import 'package:card_battler/game/components/shared/flat_button.dart';
+import 'package:card_battler/game_legacy/components/shared/flat_button.dart';
 import 'package:flame/components.dart';
 
 void main() {

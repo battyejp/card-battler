@@ -1,7 +1,7 @@
-import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game_legacy/models/shared/health_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/shared/value_image_label_model.dart';
+import 'package:card_battler/game_legacy/models/player/info_model.dart';
+import 'package:card_battler/game_legacy/models/shared/value_image_label_model.dart';
 
 void main() {
   group('InfoModel', () {

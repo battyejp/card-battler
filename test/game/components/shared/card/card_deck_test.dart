@@ -1,8 +1,8 @@
-import 'package:card_battler/game/models/shared/cards_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game_legacy/models/shared/cards_model.dart';
+import 'package:card_battler/game_legacy/models/shared/card_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/components/shared/card/card_deck.dart';
-import 'package:card_battler/game/components/shared/card/card.dart';
+import 'package:card_battler/game_legacy/components/shared/card/card_deck.dart';
+import 'package:card_battler/game_legacy/components/shared/card/card.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';

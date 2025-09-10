@@ -1,26 +1,26 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flame/game.dart';
-import 'package:card_battler/game/services/ui/scene_manager.dart';
-import 'package:card_battler/game/services/game_state/game_state_manager.dart';
-import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/services/card/card_selection_service.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/components/scenes/player_turn_scene.dart';
-import 'package:card_battler/game/models/player/player_turn_model.dart';
-import 'package:card_battler/game/services/player_turn/player_turn_coordinator.dart';
-import 'package:card_battler/game/services/player/player_coordinator.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
-import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/shared/cards_model.dart';
-import 'package:card_battler/game/models/shared/health_model.dart';
-import 'package:card_battler/game/models/shared/value_image_label_model.dart';
-import 'package:card_battler/game/models/team/team_model.dart';
-import 'package:card_battler/game/models/team/bases_model.dart';
-import 'package:card_battler/game/models/team/players_model.dart';
-import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/services/shop/shop_coordinator.dart';
-import 'package:card_battler/game/services/game_state/game_state_service.dart';
+import 'package:card_battler/game_legacy/services/ui/scene_manager.dart';
+import 'package:card_battler/game_legacy/services/game_state/game_state_manager.dart';
+import 'package:card_battler/game_legacy/models/game_state_model.dart';
+import 'package:card_battler/game_legacy/services/card/card_selection_service.dart';
+import 'package:card_battler/game_legacy/models/shared/card_model.dart';
+import 'package:card_battler/game_legacy/components/scenes/player_turn_scene.dart';
+import 'package:card_battler/game_legacy/models/player/player_turn_model.dart';
+import 'package:card_battler/game_legacy/services/player_turn/player_turn_coordinator.dart';
+import 'package:card_battler/game_legacy/services/player/player_coordinator.dart';
+import 'package:card_battler/game_legacy/models/player/player_model.dart';
+import 'package:card_battler/game_legacy/models/player/info_model.dart';
+import 'package:card_battler/game_legacy/models/shared/cards_model.dart';
+import 'package:card_battler/game_legacy/models/shared/health_model.dart';
+import 'package:card_battler/game_legacy/models/shared/value_image_label_model.dart';
+import 'package:card_battler/game_legacy/models/team/team_model.dart';
+import 'package:card_battler/game_legacy/models/team/bases_model.dart';
+import 'package:card_battler/game_legacy/models/team/players_model.dart';
+import 'package:card_battler/game_legacy/models/enemy/enemies_model.dart';
+import 'package:card_battler/game_legacy/models/shop/shop_card_model.dart';
+import 'package:card_battler/game_legacy/services/shop/shop_coordinator.dart';
+import 'package:card_battler/game_legacy/services/game_state/game_state_service.dart';
 
 // Test data generators
 List<ShopCardModel> _generateShopCards() {

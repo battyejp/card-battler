@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/shared/cards_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game_legacy/models/shared/cards_model.dart';
+import 'package:card_battler/game_legacy/models/shared/card_model.dart';
 
 List<CardModel> _generateCards(int count) {
   return List.generate(count, (index) => CardModel(

@@ -1,3 +1,4 @@
+import 'package:card_battler/screens/game_screen_new.dart';
 import 'package:flutter/material.dart';
 import 'game_screen.dart';
 
@@ -17,11 +18,22 @@ class MenuScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const GameScreen(),
+                    builder: (context) => const GameScreenNew(),
                   ),
                 );
               },
               child: const Text('Start Game', style: TextStyle(fontSize: 24)),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const GameScreen(),
+                  ),
+                );
+              },
+              child: const Text('Start Game Legacy', style: TextStyle(fontSize: 24)),
             ),
           ],
         ),

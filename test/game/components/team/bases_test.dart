@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:card_battler/game/components/team/bases.dart';
-import 'package:card_battler/game/models/team/bases_model.dart';
-import 'package:card_battler/game/models/team/base_model.dart';
+import 'package:card_battler/game_legacy/components/team/bases.dart';
+import 'package:card_battler/game_legacy/models/team/bases_model.dart';
+import 'package:card_battler/game_legacy/models/team/base_model.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 

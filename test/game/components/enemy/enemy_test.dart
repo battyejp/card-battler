@@ -1,5 +1,5 @@
-import 'package:card_battler/game/components/enemy/enemy.dart';
-import 'package:card_battler/game/models/enemy/enemy_model.dart';
+import 'package:card_battler/game_legacy/components/enemy/enemy.dart';
+import 'package:card_battler/game_legacy/models/enemy/enemy_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flame_test/flame_test.dart';

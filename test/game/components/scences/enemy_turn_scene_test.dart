@@ -1,20 +1,20 @@
-import 'package:card_battler/game/components/scenes/enemy_turn_scene.dart';
-import 'package:card_battler/game/models/shared/effect_model.dart';
-import 'package:card_battler/game/services/enemy/enemy_turn_coordinator.dart';
-import 'package:card_battler/game/models/shared/cards_model.dart';
-import 'package:card_battler/game/models/team/player_stats_model.dart';
-import 'package:card_battler/game/models/team/players_model.dart';
-import 'package:card_battler/game/models/shared/health_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/components/shared/card/card_deck.dart';
-import 'package:card_battler/game/components/shared/card/card_pile.dart';
-import 'package:card_battler/game/components/team/player_stats.dart';
-import 'package:card_battler/game/components/team/players.dart';
+import 'package:card_battler/game_legacy/components/scenes/enemy_turn_scene.dart';
+import 'package:card_battler/game_legacy/models/shared/effect_model.dart';
+import 'package:card_battler/game_legacy/services/enemy/enemy_turn_coordinator.dart';
+import 'package:card_battler/game_legacy/models/shared/cards_model.dart';
+import 'package:card_battler/game_legacy/models/team/player_stats_model.dart';
+import 'package:card_battler/game_legacy/models/team/players_model.dart';
+import 'package:card_battler/game_legacy/models/shared/health_model.dart';
+import 'package:card_battler/game_legacy/models/shared/card_model.dart';
+import 'package:card_battler/game_legacy/components/shared/card/card_deck.dart';
+import 'package:card_battler/game_legacy/components/shared/card/card_pile.dart';
+import 'package:card_battler/game_legacy/components/team/player_stats.dart';
+import 'package:card_battler/game_legacy/components/team/players.dart';
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/services/game_state/game_state_service.dart';
-import 'package:card_battler/game/services/game_state/game_state_manager.dart';
+import 'package:card_battler/game_legacy/services/game_state/game_state_service.dart';
+import 'package:card_battler/game_legacy/services/game_state/game_state_manager.dart';
 
 List<CardModel> _generateTestCards(int count) {
   return List.generate(count, (index) => CardModel(

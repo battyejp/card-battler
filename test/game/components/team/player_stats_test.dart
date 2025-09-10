@@ -1,7 +1,7 @@
-import 'package:card_battler/game/models/shared/health_model.dart';
-import 'package:card_battler/game/models/team/player_stats_model.dart';
+import 'package:card_battler/game_legacy/models/shared/health_model.dart';
+import 'package:card_battler/game_legacy/models/team/player_stats_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/components/team/player_stats.dart';
+import 'package:card_battler/game_legacy/components/team/player_stats.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flame/components.dart';
 

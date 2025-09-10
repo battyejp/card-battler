@@ -1,8 +1,8 @@
-import 'package:card_battler/game/models/shared/effect_model.dart';
+import 'package:card_battler/game_legacy/models/shared/effect_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game_legacy/models/game_state_model.dart';
+import 'package:card_battler/game_legacy/models/shop/shop_card_model.dart';
+import 'package:card_battler/game_legacy/models/shared/card_model.dart';
 
 List<CardModel> _generatePlayerDeckCards() {
   return List.generate(20, (index) => CardModel(

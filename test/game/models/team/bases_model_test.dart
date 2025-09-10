@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/team/bases_model.dart';
-import 'package:card_battler/game/models/team/base_model.dart';
+import 'package:card_battler/game_legacy/models/team/bases_model.dart';
+import 'package:card_battler/game_legacy/models/team/base_model.dart';
 
 void main() {
   group('BasesModel', () {

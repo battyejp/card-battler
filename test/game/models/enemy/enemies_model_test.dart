@@ -1,6 +1,6 @@
-import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/enemy/enemy_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game_legacy/models/enemy/enemies_model.dart';
+import 'package:card_battler/game_legacy/models/enemy/enemy_model.dart';
+import 'package:card_battler/game_legacy/models/shared/card_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 List<CardModel> _generateEnemyCards() {

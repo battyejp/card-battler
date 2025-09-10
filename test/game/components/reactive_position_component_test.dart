@@ -1,5 +1,5 @@
-import 'package:card_battler/game/components/shared/reactive_position_component.dart';
-import 'package:card_battler/game/models/shared/reactive_model.dart';
+import 'package:card_battler/game_legacy/components/shared/reactive_position_component.dart';
+import 'package:card_battler/game_legacy/models/shared/reactive_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flame_test/flame_test.dart';
 

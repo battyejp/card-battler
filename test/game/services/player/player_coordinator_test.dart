@@ -1,15 +1,15 @@
-import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game_legacy/models/shared/health_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/services/player/player_coordinator.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
-import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/models/shared/cards_model.dart';
-import 'package:card_battler/game/models/shared/value_image_label_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/services/game_state/game_state_manager.dart';
-import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/services/game_state/game_state_service.dart';
-import 'package:card_battler/game/services/card/card_selection_service.dart';
+import 'package:card_battler/game_legacy/services/player/player_coordinator.dart';
+import 'package:card_battler/game_legacy/models/player/player_model.dart';
+import 'package:card_battler/game_legacy/models/player/info_model.dart';
+import 'package:card_battler/game_legacy/models/shared/cards_model.dart';
+import 'package:card_battler/game_legacy/models/shared/value_image_label_model.dart';
+import 'package:card_battler/game_legacy/models/shared/card_model.dart';
+import 'package:card_battler/game_legacy/services/game_state/game_state_manager.dart';
+import 'package:card_battler/game_legacy/models/game_state_model.dart';
+import 'package:card_battler/game_legacy/services/game_state/game_state_service.dart';
+import 'package:card_battler/game_legacy/services/card/card_selection_service.dart';
 
 List<CardModel> _generateCards(int count) {
   return List.generate(count, (index) => CardModel(

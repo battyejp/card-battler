@@ -3,13 +3,13 @@ import 'package:flame_test/flame_test.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
-import 'package:card_battler/game/components/shared/card/card_interaction_controller.dart';
-import 'package:card_battler/game/components/shared/card/actionable_card.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/services/game_state/game_state_manager.dart';
-import 'package:card_battler/game/services/card/card_selection_service.dart';
-import 'package:card_battler/game/services/game_state/game_state_service.dart';
-import 'package:card_battler/game/services/card/card_interaction_service.dart';
+import 'package:card_battler/game_legacy/components/shared/card/card_interaction_controller.dart';
+import 'package:card_battler/game_legacy/components/shared/card/actionable_card.dart';
+import 'package:card_battler/game_legacy/models/shared/card_model.dart';
+import 'package:card_battler/game_legacy/services/game_state/game_state_manager.dart';
+import 'package:card_battler/game_legacy/services/card/card_selection_service.dart';
+import 'package:card_battler/game_legacy/services/game_state/game_state_service.dart';
+import 'package:card_battler/game_legacy/services/card/card_interaction_service.dart';
 
 // Mock TapUpEvent that includes the local position directly
 class MockTapUpEvent extends TapUpEvent {

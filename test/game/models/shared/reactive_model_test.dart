@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/models/shared/reactive_model.dart';
+import 'package:card_battler/game_legacy/models/shared/reactive_model.dart';
 
 // Test model class to test the ReactiveModel mixin
 class TestReactiveModel with ReactiveModel<TestReactiveModel> {

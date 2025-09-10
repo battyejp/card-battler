@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/services/card/card_selection_service.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game_legacy/services/card/card_selection_service.dart';
+import 'package:card_battler/game_legacy/models/shared/card_model.dart';
 
 void main() {
   group('DefaultCardSelectionService', () {

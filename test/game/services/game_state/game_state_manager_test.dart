@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/services/game_state/game_state_manager.dart';
-import 'package:card_battler/game/models/game_state_model.dart';
+import 'package:card_battler/game_legacy/services/game_state/game_state_manager.dart';
+import 'package:card_battler/game_legacy/models/game_state_model.dart';
 
 void main() {
   group('GameStateManager', () {

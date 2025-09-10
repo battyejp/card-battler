@@ -1,4 +1,4 @@
-import 'package:card_battler/game/models/enemy/enemy_model.dart';
+import 'package:card_battler/game_legacy/models/enemy/enemy_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/services/shop/shop_coordinator.dart';
-import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/models/shared/reactive_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game_legacy/services/shop/shop_coordinator.dart';
+import 'package:card_battler/game_legacy/models/shop/shop_card_model.dart';
+import 'package:card_battler/game_legacy/models/shared/reactive_model.dart';
+import 'package:card_battler/game_legacy/models/shared/card_model.dart';
 
 void main() {
   group('ShopCoordinator', () {

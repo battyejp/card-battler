@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/services/card/card_ui_service.dart';
+import 'package:card_battler/game_legacy/services/card/card_ui_service.dart';
 
 void main() {
   group('DefaultCardUIService', () {

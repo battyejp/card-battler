@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
-import '../game/card_battler_game.dart';
+import '../game_legacy/card_battler_game.dart';
 
 class GameScreen extends StatelessWidget {
   const GameScreen({super.key});
