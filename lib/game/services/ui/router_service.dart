@@ -1,8 +1,8 @@
 import 'package:card_battler/game/coordinators/components/cards/cards_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
-import 'package:card_battler/game/coordinators/player/info_coordinator.dart';
-import 'package:card_battler/game/coordinators/player/player_coordinator.dart';
-import 'package:card_battler/game/coordinators/player/player_info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/models/common/value_image_label_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/services/game_state_facade.dart';

@@ -1,4 +1,4 @@
-import 'package:card_battler/game/coordinators/player/player_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 
 class PlayerTurnSceneCoordinator {
   final PlayerCoordinator _playerCoordinator;

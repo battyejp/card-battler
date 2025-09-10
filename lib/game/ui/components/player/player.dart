@@ -1,4 +1,4 @@
-import 'package:card_battler/game/coordinators/player/player_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/ui/components/card/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/card_pile.dart';
 import 'package:card_battler/game/ui/components/player/card_hand.dart';
