@@ -10,17 +10,14 @@ class Player extends PositionComponent {
 
   final PlayerCoordinator _coordinator;
 
-  Player({
-    required PlayerCoordinator playerModel,
-  })  : _coordinator = playerModel;
+  Player({required PlayerCoordinator playerModel}) : _coordinator = playerModel;
 
   @override
   void onLoad() {
-
-    var deck = CardDeck(_coordinator.deckCardsCoordinator.cards, onTap: () => {
-      //_coordinator.drawCardsFromDeck(cardsToDrawPerTurn),
-    })
-      ..size = Vector2(size.x * pileWidthFactor, size.y);
+    var deck = CardDeck(
+      onTap: () => {},
+      coordinator: _coordinator.deckCardsCoordinator,
+    )..size = Vector2(size.x * pileWidthFactor, size.y);
 
     add(deck);
 
