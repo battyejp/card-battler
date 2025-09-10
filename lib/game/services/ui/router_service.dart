@@ -1,9 +1,16 @@
 import 'package:card_battler/game/coordinators/components/cards/cards_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
+import 'package:card_battler/game/coordinators/player/info_coordinator.dart';
 import 'package:card_battler/game/coordinators/player/player_coordinator.dart';
+import 'package:card_battler/game/coordinators/player/player_info_coordinator.dart';
+import 'package:card_battler/game/models/common/value_image_label_model.dart';
+import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/services/game_state_facade.dart';
 import 'package:card_battler/game/ui/components/scenes/enemy_turn_scene.dart';
 import 'package:card_battler/game/ui/components/scenes/player_turn_scene.dart';
+// import 'package:card_battler/game_legacy/models/player/info_model.dart';
+import 'package:card_battler/game/models/player/info_model.dart';
+import 'package:card_battler/game_legacy/models/player/player_info.dart';
 import 'package:flame/game.dart';
 
 /// Service responsible for managing scene transitions and routing operations
@@ -20,14 +27,32 @@ class RouterService {
   var playerTurnSceneCoordinator = PlayerTurnSceneCoordinator(
     coordinator: PlayerCoordinator(
       playerModel: GameStateFacade.instance.state.activePlayer,
-      handCardsCoordinator: CardsCoordinator( cards: GameStateFacade.instance.state.activePlayer.handCards),
-      deckCardsCoordinator: CardsCoordinator( cards: GameStateFacade.instance.state.activePlayer.deckCards),
-      discardCardsCoordinator: CardsCoordinator( cards: GameStateFacade.instance.state.activePlayer.discardCards),
+      handCardsCoordinator: CardsCoordinator(
+        cards: GameStateFacade.instance.state.activePlayer.handCards,
+      ),
+      deckCardsCoordinator: CardsCoordinator(
+        cards: GameStateFacade.instance.state.activePlayer.deckCards,
+      ),
+      discardCardsCoordinator: CardsCoordinator(
+        cards: GameStateFacade.instance.state.activePlayer.discardCards,
+      ),
+      playerInfoCoordinator: PlayerInfoCoordinator(
+        model: PlayerInfoModel(
+          name: GameStateFacade.instance.state.activePlayer.name,
+          attack: GameStateFacade.instance.state.activePlayer.attack,
+          credits: GameStateFacade.instance.state.activePlayer.credits,
+          currentHealth: GameStateFacade.instance.state.activePlayer.health,
+          maxHealth: GameStateFacade.instance.state.activePlayer.health,
+        ),
+      ),
     ),
   );
 
   /// Create and configure the router component with scene routes
-  RouterComponent createRouter(Vector2 gameSize, {Map<String, Route>? additionalRoutes}) {
+  RouterComponent createRouter(
+    Vector2 gameSize, {
+    Map<String, Route>? additionalRoutes,
+  }) {
     _playerTurnScene = PlayerTurnScene(
       coordinator: playerTurnSceneCoordinator,
       size: gameSize,
@@ -35,20 +60,19 @@ class RouterService {
 
     final routes = {
       'playerTurn': Route(() => _playerTurnScene!),
-      'enemyTurn': Route(() => EnemyTurnScene(
-        //model: GameStateModel.instance.enemyTurnArea,
-        size: gameSize,
-      )),
+      'enemyTurn': Route(
+        () => EnemyTurnScene(
+          //model: GameStateModel.instance.enemyTurnArea,
+          size: gameSize,
+        ),
+      ),
     };
 
     if (additionalRoutes != null) {
       routes.addAll(additionalRoutes);
     }
 
-    _router = RouterComponent(
-      routes: routes,
-      initialRoute: 'playerTurn',
-    );
+    _router = RouterComponent(routes: routes, initialRoute: 'playerTurn');
 
     //_setupPhaseListener();
     return _router!;

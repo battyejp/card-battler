@@ -2,6 +2,8 @@ import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/card/cards_model.dart';
 
 class PlayerModel {
+  final String name;
+  final int maxHealth;
   final int attack;
   final int credits;
   final int health;
@@ -18,5 +20,7 @@ class PlayerModel {
     required this.deckCards,
     required this.discardCards,
     required this.isActive,
+    required this.name,
+    required this.maxHealth,
   });
 }

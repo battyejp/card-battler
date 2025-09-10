@@ -28,6 +28,8 @@ class GameStateModel {
         playerDeckCards.map((card) => card.copy()),
       );
       return PlayerModel(
+        name: 'Player ${index + 1}',
+        maxHealth: 10,
         attack: 0,
         credits: 0,
         health: 10,

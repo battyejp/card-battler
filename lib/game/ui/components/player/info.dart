@@ -1,13 +1,12 @@
-import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game/ui/components/common/value_image_label.dart';
-import 'package:card_battler/game/ui/components/shared/health.dart';
+import 'package:card_battler/game/coordinators/player/info_coordinator.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
+//TODO legacy Info component for player information
 class Info extends PositionComponent {
-  Info(this.model);
+  final InfoCoordinator _coordinator;
 
-  final InfoModel model;
+  Info({required InfoCoordinator coordinator}) : _coordinator = coordinator;
 
   @override
   void onLoad() {
@@ -29,35 +28,32 @@ class Info extends PositionComponent {
       ..size = Vector2(size.x / 4, size.y)
       ..position = Vector2((size.x / 4) * 3, 0);
 
-    var healthLabel = Health(
-      model.healthModel,
-      Anchor.topLeft,
-    );
+    // var healthLabel = Health(
+    //   model.healthModel,
+    //   Anchor.topLeft,
+    // );
 
-    var attackLabel = ValueImageLabel(
-      model.attack,
-    );
+    // var attackLabel = ValueImageLabel(
+    //   model.attack,
+    // );
 
-    var creditsLabel = ValueImageLabel(
-      model.credits,
-    );
+    // var creditsLabel = ValueImageLabel(
+    //   model.credits,
+    // );
 
     var nameLabel = TextComponent(
-      text: model.name,
+      text: _coordinator.name,
       position: Vector2(comp1.size.x / 2, comp1.size.y / 2),
       anchor: Anchor.center,
       textRenderer: TextPaint(
-        style: const TextStyle(
-          fontSize: 20,
-          color: Colors.white,
-        ),
+        style: const TextStyle(fontSize: 20, color: Colors.white),
       ),
     );
 
     comp1.add(nameLabel);
-    comp2.add(healthLabel);
-    comp3.add(attackLabel);
-    comp4.add(creditsLabel);
+    // comp2.add(healthLabel);
+    // comp3.add(attackLabel);
+    // comp4.add(creditsLabel);
 
     add(comp1);
     add(comp2);
