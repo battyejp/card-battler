@@ -10,7 +10,6 @@ class CardPile extends PositionComponent {
   CardPile({required this.showNext, required CardsCoordinator coordinator})
       : _coordinator = coordinator;
 
-  //TODO temp to get working
   @override void onLoad() {
     updateDisplay();
   }
