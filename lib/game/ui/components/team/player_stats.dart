@@ -1,51 +1,54 @@
-import 'package:card_battler/game_legacy/components/shared/health.dart';
-import 'package:card_battler/game_legacy/components/shared/reactive_position_component.dart';
-import 'package:card_battler/game_legacy/models/team/player_stats_model.dart';
+import 'package:card_battler/game/coordinators/components/team/player_stat_coordinator.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-class PlayerStats extends ReactivePositionComponent<PlayerStatsModel> {
-  PlayerStats(super.model);
+class PlayerStats extends PositionComponent {
+  final PlayerStatsCoordinator _coordinator;
 
-  bool _wasRemoved = false;
+  PlayerStats({required PlayerStatsCoordinator coordinator})
+    : _coordinator = coordinator;
+
+  // bool _wasRemoved = false;
 
   @override
-  void updateDisplay() {
-    super.updateDisplay();
-    
+  void onLoad() {
+    super.onLoad();
+
     var background = RectangleComponent(
       size: size,
-      paint: Paint()..color = model.isActive ? Colors.blue.withValues(alpha: 0.3) : Colors.transparent,
+      paint: Paint()..color = _coordinator.isActive ? Colors.blue.withValues(alpha: 0.3) : Colors.transparent,
     );
     add(background);
     
     var textComponent = TextComponent(
-      text: model.name,
+      text: _coordinator.name,
       position: Vector2(10, 10),
       anchor: Anchor.topLeft,
     );
 
     add(textComponent);
 
-    var healthComponent = Health(model.health)
-      ..anchor = Anchor.centerLeft
-      ..position = Vector2(size.x / 2, size.y / 2);
+    var healthComponent = TextComponent(
+      text: '${_coordinator.health} / ${_coordinator.maxHealth}',
+      anchor: Anchor.centerLeft,
+      position: Vector2(size.x / 2, size.y / 2),
+    );
 
     add(healthComponent);
   }
 
-  @override
-  void onMount(){
-    super.onMount();
+  // @override
+  // void onMount(){
+  //   super.onMount();
 
-    if (_wasRemoved) {
-      updateDisplay();
-    }
-  }
+  //   if (_wasRemoved) {
+  //     updateDisplay();
+  //   }
+  // }
 
-  @override
-  void onRemove() {
-    super.onRemove();
-    _wasRemoved = true;
-  }
+  // @override
+  // void onRemove() {
+  //   super.onRemove();
+  //   _wasRemoved = true;
+  // }
 }

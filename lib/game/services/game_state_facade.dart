@@ -1,3 +1,4 @@
+import 'package:card_battler/game/models/base/base_model.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
@@ -22,8 +23,9 @@ class GameStateFacade {
     List<ShopCardModel> shopCards,
     List<CardModel> playerDeckCards,
     List<CardModel> enemyCards,
+    List<BaseModel> bases,
   ) {
-    _state = _factory.createGameState(shopCards, playerDeckCards, enemyCards);
+    _state = _factory.createGameState(shopCards, playerDeckCards, enemyCards, bases);
   }
 
   /// Gets the current game state, creating a default one if none exists

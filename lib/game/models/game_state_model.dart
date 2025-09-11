@@ -1,3 +1,4 @@
+import 'package:card_battler/game/models/base/base_model.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/card/card_list_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
@@ -9,11 +10,13 @@ class GameStateModel {
   final ShopModel shop;
   final List<PlayerModel> players;
   final EnemiesModel enemiesModel;
+  final List<BaseModel> bases;
 
   GameStateModel({
     required this.shop,
     required this.players,
     required this.enemiesModel,
+    required this.bases,
   });
 
   //TODO shuffle these cards
@@ -21,6 +24,7 @@ class GameStateModel {
     List<ShopCardModel> shopCards,
     List<CardModel> playerDeckCards,
     List<CardModel> enemyCards,
+    List<BaseModel> bases,
   ) {
     final players = List<PlayerModel>.generate(2, (index) {
       final isActive = index == 0; // Only the first player is active
@@ -53,6 +57,7 @@ class GameStateModel {
         enemyCards: CardListModel<CardModel>(cards: enemyCards),
         enemyPlayerCards: CardListModel<CardModel>.empty(),
       ),
+      bases: bases,
     );
   }
 
@@ -65,16 +70,18 @@ class GameStateFactory {
     List<ShopCardModel> shopCards,
     List<CardModel> playerDeckCards,
     List<CardModel> enemyCards,
+    List<BaseModel> bases,
   ) {
-    return GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
+    return GameStateModel.initialize(shopCards, playerDeckCards, enemyCards, bases);
   }
 
   GameStateModel createDefaultGameState() {
     final shopCards = _createDefaultShopCards();
     final playerDeckCards = _createDefaultPlayerCards();
     final enemyCards = _createDefaultEnemyCards();
+    final bases = _createDefaultBases();
 
-    return createGameState(shopCards, playerDeckCards, enemyCards);
+    return createGameState(shopCards, playerDeckCards, enemyCards, bases);
   }
 
   List<ShopCardModel> _createDefaultShopCards() {
@@ -99,6 +106,16 @@ class GameStateFactory {
         name: 'Enemy Card ${index + 1}',
         type: 'Enemy',
         isFaceUp: false,
+      );
+    });
+  }
+
+  List<BaseModel> _createDefaultBases() {
+    return List.generate(3, (index) {
+      return BaseModel(
+        name: 'Base ${index + 1}',
+        currentHealth: 10,
+        maxHealth: 10,
       );
     });
   }

@@ -1,26 +1,27 @@
-import 'package:card_battler/game_legacy/components/shared/reactive_position_component.dart';
-import 'package:card_battler/game_legacy/components/team/player_stats.dart';
-import 'package:card_battler/game_legacy/models/team/player_stats_model.dart';
-import 'package:card_battler/game_legacy/models/team/players_model.dart';
+import 'package:card_battler/game/coordinators/components/team/player_stat_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/players_coordinator.dart';
+import 'package:card_battler/game/ui/components/team/player_stats.dart';
 import 'package:flame/components.dart';
 
-class Players extends ReactivePositionComponent<PlayersModel> {
-  final bool showActivePlayer;
+class Players extends PositionComponent {
+  final PlayersCoordinator _coordinator;
 
-  Players(super.model, {required this.showActivePlayer});
+  Players({required PlayersCoordinator coordinator})
+    : _coordinator = coordinator;
 
   @override
-  void updateDisplay() {
-    super.updateDisplay();
-    late List<PlayerStatsModel> playersToShow = model.players.where((player) => showActivePlayer || !player.isActive).toList();
-    double playerHeight = size.y / playersToShow.length;
+  void onLoad() {
+    super.onLoad();
+
+    late List<PlayerStatsCoordinator> playersCoordinatorsToShow = _coordinator.players.where((player) => !player.isActive).toList();
+    double playerHeight = size.y / playersCoordinatorsToShow.length;
     double currentY = 0;
 
-    for (int i = 0; i < playersToShow.length; i++) {
-      var player = playersToShow[i];
+    for (int i = 0; i < playersCoordinatorsToShow.length; i++) {
+      var playerCoordinator = playersCoordinatorsToShow[i];
 
-      if (!player.isActive || showActivePlayer) {
-        final playerStats = PlayerStats(player)
+      if (!playerCoordinator.isActive) {
+        final playerStats = PlayerStats(coordinator: playerCoordinator)
           ..size = Vector2(size.x, playerHeight)
           ..position = Vector2(0, currentY);
         add(playerStats);

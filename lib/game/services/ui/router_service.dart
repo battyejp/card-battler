@@ -7,6 +7,11 @@ import 'package:card_battler/game/coordinators/components/shop/shop_card_coordin
 import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_display_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_inventory_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/base_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/bases_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/player_stat_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/players_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 import 'package:card_battler/game/services/game_state_facade.dart';
 import 'package:card_battler/game/ui/components/scenes/enemy_turn_scene.dart';
 import 'package:card_battler/game/ui/components/scenes/player_turn_scene.dart';
@@ -60,6 +65,18 @@ class RouterService {
         numberOfRows: 2,
       ),
       inventoryCoordinator: ShopInventoryCoordinator([]),
+    ),
+    teamCoordinator: TeamCoordinator(
+      playersCoordinator: PlayersCoordinator(
+        players: GameStateFacade.instance.state.players
+            .map((player) => PlayerStatsCoordinator(player: player))
+            .toList(),
+      ),
+      basesCoordinator: BasesCoordinator(
+        coordinators: GameStateFacade.instance.state.bases
+            .map((base) => BaseCoordinator(model: base))
+            .toList(),
+      ),
     ),
   );
 

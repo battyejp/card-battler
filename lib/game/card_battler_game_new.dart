@@ -34,8 +34,7 @@ class CardBattlerGameNew extends FlameGame with TapCallbacks {
 
     if (_testSize != null) {
       onGameResize(_testSize!);
-    }
-    else {
+    } else {
       shopCards = await CardLoaderService.loadCardsFromJson<ShopCardModel>(
         'assets/data/shop_cards.json',
         ShopCardModel.fromJson,
@@ -51,11 +50,14 @@ class CardBattlerGameNew extends FlameGame with TapCallbacks {
         CardModel.fromJson,
       );
 
-      GameStateFacade.instance.initialize(shopCards, playerDeckCards, enemyCards);
+      GameStateFacade.instance.initialize(
+        shopCards,
+        playerDeckCards,
+        enemyCards,
+        [],
+      );
     }
 
-    world.add(
-      router = _sceneManager.createRouter(size),
-    );
+    world.add(router = _sceneManager.createRouter(size));
   }
 }
