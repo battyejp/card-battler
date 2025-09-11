@@ -7,19 +7,16 @@ class TapableActionableCard extends ActionableCard with TapCallbacks {
   // CardInteractionService? _cardInteractionService;
   // CardSelectionService? _cardSelectionService;
 
-  TapableActionableCard(
-    super.cardModel, 
-    {
-      super.onButtonPressed, 
-      // bool Function()? determineIfButtonEnabled,
-      // CardInteractionService? cardInteractionService,
-      // CardSelectionService? cardSelectionService,
-    }
-  ) {
-    // _determineIfButtonEnabled = determineIfButtonEnabled;
-    // _cardInteractionService = cardInteractionService;
-    // _cardSelectionService = cardSelectionService;
-  }
+  TapableActionableCard(super.coordinator);
+
+  // {
+  // bool Function()? determineIfButtonEnabled,
+  // CardInteractionService? cardInteractionService,
+  // CardSelectionService? cardSelectionService,) {
+  // _determineIfButtonEnabled = determineIfButtonEnabled;
+  // _cardInteractionService = cardInteractionService;
+  // _cardSelectionService = cardSelectionService;
+  //}
 
   // @override
   // bool onTapUp(TapUpEvent event) => _interaction?.onTapUp(event) ?? false;
@@ -28,13 +25,13 @@ class TapableActionableCard extends ActionableCard with TapCallbacks {
   // void onLoad() {
   //   super.onLoad();
   //   _interaction = CardInteractionController.withServices(
-  //     this, 
+  //     this,
   //     determineIfButtonEnabled: _determineIfButtonEnabled,
   //     cardInteractionService: _cardInteractionService,
   //     cardSelectionService: _cardSelectionService,
   //   );
   // }
-  
+
   // @override
   // void onRemove() {
   //   _interaction?.dispose();

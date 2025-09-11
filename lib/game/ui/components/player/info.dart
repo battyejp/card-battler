@@ -1,12 +1,13 @@
-import 'package:card_battler/game/coordinators/components/player/info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 //TODO legacy Info component for player information
 class Info extends PositionComponent {
-  final InfoCoordinator _coordinator;
+  final PlayerInfoCoordinator _coordinator;
 
-  Info({required InfoCoordinator coordinator}) : _coordinator = coordinator;
+  Info({required PlayerInfoCoordinator coordinator})
+    : _coordinator = coordinator;
 
   @override
   void onLoad() {

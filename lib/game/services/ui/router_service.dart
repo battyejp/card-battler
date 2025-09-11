@@ -1,16 +1,15 @@
-import 'package:card_battler/game/coordinators/components/cards/cards_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/player/info_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
-import 'package:card_battler/game/models/common/value_image_label_model.dart';
-import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/shop/shop_display_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/shop/shop_inventory_coordinator.dart';
 import 'package:card_battler/game/services/game_state_facade.dart';
 import 'package:card_battler/game/ui/components/scenes/enemy_turn_scene.dart';
 import 'package:card_battler/game/ui/components/scenes/player_turn_scene.dart';
-// import 'package:card_battler/game_legacy/models/player/info_model.dart';
-import 'package:card_battler/game/models/player/info_model.dart';
-import 'package:card_battler/game_legacy/models/player/player_info.dart';
 import 'package:flame/game.dart';
 
 /// Service responsible for managing scene transitions and routing operations
@@ -24,27 +23,43 @@ class RouterService {
   PlayerTurnScene? _playerTurnScene;
   //final GameStateManager _gameStateManager = GameStateManager();
 
+  //TODO split this up as massive
   var playerTurnSceneCoordinator = PlayerTurnSceneCoordinator(
-    coordinator: PlayerCoordinator(
-      playerModel: GameStateFacade.instance.state.activePlayer,
-      handCardsCoordinator: CardsCoordinator(
-        cards: GameStateFacade.instance.state.activePlayer.handCards,
+    playerCoordinator: PlayerCoordinator(
+      handCardsCoordinator: CardListCoordinator<CardCoordinator>(
+        cardCoordinators: [],
       ),
-      deckCardsCoordinator: CardsCoordinator(
-        cards: GameStateFacade.instance.state.activePlayer.deckCards,
+      deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
+        cardCoordinators: GameStateFacade
+            .instance
+            .state
+            .activePlayer
+            .deckCards
+            .allCards
+            .map((card) => CardCoordinator(card.copy()))
+            .toList(),
       ),
-      discardCardsCoordinator: CardsCoordinator(
-        cards: GameStateFacade.instance.state.activePlayer.discardCards,
+      discardCardsCoordinator: CardListCoordinator<CardCoordinator>(
+        cardCoordinators: [],
       ),
       playerInfoCoordinator: PlayerInfoCoordinator(
-        model: PlayerInfoModel(
-          name: GameStateFacade.instance.state.activePlayer.name,
-          attack: GameStateFacade.instance.state.activePlayer.attack,
-          credits: GameStateFacade.instance.state.activePlayer.credits,
-          currentHealth: GameStateFacade.instance.state.activePlayer.health,
-          maxHealth: GameStateFacade.instance.state.activePlayer.health,
-        ),
+        model: GameStateFacade.instance.state.activePlayer,
       ),
+    ),
+    shopCoordinator: ShopCoordinator(
+      displayCoordinator: ShopDisplayCoordinator(
+        shopCardCoordinators: GameStateFacade
+            .instance
+            .state
+            .shop
+            .inventoryCards
+            .allCards
+            .map((card) => ShopCardCoordinator(card))
+            .toList(),
+        itemsPerRow: 3,
+        numberOfRows: 2,
+      ),
+      inventoryCoordinator: ShopInventoryCoordinator([]),
     ),
   );
 
@@ -115,7 +130,4 @@ class RouterService {
 
   /// Get the player turn scene reference (needed for background interactions)
   //PlayerTurnScene? get playerTurnScene => _playerTurnScene;
-
-  /// Get debug information about current routing state
-  String get debugInfo => 'RouterService: router initialized';
 }

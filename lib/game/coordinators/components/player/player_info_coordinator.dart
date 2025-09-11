@@ -1,12 +1,12 @@
-import 'package:card_battler/game_legacy/models/player/player_info.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
 
 class PlayerInfoCoordinator {
-  final PlayerInfoModel model;
+  final PlayerModel model;
 
   PlayerInfoCoordinator({required this.model});
 
   String get name => model.name;
-  int get health => model.currentHealth;
+  int get health => model.health;
   int get maxHealth => model.maxHealth;
   int get attack => model.attack;
   int get credits => model.credits;

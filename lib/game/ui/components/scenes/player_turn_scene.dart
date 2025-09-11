@@ -1,6 +1,7 @@
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
 import 'package:card_battler/game/ui/components/common/flat_button.dart';
 import 'package:card_battler/game/ui/components/player/player.dart';
+import 'package:card_battler/game/ui/components/shop/shop_display.dart';
 import 'package:flame/components.dart';
 
 class PlayerTurnScene extends Component {
@@ -15,6 +16,9 @@ class PlayerTurnScene extends Component {
     required Vector2 size,
   }) : _size = size,
        _coordinator = coordinator;
+
+  @override
+  bool debugMode = true;
 
   @override
   Future<void> onMount() async {
@@ -40,25 +44,27 @@ class PlayerTurnScene extends Component {
     add(player);
 
     // // Create enemies component with model from game state
-    // final enemiesWidth = _availableWidth * 0.5;
+    final enemiesWidth = _availableWidth * 0.5;
     // final enemies = Enemies(model: _model.enemiesModel)
     //   ..size = Vector2(enemiesWidth, topLayoutHeight)
     //   ..position = Vector2((0 - enemiesWidth / 2), topPositionY);
 
     // add(enemies);
 
-    // // Create shop component with model from game state
-    // final shopWidth = _availableWidth * 0.5 / 2;
-    // final shop =
-    //     Shop(
-    //         _model.shopModel,
-    //         cardInteractionService: _cardInteractionService,
-    //         cardSelectionService: _cardSelectionService,
-    //       )
-    //       ..size = Vector2(shopWidth, topLayoutHeight)
-    //       ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
+    final shopWidth = _availableWidth * 0.5 / 2;
+    final shop =
+        ShopDisplay(
+            shopDisplayCoordinator:
+                _coordinator.shopCoordinator.displayCoordinator,
+          )
+          ..size = Vector2(shopWidth, topLayoutHeight)
+          ..position = Vector2(
+            //enemies.position.x + enemiesWidth,
+            0,
+            topPositionY,
+          );
 
-    // add(shop);
+    add(shop);
 
     // // Create team component with model from game state
     // final team = Team(_model.teamModel)

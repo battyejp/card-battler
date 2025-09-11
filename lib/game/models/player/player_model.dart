@@ -1,5 +1,5 @@
 import 'package:card_battler/game/models/card/card_model.dart';
-import 'package:card_battler/game/models/card/cards_model.dart';
+import 'package:card_battler/game/models/card/card_list_model.dart';
 
 class PlayerModel {
   final String name;
@@ -7,9 +7,9 @@ class PlayerModel {
   final int attack;
   final int credits;
   final int health;
-  final CardsModel<CardModel> handCards;
-  final CardsModel<CardModel> deckCards;
-  final CardsModel<CardModel> discardCards;
+  final CardListModel<CardModel> handCards;
+  final CardListModel<CardModel> deckCards;
+  final CardListModel<CardModel> discardCards;
   final bool isActive;
 
   const PlayerModel({

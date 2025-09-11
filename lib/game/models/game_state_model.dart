@@ -1,5 +1,5 @@
 import 'package:card_battler/game/models/card/card_model.dart';
-import 'package:card_battler/game/models/card/cards_model.dart';
+import 'package:card_battler/game/models/card/card_list_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
@@ -33,25 +33,25 @@ class GameStateModel {
         attack: 0,
         credits: 0,
         health: 10,
-        handCards: CardsModel<CardModel>.empty(),
-        deckCards: CardsModel<CardModel>(cards: playerDeckCopy),
-        discardCards: CardsModel<CardModel>.empty(),
+        handCards: CardListModel<CardModel>.empty(),
+        deckCards: CardListModel<CardModel>(cards: playerDeckCopy),
+        discardCards: CardListModel<CardModel>.empty(),
         isActive: isActive,
       );
     });
 
     return GameStateModel(
       shop: ShopModel(
-        displayCards: CardsModel<ShopCardModel>.empty(),
-        inventoryCards: CardsModel<ShopCardModel>(cards: shopCards),
+        displayCards: CardListModel<ShopCardModel>.empty(),
+        inventoryCards: CardListModel<ShopCardModel>(cards: shopCards),
       ),
       players: players,
       enemiesModel: EnemiesModel(
         totalEnemies: 5,
         maxNumberOfEnemiesInPlay: 3,
         maxEnemyHealth: 50,
-        enemyCards: CardsModel<CardModel>(cards: enemyCards),
-        enemyPlayerCards: CardsModel<CardModel>.empty(),
+        enemyCards: CardListModel<CardModel>(cards: enemyCards),
+        enemyPlayerCards: CardListModel<CardModel>.empty(),
       ),
     );
   }
@@ -60,18 +60,13 @@ class GameStateModel {
       players.firstWhere((player) => player.isActive);
 }
 
-
 class GameStateFactory {
   GameStateModel createGameState(
     List<ShopCardModel> shopCards,
     List<CardModel> playerDeckCards,
     List<CardModel> enemyCards,
   ) {
-    return GameStateModel.initialize(
-      shopCards,
-      playerDeckCards,
-      enemyCards,
-    );
+    return GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
   }
 
   GameStateModel createDefaultGameState() {
@@ -84,10 +79,7 @@ class GameStateFactory {
 
   List<ShopCardModel> _createDefaultShopCards() {
     return List.generate(10, (index) {
-      return ShopCardModel(
-        name: 'Test Card ${index + 1}',
-        cost: 1,
-      );
+      return ShopCardModel(name: 'Test Card ${index + 1}', cost: 1);
     });
   }
 
@@ -110,5 +102,4 @@ class GameStateFactory {
       );
     });
   }
-
 }

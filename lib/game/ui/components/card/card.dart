@@ -1,14 +1,14 @@
-import 'package:card_battler/game/models/card/card_model.dart';
+import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class Card extends PositionComponent {
-  final CardModel cardModel;
+  final CardCoordinator _coordinator;
 
   @protected
   late TextComponent nameTextComponent;
 
-  Card(this.cardModel);
+  Card({required CardCoordinator coordinator}) : _coordinator = coordinator;
 
   @override
   void onLoad() {
@@ -18,7 +18,7 @@ class Card extends PositionComponent {
 
   @protected
   void addTextComponent() {
-    if (cardModel.isFaceUp) {
+    if (_coordinator.isFaceUp) {
       createNameTextComponent(Vector2(size.x / 2, size.y / 2));
       add(nameTextComponent);
     } else {
@@ -30,14 +30,11 @@ class Card extends PositionComponent {
   @protected
   void createNameTextComponent(Vector2 position) {
     nameTextComponent = TextComponent(
-      text: cardModel.name,
+      text: _coordinator.name,
       anchor: Anchor.center,
       position: position,
       textRenderer: TextPaint(
-        style: const TextStyle(
-          fontSize: 20,
-          color: Colors.white,
-        ),
+        style: const TextStyle(fontSize: 20, color: Colors.white),
       ),
     );
   }
@@ -49,10 +46,7 @@ class Card extends PositionComponent {
       anchor: Anchor.center,
       position: Vector2(size.x / 2, size.y / 2),
       textRenderer: TextPaint(
-        style: const TextStyle(
-          fontSize: 20,
-          color: Colors.white,
-        ),
+        style: const TextStyle(fontSize: 20, color: Colors.white),
       ),
     );
   }
@@ -63,5 +57,4 @@ class Card extends PositionComponent {
     final paint = Paint()..color = const Color.fromARGB(255, 22, 6, 193);
     canvas.drawRect(size.toRect(), paint);
   }
-
 }

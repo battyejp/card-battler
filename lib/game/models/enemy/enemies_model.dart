@@ -1,5 +1,5 @@
 import 'package:card_battler/game/models/card/card_model.dart';
-import 'package:card_battler/game/models/card/cards_model.dart';
+import 'package:card_battler/game/models/card/card_list_model.dart';
 import 'package:card_battler/game/models/enemy/enemy_model.dart';
 
 class EnemiesModel {
@@ -10,10 +10,10 @@ class EnemiesModel {
     required int totalEnemies,
     required int maxNumberOfEnemiesInPlay,
     required int maxEnemyHealth,
-    required CardsModel<CardModel> enemyCards,
-    required CardsModel<CardModel> enemyPlayerCards,
+    required CardListModel<CardModel> enemyCards,
+    required CardListModel<CardModel> enemyPlayerCards,
   }) : _maxNumberOfEnemiesInPlay = maxNumberOfEnemiesInPlay,
-      _enemies = List.generate(
+       _enemies = List.generate(
          totalEnemies,
          (index) =>
              EnemyModel(name: 'Enemy ${index + 1}', maxHealth: maxEnemyHealth),

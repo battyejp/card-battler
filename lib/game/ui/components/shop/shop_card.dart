@@ -1,56 +1,33 @@
-import 'package:card_battler/game_legacy/components/shared/card/tapable_actionable_card.dart';
-import 'package:card_battler/game_legacy/models/shop/shop_card_model.dart';
-import 'package:card_battler/game_legacy/services/card/card_interaction_service.dart';
-import 'package:card_battler/game_legacy/services/card/card_selection_service.dart';
+import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
+import 'package:card_battler/game/ui/components/card/tapable_actionable_card.dart';
 import 'package:flutter/material.dart' hide Card;
 import 'package:flame/components.dart';
 
 class ShopCard extends TapableActionableCard {
-  final ShopCardModel shopCardModel;
-  late TextComponent _costTextComponent;
+  final ShopCardCoordinator _coordinator;
 
-  ShopCard(
-    this.shopCardModel, 
-    {
-      bool Function()? determineIfButtonEnabled,
-      CardInteractionService? cardInteractionService,
-      CardSelectionService? cardSelectionService,
-    }
-  ) : super(
-        shopCardModel, 
-        onButtonPressed: () {
-          cardSelectionService?.deselectCard();
-          shopCardModel.playCard();
-        },
-        determineIfButtonEnabled: determineIfButtonEnabled ?? 
-          (() => cardInteractionService?.canPurchaseShopCard(shopCardModel) ?? true),
-        cardInteractionService: cardInteractionService,
-        cardSelectionService: cardSelectionService,
-      );
+  ShopCard(this._coordinator) : super(_coordinator);
 
   @override
   String get buttonLabel => "Buy";
 
   @override
   void addTextComponent() {
-    if (cardModel.isFaceUp) {
+    if (_coordinator.isFaceUp) {
       // Create name text component positioned higher to make room for cost
       createNameTextComponent(Vector2(size.x / 2, size.y / 2 - 15));
       add(nameTextComponent);
-      
+
       // Add the cost text component
-      _costTextComponent = TextComponent(
-        text: "Cost: ${shopCardModel.cost}",
+      var costTextComponent = TextComponent(
+        text: "Cost: ${_coordinator.cost}",
         anchor: Anchor.center,
         position: Vector2(size.x / 2, size.y / 2 + 15),
         textRenderer: TextPaint(
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.white,
-          ),
+          style: const TextStyle(fontSize: 16, color: Colors.white),
         ),
       );
-      add(_costTextComponent);
+      add(costTextComponent);
     } else {
       // Call parent implementation for face-down cards
       super.addTextComponent();

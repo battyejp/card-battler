@@ -1,33 +1,29 @@
-import 'package:card_battler/game/coordinators/components/cards/cards_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
-import 'package:card_battler/game/models/player/player_model.dart';
 
 class PlayerCoordinator {
-  final PlayerModel _playerModel;
-  final CardsCoordinator _handCardsCoordinator;
-  final CardsCoordinator _deckCardsCoordinator;
-  final CardsCoordinator _discardCardsCoordinator;
+  //TODO should there be a class for these 3 list like there is in the shop
+  final CardListCoordinator<CardCoordinator> _handCardsCoordinator;
+  final CardListCoordinator<CardCoordinator> _deckCardsCoordinator;
+  final CardListCoordinator<CardCoordinator> _discardCardsCoordinator;
   final PlayerInfoCoordinator _playerInfoCoordinator;
 
   PlayerCoordinator({
-    required PlayerModel playerModel,
-    required CardsCoordinator handCardsCoordinator,
-    required CardsCoordinator deckCardsCoordinator,
-    required CardsCoordinator discardCardsCoordinator,
+    required CardListCoordinator<CardCoordinator> handCardsCoordinator,
+    required CardListCoordinator<CardCoordinator> deckCardsCoordinator,
+    required CardListCoordinator<CardCoordinator> discardCardsCoordinator,
     required PlayerInfoCoordinator playerInfoCoordinator,
-  })  : _playerModel = playerModel,
-       _handCardsCoordinator = handCardsCoordinator,
+  }) : _handCardsCoordinator = handCardsCoordinator,
        _deckCardsCoordinator = deckCardsCoordinator,
        _playerInfoCoordinator = playerInfoCoordinator,
        _discardCardsCoordinator = discardCardsCoordinator;
 
-  CardsCoordinator get handCardsCoordinator => _handCardsCoordinator;
-  CardsCoordinator get deckCardsCoordinator => _deckCardsCoordinator;
-  CardsCoordinator get discardCardsCoordinator => _discardCardsCoordinator;
+  CardListCoordinator<CardCoordinator> get handCardsCoordinator =>
+      _handCardsCoordinator;
+  CardListCoordinator<CardCoordinator> get deckCardsCoordinator =>
+      _deckCardsCoordinator;
+  CardListCoordinator<CardCoordinator> get discardCardsCoordinator =>
+      _discardCardsCoordinator;
   PlayerInfoCoordinator get playerInfoCoordinator => _playerInfoCoordinator;
-
-  int get attack => _playerModel.attack;
-  int get credits => _playerModel.credits;
-  int get health => _playerModel.health;
-  bool get isActive => _playerModel.isActive;
 }

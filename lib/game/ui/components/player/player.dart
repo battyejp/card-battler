@@ -6,10 +6,10 @@ import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
-  static const handWidthFactor = 0.6;
-  static const pileWidthFactor = (1 - handWidthFactor) / 2;
-  static const infoHeightFactor = 0.1;
-  static const cardsToDrawPerTurn = 5;
+  static const _handWidthFactor = 0.6; //TODO not static
+  final _pileWidthFactor = (1 - _handWidthFactor) / 2;
+  final _infoHeightFactor = 0.1;
+  // final _cardsToDrawPerTurn = 5;
 
   final PlayerCoordinator _coordinator;
 
@@ -17,32 +17,34 @@ class Player extends PositionComponent {
 
   @override
   void onLoad() {
-    final infoHeight = size.y * infoHeightFactor;
+    final infoHeight = size.y * _infoHeightFactor;
 
     var deck = CardDeck(
       onTap: () => {},
       coordinator: _coordinator.deckCardsCoordinator,
-    )..size = Vector2(size.x * pileWidthFactor, size.y);
+    )..size = Vector2(size.x * _pileWidthFactor, size.y);
 
     add(deck);
 
     var info = PlayerInfo(coordinator: _coordinator.playerInfoCoordinator)
-      ..size = Vector2(size.x * handWidthFactor, infoHeight)
+      ..size = Vector2(size.x * _handWidthFactor, infoHeight)
       ..position = Vector2(deck.x + deck.width, 0);
 
     add(info);
 
-    var hand = CardHand(
-      coordinator: _coordinator.handCardsCoordinator,
-    )
-      ..size = Vector2(size.x * handWidthFactor, size.y - infoHeight)
+    var hand = CardHand(coordinator: _coordinator.handCardsCoordinator)
+      ..size = Vector2(size.x * _handWidthFactor, size.y - infoHeight)
       ..position = Vector2(deck.x + deck.width, infoHeight);
 
     add(hand);
 
-    var discard = CardPile(coordinator: _coordinator.discardCardsCoordinator, showNext: true)
-      ..size = Vector2(size.x * pileWidthFactor, size.y)
-      ..position = Vector2(hand.x + hand.width, 0);
+    var discard =
+        CardPile(
+            coordinator: _coordinator.discardCardsCoordinator,
+            showNext: true,
+          )
+          ..size = Vector2(size.x * _pileWidthFactor, size.y)
+          ..position = Vector2(hand.x + hand.width, 0);
 
     add(discard);
   }

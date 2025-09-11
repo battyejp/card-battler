@@ -1,20 +1,21 @@
-import 'package:card_battler/game/components/shared/card/card.dart';
+import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/ui/components/card/card.dart';
 import 'package:card_battler/game/ui/components/common/flat_button.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart' hide Card;
 
 class ActionableCard extends Card {
   late FlatButton _button;
-  final Function()? onButtonPressed;
+  final Function()? _onButtonPressed;
 
-  @protected
+  ActionableCard(CardCoordinator coordinator, {Function()? onButtonPressed})
+    : _onButtonPressed = onButtonPressed,
+      super(coordinator: coordinator);
+
   String get buttonLabel => "Play";
 
   bool get buttonDisabled => _button.disabled;
 
   set buttonDisabled(bool value) => _button.disabled = value;
-
-  ActionableCard(super.cardModel, {this.onButtonPressed});
 
   bool get isButtonVisible => _button.isVisible;
   set isButtonVisible(bool value) => _button.isVisible = value;
@@ -29,7 +30,7 @@ class ActionableCard extends Card {
       position: Vector2(size.x / 2, size.y - (0.1 * size.y) / 2),
       onReleased: () {
         if (!buttonDisabled && isButtonVisible) {
-          onButtonPressed?.call();
+          _onButtonPressed?.call();
         }
       },
     );
