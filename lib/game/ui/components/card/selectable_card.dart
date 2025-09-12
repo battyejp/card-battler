@@ -6,10 +6,10 @@ import 'package:flame/events.dart';
 
 class SelectableCard extends ActionableCard with TapCallbacks {
   late CardSelectionService _interactionService;
-  late FlatButton _button;
+  late FlatButton _closeButton;
 
-  bool get isCloseButtonVisible => _button.isVisible;
-  set isCloseButtonVisible(bool value) => _button.isVisible = value;
+  bool get isCloseButtonVisible => _closeButton.isVisible;
+  set isCloseButtonVisible(bool value) => _closeButton.isVisible = value;
 
   // bool Function()? _determineIfButtonEnabled;
   // CardInteractionService? _cardInteractionService;
@@ -21,7 +21,7 @@ class SelectableCard extends ActionableCard with TapCallbacks {
   void onLoad() {
     super.onLoad();
 
-    _button = FlatButton(
+    _closeButton = FlatButton(
       "Close",
       disabled: false,
       size: Vector2(size.x, 0.1 * size.y),
@@ -34,8 +34,8 @@ class SelectableCard extends ActionableCard with TapCallbacks {
       },
     );
 
-    _button.isVisible = false;
-    add(_button);
+    _closeButton.isVisible = false;
+    add(_closeButton);
 
     _interactionService = CardSelectionService(
       card: this,
@@ -58,7 +58,10 @@ class SelectableCard extends ActionableCard with TapCallbacks {
   @override
   bool onTapUp(TapUpEvent event) {
     var result = _interactionService.onSelected(event);
-    _button.isVisible = result;
+
+    if (result) {
+      _closeButton.isVisible = !_closeButton.isVisible;
+    }
     return true;
   }
 
