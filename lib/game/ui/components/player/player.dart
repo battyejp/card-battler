@@ -20,15 +20,21 @@ class Player extends PositionComponent {
     final infoHeight = size.y * _infoHeightFactor;
 
     var deck = CardDeck(
-      onTap: () => { _coordinator.drawCardsFromDeck(5) }, //TODO where should 5 live?
+      onTap: () => {
+        _coordinator.drawCardsFromDeck(5),
+      }, //TODO where should 5 live?
       coordinator: _coordinator.deckCardsCoordinator,
     )..size = Vector2(size.x * _pileWidthFactor, size.y);
 
     add(deck);
 
-    var info = PlayerInfo(coordinator: _coordinator.playerInfoCoordinator)
-      ..size = Vector2(size.x * _handWidthFactor, infoHeight)
-      ..position = Vector2(deck.x + deck.width, 0);
+    var info =
+        PlayerInfo(
+            coordinator: _coordinator.playerInfoCoordinator,
+            viewMode: PlayerInfoViewMode.detailed,
+          )
+          ..size = Vector2(size.x * _handWidthFactor, infoHeight)
+          ..position = Vector2(deck.x + deck.width, 0);
 
     add(info);
 
@@ -38,13 +44,9 @@ class Player extends PositionComponent {
 
     add(hand);
 
-    var discard =
-        CardPile(
-            _coordinator.discardCardsCoordinator,
-            showNext: true,
-          )
-          ..size = Vector2(size.x * _pileWidthFactor, size.y)
-          ..position = Vector2(hand.x + hand.width, 0);
+    var discard = CardPile(_coordinator.discardCardsCoordinator, showNext: true)
+      ..size = Vector2(size.x * _pileWidthFactor, size.y)
+      ..position = Vector2(hand.x + hand.width, 0);
 
     add(discard);
   }

@@ -1,9 +1,9 @@
-import 'package:card_battler/game/coordinators/components/team/player_stat_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 
 class PlayersCoordinator {
-  final List<PlayerStatsCoordinator> _players;
+  final List<PlayerInfoCoordinator> _players;
 
-  PlayersCoordinator({required List<PlayerStatsCoordinator> players}) : _players = players;
+  PlayersCoordinator({required List<PlayerInfoCoordinator> players}) : _players = players;
 
-  List<PlayerStatsCoordinator> get players => _players;
+  List<PlayerInfoCoordinator> get players => _players;
 }

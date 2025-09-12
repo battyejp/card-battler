@@ -1,23 +1,26 @@
-import 'package:card_battler/game/coordinators/components/team/player_stat_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/players_coordinator.dart';
-import 'package:card_battler/game/ui/components/team/player_stats.dart';
+import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:flame/components.dart';
 
 class Players extends PositionComponent {
   final PlayersCoordinator _coordinator;
   final bool _showActivePlayer;
+  final PlayerInfoViewMode _viewMode;
 
   Players({
     required PlayersCoordinator coordinator,
     required bool showActivePlayer,
+    required PlayerInfoViewMode viewMode,
   }) : _showActivePlayer = showActivePlayer,
-       _coordinator = coordinator;
+       _coordinator = coordinator,
+       _viewMode = viewMode;
 
   @override
   void onLoad() {
     super.onLoad();
 
-    late List<PlayerStatsCoordinator> playersCoordinatorsToShow = _coordinator
+    late List<PlayerInfoCoordinator> playersCoordinatorsToShow = _coordinator
         .players
         .where((player) => !player.isActive || _showActivePlayer)
         .toList();
@@ -28,10 +31,10 @@ class Players extends PositionComponent {
     for (int i = 0; i < playersCoordinatorsToShow.length; i++) {
       var playerCoordinator = playersCoordinatorsToShow[i];
 
-      final playerStats = PlayerStats(coordinator: playerCoordinator)
+      final playerInfo = PlayerInfo(coordinator: playerCoordinator, viewMode: _viewMode)
         ..size = Vector2(size.x, playerHeight)
         ..position = Vector2(0, currentY);
-      add(playerStats);
+      add(playerInfo);
       currentY += playerHeight;
     }
   }

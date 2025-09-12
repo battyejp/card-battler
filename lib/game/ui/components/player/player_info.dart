@@ -2,15 +2,31 @@ import 'package:card_battler/game/coordinators/components/player/player_info_coo
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-//TODO legacy Info component for player information
+enum PlayerInfoViewMode { summary, detailed }
+
 class PlayerInfo extends PositionComponent {
   final PlayerInfoCoordinator _coordinator;
+  final PlayerInfoViewMode _viewMode;
 
-  PlayerInfo({required PlayerInfoCoordinator coordinator}) : _coordinator = coordinator;
+  PlayerInfo({
+    required PlayerInfoCoordinator coordinator,
+    required PlayerInfoViewMode viewMode,
+  }) : _coordinator = coordinator,
+       _viewMode = viewMode;
 
   @override
   void onLoad() {
     super.onLoad();
+
+    var background = RectangleComponent(
+      size: size,
+      paint: Paint()
+        ..color = _coordinator.isActive
+            ? Colors.blue.withValues(alpha: 0.3)
+            : Colors.transparent,
+    );
+
+    add(background);
 
     //TODO tidy up, loads of repeated code
     var comp1 = PositionComponent()

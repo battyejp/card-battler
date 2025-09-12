@@ -12,7 +12,6 @@ import 'package:card_battler/game/coordinators/components/shop/shop_display_coor
 import 'package:card_battler/game/coordinators/components/shop/shop_inventory_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/base_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/bases_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/player_stat_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/players_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
@@ -41,7 +40,7 @@ class RouterService {
   RouterService._internal() {
     playersCoordinator = PlayersCoordinator(
       players: GameStateFacade.instance.state.players
-          .map((player) => PlayerStatsCoordinator(player: player))
+          .map((player) => PlayerInfoCoordinator(model: player))
           .toList(),
     );
 

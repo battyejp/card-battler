@@ -10,4 +10,5 @@ class PlayerInfoCoordinator {
   int get maxHealth => model.maxHealth;
   int get attack => model.attack;
   int get credits => model.credits;
+  bool get isActive => model.isActive;
 }
