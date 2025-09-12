@@ -25,7 +25,12 @@ class GameStateFacade {
     List<CardModel> enemyCards,
     List<BaseModel> bases,
   ) {
-    _state = _factory.createGameState(shopCards, playerDeckCards, enemyCards, bases);
+    _state = _factory.createGameState(
+      shopCards,
+      playerDeckCards,
+      enemyCards,
+      bases,
+    );
   }
 
   /// Gets the current game state, creating a default one if none exists
