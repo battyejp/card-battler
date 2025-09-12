@@ -75,7 +75,8 @@ class CardSelectionService {
       //TODO do these checks needs game phase and shop affordability
       _card.isActionButtonVisible =
           _gamePhaseManager.currentPhase == GamePhase.playerTurn;
-      //_card.buttonDisabled = false; //buttonDisabled;
+
+      //_card.actionButtonDisabled = false; //buttonDisabled;
     };
 
     _card.add(moveEffect);

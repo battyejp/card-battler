@@ -12,10 +12,9 @@ class ActionableCard extends Card {
       super(coordinator: coordinator);
 
   String get buttonLabel => "Play";
-  bool get buttonDisabled => false;
 
-  // bool get buttonDisabled => _button.disabled;
-  // set buttonDisabled(bool value) => _button.disabled = value;
+  bool get actionButtonDisabled => false;
+  set actionButtonDisabled(bool value) => _actionButton.disabled = value;
 
   bool get isActionButtonVisible => _actionButton.isVisible;
   set isActionButtonVisible(bool value) => _actionButton.isVisible = value;
@@ -26,11 +25,11 @@ class ActionableCard extends Card {
 
     _actionButton = FlatButton(
       buttonLabel,
-      disabled: buttonDisabled,
+      disabled: actionButtonDisabled,
       size: Vector2(size.x, 0.1 * size.y),
       position: Vector2(size.x / 2, size.y - (0.1 * size.y) / 2),
       onReleased: () {
-        if (!buttonDisabled) {
+        if (!actionButtonDisabled) {
           _onButtonPressed?.call();
         }
       },

@@ -12,7 +12,7 @@ class ShopCard extends SelectableCard {
   String get buttonLabel => "Buy";
 
   @override
-  bool get buttonDisabled => true;
+  bool get actionButtonDisabled => true;
 
   @override
   void addTextComponent() {
