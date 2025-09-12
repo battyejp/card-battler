@@ -7,6 +7,7 @@ class PlayerTurnSceneCoordinator {
   final ShopCoordinator _shopCoordinator;
   final TeamCoordinator _teamCoordinator;
 
+  //TODO think this needs access to all List of PlayerCoordinators
   PlayerTurnSceneCoordinator({
     required PlayerCoordinator playerCoordinator,
     required ShopCoordinator shopCoordinator,

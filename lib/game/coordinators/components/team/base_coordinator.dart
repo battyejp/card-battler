@@ -6,4 +6,5 @@ class BaseCoordinator {
   BaseCoordinator({required BaseModel model}) : _model = model;
 
   String get healthDisplay => _model.display;
+  int get health => _model.health;
 }

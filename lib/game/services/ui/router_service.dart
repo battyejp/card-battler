@@ -28,7 +28,7 @@ class RouterService {
   PlayerTurnScene? _playerTurnScene;
   //final GameStateManager _gameStateManager = GameStateManager();
 
-  //TODO split this up as massive
+  //TODO split this up as massive and probbaly move as not the router services responsibility
   var playerTurnSceneCoordinator = PlayerTurnSceneCoordinator(
     playerCoordinator: PlayerCoordinator(
       handCardsCoordinator: CardListCoordinator<CardCoordinator>(
@@ -73,7 +73,7 @@ class RouterService {
             .toList(),
       ),
       basesCoordinator: BasesCoordinator(
-        coordinators: GameStateFacade.instance.state.bases
+        baseCoordinators: GameStateFacade.instance.state.bases
             .map((base) => BaseCoordinator(model: base))
             .toList(),
       ),

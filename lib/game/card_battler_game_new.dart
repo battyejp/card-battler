@@ -26,6 +26,7 @@ class CardBattlerGameNew extends FlameGame with TapCallbacks {
     super.onTapUp(event);
   }
 
+  //TODO does not appear to work
   @override
   Future<void> onLoad() async {
     List<ShopCardModel> shopCards = [];
