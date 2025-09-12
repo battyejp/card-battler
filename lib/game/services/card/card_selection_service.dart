@@ -18,7 +18,6 @@ class CardSelectionService {
   final double _scaleFactor = 2.5;
 
   bool _isAnimating = false;
-  //bool _wasSelected = false;
   int _originalPriority = 0;
   Vector2 _originalPos = Vector2.zero();
 
@@ -36,12 +35,8 @@ class CardSelectionService {
   }
 
   void _selectAtPosition(Vector2 pressPosition) {
-    // Deselect any other card and select this one
     _cardsSelectionManagerService.selectCard(_card.coordinator);
-
-    //_wasSelected = true; // Track that this card is now selected
     _isAnimating = true;
-
     _originalPriority = _card.priority;
     _card.priority = 99999;
 
@@ -71,12 +66,14 @@ class CardSelectionService {
       EffectController(duration: _animationSpeed),
     );
 
-    //var buttonDisabled = !_cardUIService.canPlayCard();
+    //var buttonDisabled = !_cardUIService.canPlayCard(); game phase is player and if shop can afford it
 
     moveEffect.onComplete = () {
       _isAnimating = false;
-      //card.isButtonVisible = _cardInteractionService?.shouldShowPlayButton() ?? true;
-      //card.buttonDisabled = buttonDisabled;
+      //TODO do these checks needs game phase and shop affordability
+      _card.isButtonVisible =
+          true; //_cardInteractionService?.shouldShowPlayButton() ?? true; If gamephase is player
+      _card.buttonDisabled = true; //buttonDisabled;
     };
 
     _card.add(moveEffect);
@@ -89,7 +86,7 @@ class CardSelectionService {
     _cardsSelectionManagerService.deselectCard();
 
     _isAnimating = true;
-    //_wasSelected = false;
+
     _card.isButtonVisible = false;
     _card.priority = _originalPriority;
 
