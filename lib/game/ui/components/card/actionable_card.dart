@@ -4,7 +4,7 @@ import 'package:card_battler/game/ui/components/common/flat_button.dart';
 import 'package:flame/components.dart';
 
 class ActionableCard extends Card {
-  late FlatButton _button;
+  late FlatButton _actionButton;
   final Function()? _onButtonPressed;
 
   ActionableCard(CardCoordinator coordinator, {Function()? onButtonPressed})
@@ -17,14 +17,14 @@ class ActionableCard extends Card {
   // bool get buttonDisabled => _button.disabled;
   // set buttonDisabled(bool value) => _button.disabled = value;
 
-  bool get isButtonVisible => _button.isVisible;
-  set isButtonVisible(bool value) => _button.isVisible = value;
+  bool get isActionButtonVisible => _actionButton.isVisible;
+  set isActionButtonVisible(bool value) => _actionButton.isVisible = value;
 
   @override
   void onLoad() {
     super.onLoad();
 
-    _button = FlatButton(
+    _actionButton = FlatButton(
       buttonLabel,
       disabled: buttonDisabled,
       size: Vector2(size.x, 0.1 * size.y),
@@ -36,7 +36,7 @@ class ActionableCard extends Card {
       },
     );
 
-    _button.isVisible = false;
-    add(_button);
+    _actionButton.isVisible = false;
+    add(_actionButton);
   }
 }

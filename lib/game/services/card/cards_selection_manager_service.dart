@@ -1,5 +1,6 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 
+//TODO make this a proper service with DI
 class CardsSelectionManagerService {
   // Private constructor
   CardsSelectionManagerService._();

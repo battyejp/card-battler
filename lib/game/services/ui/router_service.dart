@@ -55,6 +55,7 @@ class RouterService {
                 (card) => CardCoordinator(
                   card.copy(),
                   CardsSelectionManagerService.instance,
+                  GamePhaseManager.instance,
                 ),
               )
               .toList(),
@@ -79,6 +80,7 @@ class RouterService {
                 (card) => ShopCardCoordinator(
                   card,
                   CardsSelectionManagerService.instance,
+                  GamePhaseManager.instance,
                 ),
               )
               .toList(),
@@ -110,6 +112,7 @@ class RouterService {
                 (card) => CardCoordinator(
                   card.copy(),
                   CardsSelectionManagerService.instance,
+                  GamePhaseManager.instance,
                 ),
               )
               .toList(),
@@ -136,6 +139,7 @@ class RouterService {
               (card) => CardCoordinator(
                 card.copy(),
                 CardsSelectionManagerService.instance,
+                GamePhaseManager.instance,
               ),
             )
             .toList(),

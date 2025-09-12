@@ -17,6 +17,7 @@ enum GamePhase {
   cardsDrawnWaitingForPlayerSwitch,
 }
 
+//TODO consider stopping being a singleton as hard to test
 /// Dedicated service for managing game state transitions and phase management
 /// This extracts state management concerns from the GameStateModel singleton
 class GamePhaseManager {

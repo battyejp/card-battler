@@ -1,4 +1,5 @@
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
+import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/actionable_card.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -7,12 +8,15 @@ import 'package:flame/events.dart';
 class CardSelectionService {
   final ActionableCard _card;
   final CardsSelectionManagerService _cardsSelectionManagerService;
+  final GamePhaseManager _gamePhaseManager;
 
   CardSelectionService({
     required ActionableCard card,
     required CardsSelectionManagerService cardsSelectionManagerService,
+    required GamePhaseManager gamePhaseManager,
   }) : _card = card,
-       _cardsSelectionManagerService = cardsSelectionManagerService;
+       _cardsSelectionManagerService = cardsSelectionManagerService,
+       _gamePhaseManager = gamePhaseManager;
 
   final double _animationSpeed = 0.5;
   final double _scaleFactor = 2.5;
@@ -66,13 +70,11 @@ class CardSelectionService {
       EffectController(duration: _animationSpeed),
     );
 
-    //var buttonDisabled = !_cardUIService.canPlayCard(); game phase is player and if shop can afford it
-
     moveEffect.onComplete = () {
       _isAnimating = false;
       //TODO do these checks needs game phase and shop affordability
-      _card.isButtonVisible =
-          true; //_cardInteractionService?.shouldShowPlayButton() ?? true; If gamephase is player
+      _card.isActionButtonVisible =
+          _gamePhaseManager.currentPhase == GamePhase.playerTurn;
       //_card.buttonDisabled = false; //buttonDisabled;
     };
 
@@ -87,7 +89,7 @@ class CardSelectionService {
 
     _isAnimating = true;
 
-    _card.isButtonVisible = false;
+    _card.isActionButtonVisible = false;
     _card.priority = _originalPriority;
 
     final moveEffect = MoveEffect.to(
