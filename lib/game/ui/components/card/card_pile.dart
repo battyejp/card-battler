@@ -1,23 +1,24 @@
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/ui/components/card/card.dart';
+import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart' hide Card;
 
-class CardPile extends PositionComponent {
+class CardPile extends ReactivePositionComponent<CardListCoordinator> {
   final bool showNext;
-  final CardListCoordinator _coordinator;
 
-  CardPile({required this.showNext, required CardListCoordinator coordinator})
-    : _coordinator = coordinator;
+  CardPile(super.coordinator, {required this.showNext});
+
+  // @override
+  // void onLoad() {
+  //   updateDisplay();
+  // }
 
   @override
-  void onLoad() {
-    updateDisplay();
-  }
-
   void updateDisplay() {
+    super.updateDisplay();
     // Add components based on current model state
-    if (_coordinator.cardCoordinators.isEmpty) {
+    if (coordinator.cardCoordinators.isEmpty) {
       _addEmptyText();
     } else {
       _addCard();
@@ -44,8 +45,8 @@ class CardPile extends PositionComponent {
     final card =
         Card(
             coordinator: showNext
-                ? _coordinator.cardCoordinators.first
-                : _coordinator.cardCoordinators.last,
+                ? coordinator.cardCoordinators.first
+                : coordinator.cardCoordinators.last,
           )
           ..size = Vector2(cardWidth, cardHeight)
           ..position = Vector2(
@@ -58,7 +59,7 @@ class CardPile extends PositionComponent {
 
   void _addCardCountLabel() {
     final countText = TextComponent(
-      text: '${_coordinator.cardCoordinators.length}',
+      text: '${coordinator.cardCoordinators.length}',
       anchor: Anchor.topRight,
       position: Vector2(size.x - 5, 5),
       textRenderer: TextPaint(

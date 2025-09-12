@@ -1,11 +1,11 @@
 import 'package:card_battler/game/models/common/reactive_model.dart';
 
+//TODO get rid of
 class HealthModel with ReactiveModel<HealthModel> {
   final int maxHealth;
   int _currentHealth;
 
-  HealthModel({required this.maxHealth}) 
-      : _currentHealth = maxHealth;
+  HealthModel({required this.maxHealth}) : _currentHealth = maxHealth;
 
   int get currentHealth => _currentHealth;
 

@@ -1,16 +1,17 @@
 import 'dart:async';
-import 'package:card_battler/game/models/common/reactive_model.dart';
+import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
 import 'package:flame/components.dart';
 
 /// Base class for position components that react to model changes
-/// 
+///
 /// This class handles the stream subscription lifecycle and provides
 /// an abstract updateDisplay method that subclasses must implement
-abstract class ReactivePositionComponent<T extends ReactiveModel<T>> extends PositionComponent {
-  final T model;
+abstract class ReactivePositionComponent<T extends ReactiveCoordinator<T>>
+    extends PositionComponent {
+  final T coordinator;
   late StreamSubscription<T> _modelSubscription;
 
-  ReactivePositionComponent(this.model);
+  ReactivePositionComponent(this.coordinator);
 
   /// Base implementation that clears all child components
   /// Subclasses should call super.updateDisplay() first, then add their components
@@ -22,7 +23,7 @@ abstract class ReactivePositionComponent<T extends ReactiveModel<T>> extends Pos
   void onMount() {
     super.onMount();
     // Listen to model changes and update display automatically
-    _modelSubscription = model.changes.listen((_) => updateDisplay());
+    _modelSubscription = coordinator.changes.listen((_) => updateDisplay());
   }
 
   @override
@@ -36,5 +37,4 @@ abstract class ReactivePositionComponent<T extends ReactiveModel<T>> extends Pos
     super.onLoad();
     updateDisplay();
   }
-
 }

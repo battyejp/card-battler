@@ -1,5 +1,6 @@
 import 'package:card_battler/game/models/common/reactive_model.dart';
 
+//TODO get rid of
 class ValueImageLabelModel with ReactiveModel<ValueImageLabelModel> {
   int _value;
   final String _label;

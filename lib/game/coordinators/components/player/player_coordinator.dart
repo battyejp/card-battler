@@ -26,4 +26,42 @@ class PlayerCoordinator {
   CardListCoordinator<CardCoordinator> get discardCardsCoordinator =>
       _discardCardsCoordinator;
   PlayerInfoCoordinator get playerInfoCoordinator => _playerInfoCoordinator;
+
+  void drawCardsFromDeck(int numberOfCards) {
+    if (_isDrawingCardsPrevented()) {
+      return;
+    }
+
+    final drawnCards = deckCardsCoordinator.drawCards(numberOfCards);
+
+    // if (drawnCards.length < numberOfCards) {
+    //   moveDiscardCardsToDeck();
+    //   final additionalCards = deckService.drawCards(
+    //     numberOfCards - drawnCards.length,
+    //   );
+    //   drawnCards.addAll(additionalCards);
+    // }
+
+    if (drawnCards.isNotEmpty) {
+      handCardsCoordinator.addCards(drawnCards);
+    }
+
+    // state.gameStateService.nextPhase();
+  }
+
+  /// Moves all discard cards back to deck and shuffles
+  // void moveDiscardCardsToDeck() {
+  //   if (discardService.hasNoCards) {
+  //     return;
+  //   }
+
+  //   final discardCards = discardService.removeAllCards();
+  //   deckService.addCardsAndShuffle(discardCards);
+  // }
+
+  bool _isDrawingCardsPrevented() {
+    //TODO is first part needed?
+    return /*state.cardSelectionService.hasSelection ||*/ handCardsCoordinator
+        .hasCards;
+  }
 }

@@ -1,9 +1,8 @@
 import 'dart:async';
 
-//TODO gte rid of
 /// Mixin that provides reactive capabilities to models
 /// Models that use this mixin can notify listeners when their state changes
-mixin ReactiveModel<T> {
+mixin ReactiveCoordinator<T> {
   StreamController<T>? _changeController;
 
   /// Stream that emits when the model changes

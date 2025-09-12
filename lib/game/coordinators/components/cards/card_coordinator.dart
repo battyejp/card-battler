@@ -8,6 +8,9 @@ class CardCoordinator {
   CardCoordinator(this._cardModel, this.cardsSelectionManagerService);
 
   String get name => _cardModel.name;
+  
   bool get isFaceUp => _cardModel.isFaceUp;
+  set isFaceUp(bool value) => _cardModel.isFaceUp = value;
+
   CardsSelectionManagerService get selectionManagerService => cardsSelectionManagerService;
 }
