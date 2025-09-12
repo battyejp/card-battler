@@ -105,13 +105,13 @@ class PlayerTurnScene extends Component {
       case GamePhase.cardsDrawnWaitingForEnemyTurn:
         turnButton.text = 'Take Enemy Turn';
         break;
-      case GamePhase.enemyTurn:
-        break;
       case GamePhase.playerTurn:
         turnButton.text = 'End Turn';
         break;
       case GamePhase.cardsDrawnWaitingForPlayerSwitch:
         turnButton.text = 'Switch Player';
+        break;
+      default:
         break;
     }
 

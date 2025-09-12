@@ -15,7 +15,8 @@ import 'package:card_battler/game/coordinators/components/team/player_stat_coord
 import 'package:card_battler/game/coordinators/components/team/players_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
-import 'package:card_battler/game/services/game_state_facade.dart';
+import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
+import 'package:card_battler/game/services/game_state/game_state_facade.dart';
 import 'package:card_battler/game/ui/components/scenes/enemy_turn_scene.dart';
 import 'package:card_battler/game/ui/components/scenes/player_turn_scene.dart';
 import 'package:flame/game.dart';
@@ -44,7 +45,12 @@ class RouterService {
             .activePlayer
             .deckCards
             .allCards
-            .map((card) => CardCoordinator(card.copy(), CardsSelectionManagerService.instance))
+            .map(
+              (card) => CardCoordinator(
+                card.copy(),
+                CardsSelectionManagerService.instance,
+              ),
+            )
             .toList(),
       ),
       discardCardsCoordinator: CardListCoordinator<CardCoordinator>(
@@ -53,6 +59,7 @@ class RouterService {
       playerInfoCoordinator: PlayerInfoCoordinator(
         model: GameStateFacade.instance.state.activePlayer,
       ),
+      gamePhaseManager: GamePhaseManager.instance,
     ),
     shopCoordinator: ShopCoordinator(
       displayCoordinator: ShopDisplayCoordinator(
@@ -62,7 +69,12 @@ class RouterService {
             .shop
             .inventoryCards
             .allCards
-            .map((card) => ShopCardCoordinator(card, CardsSelectionManagerService.instance))
+            .map(
+              (card) => ShopCardCoordinator(
+                card,
+                CardsSelectionManagerService.instance,
+              ),
+            )
             .toList(),
         itemsPerRow: 3,
         numberOfRows: 2,
@@ -92,13 +104,19 @@ class RouterService {
             .enemiesModel
             .deckCards
             .allCards
-            .map((card) => CardCoordinator(card.copy(), CardsSelectionManagerService.instance))
+            .map(
+              (card) => CardCoordinator(
+                card.copy(),
+                CardsSelectionManagerService.instance,
+              ),
+            )
             .toList(),
       ),
       playedCardsCoordinator: CardListCoordinator<CardCoordinator>(
         cardCoordinators: [],
       ),
     ),
+    gamePhaseManager: GamePhaseManager.instance,
   );
 
   /// Create and configure the router component with scene routes
@@ -107,7 +125,7 @@ class RouterService {
     Map<String, Route>? additionalRoutes,
   }) {
     _playerTurnScene = PlayerTurnScene(
-      coordinator: playerTurnSceneCoordinator,
+      playerTurnSceneCoordinator,
       size: gameSize,
     );
 
