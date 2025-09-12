@@ -80,8 +80,7 @@ class PlayerTurnScene
       position: Vector2(0, ((_size.y / 2) * -1) + (_size.y * 0.1)),
       onReleased: () {
         if (!(_turnButton.disabled) && (_turnButton.isVisible)) {
-          //_cardSelectionService.deselectCard();
-          //_sceneManager.handleTurnButtonPress();
+          coordinator.handleTurnButtonPressed();
         }
       },
     );

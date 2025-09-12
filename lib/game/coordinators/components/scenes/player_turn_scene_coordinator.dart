@@ -5,7 +5,8 @@ import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
 
-class PlayerTurnSceneCoordinator with ReactiveCoordinator<PlayerTurnSceneCoordinator> {
+class PlayerTurnSceneCoordinator
+    with ReactiveCoordinator<PlayerTurnSceneCoordinator> {
   final PlayerCoordinator _playerCoordinator;
   final ShopCoordinator _shopCoordinator;
   final TeamCoordinator _teamCoordinator;
@@ -34,39 +35,49 @@ class PlayerTurnSceneCoordinator with ReactiveCoordinator<PlayerTurnSceneCoordin
        _teamCoordinator = teamCoordinator,
        _enemiesCoordinator = enemiesCoordinator,
        _gamePhaseManager = gamePhaseManager {
-    _setupGameStateListener();
-  }
-
-  void _setupGameStateListener() {
     _gamePhaseManager.addPhaseChangeListener(_onGamePhaseChanged);
   }
 
+  void handleTurnButtonPressed() {
+    //TODO might need to deselect cards here
+    _gamePhaseManager.nextPhase();
+  }
+
   void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
+    // Determine new values
+    String newButtonText = _buttonText;
+    bool newButtonVisible = _buttonVisible;
 
     switch (newPhase) {
       case GamePhase.cardsDrawnWaitingForEnemyTurn:
-        _buttonText = 'Take Enemy Turn';
+        newButtonText = 'Take Enemy Turn';
         break;
       case GamePhase.playerTurn:
-        _buttonText = 'End Turn';
+        newButtonText = 'End Turn';
         break;
       case GamePhase.cardsDrawnWaitingForPlayerSwitch:
-        _buttonText = 'Switch Player';
+        newButtonText = 'Switch Player';
         break;
       default:
         break;
     }
 
-    _buttonVisible =
+    newButtonVisible =
         newPhase != GamePhase.waitingToDrawCards &&
         newPhase != GamePhase.enemyTurn;
 
-    notifyChange();
+    // Only notify if something changed
+    if (newButtonText != _buttonText || newButtonVisible != _buttonVisible) {
+      _buttonText = newButtonText;
+      _buttonVisible = newButtonVisible;
+      notifyChange();
+    }
   }
 
   //TODO think this needs to be called somewhere or perhaps is does automatically?
   @override
   void dispose() {
+    super.dispose();
     _gamePhaseManager.removePhaseChangeListener(_onGamePhaseChanged);
   }
 }

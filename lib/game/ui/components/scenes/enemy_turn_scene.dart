@@ -1,19 +1,61 @@
+import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
+import 'package:card_battler/game/ui/components/card/card_deck.dart';
+import 'package:card_battler/game/ui/components/card/card_pile.dart';
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 
 class EnemyTurnScene extends Component {
   final Vector2 _size;
+  final EnemyTurnSceneCoordinator _coordinator;
 
-  EnemyTurnScene({required Vector2 size})
-      : _size = size;
+  EnemyTurnScene({
+    required Vector2 size,
+    required EnemyTurnSceneCoordinator coordinator,
+  }) : _size = size,
+       _coordinator = coordinator;
 
   @override
-  Future<void> onMount() async {
+  bool debugMode = true;
+
+  @override
+  void onMount() {
     super.onMount();
 
     _loadGameComponents();
   }
 
   void _loadGameComponents() {
-    // Load enemy turn specific components
+    var playArea = RectangleComponent(
+      size: Vector2(_size.x, _size.y),
+      anchor: Anchor.center,
+      position: Vector2(0, 0),
+      paint: Paint()..color = Colors.black.withAlpha((255)),
+    );
+
+    add(playArea);
+
+    var deck =
+        CardDeck(
+            coordinator: _coordinator.deckCardsCoordinator,
+            onTap: () => {_coordinator.drawCardsFromDeck()},
+          )
+          ..anchor = Anchor.topLeft
+          ..position = Vector2(0, 0)
+          ..size = Vector2(_size.x * 0.25, _size.y / 2);
+
+    playArea.add(deck);
+
+    var playedCards =
+        CardPile(_coordinator.playedCardsCoordinator, showNext: false)
+          ..anchor = Anchor.topRight
+          ..position = Vector2(_size.x, 0)
+          ..size = Vector2(_size.x * 0.25, _size.y / 2);
+
+    playArea.add(playedCards);
+
+    // final players = Players(_model.playersModel, showActivePlayer: true)
+    //   ..size = Vector2(_size.x, _size.y / 2)
+    //   ..position = Vector2(0, _size.y / 2);
+    // playArea.add(players);
   }
 }

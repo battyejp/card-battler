@@ -73,7 +73,7 @@ class RouterService {
   void _handleEnemyTurnToPlayerTurn() {
     Future.delayed(const Duration(seconds: 1), () {
       // Reset the enemy turn state for the next enemy turn
-      GameStateModel.instance.enemyTurnArea.resetTurn();
+      //GameStateModel.instance.enemyTurnArea.resetTurn();
       _router?.pop();
     });
   }
