@@ -1,5 +1,7 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/enemy/enemies_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/enemy/enemy_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
@@ -76,6 +78,24 @@ class RouterService {
         baseCoordinators: GameStateFacade.instance.state.bases
             .map((base) => BaseCoordinator(model: base))
             .toList(),
+      ),
+    ),
+    enemiesCoordinator: EnemiesCoordinator(
+      enemyCoordinators: GameStateFacade.instance.state.enemiesModel.enemies
+          .map((enemy) => EnemyCoordinator(model: enemy))
+          .toList(),
+      deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
+        cardCoordinators: GameStateFacade
+            .instance
+            .state
+            .enemiesModel
+            .deckCards
+            .allCards
+            .map((card) => CardCoordinator(card.copy()))
+            .toList(),
+      ),
+      playedCardsCoordinator: CardListCoordinator<CardCoordinator>(
+        cardCoordinators: [],
       ),
     ),
   );

@@ -1,33 +1,16 @@
-import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/card/card_list_model.dart';
+import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/enemy/enemy_model.dart';
 
+//TODO check all class as exposes all variables as properties are public
 class EnemiesModel {
-  final List<EnemyModel> _enemies;
-  final int _maxNumberOfEnemiesInPlay;
+  final List<EnemyModel> enemies;
+  final CardListModel<CardModel> playedCards;
+  final CardListModel<CardModel> deckCards;
 
-  EnemiesModel({
-    required int totalEnemies,
-    required int maxNumberOfEnemiesInPlay,
-    required int maxEnemyHealth,
-    required CardListModel<CardModel> enemyCards,
-    required CardListModel<CardModel> enemyPlayerCards,
-  }) : _maxNumberOfEnemiesInPlay = maxNumberOfEnemiesInPlay,
-       _enemies = List.generate(
-         totalEnemies,
-         (index) =>
-             EnemyModel(name: 'Enemy ${index + 1}', maxHealth: maxEnemyHealth),
-       );
-
-  /// Gets the display text for the current state
-  String get displayText {
-    final enemiesLeft = _enemies.length - 3 < 0
-        ? 0
-        : _enemies.length - 3; //pass 3 in
-    return '$enemiesLeft enemies left';
-  }
-
-  /// Gets all enemies (including defeated ones)
-  List<EnemyModel> get allEnemies => List.unmodifiable(_enemies);
-  int get maxNumberOfEnemiesInPlay => _maxNumberOfEnemiesInPlay;
+  const EnemiesModel({
+    required this.enemies,
+    required this.playedCards,
+    required this.deckCards,
+  });
 }

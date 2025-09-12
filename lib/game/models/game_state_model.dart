@@ -2,10 +2,12 @@ import 'package:card_battler/game/models/base/base_model.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/card/card_list_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
+import 'package:card_battler/game/models/enemy/enemy_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 
+//TODO add linter once leacy game gone
 class GameStateModel {
   final ShopModel shop;
   final List<PlayerModel> players;
@@ -15,8 +17,8 @@ class GameStateModel {
   GameStateModel({
     required this.shop,
     required this.players,
-    required this.enemiesModel,
     required this.bases,
+    required this.enemiesModel,
   });
 
   //TODO shuffle these cards
@@ -44,19 +46,27 @@ class GameStateModel {
       );
     });
 
+    final enemies = List<EnemyModel>.generate(4, (index) {
+      return EnemyModel(
+        name: 'Player ${index + 1}',
+        maxHealth: 10,
+        currentHealth: 10,
+      );
+    });
+
+    final enemiesModel = EnemiesModel(
+      enemies: enemies,
+      deckCards: CardListModel<CardModel>(cards: enemyCards),
+      playedCards: CardListModel<CardModel>.empty(),
+    );
+
     return GameStateModel(
       shop: ShopModel(
         displayCards: CardListModel<ShopCardModel>.empty(),
         inventoryCards: CardListModel<ShopCardModel>(cards: shopCards),
       ),
       players: players,
-      enemiesModel: EnemiesModel(
-        totalEnemies: 5,
-        maxNumberOfEnemiesInPlay: 3,
-        maxEnemyHealth: 50,
-        enemyCards: CardListModel<CardModel>(cards: enemyCards),
-        enemyPlayerCards: CardListModel<CardModel>.empty(),
-      ),
+      enemiesModel: enemiesModel,
       bases: bases,
     );
   }
@@ -72,7 +82,12 @@ class GameStateFactory {
     List<CardModel> enemyCards,
     List<BaseModel> bases,
   ) {
-    return GameStateModel.initialize(shopCards, playerDeckCards, enemyCards, bases);
+    return GameStateModel.initialize(
+      shopCards,
+      playerDeckCards,
+      enemyCards,
+      bases,
+    );
   }
 
   GameStateModel createDefaultGameState() {

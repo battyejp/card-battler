@@ -1,5 +1,6 @@
 import 'package:card_battler/game/models/base/base_model.dart';
 
+// TODO very similar to EnemyCoordinator - consider refactoring to a common superclass or mixin
 class BaseCoordinator {
   final BaseModel _model;
 

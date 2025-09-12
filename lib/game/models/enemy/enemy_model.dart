@@ -1,14 +1,18 @@
-import 'package:card_battler/game/models/shared/health_model.dart';
-
+//TODO appears to be very similar to BaseModel - consider refactoring to a common superclass or mixin
 class EnemyModel {
-  final HealthModel _health;
-  final String name;
+  final int _health;
+  final int _maxHealth;
+  final String _name;
 
   EnemyModel({
-    required this.name,
-    required int maxHealth
-  }) : _health = HealthModel(maxHealth: maxHealth);
+    required String name,
+    required int maxHealth,
+    required int currentHealth,
+  }) : _name = name,
+       _health = currentHealth,
+       _maxHealth = maxHealth;
 
-  /// Gets the health display string (e.g., "75/100")
-  String get healthDisplay => _health.healthDisplay;
+  int get health => _health;
+  String get name => _name;
+  int get maxHealth => _maxHealth;
 }

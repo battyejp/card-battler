@@ -1,5 +1,6 @@
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
 import 'package:card_battler/game/ui/components/common/flat_button.dart';
+import 'package:card_battler/game/ui/components/enemy/enemies.dart';
 import 'package:card_battler/game/ui/components/player/player.dart';
 import 'package:card_battler/game/ui/components/shop/shop_display.dart';
 import 'package:card_battler/game/ui/components/team/team.dart';
@@ -44,13 +45,12 @@ class PlayerTurnScene extends Component {
 
     add(player);
 
-    // // Create enemies component with model from game state
     final enemiesWidth = availableWidth * 0.5;
-    // final enemies = Enemies(model: _model.enemiesModel)
-    //   ..size = Vector2(enemiesWidth, topLayoutHeight)
-    //   ..position = Vector2((0 - enemiesWidth / 2), topPositionY);
+    final enemies = Enemies(coordinator: _coordinator.enemiesCoordinator)
+      ..size = Vector2(enemiesWidth, topLayoutHeight)
+      ..position = Vector2((0 - enemiesWidth / 2), topPositionY);
 
-    // add(enemies);
+    add(enemies);
 
     final shopWidth = availableWidth * 0.5 / 2;
     final shop =
@@ -60,8 +60,7 @@ class PlayerTurnScene extends Component {
           )
           ..size = Vector2(shopWidth, topLayoutHeight)
           ..position = Vector2(
-            //enemies.position.x + enemiesWidth,
-            0,
+            enemies.position.x + enemiesWidth,
             topPositionY,
           );
 
