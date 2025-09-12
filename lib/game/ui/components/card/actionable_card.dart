@@ -23,6 +23,7 @@ class ActionableCard extends Card {
   @override
   void onLoad() {
     super.onLoad();
+
     _button = FlatButton(
       buttonLabel,
       disabled: false,

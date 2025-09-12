@@ -1,5 +1,5 @@
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
-import 'package:card_battler/game/ui/components/card/tapable_actionable_card.dart';
+import 'package:card_battler/game/ui/components/card/selectable_card.dart';
 import 'package:flame/components.dart';
 
 class CardHand extends PositionComponent {
@@ -29,7 +29,7 @@ class CardHand extends PositionComponent {
       var cardCoordinator = _coordinator.cardCoordinators[i];
 
       final card =
-          TapableActionableCard(
+          SelectableCard(
               cardCoordinator,
               // onButtonPressed: () {
               //   //_cardSelectionService?.deselectCard();

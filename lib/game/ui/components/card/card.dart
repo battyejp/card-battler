@@ -57,4 +57,6 @@ class Card extends PositionComponent {
     final paint = Paint()..color = const Color.fromARGB(255, 22, 6, 193);
     canvas.drawRect(size.toRect(), paint);
   }
+
+  CardCoordinator get coordinator => _coordinator;
 }

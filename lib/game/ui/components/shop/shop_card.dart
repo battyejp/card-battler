@@ -1,9 +1,9 @@
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
-import 'package:card_battler/game/ui/components/card/tapable_actionable_card.dart';
+import 'package:card_battler/game/ui/components/card/selectable_card.dart';
 import 'package:flutter/material.dart' hide Card;
 import 'package:flame/components.dart';
 
-class ShopCard extends TapableActionableCard {
+class ShopCard extends SelectableCard {
   final ShopCardCoordinator _coordinator;
 
   ShopCard(this._coordinator) : super(_coordinator);
