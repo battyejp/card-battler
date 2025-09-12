@@ -60,8 +60,9 @@ class SelectableCard extends ActionableCard with TapCallbacks {
     var result = _interactionService.onSelected(event);
 
     if (result) {
-      _closeButton.isVisible = !_closeButton.isVisible;
+      isCloseButtonVisible = !isCloseButtonVisible;
     }
+
     return true;
   }
 
