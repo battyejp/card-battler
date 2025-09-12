@@ -19,9 +19,6 @@ class PlayerTurnScene
   PlayerTurnScene(super.coordinator, {required Vector2 size}) : _size = size;
 
   @override
-  bool debugMode = true;
-
-  @override
   void updateDisplay() {
     //Don't call super to remove components
     if (!loadingComplete) {

@@ -17,9 +17,6 @@ class EnemyTurnScene extends Component {
        _coordinator = coordinator;
 
   @override
-  bool debugMode = true;
-
-  @override
   void onMount() {
     super.onMount();
 
