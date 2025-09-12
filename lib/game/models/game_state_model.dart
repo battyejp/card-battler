@@ -28,6 +28,12 @@ class GameStateModel {
     List<CardModel> enemyCards,
     List<BaseModel> bases,
   ) {
+    print('Initializing GameStateModel with:');
+    print('- ${shopCards.length} shop cards');
+    print('- ${playerDeckCards.length} player deck cards');
+    print('- ${enemyCards.length} enemy cards');
+    print('- ${bases.length} bases');
+
     final players = List<PlayerModel>.generate(2, (index) {
       final isActive = index == 0; // Only the first player is active
       final playerDeckCopy = List<CardModel>.from(
@@ -86,44 +92,44 @@ class GameStateFactory {
       shopCards,
       playerDeckCards,
       enemyCards,
-      bases,
+      _createDefaultBases(),
     );
   }
 
-  GameStateModel createDefaultGameState() {
-    final shopCards = _createDefaultShopCards();
-    final playerDeckCards = _createDefaultPlayerCards();
-    final enemyCards = _createDefaultEnemyCards();
-    final bases = _createDefaultBases();
+  // GameStateModel createDefaultGameState() {
+  //   final shopCards = _createDefaultShopCards();
+  //   final playerDeckCards = _createDefaultPlayerCards();
+  //   final enemyCards = _createDefaultEnemyCards();
+  //   final bases = _createDefaultBases();
 
-    return createGameState(shopCards, playerDeckCards, enemyCards, bases);
-  }
+  //   return createGameState(shopCards, playerDeckCards, enemyCards, bases);
+  // }
 
-  List<ShopCardModel> _createDefaultShopCards() {
-    return List.generate(10, (index) {
-      return ShopCardModel(name: 'Test Card ${index + 1}', cost: 1);
-    });
-  }
+  // List<ShopCardModel> _createDefaultShopCards() {
+  //   return List.generate(10, (index) {
+  //     return ShopCardModel(name: 'Test Card ${index + 1}', cost: 1);
+  //   });
+  // }
 
-  List<CardModel> _createDefaultPlayerCards() {
-    return List.generate(10, (index) {
-      return CardModel(
-        name: 'Card ${index + 1}',
-        type: 'Player',
-        isFaceUp: false,
-      );
-    });
-  }
+  // List<CardModel> _createDefaultPlayerCards() {
+  //   return List.generate(10, (index) {
+  //     return CardModel(
+  //       name: 'Card ${index + 1}',
+  //       type: 'Player',
+  //       isFaceUp: false,
+  //     );
+  //   });
+  // }
 
-  List<CardModel> _createDefaultEnemyCards() {
-    return List.generate(10, (index) {
-      return CardModel(
-        name: 'Enemy Card ${index + 1}',
-        type: 'Enemy',
-        isFaceUp: false,
-      );
-    });
-  }
+  // List<CardModel> _createDefaultEnemyCards() {
+  //   return List.generate(10, (index) {
+  //     return CardModel(
+  //       name: 'Enemy Card ${index + 1}',
+  //       type: 'Enemy',
+  //       isFaceUp: false,
+  //     );
+  //   });
+  // }
 
   List<BaseModel> _createDefaultBases() {
     return List.generate(3, (index) {

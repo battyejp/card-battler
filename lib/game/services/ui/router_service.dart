@@ -24,22 +24,17 @@ import 'package:flame/game.dart';
 /// Service responsible for managing scene transitions and routing operations
 /// This class handles all navigation logic, following the Single Responsibility Principle
 class RouterService {
-  static final RouterService _instance = RouterService._internal();
-  factory RouterService() => _instance;
-
   RouterComponent? _router;
   PlayerTurnScene? _playerTurnScene;
   EnemyTurnScene? _enemyTurnScene;
 
-  //final GameStateManager _gameStateManager = GameStateManager();
+  late PlayersCoordinator playersCoordinator;
+  late PlayerTurnSceneCoordinator playerTurnSceneCoordinator;
+  late EnemyTurnSceneCoordinator enemyTurnSceneCoordinator;
 
-  late final PlayersCoordinator playersCoordinator;
-  late final PlayerTurnSceneCoordinator playerTurnSceneCoordinator;
-  late final EnemyTurnSceneCoordinator enemyTurnSceneCoordinator;
-
-  RouterService._internal() {
+  void initialize() {
     playersCoordinator = PlayersCoordinator(
-      players: GameStateFacade.instance.state.players
+      players: GameStateFacade.instance.state!.players
           .map((player) => PlayerInfoCoordinator(model: player))
           .toList(),
     );
@@ -52,7 +47,7 @@ class RouterService {
         deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
           cardCoordinators: GameStateFacade
               .instance
-              .state
+              .state!
               .activePlayer
               .deckCards
               .allCards
@@ -68,7 +63,7 @@ class RouterService {
           cardCoordinators: [],
         ),
         playerInfoCoordinator: PlayerInfoCoordinator(
-          model: GameStateFacade.instance.state.activePlayer,
+          model: GameStateFacade.instance.state!.activePlayer,
         ),
         gamePhaseManager: GamePhaseManager.instance,
       ),
@@ -76,7 +71,7 @@ class RouterService {
         displayCoordinator: ShopDisplayCoordinator(
           shopCardCoordinators: GameStateFacade
               .instance
-              .state
+              .state!
               .shop
               .inventoryCards
               .allCards
@@ -95,19 +90,19 @@ class RouterService {
       teamCoordinator: TeamCoordinator(
         playersCoordinator: playersCoordinator,
         basesCoordinator: BasesCoordinator(
-          baseCoordinators: GameStateFacade.instance.state.bases
+          baseCoordinators: GameStateFacade.instance.state!.bases
               .map((base) => BaseCoordinator(model: base))
               .toList(),
         ),
       ),
       enemiesCoordinator: EnemiesCoordinator(
-        enemyCoordinators: GameStateFacade.instance.state.enemiesModel.enemies
+        enemyCoordinators: GameStateFacade.instance.state!.enemiesModel.enemies
             .map((enemy) => EnemyCoordinator(model: enemy))
             .toList(),
         deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
           cardCoordinators: GameStateFacade
               .instance
-              .state
+              .state!
               .enemiesModel
               .deckCards
               .allCards
@@ -133,7 +128,7 @@ class RouterService {
       deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
         cardCoordinators: GameStateFacade
             .instance
-            .state
+            .state!
             .enemiesModel
             .deckCards
             .allCards
@@ -154,6 +149,7 @@ class RouterService {
     Vector2 gameSize, {
     Map<String, Route>? additionalRoutes,
   }) {
+    initialize();
     _playerTurnScene = PlayerTurnScene(
       playerTurnSceneCoordinator,
       size: gameSize,
@@ -173,7 +169,6 @@ class RouterService {
     }
 
     _router = RouterComponent(routes: routes, initialRoute: 'playerTurn');
-
     GamePhaseManager.instance.addPhaseChangeListener(_onGamePhaseChanged);
     return _router!;
   }

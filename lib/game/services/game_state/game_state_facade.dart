@@ -34,11 +34,7 @@ class GameStateFacade {
   }
 
   /// Gets the current game state, creating a default one if none exists
-  GameStateModel get _ensuredState {
-    _state ??= _factory.createDefaultGameState();
-    return _state!;
-  }
 
   /// Gets the enemy turn area for enemy turn logic
-  GameStateModel get state => _ensuredState;
+  GameStateModel? get state => _state;
 }
