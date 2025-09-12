@@ -11,9 +11,13 @@ class Team extends PositionComponent {
   @override
   void onLoad() {
     final playersHeight = size.y / 2;
-    final players = Players(coordinator: _coordinator.playersCoordinator)
-      ..size = Vector2(size.x, playersHeight)
-      ..position = Vector2(0, 0);
+    final players =
+        Players(
+            coordinator: _coordinator.playersCoordinator,
+            showActivePlayer: false,
+          )
+          ..size = Vector2(size.x, playersHeight)
+          ..position = Vector2(0, 0);
     add(players);
 
     final bases = Bases(coordinator: _coordinator.basesCoordinator)

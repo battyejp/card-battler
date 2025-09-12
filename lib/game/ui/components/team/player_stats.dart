@@ -16,10 +16,13 @@ class PlayerStats extends PositionComponent {
 
     var background = RectangleComponent(
       size: size,
-      paint: Paint()..color = _coordinator.isActive ? Colors.blue.withValues(alpha: 0.3) : Colors.transparent,
+      paint: Paint()
+        ..color = _coordinator.isActive
+            ? Colors.blue.withValues(alpha: 0.3)
+            : Colors.transparent,
     );
     add(background);
-    
+
     var textComponent = TextComponent(
       text: _coordinator.name,
       position: Vector2(10, 10),

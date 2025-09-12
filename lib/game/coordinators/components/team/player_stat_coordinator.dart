@@ -1,5 +1,6 @@
 import 'package:card_battler/game/models/player/player_model.dart';
 
+//TODO probably don't need PlayerStatsCoordinator and PlayerInfoCoordinator
 class PlayerStatsCoordinator {
   final PlayerModel _player;
 

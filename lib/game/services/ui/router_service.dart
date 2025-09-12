@@ -27,7 +27,6 @@ import 'package:flame/game.dart';
 class RouterService {
   static final RouterService _instance = RouterService._internal();
   factory RouterService() => _instance;
-  RouterService._internal();
 
   RouterComponent? _router;
   PlayerTurnScene? _playerTurnScene;
@@ -35,71 +34,103 @@ class RouterService {
 
   //final GameStateManager _gameStateManager = GameStateManager();
 
-  //TODO split this up as massive and probbaly move as not the router services responsibility
-  var playerTurnSceneCoordinator = PlayerTurnSceneCoordinator(
-    playerCoordinator: PlayerCoordinator(
-      handCardsCoordinator: CardListCoordinator<CardCoordinator>(
-        cardCoordinators: [],
+  late final PlayersCoordinator playersCoordinator;
+  late final PlayerTurnSceneCoordinator playerTurnSceneCoordinator;
+  late final EnemyTurnSceneCoordinator enemyTurnSceneCoordinator;
+
+  RouterService._internal() {
+    playersCoordinator = PlayersCoordinator(
+      players: GameStateFacade.instance.state.players
+          .map((player) => PlayerStatsCoordinator(player: player))
+          .toList(),
+    );
+
+    playerTurnSceneCoordinator = PlayerTurnSceneCoordinator(
+      playerCoordinator: PlayerCoordinator(
+        handCardsCoordinator: CardListCoordinator<CardCoordinator>(
+          cardCoordinators: [],
+        ),
+        deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
+          cardCoordinators: GameStateFacade
+              .instance
+              .state
+              .activePlayer
+              .deckCards
+              .allCards
+              .map(
+                (card) => CardCoordinator(
+                  card.copy(),
+                  CardsSelectionManagerService.instance,
+                ),
+              )
+              .toList(),
+        ),
+        discardCardsCoordinator: CardListCoordinator<CardCoordinator>(
+          cardCoordinators: [],
+        ),
+        playerInfoCoordinator: PlayerInfoCoordinator(
+          model: GameStateFacade.instance.state.activePlayer,
+        ),
+        gamePhaseManager: GamePhaseManager.instance,
       ),
-      deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
-        cardCoordinators: GameStateFacade
-            .instance
-            .state
-            .activePlayer
-            .deckCards
-            .allCards
-            .map(
-              (card) => CardCoordinator(
-                card.copy(),
-                CardsSelectionManagerService.instance,
-              ),
-            )
+      shopCoordinator: ShopCoordinator(
+        displayCoordinator: ShopDisplayCoordinator(
+          shopCardCoordinators: GameStateFacade
+              .instance
+              .state
+              .shop
+              .inventoryCards
+              .allCards
+              .map(
+                (card) => ShopCardCoordinator(
+                  card,
+                  CardsSelectionManagerService.instance,
+                ),
+              )
+              .toList(),
+          itemsPerRow: 3,
+          numberOfRows: 2,
+        ),
+        inventoryCoordinator: ShopInventoryCoordinator([]),
+      ),
+      teamCoordinator: TeamCoordinator(
+        playersCoordinator: playersCoordinator,
+        basesCoordinator: BasesCoordinator(
+          baseCoordinators: GameStateFacade.instance.state.bases
+              .map((base) => BaseCoordinator(model: base))
+              .toList(),
+        ),
+      ),
+      enemiesCoordinator: EnemiesCoordinator(
+        enemyCoordinators: GameStateFacade.instance.state.enemiesModel.enemies
+            .map((enemy) => EnemyCoordinator(model: enemy))
             .toList(),
-      ),
-      discardCardsCoordinator: CardListCoordinator<CardCoordinator>(
-        cardCoordinators: [],
-      ),
-      playerInfoCoordinator: PlayerInfoCoordinator(
-        model: GameStateFacade.instance.state.activePlayer,
+        deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
+          cardCoordinators: GameStateFacade
+              .instance
+              .state
+              .enemiesModel
+              .deckCards
+              .allCards
+              .map(
+                (card) => CardCoordinator(
+                  card.copy(),
+                  CardsSelectionManagerService.instance,
+                ),
+              )
+              .toList(),
+        ),
+        playedCardsCoordinator: CardListCoordinator<CardCoordinator>(
+          cardCoordinators: [],
+        ),
       ),
       gamePhaseManager: GamePhaseManager.instance,
-    ),
-    shopCoordinator: ShopCoordinator(
-      displayCoordinator: ShopDisplayCoordinator(
-        shopCardCoordinators: GameStateFacade
-            .instance
-            .state
-            .shop
-            .inventoryCards
-            .allCards
-            .map(
-              (card) => ShopCardCoordinator(
-                card,
-                CardsSelectionManagerService.instance,
-              ),
-            )
-            .toList(),
-        itemsPerRow: 3,
-        numberOfRows: 2,
+    );
+
+    enemyTurnSceneCoordinator = EnemyTurnSceneCoordinator(
+      playedCardsCoordinator: CardListCoordinator<CardCoordinator>(
+        cardCoordinators: [],
       ),
-      inventoryCoordinator: ShopInventoryCoordinator([]),
-    ),
-    teamCoordinator: TeamCoordinator(
-      playersCoordinator: PlayersCoordinator(
-        players: GameStateFacade.instance.state.players
-            .map((player) => PlayerStatsCoordinator(player: player))
-            .toList(),
-      ),
-      basesCoordinator: BasesCoordinator(
-        baseCoordinators: GameStateFacade.instance.state.bases
-            .map((base) => BaseCoordinator(model: base))
-            .toList(),
-      ),
-    ),
-    enemiesCoordinator: EnemiesCoordinator(
-      enemyCoordinators: GameStateFacade.instance.state.enemiesModel.enemies
-          .map((enemy) => EnemyCoordinator(model: enemy))
-          .toList(),
       deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
         cardCoordinators: GameStateFacade
             .instance
@@ -115,36 +146,9 @@ class RouterService {
             )
             .toList(),
       ),
-      playedCardsCoordinator: CardListCoordinator<CardCoordinator>(
-        cardCoordinators: [],
-      ),
-    ),
-    gamePhaseManager: GamePhaseManager.instance,
-  );
-
-  var enemyTurnSceneCoordinator = EnemyTurnSceneCoordinator(
-    playedCardsCoordinator: CardListCoordinator<CardCoordinator>(
-      cardCoordinators: [],
-    ),
-    deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
-      cardCoordinators: GameStateFacade
-          .instance
-          .state
-          .enemiesModel
-          .deckCards
-          .allCards
-          .map(
-            (card) => CardCoordinator(
-              card.copy(),
-              CardsSelectionManagerService.instance,
-            ),
-          )
-          .toList(),
-    ),
-    playersCoordinator: PlayersCoordinator(
-      players: [],
-    ),
-  );
+      playersCoordinator: playersCoordinator,
+    );
+  }
 
   /// Create and configure the router component with scene routes
   RouterComponent createRouter(

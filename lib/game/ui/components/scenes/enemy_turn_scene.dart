@@ -1,6 +1,7 @@
 import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
 import 'package:card_battler/game/ui/components/card/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/card_pile.dart';
+import 'package:card_battler/game/ui/components/team/players.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
@@ -53,9 +54,14 @@ class EnemyTurnScene extends Component {
 
     playArea.add(playedCards);
 
-    // final players = Players(_model.playersModel, showActivePlayer: true)
-    //   ..size = Vector2(_size.x, _size.y / 2)
-    //   ..position = Vector2(0, _size.y / 2);
-    // playArea.add(players);
+    var team =
+        Players(
+            coordinator: _coordinator.playersCoordinator,
+            showActivePlayer: true,
+          )
+          ..size = Vector2(_size.x, _size.y / 2)
+          ..position = Vector2(0, _size.y / 2);
+
+    playArea.add(team);
   }
 }
