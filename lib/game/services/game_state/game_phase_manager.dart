@@ -1,20 +1,21 @@
-import 'package:flutter/foundation.dart';
-
 enum GamePhase {
   /// Initial phase when waiting for player to draw cards
-  waitingToDrawCards,
+  waitingToDrawPlayerCards,
 
   /// Phase after player has drawn their cards but before enemy turn
-  cardsDrawnWaitingForEnemyTurn,
+  playerCardsDrawnWaitingForEnemyTurn,
 
   /// Enemy's turn to play cards and take actions
-  enemyTurn,
+  enemyTurnWaitingToDrawCards,
+
+  /// Phase after enemy has drawn their cards
+  enemiesTurnCardsDrawnWaitingForPlayersTurn,
 
   /// Player's turn to play cards and take actions
-  playerTurn,
+  playerTakeActionsTurn,
 
   /// Phase to switch to the next player after cards have been drawn
-  cardsDrawnWaitingForPlayerSwitch,
+  playerCardsDrawnWaitingForPlayerSwitch,
 }
 
 //TODO consider stopping being a singleton as hard to test
@@ -34,7 +35,7 @@ class GamePhaseManager {
   factory GamePhaseManager() => _instance;
 
   // Current phase state
-  GamePhase _currentPhase = GamePhase.waitingToDrawCards;
+  GamePhase _currentPhase = GamePhase.waitingToDrawPlayerCards;
 
   // Listeners for phase changes
   final List<Function(GamePhase, GamePhase)> _phaseChangeListeners = [];
@@ -107,28 +108,33 @@ class GamePhaseManager {
   // }
 
   /// Advance to the next logical phase
-  void nextPhase() {
+  GamePhase nextPhase() {
     switch (_currentPhase) {
-      case GamePhase.cardsDrawnWaitingForEnemyTurn:
-        _setPhase(GamePhase.enemyTurn);
+      case GamePhase.playerCardsDrawnWaitingForEnemyTurn:
+        _setPhase(GamePhase.enemyTurnWaitingToDrawCards);
         break;
-      case GamePhase.enemyTurn:
-        _setPhase(GamePhase.playerTurn);
+      case GamePhase.enemyTurnWaitingToDrawCards:
+        _setPhase(GamePhase.enemiesTurnCardsDrawnWaitingForPlayersTurn);
         break;
-      case GamePhase.playerTurn:
-        _setPhase(GamePhase.waitingToDrawCards);
+      case GamePhase.enemiesTurnCardsDrawnWaitingForPlayersTurn:
+        _setPhase(GamePhase.playerTakeActionsTurn);
         break;
-      case GamePhase.waitingToDrawCards:
+      case GamePhase.playerTakeActionsTurn:
+        _setPhase(GamePhase.waitingToDrawPlayerCards);
+        break;
+      case GamePhase.waitingToDrawPlayerCards:
         // if (GameStateFacade.instance.selectedPlayer!.turnOver) {
         //   _setPhase(GamePhase.cardsDrawnWaitingForPlayerSwitch);
         // } else {
-        _setPhase(GamePhase.cardsDrawnWaitingForEnemyTurn);
+        _setPhase(GamePhase.playerCardsDrawnWaitingForEnemyTurn);
         //}
         break;
       case GamePhase
-          .cardsDrawnWaitingForPlayerSwitch: //Taken card of else where
+          .playerCardsDrawnWaitingForPlayerSwitch: //Taken card of else where
         break;
     }
+
+    return _currentPhase;
   }
 
   /// Set game phase with proper notification

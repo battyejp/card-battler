@@ -6,6 +6,7 @@ import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scen
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_display_coordinator.dart';
@@ -28,7 +29,6 @@ class RouterService {
   RouterComponent? _router;
   PlayerTurnScene? _playerTurnScene;
   EnemyTurnScene? _enemyTurnScene;
-
   late PlayersCoordinator playersCoordinator;
   late PlayerTurnSceneCoordinator playerTurnSceneCoordinator;
   late EnemyTurnSceneCoordinator enemyTurnSceneCoordinator;
@@ -147,6 +147,7 @@ class RouterService {
       ),
       playersCoordinator: playersCoordinator,
       effectProcessor: EffectProcessor(playersCoordinator: playersCoordinator),
+      gamePhaseManager: GamePhaseManager.instance,
     );
   }
 
@@ -157,8 +158,8 @@ class RouterService {
   }) {
     initialize();
     _playerTurnScene = PlayerTurnScene(
-      playerTurnSceneCoordinator,
       size: gameSize,
+      coordinator: playerTurnSceneCoordinator,
     );
     _enemyTurnScene = EnemyTurnScene(
       coordinator: enemyTurnSceneCoordinator,
@@ -180,11 +181,22 @@ class RouterService {
   }
 
   void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
-    if (newPhase == GamePhase.enemyTurn) {
+    if (newPhase == GamePhase.enemyTurnWaitingToDrawCards) {
       goToEnemyTurn();
-    } else if (previousPhase == GamePhase.enemyTurn &&
-        newPhase == GamePhase.playerTurn) {
+    } else if (previousPhase == GamePhase.enemyTurnWaitingToDrawCards &&
+        newPhase == GamePhase.playerTakeActionsTurn) {
       _handleEnemyTurnToPlayerTurn();
+    }
+
+    switch (newPhase) {
+      case GamePhase.enemyTurnWaitingToDrawCards:
+        goToEnemyTurn();
+        break;
+      case GamePhase.playerTakeActionsTurn:
+        goToPlayerTurn();
+        break;
+      default:
+        break;
     }
   }
 
@@ -204,11 +216,7 @@ class RouterService {
   }
 
   void _handleEnemyTurnToPlayerTurn() {
-    Future.delayed(const Duration(seconds: 1), () {
-      // Reset the enemy turn state for the next enemy turn
-      //GameStateModel.instance.enemyTurnArea.resetTurn();
-      pop();
-    });
+    pop();
   }
 
   //TODO think this needs to be called somewhere

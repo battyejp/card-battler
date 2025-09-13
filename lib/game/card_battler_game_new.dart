@@ -1,10 +1,13 @@
+import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/card/card_loader_service.dart';
+import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_facade.dart';
 import 'package:card_battler/game/services/ui/dialog_service.dart';
 import 'package:card_battler/game/services/ui/router_service.dart';
 import 'package:card_battler/game/services/ui/scene_service.dart';
+import 'package:card_battler/game/ui/components/shared/turn_button_component.dart';
 import 'package:flame/game.dart';
 
 class CardBattlerGameNew extends FlameGame {
@@ -53,6 +56,20 @@ class CardBattlerGameNew extends FlameGame {
     final routerService = RouterService();
     final dialogService = DialogService();
     var router = SceneService(routerService, dialogService).createRouter(size);
+
+    var turnButtonComponent =
+        TurnButtonComponent(
+            TurnButtonComponentCoordinator(
+              gamePhaseManager: GamePhaseManager.instance,
+            ),
+          )
+          ..priority = 10
+          ..size = Vector2(200, 50)
+          ..position = Vector2(0, ((size.y / 2) * -1) + (size.y * 0.05));
+
+    turnButtonComponent.priority = 10;
+    router.add(turnButtonComponent);
+
     world.add(router);
   }
 }
