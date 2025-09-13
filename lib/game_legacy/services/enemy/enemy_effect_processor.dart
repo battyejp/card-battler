@@ -43,12 +43,16 @@ class DefaultEnemyEffectProcessor implements EnemyEffectProcessor {
   void _handleAttackEffect(EffectModel effect, PlayersModel playersModel) {
     switch (effect.target) {
       case EffectTarget.activePlayer:
-        for (final stats in playersModel.players.where((player) => player.isActive)) {
+        for (final stats in playersModel.players.where(
+          (player) => player.isActive,
+        )) {
           stats.health.changeHealth(-effect.value);
         }
         break;
       case EffectTarget.otherPlayers:
-        for (final stats in playersModel.players.where((player) => !player.isActive)) {
+        for (final stats in playersModel.players.where(
+          (player) => !player.isActive,
+        )) {
           stats.health.changeHealth(-effect.value);
         }
         break;
@@ -59,18 +63,18 @@ class DefaultEnemyEffectProcessor implements EnemyEffectProcessor {
         break;
       case EffectTarget.base:
       case EffectTarget.chosenPlayer:
-      case EffectTarget.self:
+      default:
         // These targets are not applicable for enemy attacks on players
         break;
     }
   }
 
-  void _handleHealEffect(EffectModel effect, PlayersModel playersModel) {
-  }
+  void _handleHealEffect(EffectModel effect, PlayersModel playersModel) {}
 
-  void _handleCreditsEffect(EffectModel effect, PlayersModel playersModel) {
-  }
+  void _handleCreditsEffect(EffectModel effect, PlayersModel playersModel) {}
 
-  void _handleDamageLimitEffect(EffectModel effect, PlayersModel playersModel) {
-  }
+  void _handleDamageLimitEffect(
+    EffectModel effect,
+    PlayersModel playersModel,
+  ) {}
 }

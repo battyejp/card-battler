@@ -20,6 +20,7 @@ enum EffectType {
 enum EffectTarget {
   activePlayer,
   otherPlayers,
+  nonActivePlayers,
   allPlayers,
   base,
   chosenPlayer,

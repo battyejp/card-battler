@@ -1,6 +1,7 @@
+import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 
-class PlayerInfoCoordinator {
+class PlayerInfoCoordinator with ReactiveCoordinator<PlayerInfoCoordinator> {
   final PlayerModel model;
 
   PlayerInfoCoordinator({required this.model});
@@ -11,4 +12,11 @@ class PlayerInfoCoordinator {
   int get attack => model.attack;
   int get credits => model.credits;
   bool get isActive => model.isActive;
+
+  void adjustHealth(int amount) {
+    if (model.health > model.maxHealth || model.health < 0) return;
+
+    model.health += amount;
+    notifyChange();
+  }
 }

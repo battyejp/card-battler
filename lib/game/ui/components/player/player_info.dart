@@ -1,18 +1,29 @@
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
+import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 enum PlayerInfoViewMode { summary, detailed }
 
-class PlayerInfo extends PositionComponent {
-  final PlayerInfoCoordinator _coordinator;
+class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
   final PlayerInfoViewMode _viewMode;
+  final Map<String, TextComponent> _labels = {};
 
-  PlayerInfo({
-    required PlayerInfoCoordinator coordinator,
-    required PlayerInfoViewMode viewMode,
-  }) : _coordinator = coordinator,
-       _viewMode = viewMode;
+  PlayerInfo(super.coordinator, {required PlayerInfoViewMode viewMode})
+    : _viewMode = viewMode;
+
+  @override
+  void updateDisplay() {
+    //Don't call super which clears children
+
+    if (hasChildren) {
+      _labels['health']?.text =
+          'Health: ${coordinator.health}/${coordinator.maxHealth}';
+      _labels['attack']?.text = 'Attack: ${coordinator.attack}';
+      _labels['credits']?.text = 'Credits: ${coordinator.credits}';
+      _labels['name']?.text = coordinator.name;
+    }
+  }
 
   @override
   void onLoad() {
@@ -22,34 +33,45 @@ class PlayerInfo extends PositionComponent {
       RectangleComponent(
         size: size,
         paint: Paint()
-          ..color = _coordinator.isActive
+          ..color = coordinator.isActive
               ? Colors.blue.withValues(alpha: 0.3)
               : Colors.transparent,
       ),
     );
 
     final isSummary = _viewMode == PlayerInfoViewMode.summary;
-    final statData = isSummary
-        ? [
-            _coordinator.name,
-            'Health: ${_coordinator.health}/${_coordinator.maxHealth}',
-          ]
-        : [
-            _coordinator.name,
-            'Health: ${_coordinator.health}/${_coordinator.maxHealth}',
-            'Attack: ${_coordinator.attack}',
-            'Credits: ${_coordinator.credits}',
-          ];
+    final statKeys = isSummary
+        ? ['name', 'health']
+        : ['name', 'health', 'attack', 'credits'];
 
-    final statWidth = size.x / statData.length;
+    final statWidth = size.x / statKeys.length;
 
-    for (var i = 0; i < statData.length; i++) {
+    for (var i = 0; i < statKeys.length; i++) {
+      final key = statKeys[i];
+      String text;
+      switch (key) {
+        case 'name':
+          text = coordinator.name;
+          break;
+        case 'health':
+          text = 'Health: ${coordinator.health}/${coordinator.maxHealth}';
+          break;
+        case 'attack':
+          text = 'Attack: ${coordinator.attack}';
+          break;
+        case 'credits':
+          text = 'Credits: ${coordinator.credits}';
+          break;
+        default:
+          text = '';
+      }
+
       final comp = PositionComponent()
         ..size = Vector2(statWidth, size.y)
         ..position = Vector2(statWidth * i, 0);
 
       final label = TextComponent(
-        text: statData[i],
+        text: text,
         position: Vector2(statWidth / 2, size.y / 2),
         anchor: Anchor.center,
         textRenderer: TextPaint(
@@ -57,6 +79,7 @@ class PlayerInfo extends PositionComponent {
         ),
       );
 
+      _labels[key] = label;
       comp.add(label);
       add(comp);
     }

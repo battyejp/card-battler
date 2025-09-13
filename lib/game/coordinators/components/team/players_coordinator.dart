@@ -6,4 +6,6 @@ class PlayersCoordinator {
   PlayersCoordinator({required List<PlayerInfoCoordinator> players}) : _players = players;
 
   List<PlayerInfoCoordinator> get players => _players;
+
+  PlayerInfoCoordinator get activePlayer => _players.firstWhere((player) => player.isActive);
 }

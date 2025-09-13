@@ -44,7 +44,7 @@ class GameStateModel {
         maxHealth: 10,
         attack: 0,
         credits: 0,
-        health: 10,
+        currentHealth: 10,
         handCards: CardListModel<CardModel>.empty(),
         deckCards: CardListModel<CardModel>(cards: playerDeckCopy),
         discardCards: CardListModel<CardModel>.empty(),

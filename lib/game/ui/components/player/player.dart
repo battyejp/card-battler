@@ -30,7 +30,7 @@ class Player extends PositionComponent {
 
     var info =
         PlayerInfo(
-            coordinator: _coordinator.playerInfoCoordinator,
+            _coordinator.playerInfoCoordinator,
             viewMode: PlayerInfoViewMode.detailed,
           )
           ..size = Vector2(size.x * _handWidthFactor, infoHeight)

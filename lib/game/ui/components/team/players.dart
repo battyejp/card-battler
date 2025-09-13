@@ -31,7 +31,7 @@ class Players extends PositionComponent {
     for (int i = 0; i < playersCoordinatorsToShow.length; i++) {
       var playerCoordinator = playersCoordinatorsToShow[i];
 
-      final playerInfo = PlayerInfo(coordinator: playerCoordinator, viewMode: _viewMode)
+      final playerInfo = PlayerInfo(playerCoordinator, viewMode: _viewMode)
         ..size = Vector2(size.x, playerHeight)
         ..position = Vector2(0, currentY);
       add(playerInfo);

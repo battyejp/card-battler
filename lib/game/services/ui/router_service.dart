@@ -15,6 +15,7 @@ import 'package:card_battler/game/coordinators/components/team/bases_coordinator
 import 'package:card_battler/game/coordinators/components/team/players_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
+import 'package:card_battler/game/services/card/effect_processor.dart';
 import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_facade.dart';
 import 'package:card_battler/game/ui/components/scenes/enemy_turn_scene.dart';
@@ -145,6 +146,7 @@ class RouterService {
             .toList(),
       ),
       playersCoordinator: playersCoordinator,
+      effectProcessor: EffectProcessor(playersCoordinator: playersCoordinator),
     );
   }
 

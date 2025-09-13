@@ -44,7 +44,6 @@ class PlayerTurnSceneCoordinator
   }
 
   void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
-    // Determine new values
     String newButtonText = _buttonText;
     bool newButtonVisible = _buttonVisible;
 
