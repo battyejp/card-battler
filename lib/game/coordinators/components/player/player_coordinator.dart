@@ -71,6 +71,7 @@ class PlayerCoordinator {
     cardCoordinator.isFaceUp = false;
     handCardsCoordinator.removeCard(cardCoordinator);
     discardCardsCoordinator.addCard(cardCoordinator);
+    //TODO deselect the card
   }
 
   bool _isDrawingCardsPrevented() {
