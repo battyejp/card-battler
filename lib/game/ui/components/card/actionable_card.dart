@@ -5,11 +5,8 @@ import 'package:flame/components.dart';
 
 class ActionableCard extends Card {
   late FlatButton _actionButton;
-  final Function()? _onButtonPressed;
 
-  ActionableCard(CardCoordinator coordinator, {Function()? onButtonPressed})
-    : _onButtonPressed = onButtonPressed,
-      super(coordinator: coordinator);
+  ActionableCard(CardCoordinator coordinator) : super(coordinator: coordinator);
 
   String get buttonLabel => "Play";
 
@@ -30,7 +27,7 @@ class ActionableCard extends Card {
       position: Vector2(size.x / 2, size.y - (0.1 * size.y) / 2),
       onReleased: () {
         if (!actionButtonDisabled) {
-          _onButtonPressed?.call();
+          coordinator.handleCardPlayed();
         }
       },
     );

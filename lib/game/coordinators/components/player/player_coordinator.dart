@@ -37,6 +37,9 @@ class PlayerCoordinator {
     }
 
     final drawnCards = deckCardsCoordinator.drawCards(numberOfCards);
+    for (var card in drawnCards) {
+      card.onCardPlayed = onCardPlayed;
+    }
 
     // if (drawnCards.length < numberOfCards) {
     //   moveDiscardCardsToDeck();
@@ -62,6 +65,13 @@ class PlayerCoordinator {
   //   final discardCards = discardService.removeAllCards();
   //   deckService.addCardsAndShuffle(discardCards);
   // }
+
+  void onCardPlayed(CardCoordinator cardCoordinator) {
+    cardCoordinator.onCardPlayed = null;
+    cardCoordinator.isFaceUp = false;
+    handCardsCoordinator.removeCard(cardCoordinator);
+    discardCardsCoordinator.addCard(cardCoordinator);
+  }
 
   bool _isDrawingCardsPrevented() {
     //TODO is first part needed?

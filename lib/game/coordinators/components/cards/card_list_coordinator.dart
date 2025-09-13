@@ -34,4 +34,14 @@ class CardListCoordinator<T extends CardCoordinator>
     _cardCoordinators.addAll(cards);
     notifyChange();
   }
+
+  void addCard(T card) {
+    _cardCoordinators.add(card);
+    notifyChange();
+  }
+
+  void removeCard(T card) {
+    _cardCoordinators.remove(card);
+    notifyChange();
+  }
 }
