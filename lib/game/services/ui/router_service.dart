@@ -54,9 +54,10 @@ class RouterService {
               .allCards
               .map(
                 (card) => CardCoordinator(
-                  card.copy(),
-                  CardsSelectionManagerService.instance,
-                  GamePhaseManager.instance,
+                  cardModel: card.copy(),
+                  cardsSelectionManagerService:
+                      CardsSelectionManagerService.instance,
+                  gamePhaseManager: GamePhaseManager.instance,
                 ),
               )
               .toList(),
@@ -111,9 +112,10 @@ class RouterService {
               .allCards
               .map(
                 (card) => CardCoordinator(
-                  card.copy(),
-                  CardsSelectionManagerService.instance,
-                  GamePhaseManager.instance,
+                  cardModel: card.copy(),
+                  cardsSelectionManagerService:
+                      CardsSelectionManagerService.instance,
+                  gamePhaseManager: GamePhaseManager.instance,
                 ),
               )
               .toList(),
@@ -138,9 +140,10 @@ class RouterService {
             .allCards
             .map(
               (card) => CardCoordinator(
-                card.copy(),
-                CardsSelectionManagerService.instance,
-                GamePhaseManager.instance,
+                cardModel: card.copy(),
+                cardsSelectionManagerService:
+                    CardsSelectionManagerService.instance,
+                gamePhaseManager: GamePhaseManager.instance,
               ),
             )
             .toList(),

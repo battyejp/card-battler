@@ -4,15 +4,19 @@ import 'package:card_battler/game/services/card/cards_selection_manager_service.
 import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
 
 class ShopCardCoordinator extends CardCoordinator {
-  final ShopCardModel cardModel;
-  final CardsSelectionManagerService cardsSelectionManagerService;
-  final GamePhaseManager gamePhaseManager;
+  final ShopCardModel _cardModel;
+  final CardsSelectionManagerService _cardsSelectionManagerService;
+  final GamePhaseManager _gamePhaseManager;
 
   ShopCardCoordinator(
-    this.cardModel,
-    this.cardsSelectionManagerService,
-    this.gamePhaseManager,
-  ) : super(cardModel, cardsSelectionManagerService, gamePhaseManager);
+    this._cardModel,
+    this._cardsSelectionManagerService,
+    this._gamePhaseManager,
+  ) : super(
+        cardModel: _cardModel,
+        cardsSelectionManagerService: _cardsSelectionManagerService,
+        gamePhaseManager: _gamePhaseManager,
+      );
 
-  int get cost => cardModel.cost;
+  int get cost => _cardModel.cost;
 }

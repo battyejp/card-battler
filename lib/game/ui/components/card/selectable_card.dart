@@ -11,10 +11,6 @@ class SelectableCard extends ActionableCard with TapCallbacks {
   bool get isCloseButtonVisible => _closeButton.isVisible;
   set isCloseButtonVisible(bool value) => _closeButton.isVisible = value;
 
-  // bool Function()? _determineIfButtonEnabled;
-  // CardInteractionService? _cardInteractionService;
-  // CardSelectionService? _cardSelectionService;
-
   SelectableCard(super.coordinator);
 
   @override
