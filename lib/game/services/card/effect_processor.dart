@@ -9,7 +9,7 @@ class EffectProcessor {
   EffectProcessor({required PlayersCoordinator playersCoordinator})
     : _playersCoordinator = playersCoordinator;
 
-  void applyCardEffectsToPlayers(List<CardCoordinator> cardCoordinators) {
+  void applyCardEffects(List<CardCoordinator> cardCoordinators) {
     for (final card in cardCoordinators) {
       for (final effect in card.effects) {
         final targets = _getTargets(effect);
@@ -40,6 +40,7 @@ class EffectProcessor {
   List<PlayerInfoCoordinator> _getTargets(EffectModel effect) {
     // Example logic to get targets based on effect.target
     switch (effect.target) {
+      case EffectTarget.self:
       case EffectTarget.activePlayer:
         return [_playersCoordinator.activePlayer];
       case EffectTarget.allPlayers:
@@ -60,7 +61,9 @@ class EffectProcessor {
 
   void _handleHealEffect(PlayerInfoCoordinator target, EffectModel effect) {}
 
-  void _handleCreditsEffect(PlayerInfoCoordinator target, EffectModel effect) {}
+  void _handleCreditsEffect(PlayerInfoCoordinator target, EffectModel effect) {
+    target.adjustCredits(effect.value);
+  }
 
   void _handleDamageLimitEffect(
     PlayerInfoCoordinator target,

@@ -1,9 +1,11 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/ui/components/card/card.dart';
 import 'package:card_battler/game/ui/components/common/flat_button.dart';
 import 'package:flame/components.dart';
 
 class ActionableCard extends Card {
+  late CardSelectionService? cardInteractionService;
   late FlatButton _actionButton;
 
   ActionableCard(CardCoordinator coordinator) : super(coordinator: coordinator);
@@ -27,6 +29,7 @@ class ActionableCard extends Card {
       position: Vector2(size.x / 2, size.y - (0.1 * size.y) / 2),
       onReleased: () {
         if (!actionButtonDisabled) {
+          cardInteractionService?.onDeselect();
           coordinator.handleCardPlayed();
         }
       },

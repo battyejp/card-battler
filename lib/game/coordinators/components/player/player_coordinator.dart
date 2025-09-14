@@ -1,7 +1,9 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
+import 'package:card_battler/game/services/card/effect_processor.dart';
 import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
+import 'package:flame/effects.dart';
 
 class PlayerCoordinator {
   //TODO should there be a class for these 3 list like there is in the shop
@@ -10,6 +12,7 @@ class PlayerCoordinator {
   final CardListCoordinator<CardCoordinator> _discardCardsCoordinator;
   final PlayerInfoCoordinator _playerInfoCoordinator;
   final GamePhaseManager _gamePhaseManager;
+  final EffectProcessor _effectProcessor;
 
   PlayerCoordinator({
     required CardListCoordinator<CardCoordinator> handCardsCoordinator,
@@ -17,11 +20,13 @@ class PlayerCoordinator {
     required CardListCoordinator<CardCoordinator> discardCardsCoordinator,
     required PlayerInfoCoordinator playerInfoCoordinator,
     required GamePhaseManager gamePhaseManager,
+    required EffectProcessor effectProcessor,
   }) : _handCardsCoordinator = handCardsCoordinator,
        _deckCardsCoordinator = deckCardsCoordinator,
        _playerInfoCoordinator = playerInfoCoordinator,
        _discardCardsCoordinator = discardCardsCoordinator,
-       _gamePhaseManager = gamePhaseManager;
+       _gamePhaseManager = gamePhaseManager,
+       _effectProcessor = effectProcessor;
 
   CardListCoordinator<CardCoordinator> get handCardsCoordinator =>
       _handCardsCoordinator;
@@ -71,7 +76,7 @@ class PlayerCoordinator {
     cardCoordinator.isFaceUp = false;
     handCardsCoordinator.removeCard(cardCoordinator);
     discardCardsCoordinator.addCard(cardCoordinator);
-    //TODO deselect the card
+    _effectProcessor.applyCardEffects([cardCoordinator]);
   }
 
   bool _isDrawingCardsPrevented() {

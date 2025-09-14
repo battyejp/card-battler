@@ -40,7 +40,7 @@ class EnemyTurnSceneCoordinator {
 
     if (drawnCards.isNotEmpty) {
       playedCardsCoordinator.addCards(drawnCards);
-      _effectProcessor.applyCardEffectsToPlayers(drawnCards);
+      _effectProcessor.applyCardEffects(drawnCards);
     }
 
     _gamePhaseManager.nextPhase();

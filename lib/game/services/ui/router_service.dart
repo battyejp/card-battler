@@ -6,7 +6,6 @@ import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scen
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_display_coordinator.dart';
@@ -32,6 +31,7 @@ class RouterService {
   late PlayersCoordinator playersCoordinator;
   late PlayerTurnSceneCoordinator playerTurnSceneCoordinator;
   late EnemyTurnSceneCoordinator enemyTurnSceneCoordinator;
+  late EffectProcessor effectProcessor;
 
   void initialize() {
     playersCoordinator = PlayersCoordinator(
@@ -39,6 +39,8 @@ class RouterService {
           .map((player) => PlayerInfoCoordinator(model: player))
           .toList(),
     );
+
+    effectProcessor = EffectProcessor(playersCoordinator: playersCoordinator);
 
     playerTurnSceneCoordinator = PlayerTurnSceneCoordinator(
       playerCoordinator: PlayerCoordinator(
@@ -65,10 +67,9 @@ class RouterService {
         discardCardsCoordinator: CardListCoordinator<CardCoordinator>(
           cardCoordinators: [],
         ),
-        playerInfoCoordinator: PlayerInfoCoordinator(
-          model: GameStateFacade.instance.state!.activePlayer,
-        ),
+        playerInfoCoordinator: playersCoordinator.activePlayer,
         gamePhaseManager: GamePhaseManager.instance,
+        effectProcessor: effectProcessor,
       ),
       shopCoordinator: ShopCoordinator(
         displayCoordinator: ShopDisplayCoordinator(
@@ -149,7 +150,7 @@ class RouterService {
             .toList(),
       ),
       playersCoordinator: playersCoordinator,
-      effectProcessor: EffectProcessor(playersCoordinator: playersCoordinator),
+      effectProcessor: effectProcessor,
       gamePhaseManager: GamePhaseManager.instance,
     );
   }

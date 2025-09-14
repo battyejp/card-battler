@@ -43,7 +43,7 @@ class GameStateModel {
         name: 'Player ${index + 1}',
         maxHealth: 10,
         attack: 0,
-        credits: 0,
+        currentCredits: 0,
         currentHealth: 10,
         handCards: CardListModel<CardModel>.empty(),
         deckCards: CardListModel<CardModel>(cards: playerDeckCopy),

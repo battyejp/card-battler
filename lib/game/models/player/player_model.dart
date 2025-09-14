@@ -5,17 +5,16 @@ class PlayerModel {
   final String name;
   final int maxHealth;
   final int attack;
-  final int credits;
   final CardListModel<CardModel> handCards;
   final CardListModel<CardModel> deckCards;
   final CardListModel<CardModel> discardCards;
   final bool isActive;
 
   late int health;
+  late int credits;
 
   PlayerModel({
     required this.attack,
-    required this.credits,
     required this.handCards,
     required this.deckCards,
     required this.discardCards,
@@ -23,5 +22,7 @@ class PlayerModel {
     required this.name,
     required this.maxHealth,
     required int currentHealth,
-  }) : health = currentHealth;
+    required int currentCredits,
+  })  : health = currentHealth,
+        credits = currentCredits;
 }

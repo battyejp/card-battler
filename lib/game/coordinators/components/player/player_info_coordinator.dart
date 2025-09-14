@@ -19,4 +19,11 @@ class PlayerInfoCoordinator with ReactiveCoordinator<PlayerInfoCoordinator> {
     _model.health += amount;
     notifyChange();
   }
+
+  void adjustCredits(int amount) {
+    if (_model.credits + amount < 0) return;
+
+    _model.credits += amount;
+    notifyChange();
+  }
 }
