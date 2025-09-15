@@ -44,4 +44,16 @@ class CardListCoordinator<T extends CardCoordinator>
     _cardCoordinators.remove(card);
     notifyChange();
   }
+
+  List<T> removeAllCards() {
+    for (var card in _cardCoordinators) {
+      card.onCardPlayed = null;
+      card.isFaceUp = false;
+    }
+
+    final removedCards = List<T>.from(_cardCoordinators);
+    _cardCoordinators.clear();
+    notifyChange();
+    return removedCards;
+  }
 }

@@ -19,6 +19,20 @@ class ShopCoordinator {
   CardListCoordinator<ShopCardCoordinator> get displayCoordinator =>
       _displayCoordinators;
 
+  void onCardPlayed(CardCoordinator cardCoordinator) {
+    cardCoordinator.onCardPlayed = null;
+    var shopCardCoordinator = cardCoordinator as ShopCardCoordinator;
+    _displayCoordinators.removeCard(shopCardCoordinator);
+    onCardBought?.call(shopCardCoordinator);
+  }
+
+  void refillShop() {
+    var numberOfCardsNeeded = 6 - _displayCoordinators.cardCoordinators.length;
+    if (numberOfCardsNeeded > 0) {
+      _addCardsToDisplayFromInventory(numberOfCardsNeeded);
+    }
+  }
+
   void _addCardsToDisplayFromInventory(int numberOfCards) {
     var drawnCards = _inventoryCoordinators.drawCards(numberOfCards);
     for (var card in drawnCards) {
@@ -26,12 +40,5 @@ class ShopCoordinator {
     }
 
     _displayCoordinators.addCards(drawnCards);
-  }
-
-  void onCardPlayed(CardCoordinator cardCoordinator) {
-    cardCoordinator.onCardPlayed = null;
-    var shopCardCoordinator = cardCoordinator as ShopCardCoordinator;
-    _displayCoordinators.removeCard(shopCardCoordinator);
-    onCardBought?.call(shopCardCoordinator);
   }
 }

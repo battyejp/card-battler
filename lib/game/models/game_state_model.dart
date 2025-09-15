@@ -42,7 +42,7 @@ class GameStateModel {
       return PlayerModel(
         name: 'Player ${index + 1}',
         maxHealth: 10,
-        attack: 0,
+        currentAttack: 0,
         currentCredits: 0,
         currentHealth: 10,
         handCards: CardListModel<CardModel>.empty(),

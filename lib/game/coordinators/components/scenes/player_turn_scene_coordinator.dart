@@ -5,6 +5,7 @@ import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 import 'package:card_battler/game/services/card/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:flame/game.dart';
 
 class PlayerTurnSceneCoordinator {
   final PlayerCoordinator _playerCoordinator;
@@ -12,6 +13,7 @@ class PlayerTurnSceneCoordinator {
   final TeamCoordinator _teamCoordinator;
   final EnemiesCoordinator _enemiesCoordinator;
   final EffectProcessor _effectProcessor;
+  final GamePhaseManager _gamePhaseManager;
 
   PlayerCoordinator get playerCoordinator => _playerCoordinator;
   ShopCoordinator get shopCoordinator => _shopCoordinator;
@@ -30,10 +32,12 @@ class PlayerTurnSceneCoordinator {
        _shopCoordinator = shopCoordinator,
        _teamCoordinator = teamCoordinator,
        _enemiesCoordinator = enemiesCoordinator,
+       _gamePhaseManager = gamePhaseManager,
        _effectProcessor = effectProcessor {
     _shopCoordinator.onCardBought = (shopCardCoordinator) {
       onCardBought(shopCardCoordinator);
     };
+    gamePhaseManager.addPhaseChangeListener(_onGamePhaseChanged);
   }
 
   void onCardBought(ShopCardCoordinator shopCardCoordinator) {
@@ -43,7 +47,22 @@ class PlayerTurnSceneCoordinator {
     _playerCoordinator.discardCardsCoordinator.addCard(shopCardCoordinator);
   }
 
+  void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
+    if (_isTurnOver(previousPhase, newPhase)) {
+      _playerCoordinator.playerInfoCoordinator.resetCreditsAndAttack();
+      var cards = _playerCoordinator.handCardsCoordinator.removeAllCards();
+      _playerCoordinator.discardCardsCoordinator.addCards(cards);
+      _shopCoordinator.refillShop();
+    }
+  }
+
+  bool _isTurnOver(GamePhase previousPhase, GamePhase newPhase) {
+    return previousPhase == GamePhase.playerTakeActionsTurn &&
+        newPhase == GamePhase.waitingToDrawPlayerCards;
+  }
+
   void dispose() {
     _shopCoordinator.onCardBought = null;
+    _gamePhaseManager.removePhaseChangeListener(_onGamePhaseChanged);
   }
 }

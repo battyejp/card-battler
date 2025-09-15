@@ -28,4 +28,10 @@ class PlayerInfoCoordinator with ReactiveCoordinator<PlayerInfoCoordinator> {
     _model.credits += amount;
     notifyChange();
   }
+
+  void resetCreditsAndAttack() {
+    _model.credits = 0;
+    _model.attack = 0;
+    notifyChange();
+  }
 }
