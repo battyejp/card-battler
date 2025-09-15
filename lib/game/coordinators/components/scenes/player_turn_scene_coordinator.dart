@@ -1,3 +1,4 @@
+import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/enemy/enemies_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
@@ -5,15 +6,17 @@ import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 import 'package:card_battler/game/services/card/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:flame/game.dart';
+import 'package:card_battler/game/services/player/active_player_manager.dart';
 
-class PlayerTurnSceneCoordinator {
-  final PlayerCoordinator _playerCoordinator;
+class PlayerTurnSceneCoordinator
+    with ReactiveCoordinator<PlayerTurnSceneCoordinator> {
+  late PlayerCoordinator _playerCoordinator;
   final ShopCoordinator _shopCoordinator;
   final TeamCoordinator _teamCoordinator;
   final EnemiesCoordinator _enemiesCoordinator;
   final EffectProcessor _effectProcessor;
   final GamePhaseManager _gamePhaseManager;
+  final ActivePlayerManager _activePlayerManager;
 
   PlayerCoordinator get playerCoordinator => _playerCoordinator;
   ShopCoordinator get shopCoordinator => _shopCoordinator;
@@ -28,16 +31,20 @@ class PlayerTurnSceneCoordinator {
     required EnemiesCoordinator enemiesCoordinator,
     required GamePhaseManager gamePhaseManager,
     required EffectProcessor effectProcessor,
+    required ActivePlayerManager activePlayerManager,
   }) : _playerCoordinator = playerCoordinator,
        _shopCoordinator = shopCoordinator,
        _teamCoordinator = teamCoordinator,
        _enemiesCoordinator = enemiesCoordinator,
        _gamePhaseManager = gamePhaseManager,
+       _activePlayerManager = activePlayerManager,
        _effectProcessor = effectProcessor {
     _shopCoordinator.onCardBought = (shopCardCoordinator) {
       onCardBought(shopCardCoordinator);
     };
+
     gamePhaseManager.addPhaseChangeListener(_onGamePhaseChanged);
+    _activePlayerManager.addActivePlayerChangeListener(_onActivePlayerChanged);
   }
 
   void onCardBought(ShopCardCoordinator shopCardCoordinator) {
@@ -45,6 +52,11 @@ class PlayerTurnSceneCoordinator {
       -shopCardCoordinator.cost,
     );
     _playerCoordinator.discardCardsCoordinator.addCard(shopCardCoordinator);
+  }
+
+  void _onActivePlayerChanged(PlayerCoordinator newActivePlayer) {
+    _playerCoordinator = newActivePlayer;
+    notifyChange();
   }
 
   void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
@@ -64,5 +76,8 @@ class PlayerTurnSceneCoordinator {
   void dispose() {
     _shopCoordinator.onCardBought = null;
     _gamePhaseManager.removePhaseChangeListener(_onGamePhaseChanged);
+    _activePlayerManager.removeActivePlayerChangeListener(
+      _onActivePlayerChanged,
+    );
   }
 }

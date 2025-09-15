@@ -21,7 +21,9 @@ class EnemyTurnSceneCoordinator {
        _deckCardsCoordinator = deckCardsCoordinator,
        _playersInfoCoordinator = playersInfoCoordinator,
        _effectProcessor = effectProcessor,
-       _gamePhaseManager = gamePhaseManager;
+       _gamePhaseManager = gamePhaseManager {
+    _deckCardsCoordinator.shuffle();
+  }
 
   CardListCoordinator<CardCoordinator> get playedCardsCoordinator =>
       _playedCardsCoordinator;

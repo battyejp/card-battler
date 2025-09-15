@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 
@@ -55,5 +57,10 @@ class CardListCoordinator<T extends CardCoordinator>
     _cardCoordinators.clear();
     notifyChange();
     return removedCards;
+  }
+
+  void shuffle() {
+    _cardCoordinators.shuffle(Random());
+    notifyChange();
   }
 }

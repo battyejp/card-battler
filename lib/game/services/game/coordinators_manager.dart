@@ -32,7 +32,9 @@ class CoordinatorsManager {
       _enemyTurnSceneCoordinator;
 
   var effectProcessor = EffectProcessor();
-  var activePlayerManager = ActivePlayerManager();
+  var activePlayerManager = ActivePlayerManager(
+    gamePhaseManager: GamePhaseManager.instance,
+  );
 
   CoordinatorsManager() {
     _playerCoordinators = GameStateFacade.instance.state!.players
@@ -165,6 +167,7 @@ class CoordinatorsManager {
       ),
       gamePhaseManager: GamePhaseManager.instance,
       effectProcessor: effectProcessor,
+      activePlayerManager: activePlayerManager,
     );
   }
 }

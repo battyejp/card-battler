@@ -145,11 +145,11 @@ class RouterService {
     EnemyTurnSceneCoordinator enemyTurnSceneCoordinator, {
     Map<String, Route>? additionalRoutes,
   }) {
-    //initialize();
     _playerTurnScene = PlayerTurnScene(
+      playerTurnSceneCoordinator,
       size: gameSize,
-      coordinator: playerTurnSceneCoordinator,
     );
+
     _enemyTurnScene = EnemyTurnScene(
       coordinator: enemyTurnSceneCoordinator,
       size: gameSize,

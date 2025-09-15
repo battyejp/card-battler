@@ -13,6 +13,7 @@ class ShopCoordinator {
     required CardListCoordinator<ShopCardCoordinator> inventoryCoordinators,
   }) : _inventoryCoordinators = inventoryCoordinators,
        _displayCoordinators = displayCoordinators {
+    _inventoryCoordinators.shuffle();
     _addCardsToDisplayFromInventory(6);
   }
 

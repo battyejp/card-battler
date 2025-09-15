@@ -20,12 +20,14 @@ class PlayerCoordinator {
     required PlayerInfoCoordinator playerInfoCoordinator,
     required GamePhaseManager gamePhaseManager,
     required EffectProcessor effectProcessor,
-  })  : _handCardsCoordinator = handCardsCoordinator,
-        _deckCardsCoordinator = deckCardsCoordinator,
-        _playerInfoCoordinator = playerInfoCoordinator,
-        _discardCardsCoordinator = discardCardsCoordinator,
-        _gamePhaseManager = gamePhaseManager,
-        _effectProcessor = effectProcessor;
+  }) : _handCardsCoordinator = handCardsCoordinator,
+       _deckCardsCoordinator = deckCardsCoordinator,
+       _playerInfoCoordinator = playerInfoCoordinator,
+       _discardCardsCoordinator = discardCardsCoordinator,
+       _gamePhaseManager = gamePhaseManager,
+       _effectProcessor = effectProcessor {
+    _deckCardsCoordinator.shuffle();
+  }
 
   CardListCoordinator<CardCoordinator> get handCardsCoordinator =>
       _handCardsCoordinator;
