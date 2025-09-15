@@ -11,17 +11,16 @@ import 'package:card_battler/game/services/ui/scene_service.dart';
 import 'package:card_battler/game/ui/components/shared/turn_button_component.dart';
 import 'package:flame/game.dart';
 
-class CardBattlerGameNew extends FlameGame {
+class CardBattlerGame extends FlameGame {
   Vector2? _testSize;
   late final RouterComponent router;
 
   // Default constructor with new game state
-  CardBattlerGameNew();
+  CardBattlerGame();
 
   // Test-only constructor to set size before onLoad
-  CardBattlerGameNew.withSize(Vector2 testSize) : _testSize = testSize;
+  CardBattlerGame.withSize(Vector2 testSize) : _testSize = testSize;
 
-  //TODO does not appear to work
   @override
   Future<void> onLoad() async {
     List<ShopCardModel> shopCards = [];

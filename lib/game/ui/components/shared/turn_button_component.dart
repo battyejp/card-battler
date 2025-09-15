@@ -5,7 +5,6 @@ import 'package:flame/components.dart';
 
 class TurnButtonComponent
     extends ReactivePositionComponent<TurnButtonComponentCoordinator> {
-
   bool loadingComplete = false;
   late FlatButton _turnButton;
 
@@ -31,6 +30,7 @@ class TurnButtonComponent
       size: Vector2(size.x, size.y),
       onReleased: () {
         coordinator.handleTurnButtonPressed();
+        //TODO bug when cards are not deselected when pressing the button
       },
     );
 

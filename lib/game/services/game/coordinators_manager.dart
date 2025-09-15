@@ -8,8 +8,6 @@ import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scen
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/shop/shop_display_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/shop/shop_inventory_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/base_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/bases_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
