@@ -1,13 +1,14 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/enemy/enemy_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/players_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
 
 class EffectProcessor {
-  final PlayersCoordinator _playersCoordinator;
+  final PlayersInfoCoordinator _playersInfoCoordinator;
+  final List<EnemyCoordinator> _enemiesCoordinator;
 
-  EffectProcessor({required PlayersCoordinator playersCoordinator})
-    : _playersCoordinator = playersCoordinator;
+  EffectProcessor(this._playersInfoCoordinator, this._enemiesCoordinator);
 
   void applyCardEffects(List<CardCoordinator> cardCoordinators) {
     for (final card in cardCoordinators) {
@@ -42,12 +43,12 @@ class EffectProcessor {
     switch (effect.target) {
       case EffectTarget.self:
       case EffectTarget.activePlayer:
-        return [_playersCoordinator.activePlayer];
+        return [_playersInfoCoordinator.activePlayer];
       case EffectTarget.allPlayers:
-        return _playersCoordinator.players;
+        return _playersInfoCoordinator.players;
       case EffectTarget.nonActivePlayers:
         // Return list of enemy players
-        return _playersCoordinator.players
+        return _playersInfoCoordinator.players
             .where((player) => !player.isActive)
             .toList();
       default:

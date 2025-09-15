@@ -1,15 +1,15 @@
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/players_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:flame/components.dart';
 
 class Players extends PositionComponent {
-  final PlayersCoordinator _coordinator;
+  final PlayersInfoCoordinator _coordinator;
   final bool _showActivePlayer;
   final PlayerInfoViewMode _viewMode;
 
   Players({
-    required PlayersCoordinator coordinator,
+    required PlayersInfoCoordinator coordinator,
     required bool showActivePlayer,
     required PlayerInfoViewMode viewMode,
   }) : _showActivePlayer = showActivePlayer,

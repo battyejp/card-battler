@@ -14,9 +14,9 @@ class Team extends PositionComponent {
     final playersHeight = size.y / 2;
     final players =
         Players(
-            coordinator: _coordinator.playersCoordinator,
+            coordinator: _coordinator.playersInfoCoordinator,
             showActivePlayer: false,
-            viewMode: PlayerInfoViewMode.summary
+            viewMode: PlayerInfoViewMode.summary,
           )
           ..size = Vector2(size.x, playersHeight)
           ..position = Vector2(0, 0);

@@ -4,6 +4,7 @@ import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/card/card_loader_service.dart';
 import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
 import 'package:card_battler/game/services/game_state/game_state_facade.dart';
+import 'package:card_battler/game/services/player/player_coordinators_manager.dart';
 import 'package:card_battler/game/services/ui/dialog_service.dart';
 import 'package:card_battler/game/services/ui/router_service.dart';
 import 'package:card_battler/game/services/ui/scene_service.dart';
@@ -55,7 +56,13 @@ class CardBattlerGameNew extends FlameGame {
 
     final routerService = RouterService();
     final dialogService = DialogService();
-    var router = SceneService(routerService, dialogService).createRouter(size);
+    final playerCoordinatorsManager = PlayerCoordinatorsManager();
+    var router = SceneService(
+      routerService,
+      dialogService,
+      playerCoordinatorsManager.playerTurnSceneCoordinator,
+      playerCoordinatorsManager.enemyTurnSceneCoordinator,
+    ).createRouter(size);
 
     var turnButtonComponent =
         TurnButtonComponent(
