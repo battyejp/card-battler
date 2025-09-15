@@ -138,9 +138,10 @@ class GamePhaseManager {
         break;
       case GamePhase.playerCardsDrawnWaitingForPlayerSwitch:
         _playerTurn++;
-        _playerTurn =
-            _playerTurn %
-            2; //TODO for now hardcoded to 2 players but needs to match actual player count
+
+        //TODO for now hardcoded to 2 players but needs to match actual player count
+        _playerTurn = _playerTurn % 2;
+
         if (_playerTurn == 0) {
           _round++;
         }
