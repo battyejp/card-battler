@@ -18,6 +18,7 @@ import 'package:card_battler/game/services/card/cards_selection_manager_service.
 import 'package:card_battler/game/services/card/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/game/game_state_facade.dart';
+import 'package:card_battler/game/services/player/active_player_manager.dart';
 
 class CoordinatorsManager {
   late PlayerTurnSceneCoordinator _playerTurnSceneCoordinator;
@@ -29,8 +30,9 @@ class CoordinatorsManager {
       _playerTurnSceneCoordinator;
   EnemyTurnSceneCoordinator get enemyTurnSceneCoordinator =>
       _enemyTurnSceneCoordinator;
-  PlayerCoordinator get activePlayerCoordinator =>
-      _playerCoordinators.firstWhere((pc) => pc.playerInfoCoordinator.isActive);
+
+  var effectProcessor = EffectProcessor();
+  var activePlayerManager = ActivePlayerManager();
 
   CoordinatorsManager() {
     _playerCoordinators = GameStateFacade.instance.state!.players
@@ -47,6 +49,7 @@ class CoordinatorsManager {
                       cardsSelectionManagerService:
                           CardsSelectionManagerService.instance,
                       gamePhaseManager: GamePhaseManager.instance,
+                      activePlayerManager: activePlayerManager,
                     ),
                   )
                   .toList(),
@@ -56,6 +59,7 @@ class CoordinatorsManager {
             ),
             playerInfoCoordinator: PlayerInfoCoordinator(model: player),
             gamePhaseManager: GamePhaseManager.instance,
+            effectProcessor: effectProcessor,
           ),
         )
         .toList();
@@ -66,14 +70,13 @@ class CoordinatorsManager {
           .toList(),
     );
 
+    effectProcessor.playersInfoCoordinator = _playersInfoCoordinator;
+    activePlayerManager.players = _playerCoordinators;
+    activePlayerManager.setNextPlayerToActive();
+
     var enemyCoordinators = GameStateFacade.instance.state!.enemiesModel.enemies
         .map((enemy) => EnemyCoordinator(model: enemy))
         .toList();
-
-    var effectProcessor = EffectProcessor(
-      _playersInfoCoordinator,
-      enemyCoordinators,
-    );
 
     _enemyTurnSceneCoordinator = EnemyTurnSceneCoordinator(
       playedCardsCoordinator: CardListCoordinator<CardCoordinator>(
@@ -92,6 +95,7 @@ class CoordinatorsManager {
                 cardsSelectionManagerService:
                     CardsSelectionManagerService.instance,
                 gamePhaseManager: GamePhaseManager.instance,
+                activePlayerManager: activePlayerManager,
               ),
             )
             .toList(),
@@ -107,24 +111,22 @@ class CoordinatorsManager {
       ),
       shopCoordinator: ShopCoordinator(
         displayCoordinator: ShopDisplayCoordinator(
-          shopCardCoordinators: GameStateFacade
-              .instance
-              .state!
-              .shop
-              .inventoryCards
-              .allCards
+          shopCardCoordinators: [],
+          itemsPerRow: 3,
+          numberOfRows: 2,
+        ),
+        inventoryCoordinator: ShopInventoryCoordinator(
+          GameStateFacade.instance.state!.shop.inventoryCards.allCards
               .map(
                 (card) => ShopCardCoordinator(
                   card,
                   CardsSelectionManagerService.instance,
                   GamePhaseManager.instance,
+                  activePlayerManager,
                 ),
               )
               .toList(),
-          itemsPerRow: 3,
-          numberOfRows: 2,
         ),
-        inventoryCoordinator: ShopInventoryCoordinator([]),
       ),
       teamCoordinator: TeamCoordinator(
         playersInfoCoordinator: _playersInfoCoordinator,
@@ -149,6 +151,7 @@ class CoordinatorsManager {
                   cardsSelectionManagerService:
                       CardsSelectionManagerService.instance,
                   gamePhaseManager: GamePhaseManager.instance,
+                  activePlayerManager: activePlayerManager,
                 ),
               )
               .toList(),

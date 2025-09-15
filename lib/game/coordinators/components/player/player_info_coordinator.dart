@@ -11,7 +11,9 @@ class PlayerInfoCoordinator with ReactiveCoordinator<PlayerInfoCoordinator> {
   int get maxHealth => _model.maxHealth;
   int get attack => _model.attack;
   int get credits => _model.credits;
+
   bool get isActive => _model.isActive;
+  set isActive(bool value) => _model.isActive = value;
 
   void adjustHealth(int amount) {
     if (_model.health > _model.maxHealth || _model.health < 0) return;

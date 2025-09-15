@@ -12,9 +12,6 @@ class ShopCard extends SelectableCard {
   String get buttonLabel => "Buy";
 
   @override
-  bool get actionButtonDisabled => true;
-
-  @override
   void addTextComponent() {
     if (_coordinator.isFaceUp) {
       // Create name text component positioned higher to make room for cost

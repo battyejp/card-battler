@@ -1,5 +1,6 @@
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/ui/components/card/actionable_card.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -9,14 +10,17 @@ class CardSelectionService {
   final ActionableCard _card;
   final CardsSelectionManagerService _cardsSelectionManagerService;
   final GamePhaseManager _gamePhaseManager;
+  final ActivePlayerManager _activePlayerManager;
 
   CardSelectionService({
     required ActionableCard card,
     required CardsSelectionManagerService cardsSelectionManagerService,
     required GamePhaseManager gamePhaseManager,
+    required ActivePlayerManager activePlayerManager,
   }) : _card = card,
        _cardsSelectionManagerService = cardsSelectionManagerService,
-       _gamePhaseManager = gamePhaseManager;
+       _gamePhaseManager = gamePhaseManager,
+       _activePlayerManager = activePlayerManager;
 
   final double _animationSpeed = 0.5;
   final double _scaleFactor = 2.5;
@@ -72,11 +76,12 @@ class CardSelectionService {
 
     moveEffect.onComplete = () {
       _isAnimating = false;
-      //TODO do these checks needs game phase and shop affordability
       _card.isActionButtonVisible =
           _gamePhaseManager.currentPhase == GamePhase.playerTakeActionsTurn;
 
-      //_card.actionButtonDisabled = false; //buttonDisabled;
+      _card.actionButtonDisabled = _card.coordinator.isActionDisabled(
+        _activePlayerManager.activePlayer!.playerInfoCoordinator,
+      );
     };
 
     _card.add(moveEffect);

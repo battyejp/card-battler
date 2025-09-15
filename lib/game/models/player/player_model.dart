@@ -8,8 +8,8 @@ class PlayerModel {
   final CardListModel<CardModel> handCards;
   final CardListModel<CardModel> deckCards;
   final CardListModel<CardModel> discardCards;
-  final bool isActive;
 
+  late bool isActive;
   late int health;
   late int credits;
 

@@ -1,6 +1,7 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
+import 'package:card_battler/game/services/card/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
 class PlayerCoordinator {
@@ -10,6 +11,7 @@ class PlayerCoordinator {
   final CardListCoordinator<CardCoordinator> _discardCardsCoordinator;
   final PlayerInfoCoordinator _playerInfoCoordinator;
   final GamePhaseManager _gamePhaseManager;
+  final EffectProcessor _effectProcessor;
 
   PlayerCoordinator({
     required CardListCoordinator<CardCoordinator> handCardsCoordinator,
@@ -17,11 +19,13 @@ class PlayerCoordinator {
     required CardListCoordinator<CardCoordinator> discardCardsCoordinator,
     required PlayerInfoCoordinator playerInfoCoordinator,
     required GamePhaseManager gamePhaseManager,
-  }) : _handCardsCoordinator = handCardsCoordinator,
-       _deckCardsCoordinator = deckCardsCoordinator,
-       _playerInfoCoordinator = playerInfoCoordinator,
-       _discardCardsCoordinator = discardCardsCoordinator,
-       _gamePhaseManager = gamePhaseManager;
+    required EffectProcessor effectProcessor,
+  })  : _handCardsCoordinator = handCardsCoordinator,
+        _deckCardsCoordinator = deckCardsCoordinator,
+        _playerInfoCoordinator = playerInfoCoordinator,
+        _discardCardsCoordinator = discardCardsCoordinator,
+        _gamePhaseManager = gamePhaseManager,
+        _effectProcessor = effectProcessor;
 
   CardListCoordinator<CardCoordinator> get handCardsCoordinator =>
       _handCardsCoordinator;
@@ -71,6 +75,7 @@ class PlayerCoordinator {
     cardCoordinator.isFaceUp = false;
     handCardsCoordinator.removeCard(cardCoordinator);
     discardCardsCoordinator.addCard(cardCoordinator);
+    _effectProcessor.applyCardEffects([cardCoordinator]);
   }
 
   bool _isDrawingCardsPrevented() {

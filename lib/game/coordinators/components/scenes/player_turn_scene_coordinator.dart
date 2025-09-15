@@ -18,7 +18,6 @@ class PlayerTurnSceneCoordinator {
   EnemiesCoordinator get enemiesCoordinator => _enemiesCoordinator;
   EffectProcessor get effectProcessor => _effectProcessor;
 
-  //TODO think this needs access to all List of PlayerCoordinators
   PlayerTurnSceneCoordinator({
     required PlayerCoordinator playerCoordinator,
     required ShopCoordinator shopCoordinator,
@@ -30,5 +29,13 @@ class PlayerTurnSceneCoordinator {
        _shopCoordinator = shopCoordinator,
        _teamCoordinator = teamCoordinator,
        _enemiesCoordinator = enemiesCoordinator,
-       _effectProcessor = effectProcessor;
+       _effectProcessor = effectProcessor {
+    _shopCoordinator.onCardBought = (cost) {
+      _playerCoordinator.playerInfoCoordinator.adjustCredits(-cost);
+    };
+  }
+
+  void dispose() {
+    _shopCoordinator.onCardBought = null;
+  }
 }

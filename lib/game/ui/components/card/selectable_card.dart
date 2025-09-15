@@ -1,4 +1,4 @@
-import 'package:card_battler/game/services/card/card_selection_service.dart';
+import 'package:card_battler/game/services/ui/card_selection_service.dart';
 import 'package:card_battler/game/ui/components/card/actionable_card.dart';
 import 'package:card_battler/game/ui/components/common/flat_button.dart';
 import 'package:flame/components.dart';
@@ -37,6 +37,7 @@ class SelectableCard extends ActionableCard with TapCallbacks {
       card: this,
       cardsSelectionManagerService: coordinator.selectionManagerService,
       gamePhaseManager: coordinator.gamePhaseManager,
+      activePlayerManager: coordinator.activePlayerManager,
     );
   }
 

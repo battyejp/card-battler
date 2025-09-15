@@ -1,14 +1,15 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/enemy/enemy_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
 
 class EffectProcessor {
-  final PlayersInfoCoordinator _playersInfoCoordinator;
-  final List<EnemyCoordinator> _enemiesCoordinator;
+  late PlayersInfoCoordinator _playersInfoCoordinator;
 
-  EffectProcessor(this._playersInfoCoordinator, this._enemiesCoordinator);
+  EffectProcessor();
+
+  set playersInfoCoordinator(PlayersInfoCoordinator value) =>
+      _playersInfoCoordinator = value;
 
   void applyCardEffects(List<CardCoordinator> cardCoordinators) {
     for (final card in cardCoordinators) {
@@ -48,9 +49,7 @@ class EffectProcessor {
         return _playersInfoCoordinator.players;
       case EffectTarget.nonActivePlayers:
         // Return list of enemy players
-        return _playersInfoCoordinator.players
-            .where((player) => !player.isActive)
-            .toList();
+        return _playersInfoCoordinator.inactivePlayers;
       default:
         return [];
     }

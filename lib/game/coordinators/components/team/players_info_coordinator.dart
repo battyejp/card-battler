@@ -10,4 +10,7 @@ class PlayersInfoCoordinator {
 
   PlayerInfoCoordinator get activePlayer =>
       _players.firstWhere((player) => player.isActive);
+
+  List<PlayerInfoCoordinator> get inactivePlayers =>
+      _players.where((player) => !player.isActive).toList();
 }
