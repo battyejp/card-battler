@@ -160,6 +160,11 @@ class RouterService {
       'enemyTurn': Route(() => _enemyTurnScene!),
     };
 
+    // Add additional routes if provided
+    if (additionalRoutes != null) {
+      routes.addAll(additionalRoutes);
+    }
+
     _router = RouterComponent(routes: routes, initialRoute: 'playerTurn');
     GamePhaseManager.instance.addPhaseChangeListener(_onGamePhaseChanged);
     return _router!;

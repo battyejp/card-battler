@@ -1,3 +1,5 @@
+import 'dart:ui' show VoidCallback;
+
 import 'package:card_battler/game/ui/components/common/confirm_dialog.dart';
 import 'package:flame/game.dart';
 
@@ -9,20 +11,24 @@ class DialogService {
   DialogService._internal();
 
   RouterComponent? _router;
-  //final GameStateManager _gameStateManager = GameStateManager();
 
-  /// Initialize the dialog manager with required router component
   void initialize({required RouterComponent router}) {
     _router = router;
-    _setupConfirmationListener();
   }
+
+  /// Current dialog callbacks - used for custom dialogs
+  VoidCallback? _currentOnConfirm;
+  VoidCallback? _currentOnCancel;
+  String _currentTitle = 'Confirm Action';
+  String _currentMessage = 'Are you sure you want to continue?';
 
   /// Get confirmation dialog route for router setup
   Map<String, Route> getDialogRoutes() {
     return {
       'confirm': OverlayRoute((context, game) {
         return ConfirmDialog(
-          title: 'You still have cards in your hand!',
+          title: _currentTitle,
+          message: _currentMessage,
           onCancel: _handleConfirmCancel,
           onConfirm: _handleConfirmAccept,
         );
@@ -30,31 +36,43 @@ class DialogService {
     };
   }
 
-  /// Show confirmation dialog for ending turn with cards
-  void showEndTurnConfirmation() {
-    _router?.pushNamed('confirm');
+  /// Show custom confirmation dialog with specified callbacks and messages
+  void showCustomConfirmation({
+    required String title,
+    required String message,
+    required VoidCallback onConfirm,
+    required VoidCallback onCancel,
+  }) {
+    if (_router == null) {
+      print(
+        'Warning: DialogService router not initialized. Dialog cannot be shown.',
+      );
+      return;
+    }
+
+    _currentTitle = title;
+    _currentMessage = message;
+    _currentOnConfirm = onConfirm;
+    _currentOnCancel = onCancel;
+
+    try {
+      _router!.pushNamed('confirm');
+    } catch (e) {
+      print('Error showing dialog: $e');
+      // Fallback: execute confirm callback directly if dialog fails
+      onConfirm();
+    }
   }
 
   /// Handle confirmation dialog cancel
   void _handleConfirmCancel() {
     _router?.pop();
+    _currentOnCancel?.call();
   }
 
   /// Handle confirmation dialog accept
   void _handleConfirmAccept() {
     _router?.pop();
-    _endPlayerTurn();
-  }
-
-  /// End player turn properly through the model
-  void _endPlayerTurn() {
-    //GameStateModel.instance.playerTurn.endTurn();
-  }
-
-  /// Set up confirmation request listener
-  void _setupConfirmationListener() {
-    // _gameStateManager.addConfirmationRequestListener(() {
-    //   showEndTurnConfirmation();
-    // });
+    _currentOnConfirm?.call();
   }
 }

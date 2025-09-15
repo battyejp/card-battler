@@ -1,5 +1,6 @@
 import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:card_battler/game/services/ui/dialog_service.dart';
 
 class TurnButtonComponentCoordinator
     with ReactiveCoordinator<TurnButtonComponentCoordinator> {
@@ -14,7 +15,19 @@ class TurnButtonComponentCoordinator
   }
 
   void handleTurnButtonPressed() {
-    _gamePhaseManager.nextPhase();
+    if (_gamePhaseManager.currentPhase == GamePhase.playerTakeActionsTurn) {
+      DialogService().showCustomConfirmation(
+        title: 'Confirm End Turn',
+        message:
+            'You still have cards to play, are you sure you want to end your turn?',
+        onConfirm: () {
+          _gamePhaseManager.nextPhase();
+        },
+        onCancel: () {},
+      );
+    } else {
+      _gamePhaseManager.nextPhase();
+    }
   }
 
   void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
