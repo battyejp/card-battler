@@ -15,9 +15,11 @@ class PlayerTurnScene extends PositionComponent {
   // late FlatButton _turnButton;
   bool loadingComplete = false;
 
-  PlayerTurnScene({required Vector2 size, required PlayerTurnSceneCoordinator coordinator})
-      : _size = size,
-        _coordinator = coordinator;
+  PlayerTurnScene({
+    required Vector2 size,
+    required PlayerTurnSceneCoordinator coordinator,
+  }) : _size = size,
+       _coordinator = coordinator;
 
   @override
   void onLoad() {
@@ -44,13 +46,9 @@ class PlayerTurnScene extends PositionComponent {
     add(enemies);
 
     final shopWidth = availableWidth * 0.5 / 2;
-    final shop =
-        ShopDisplay(
-            shopDisplayCoordinator:
-                _coordinator.shopCoordinator.displayCoordinator,
-          )
-          ..size = Vector2(shopWidth, topLayoutHeight)
-          ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
+    final shop = ShopDisplay(_coordinator.shopCoordinator.displayCoordinator)
+      ..size = Vector2(shopWidth, topLayoutHeight)
+      ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
 
     add(shop);
 

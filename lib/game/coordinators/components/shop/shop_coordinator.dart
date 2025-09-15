@@ -1,45 +1,37 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/shop/shop_display_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/shop/shop_inventory_coordinator.dart';
 
 class ShopCoordinator {
-  //TODO should theses just be lists like in player
-  final ShopDisplayCoordinator _displayCoordinator;
-  final ShopInventoryCoordinator _inventoryCoordinator;
+  final CardListCoordinator<ShopCardCoordinator> _displayCoordinators;
+  final CardListCoordinator<ShopCardCoordinator> _inventoryCoordinators;
 
   Function(int cost)? onCardBought;
 
   ShopCoordinator({
-    required ShopDisplayCoordinator displayCoordinator,
-    required ShopInventoryCoordinator inventoryCoordinator,
-  }) : _inventoryCoordinator = inventoryCoordinator,
-       _displayCoordinator = displayCoordinator {
+    required CardListCoordinator<ShopCardCoordinator> displayCoordinators,
+    required CardListCoordinator<ShopCardCoordinator> inventoryCoordinators,
+  }) : _inventoryCoordinators = inventoryCoordinators,
+       _displayCoordinators = displayCoordinators {
     _addCardsToDisplayFromInventory(6);
   }
 
-  ShopDisplayCoordinator get displayCoordinator => _displayCoordinator;
-  ShopInventoryCoordinator get inventoryCoordinator => _inventoryCoordinator;
+  CardListCoordinator<ShopCardCoordinator> get displayCoordinator =>
+      _displayCoordinators;
 
   void _addCardsToDisplayFromInventory(int numberOfCards) {
-    var cards = _inventoryCoordinator.shopCardCoordinators.take(numberOfCards);
-    _inventoryCoordinator.shopCardCoordinators.removeWhere(
-      (card) => cards.contains(card),
-    );
-    _displayCoordinator.shopCardCoordinators.addAll(cards);
-
-    for (var card in cards) {
+    var drawnCards = _inventoryCoordinators.drawCards(numberOfCards);
+    for (var card in drawnCards) {
       card.onCardPlayed = onCardPlayed;
     }
+
+    _displayCoordinators.addCards(drawnCards);
   }
 
   void onCardPlayed(CardCoordinator cardCoordinator) {
     cardCoordinator.onCardPlayed = null;
-    _displayCoordinator.shopCardCoordinators.remove(cardCoordinator);
-
-    var cost = cardCoordinator is ShopCardCoordinator
-        ? (cardCoordinator).cost
-        : 0;
-    onCardBought?.call(cost);
+    var shopCardCoordinator = cardCoordinator as ShopCardCoordinator;
+    _displayCoordinators.removeCard(shopCardCoordinator);
+    onCardBought?.call(shopCardCoordinator.cost);
   }
 }

@@ -1,19 +1,19 @@
+import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 
 class ShopDisplayCoordinator {
-  final List<ShopCardCoordinator> _shopCardCoordinators;
+  final CardListCoordinator<ShopCardCoordinator> _cardCoordinators;
   final int _itemsPerRow;
   final int _numberOfRows;
 
   ShopDisplayCoordinator({
-    required List<ShopCardCoordinator> shopCardCoordinators,
-    int itemsPerRow = 3,
-    int numberOfRows = 2,
-  }) : _shopCardCoordinators = shopCardCoordinators,
-       _itemsPerRow = itemsPerRow,
-       _numberOfRows = numberOfRows;
+    required CardListCoordinator<ShopCardCoordinator> cardCoordinators,
+  })  : _cardCoordinators = cardCoordinators,
+        _itemsPerRow = 3,
+        _numberOfRows = 2;
 
-  List<ShopCardCoordinator> get shopCardCoordinators => _shopCardCoordinators;
+  CardListCoordinator<ShopCardCoordinator> get cardCoordinators => _cardCoordinators;
+  
   int get itemsPerRow => _itemsPerRow;
   int get numberOfRows => _numberOfRows;
 }

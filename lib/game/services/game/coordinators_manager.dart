@@ -110,13 +110,16 @@ class CoordinatorsManager {
         (pc) => pc.playerInfoCoordinator.isActive,
       ),
       shopCoordinator: ShopCoordinator(
-        displayCoordinator: ShopDisplayCoordinator(
-          shopCardCoordinators: [],
-          itemsPerRow: 3,
-          numberOfRows: 2,
+        displayCoordinators: CardListCoordinator<ShopCardCoordinator>(
+          cardCoordinators: [],
         ),
-        inventoryCoordinator: ShopInventoryCoordinator(
-          GameStateFacade.instance.state!.shop.inventoryCards.allCards
+        inventoryCoordinators: CardListCoordinator<ShopCardCoordinator>(
+          cardCoordinators: GameStateFacade
+              .instance
+              .state!
+              .shop
+              .inventoryCards
+              .allCards
               .map(
                 (card) => ShopCardCoordinator(
                   card,
