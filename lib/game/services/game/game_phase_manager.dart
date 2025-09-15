@@ -40,6 +40,10 @@ class GamePhaseManager {
   // Previous phase state (for reference)
   GamePhase _previousPhase = GamePhase.waitingToDrawPlayerCards;
 
+  // Current round number, round starts at 0 and increments each full cycle of all players taking a turn
+  int _round = 0;
+  int _playerTurn = 0;
+
   // Listeners for phase changes
   final List<Function(GamePhase, GamePhase)> _phaseChangeListeners = [];
 
@@ -133,8 +137,21 @@ class GamePhaseManager {
         }
         break;
       case GamePhase.playerCardsDrawnWaitingForPlayerSwitch:
-        //_setPhase(GamePhase.playerCardsDrawnWaitingForEnemyTurn);
-        _setPhase(GamePhase.waitingToDrawPlayerCards);
+        _playerTurn++;
+        _playerTurn =
+            _playerTurn %
+            2; //TODO for now hardcoded to 2 players but needs to match actual player count
+        if (_playerTurn == 0) {
+          _round++;
+        }
+
+        if (_round == 0) {
+          // After the first round, switch to enemy turn
+          _setPhase(GamePhase.waitingToDrawPlayerCards);
+        } else {
+          // For the first round, switch back to player drawing cards
+          _setPhase(GamePhase.playerCardsDrawnWaitingForEnemyTurn);
+        }
         break;
     }
 
