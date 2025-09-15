@@ -17,7 +17,7 @@ class CardListCoordinator<T extends CardCoordinator>
 
   bool get isEmpty => _cardCoordinators.isEmpty;
 
-  List<T> drawCards(int count) {
+  List<T> drawCards(int count, {bool refreshUi = true}) {
     if (count <= 0) return [];
 
     final cardsToTake = count > _cardCoordinators.length
@@ -30,26 +30,38 @@ class CardListCoordinator<T extends CardCoordinator>
       card.isFaceUp = true;
     }
 
-    notifyChange();
+    if (refreshUi) {
+      notifyChange();
+    }
+
     return drawnCards;
   }
 
-  void addCards(List<T> cards) {
+  void addCards(List<T> cards, {bool refreshUi = true}) {
     _cardCoordinators.addAll(cards);
-    notifyChange();
+
+    if (refreshUi) {
+      notifyChange();
+    }
   }
 
-  void addCard(T card) {
+  void addCard(T card, {bool refreshUi = true}) {
     _cardCoordinators.add(card);
-    notifyChange();
+
+    if (refreshUi) {
+      notifyChange();
+    }
   }
 
-  void removeCard(T card) {
+  void removeCard(T card, {bool refreshUi = true}) {
     _cardCoordinators.remove(card);
-    notifyChange();
+
+    if (refreshUi) {
+      notifyChange();
+    }
   }
 
-  List<T> removeAllCards() {
+  List<T> removeAllCards({bool refreshUi = true}) {
     for (var card in _cardCoordinators) {
       card.onCardPlayed = null;
       card.isFaceUp = false;
@@ -57,7 +69,11 @@ class CardListCoordinator<T extends CardCoordinator>
 
     final removedCards = List<T>.from(_cardCoordinators);
     _cardCoordinators.clear();
-    notifyChange();
+
+    if (refreshUi) {
+      notifyChange();
+    }
+
     return removedCards;
   }
 

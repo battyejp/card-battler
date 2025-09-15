@@ -43,34 +43,36 @@ class PlayerCoordinator {
     }
 
     final drawnCards = deckCardsCoordinator.drawCards(numberOfCards);
+
+    //TODO check if have enough cards in deck first and if not get from discard pile
+    if (drawnCards.length < numberOfCards) {
+      moveCardsFromDiscardToDeck(numberOfCards, drawnCards);
+    }
+
     for (var card in drawnCards) {
       card.onCardPlayed = onCardPlayed;
     }
 
-    // if (drawnCards.length < numberOfCards) {
-    //   moveDiscardCardsToDeck();
-    //   final additionalCards = deckService.drawCards(
-    //     numberOfCards - drawnCards.length,
-    //   );
-    //   drawnCards.addAll(additionalCards);
-    // }
-
-    if (drawnCards.isNotEmpty) {
-      handCardsCoordinator.addCards(drawnCards);
-    }
-
+    handCardsCoordinator.addCards(drawnCards);
     _gamePhaseManager.nextPhase();
   }
 
-  /// Moves all discard cards back to deck and shuffles
-  // void moveDiscardCardsToDeck() {
-  //   if (discardService.hasNoCards) {
-  //     return;
-  //   }
+  void moveCardsFromDiscardToDeck(
+    int numberOfCardsNeededForHand,
+    List<CardCoordinator> drawnCardsAlreadyDrawn,
+  ) {
+    discardCardsCoordinator.shuffle();
 
-  //   final discardCards = discardService.removeAllCards();
-  //   deckService.addCardsAndShuffle(discardCards);
-  // }
+    var discardCards = discardCardsCoordinator.drawCards(
+      numberOfCardsNeededForHand - drawnCardsAlreadyDrawn.length,
+      refreshUi: false,
+    );
+
+    drawnCardsAlreadyDrawn.addAll(discardCards);
+
+    var restOfDiscardCards = discardCardsCoordinator.removeAllCards();
+    deckCardsCoordinator.addCards(restOfDiscardCards);
+  }
 
   void onCardPlayed(CardCoordinator cardCoordinator) {
     cardCoordinator.onCardPlayed = null;
