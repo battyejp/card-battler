@@ -1,5 +1,6 @@
 import 'package:card_battler/game/coordinators/components/enemy/enemies_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 import 'package:card_battler/game/services/card/effect_processor.dart';
@@ -30,9 +31,16 @@ class PlayerTurnSceneCoordinator {
        _teamCoordinator = teamCoordinator,
        _enemiesCoordinator = enemiesCoordinator,
        _effectProcessor = effectProcessor {
-    _shopCoordinator.onCardBought = (cost) {
-      _playerCoordinator.playerInfoCoordinator.adjustCredits(-cost);
+    _shopCoordinator.onCardBought = (shopCardCoordinator) {
+      onCardBought(shopCardCoordinator);
     };
+  }
+
+  void onCardBought(ShopCardCoordinator shopCardCoordinator) {
+    _playerCoordinator.playerInfoCoordinator.adjustCredits(
+      -shopCardCoordinator.cost,
+    );
+    _playerCoordinator.discardCardsCoordinator.addCard(shopCardCoordinator);
   }
 
   void dispose() {

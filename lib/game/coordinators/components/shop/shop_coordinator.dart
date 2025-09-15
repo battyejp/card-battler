@@ -6,7 +6,7 @@ class ShopCoordinator {
   final CardListCoordinator<ShopCardCoordinator> _displayCoordinators;
   final CardListCoordinator<ShopCardCoordinator> _inventoryCoordinators;
 
-  Function(int cost)? onCardBought;
+  Function(ShopCardCoordinator shopCardCoordinator)? onCardBought;
 
   ShopCoordinator({
     required CardListCoordinator<ShopCardCoordinator> displayCoordinators,
@@ -32,6 +32,6 @@ class ShopCoordinator {
     cardCoordinator.onCardPlayed = null;
     var shopCardCoordinator = cardCoordinator as ShopCardCoordinator;
     _displayCoordinators.removeCard(shopCardCoordinator);
-    onCardBought?.call(shopCardCoordinator.cost);
+    onCardBought?.call(shopCardCoordinator);
   }
 }
