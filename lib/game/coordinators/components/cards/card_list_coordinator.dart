@@ -15,6 +15,8 @@ class CardListCoordinator<T extends CardCoordinator>
 
   bool get hasCards => _cardCoordinators.isNotEmpty;
 
+  bool get isEmpty => _cardCoordinators.isEmpty;
+
   List<T> drawCards(int count) {
     if (count <= 0) return [];
 
@@ -61,6 +63,5 @@ class CardListCoordinator<T extends CardCoordinator>
 
   void shuffle() {
     _cardCoordinators.shuffle(Random());
-    notifyChange();
   }
 }

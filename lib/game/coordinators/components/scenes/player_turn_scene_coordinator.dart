@@ -1,4 +1,5 @@
 import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/enemy/enemies_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
@@ -62,10 +63,25 @@ class PlayerTurnSceneCoordinator
   void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
     if (_isTurnOver(previousPhase, newPhase)) {
       _playerCoordinator.playerInfoCoordinator.resetCreditsAndAttack();
-      var cards = _playerCoordinator.handCardsCoordinator.removeAllCards();
-      _playerCoordinator.discardCardsCoordinator.addCards(cards);
       _shopCoordinator.refillShop();
+
+      var cards = _playerCoordinator.handCardsCoordinator.removeAllCards();
+
+      if (_playerCoordinator.deckCardsCoordinator.isEmpty) {
+        _refillDeck(cards);
+      } else {
+        _playerCoordinator.discardCardsCoordinator.addCards(cards);
+      }
     }
+  }
+
+  void _refillDeck(List<CardCoordinator> handCards) {
+    var discardCards = _playerCoordinator.discardCardsCoordinator
+        .removeAllCards();
+
+    var allCards = discardCards..addAll(handCards);
+    _playerCoordinator.deckCardsCoordinator.addCards(allCards);
+    _playerCoordinator.deckCardsCoordinator.shuffle();
   }
 
   bool _isTurnOver(GamePhase previousPhase, GamePhase newPhase) {

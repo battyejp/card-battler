@@ -6,9 +6,9 @@ import 'package:card_battler/game/ui/components/shop/shop_display.dart';
 import 'package:card_battler/game/ui/components/team/team.dart';
 import 'package:flame/components.dart';
 
-class PlayerTurnScene extends ReactivePositionComponent<PlayerTurnSceneCoordinator> {
-  PlayerTurnScene(super.coordinator, {required Vector2 size})
-      : _size = size;
+class PlayerTurnScene
+    extends ReactivePositionComponent<PlayerTurnSceneCoordinator> {
+  PlayerTurnScene(super.coordinator, {required Vector2 size}) : _size = size;
 
   final Vector2 _size;
   final double _margin = 20.0;
@@ -17,6 +17,7 @@ class PlayerTurnScene extends ReactivePositionComponent<PlayerTurnSceneCoordinat
   // late FlatButton _turnButton;
   bool loadingComplete = false;
 
+  //TODO to we need to add all the components to a list and remove them on updateDisplay, when only Player changes
   @override
   void updateDisplay() {
     super.updateDisplay();
