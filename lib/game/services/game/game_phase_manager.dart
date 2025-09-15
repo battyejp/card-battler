@@ -37,6 +37,9 @@ class GamePhaseManager {
   // Current phase state
   GamePhase _currentPhase = GamePhase.waitingToDrawPlayerCards;
 
+  // Previous phase state (for reference)
+  GamePhase _previousPhase = GamePhase.waitingToDrawPlayerCards;
+
   // Listeners for phase changes
   final List<Function(GamePhase, GamePhase)> _phaseChangeListeners = [];
 
@@ -123,14 +126,15 @@ class GamePhaseManager {
         _setPhase(GamePhase.waitingToDrawPlayerCards);
         break;
       case GamePhase.waitingToDrawPlayerCards:
-        // if (GameStateFacade.instance.selectedPlayer!.turnOver) {
-        //   _setPhase(GamePhase.cardsDrawnWaitingForPlayerSwitch);
-        // } else {
-        _setPhase(GamePhase.playerCardsDrawnWaitingForEnemyTurn);
-        //}
+        if (_previousPhase == GamePhase.playerTakeActionsTurn) {
+          _setPhase(GamePhase.playerCardsDrawnWaitingForPlayerSwitch);
+        } else {
+          _setPhase(GamePhase.playerCardsDrawnWaitingForEnemyTurn);
+        }
         break;
-      case GamePhase
-          .playerCardsDrawnWaitingForPlayerSwitch: //Taken card of else where
+      case GamePhase.playerCardsDrawnWaitingForPlayerSwitch:
+        //_setPhase(GamePhase.playerCardsDrawnWaitingForEnemyTurn);
+        _setPhase(GamePhase.waitingToDrawPlayerCards);
         break;
     }
 
@@ -140,11 +144,11 @@ class GamePhaseManager {
   /// Set game phase with proper notification
   void _setPhase(GamePhase newPhase) {
     if (_currentPhase != newPhase) {
-      final previousPhase = _currentPhase;
+      _previousPhase = _currentPhase;
       _currentPhase = newPhase;
 
       // Notify all listeners
-      _notifyPhaseChange(previousPhase, newPhase);
+      _notifyPhaseChange(_previousPhase, newPhase);
     }
   }
 
