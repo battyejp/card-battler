@@ -3,7 +3,7 @@ import 'package:card_battler/game/coordinators/components/player/player_coordina
 import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 import 'package:card_battler/game/services/card/effect_processor.dart';
-import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
 class PlayerTurnSceneCoordinator {
   final PlayerCoordinator _playerCoordinator;

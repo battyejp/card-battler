@@ -1,5 +1,5 @@
 import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
-import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
 class TurnButtonComponentCoordinator
     with ReactiveCoordinator<TurnButtonComponentCoordinator> {

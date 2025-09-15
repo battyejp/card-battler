@@ -1,5 +1,5 @@
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
-import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/actionable_card.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';

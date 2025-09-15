@@ -1,7 +1,7 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
-import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
 class PlayerCoordinator {
   //TODO should there be a class for these 3 list like there is in the shop

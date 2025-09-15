@@ -2,9 +2,9 @@ import 'package:card_battler/game/coordinators/components/shared/turn_button_com
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/card/card_loader_service.dart';
-import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
-import 'package:card_battler/game/services/game_state/game_state_facade.dart';
-import 'package:card_battler/game/services/player/player_coordinators_manager.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:card_battler/game/services/game/game_state_facade.dart';
+import 'package:card_battler/game/services/game/coordinators_manager.dart';
 import 'package:card_battler/game/services/ui/dialog_service.dart';
 import 'package:card_battler/game/services/ui/router_service.dart';
 import 'package:card_battler/game/services/ui/scene_service.dart';
@@ -56,7 +56,7 @@ class CardBattlerGameNew extends FlameGame {
 
     final routerService = RouterService();
     final dialogService = DialogService();
-    final playerCoordinatorsManager = PlayerCoordinatorsManager();
+    final playerCoordinatorsManager = CoordinatorsManager();
     var router = SceneService(
       routerService,
       dialogService,

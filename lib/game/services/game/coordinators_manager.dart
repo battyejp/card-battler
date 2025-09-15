@@ -16,10 +16,10 @@ import 'package:card_battler/game/coordinators/components/team/players_info_coor
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/services/card/effect_processor.dart';
-import 'package:card_battler/game/services/game_state/game_phase_manager.dart';
-import 'package:card_battler/game/services/game_state/game_state_facade.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:card_battler/game/services/game/game_state_facade.dart';
 
-class PlayerCoordinatorsManager {
+class CoordinatorsManager {
   late PlayerTurnSceneCoordinator _playerTurnSceneCoordinator;
   late EnemyTurnSceneCoordinator _enemyTurnSceneCoordinator;
   late PlayersInfoCoordinator _playersInfoCoordinator;
@@ -29,12 +29,10 @@ class PlayerCoordinatorsManager {
       _playerTurnSceneCoordinator;
   EnemyTurnSceneCoordinator get enemyTurnSceneCoordinator =>
       _enemyTurnSceneCoordinator;
-  PlayersInfoCoordinator get playersInfoCoordinator => _playersInfoCoordinator;
-  List<PlayerCoordinator> get playerCoordinators => _playerCoordinators;
   PlayerCoordinator get activePlayerCoordinator =>
       _playerCoordinators.firstWhere((pc) => pc.playerInfoCoordinator.isActive);
 
-  PlayerCoordinatorsManager() {
+  CoordinatorsManager() {
     _playerCoordinators = GameStateFacade.instance.state!.players
         .map(
           (player) => PlayerCoordinator(
@@ -63,7 +61,7 @@ class PlayerCoordinatorsManager {
         .toList();
 
     _playersInfoCoordinator = PlayersInfoCoordinator(
-      players: playerCoordinators
+      players: _playerCoordinators
           .map((pc) => pc.playerInfoCoordinator)
           .toList(),
     );
@@ -104,7 +102,7 @@ class PlayerCoordinatorsManager {
     );
 
     _playerTurnSceneCoordinator = PlayerTurnSceneCoordinator(
-      playerCoordinator: playerCoordinators.firstWhere(
+      playerCoordinator: _playerCoordinators.firstWhere(
         (pc) => pc.playerInfoCoordinator.isActive,
       ),
       shopCoordinator: ShopCoordinator(
