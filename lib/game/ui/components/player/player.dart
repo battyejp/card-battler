@@ -1,5 +1,6 @@
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/card_pile.dart';
 import 'package:card_battler/game/ui/components/player/card_hand.dart';
@@ -20,9 +21,13 @@ class Player extends PositionComponent {
 
     var deck = CardDeck(
       onTap: () => {
-        _coordinator.drawCardsFromDeck(
-          GameVariables.numberOfCardsDrawnByPlayer,
-        ),
+        if (_coordinator.gamePhaseManager.currentPhase ==
+            GamePhase.waitingToDrawPlayerCards)
+          {
+            _coordinator.drawCardsFromDeck(
+              GameVariables.numberOfCardsDrawnByPlayer,
+            ),
+          },
       },
       coordinator: _coordinator.deckCardsCoordinator,
     )..size = Vector2(size.x * pileWidthFactor, size.y);

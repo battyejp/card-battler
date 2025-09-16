@@ -35,6 +35,7 @@ class PlayerCoordinator {
   CardListCoordinator<CardCoordinator> get discardCardsCoordinator =>
       _discardCardsCoordinator;
   PlayerInfoCoordinator get playerInfoCoordinator => _playerInfoCoordinator;
+  GamePhaseManager get gamePhaseManager => _gamePhaseManager;
 
   void drawCardsFromDeck(int numberOfCards) {
     if (_isDrawingCardsPrevented()) {
