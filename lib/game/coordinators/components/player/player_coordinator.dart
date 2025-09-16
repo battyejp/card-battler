@@ -2,6 +2,7 @@ import 'package:card_battler/game/coordinators/components/cards/card_coordinator
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/services/card/effect_processor.dart';
+import 'package:card_battler/game/services/card/player_card_manager.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
 class PlayerCoordinator {
@@ -17,7 +18,13 @@ class PlayerCoordinator {
        _playerInfoCoordinator = playerInfoCoordinator,
        _discardCardsCoordinator = discardCardsCoordinator,
        _gamePhaseManager = gamePhaseManager,
-       _effectProcessor = effectProcessor {
+       _cardManager = PlayerCardManager(
+         handCardsCoordinator: handCardsCoordinator,
+         deckCardsCoordinator: deckCardsCoordinator,
+         discardCardsCoordinator: discardCardsCoordinator,
+         gamePhaseManager: gamePhaseManager,
+         effectProcessor: effectProcessor,
+       ) {
     _deckCardsCoordinator.shuffle();
   }
 
@@ -26,7 +33,7 @@ class PlayerCoordinator {
   final CardListCoordinator<CardCoordinator> _discardCardsCoordinator;
   final PlayerInfoCoordinator _playerInfoCoordinator;
   final GamePhaseManager _gamePhaseManager;
-  final EffectProcessor _effectProcessor;
+  final PlayerCardManager _cardManager;
 
   CardListCoordinator<CardCoordinator> get handCardsCoordinator =>
       _handCardsCoordinator;
@@ -38,48 +45,6 @@ class PlayerCoordinator {
   GamePhaseManager get gamePhaseManager => _gamePhaseManager;
 
   void drawCardsFromDeck(int numberOfCards) {
-    if (_isDrawingCardsPrevented()) {
-      return;
-    }
-
-    final drawnCards = deckCardsCoordinator.drawCards(numberOfCards);
-
-    if (drawnCards.length < numberOfCards) {
-      moveCardsFromDiscardToDeck(numberOfCards, drawnCards);
-    }
-
-    for (final card in drawnCards) {
-      card.onCardPlayed = onCardPlayed;
-    }
-
-    handCardsCoordinator.addCards(drawnCards);
-    _gamePhaseManager.nextPhase();
+    _cardManager.drawCardsFromDeck(numberOfCards);
   }
-
-  void moveCardsFromDiscardToDeck(
-    int numberOfCardsNeededForHand,
-    List<CardCoordinator> drawnCardsAlreadyDrawn,
-  ) {
-    discardCardsCoordinator.shuffle();
-
-    var discardCards = discardCardsCoordinator.drawCards(
-      numberOfCardsNeededForHand - drawnCardsAlreadyDrawn.length,
-      refreshUi: false,
-    );
-
-    drawnCardsAlreadyDrawn.addAll(discardCards);
-
-    var restOfDiscardCards = discardCardsCoordinator.removeAllCards();
-    deckCardsCoordinator.addCards(restOfDiscardCards);
-  }
-
-  void onCardPlayed(CardCoordinator cardCoordinator) {
-    cardCoordinator.onCardPlayed = null;
-    cardCoordinator.isFaceUp = false;
-    handCardsCoordinator.removeCard(cardCoordinator);
-    discardCardsCoordinator.addCard(cardCoordinator);
-    _effectProcessor.applyCardEffects([cardCoordinator]);
-  }
-
-  bool _isDrawingCardsPrevented() => handCardsCoordinator.hasCards;
 }
