@@ -1,17 +1,10 @@
-import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/enemy/enemies_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/enemy/enemy_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/base_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/bases_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
+import 'package:card_battler/game/factories/enemy_coordinator_factory.dart';
+import 'package:card_battler/game/factories/player_coordinator_factory.dart';
+import 'package:card_battler/game/factories/player_turn_scene_coordinator_factory.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/services/card/effect_processor.dart';
@@ -27,121 +20,51 @@ class CoordinatorsManager {
   ) {
     var effectProcessor = EffectProcessor();
 
-    _playerCoordinators = state.players
-        .map(
-          (player) => PlayerCoordinator(
-            handCardsCoordinator: CardListCoordinator<CardCoordinator>(
-              cardCoordinators: [],
-            ),
-            deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
-              cardCoordinators: player.deckCards.allCards
-                  .map(
-                    (card) => CardCoordinator(
-                      cardModel: card.copy(),
-                      cardsSelectionManagerService:
-                          cardsSelectionManagerService,
-                      gamePhaseManager: gamePhaseManager,
-                      activePlayerManager: activePlayerManager,
-                    ),
-                  )
-                  .toList(),
-            ),
-            discardCardsCoordinator: CardListCoordinator<CardCoordinator>(
-              cardCoordinators: [],
-            ),
-            playerInfoCoordinator: PlayerInfoCoordinator(model: player),
-            gamePhaseManager: gamePhaseManager,
-            effectProcessor: effectProcessor,
-          ),
-        )
-        .toList();
+    _playerCoordinators = PlayerCoordinatorFactory.createPlayerCoordinators(
+      players: state.players,
+      gamePhaseManager: gamePhaseManager,
+      activePlayerManager: activePlayerManager,
+      cardsSelectionManagerService: cardsSelectionManagerService,
+      effectProcessor: effectProcessor,
+    );
 
-    _playersInfoCoordinator = PlayersInfoCoordinator(
-      players: _playerCoordinators
-          .map((pc) => pc.playerInfoCoordinator)
-          .toList(),
+    _playersInfoCoordinator = PlayerCoordinatorFactory.createPlayersInfoCoordinator(
+      playerCoordinators: _playerCoordinators,
     );
 
     effectProcessor.playersInfoCoordinator = _playersInfoCoordinator;
     activePlayerManager.players = _playerCoordinators;
     activePlayerManager.setNextPlayerToActive();
 
-    var enemyCoordinators = state.enemiesModel.enemies
-        .map((enemy) => EnemyCoordinator(model: enemy))
-        .toList();
+    var enemyCoordinators = EnemyCoordinatorFactory.createEnemyCoordinators(
+      enemiesModel: state.enemiesModel,
+    );
 
-    _enemyTurnSceneCoordinator = EnemyTurnSceneCoordinator(
-      playedCardsCoordinator: CardListCoordinator<CardCoordinator>(
-        cardCoordinators: [],
-      ),
-      deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
-        cardCoordinators: state.enemiesModel.deckCards.allCards
-            .map(
-              (card) => CardCoordinator(
-                cardModel: card.copy(),
-                cardsSelectionManagerService: cardsSelectionManagerService,
-                gamePhaseManager: gamePhaseManager,
-                activePlayerManager: activePlayerManager,
-              ),
-            )
-            .toList(),
-      ),
+    _enemyTurnSceneCoordinator = EnemyCoordinatorFactory.createEnemyTurnSceneCoordinator(
+      enemiesModel: state.enemiesModel,
       playersInfoCoordinator: _playersInfoCoordinator,
       effectProcessor: effectProcessor,
       gamePhaseManager: gamePhaseManager,
+      cardsSelectionManagerService: cardsSelectionManagerService,
+      activePlayerManager: activePlayerManager,
       numberOfCardsToDrawPerEnemyTurn: 1,
     );
 
-    _playerTurnSceneCoordinator = PlayerTurnSceneCoordinator(
-      playerCoordinator: _playerCoordinators.firstWhere(
-        (pc) => pc.playerInfoCoordinator.isActive,
-      ),
-      shopCoordinator: ShopCoordinator(
-        displayCoordinators: CardListCoordinator<ShopCardCoordinator>(
-          cardCoordinators: [],
-        ),
-        inventoryCoordinators: CardListCoordinator<ShopCardCoordinator>(
-          cardCoordinators: state.shop.inventoryCards.allCards
-              .map(
-                (card) => ShopCardCoordinator(
-                  card,
-                  cardsSelectionManagerService,
-                  gamePhaseManager,
-                  activePlayerManager,
-                ),
-              )
-              .toList(),
-        ),
-      ),
-      teamCoordinator: TeamCoordinator(
-        playersInfoCoordinator: _playersInfoCoordinator,
-        basesCoordinator: BasesCoordinator(
-          baseCoordinators: state.bases
-              .map((base) => BaseCoordinator(model: base))
-              .toList(),
-        ),
-      ),
-      enemiesCoordinator: EnemiesCoordinator(
+    _playerTurnSceneCoordinator = PlayerTurnSceneCoordinatorFactory.createPlayerTurnSceneCoordinator(
+      playerCoordinators: _playerCoordinators,
+      state: state,
+      playersInfoCoordinator: _playersInfoCoordinator,
+      enemiesCoordinator: EnemyCoordinatorFactory.createEnemiesCoordinator(
         enemyCoordinators: enemyCoordinators,
-        deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
-          cardCoordinators: state.enemiesModel.deckCards.allCards
-              .map(
-                (card) => CardCoordinator(
-                  cardModel: card.copy(),
-                  cardsSelectionManagerService: cardsSelectionManagerService,
-                  gamePhaseManager: gamePhaseManager,
-                  activePlayerManager: activePlayerManager,
-                ),
-              )
-              .toList(),
-        ),
-        playedCardsCoordinator: CardListCoordinator<CardCoordinator>(
-          cardCoordinators: [],
-        ),
+        enemiesModel: state.enemiesModel,
+        cardsSelectionManagerService: cardsSelectionManagerService,
+        gamePhaseManager: gamePhaseManager,
+        activePlayerManager: activePlayerManager,
       ),
       gamePhaseManager: gamePhaseManager,
       effectProcessor: effectProcessor,
       activePlayerManager: activePlayerManager,
+      cardsSelectionManagerService: cardsSelectionManagerService,
     );
   }
 
