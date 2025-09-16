@@ -17,8 +17,7 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
     //Don't call super which clears children
 
     if (hasChildren) {
-      _labels['health']?.text =
-          'Health: ${coordinator.health}/${coordinator.maxHealth}';
+      _labels['health']?.text = coordinator.healthDisplay;
       _labels['attack']?.text = 'Attack: ${coordinator.attack}';
       _labels['credits']?.text = 'Credits: ${coordinator.credits}';
       _labels['name']?.text = coordinator.name;
@@ -54,7 +53,7 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
           text = coordinator.name;
           break;
         case 'health':
-          text = 'Health: ${coordinator.health}/${coordinator.maxHealth}';
+          text = 'Health: ${coordinator.healthDisplay}';
           break;
         case 'attack':
           text = 'Attack: ${coordinator.attack}';

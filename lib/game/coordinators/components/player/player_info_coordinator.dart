@@ -1,14 +1,14 @@
 import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 
+//TODO extend the ActorCoordinator instead of duplicating code
 class PlayerInfoCoordinator with ReactiveCoordinator<PlayerInfoCoordinator> {
   final PlayerModel _model;
 
   PlayerInfoCoordinator({required PlayerModel model}) : _model = model;
 
   String get name => _model.name;
-  int get health => _model.health;
-  int get maxHealth => _model.maxHealth;
+  String get healthDisplay => _model.healthModel.display;
   int get attack => _model.attack;
   int get credits => _model.credits;
 
@@ -16,9 +16,12 @@ class PlayerInfoCoordinator with ReactiveCoordinator<PlayerInfoCoordinator> {
   set isActive(bool value) => _model.isActive = value;
 
   void adjustHealth(int amount) {
-    if (_model.health > _model.maxHealth || _model.health < 0) return;
+    if (_model.healthModel.currentHealth > _model.healthModel.maxHealth ||
+        _model.healthModel.currentHealth < 0) {
+      return;
+    }
 
-    _model.health += amount;
+    _model.healthModel.currentHealth += amount;
     notifyChange();
   }
 

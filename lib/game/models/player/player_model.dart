@@ -1,29 +1,22 @@
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/card/card_list_model.dart';
+import 'package:card_battler/game/models/common/actor_model.dart';
 
-class PlayerModel {
-  final String name;
-  final int maxHealth;
+class PlayerModel extends ActorModel {
   final CardListModel<CardModel> handCards;
   final CardListModel<CardModel> deckCards;
   final CardListModel<CardModel> discardCards;
-
-  late bool isActive;
-  late int health;
-  late int credits;
-  late int attack;
-
+  bool isActive;
+  int credits;
+  int attack;
   PlayerModel({
+    required super.name,
+    required super.healthModel,
     required this.handCards,
     required this.deckCards,
     required this.discardCards,
     required this.isActive,
-    required this.name,
-    required this.maxHealth,
-    required int currentHealth,
-    required int currentCredits,
-    required int currentAttack,
-  }) : health = currentHealth,
-       credits = currentCredits,
-       attack = currentAttack;
+    required this.credits,
+    required this.attack,
+  });
 }

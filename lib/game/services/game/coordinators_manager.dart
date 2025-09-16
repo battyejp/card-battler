@@ -103,6 +103,7 @@ class CoordinatorsManager {
       playersInfoCoordinator: _playersInfoCoordinator,
       effectProcessor: effectProcessor,
       gamePhaseManager: GamePhaseManager.instance,
+      numberOfCardsToDrawPerEnemyTurn: 1,
     );
 
     _playerTurnSceneCoordinator = PlayerTurnSceneCoordinator(

@@ -1,22 +1,10 @@
-import 'package:card_battler/game/models/common/reactive_model.dart';
-
-//TODO get rid of
-class HealthModel with ReactiveModel<HealthModel> {
+class HealthModel {
+  int currentHealth;
   final int maxHealth;
-  int _currentHealth;
 
-  HealthModel({required this.maxHealth}) : _currentHealth = maxHealth;
+  HealthModel(this.currentHealth, this.maxHealth);
 
-  int get currentHealth => _currentHealth;
+  String get display => 'HP: $currentHealth/$maxHealth';
 
-  /// Updates current health by [delta], clamps to [0, maxHealth]
-  void changeHealth(int delta) {
-    _currentHealth += delta;
-    if (_currentHealth > maxHealth) _currentHealth = maxHealth;
-    if (_currentHealth < 0) _currentHealth = 0;
-    notifyChange();
-  }
-
-  /// Returns a formatted string representation of current health status
-  String get healthDisplay => '$_currentHealth/$maxHealth';
+  int get health => currentHealth;
 }

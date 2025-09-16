@@ -1,17 +1,5 @@
-class BaseModel {
-  final int _health;
-  final int _maxHealth;
-  final String _name;
+import 'package:card_battler/game/models/common/actor_model.dart';
 
-  BaseModel({
-    required String name,
-    required int maxHealth,
-    required int currentHealth,
-  }) : _name = name,
-       _health = currentHealth,
-       _maxHealth = maxHealth;
-
-  String get display => '$_health/$_maxHealth';
-  int get health => _health;
-  String get name => _name;
+class BaseModel extends ActorModel {
+  BaseModel({required super.name, required super.healthModel});
 }

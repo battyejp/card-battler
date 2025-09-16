@@ -89,7 +89,10 @@ class PlayerTurnSceneCoordinator
         newPhase == GamePhase.waitingToDrawPlayerCards;
   }
 
+  @override
   void dispose() {
+    super.dispose();
+
     _shopCoordinator.onCardBought = null;
     _gamePhaseManager.removePhaseChangeListener(_onGamePhaseChanged);
     _activePlayerManager.removeActivePlayerChangeListener(

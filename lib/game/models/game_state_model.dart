@@ -4,6 +4,7 @@ import 'package:card_battler/game/models/card/card_list_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/models/enemy/enemy_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 
@@ -21,19 +22,12 @@ class GameStateModel {
     required this.enemiesModel,
   });
 
-  //TODO shuffle these cards
   factory GameStateModel.initialize(
     List<ShopCardModel> shopCards,
     List<CardModel> playerDeckCards,
     List<CardModel> enemyCards,
     List<BaseModel> bases,
   ) {
-    print('Initializing GameStateModel with:');
-    print('- ${shopCards.length} shop cards');
-    print('- ${playerDeckCards.length} player deck cards');
-    print('- ${enemyCards.length} enemy cards');
-    print('- ${bases.length} bases');
-
     final players = List<PlayerModel>.generate(2, (index) {
       final isActive = index == 0; // Only the first player is active
       final playerDeckCopy = List<CardModel>.from(
@@ -41,22 +35,20 @@ class GameStateModel {
       );
       return PlayerModel(
         name: 'Player ${index + 1}',
-        maxHealth: 10,
-        currentAttack: 0,
-        currentCredits: 0,
-        currentHealth: 10,
+        healthModel: HealthModel(10, 10),
         handCards: CardListModel<CardModel>.empty(),
         deckCards: CardListModel<CardModel>(cards: playerDeckCopy),
         discardCards: CardListModel<CardModel>.empty(),
         isActive: isActive,
+        credits: 0,
+        attack: 0,
       );
     });
 
     final enemies = List<EnemyModel>.generate(4, (index) {
       return EnemyModel(
         name: 'Player ${index + 1}',
-        maxHealth: 10,
-        currentHealth: 10,
+        healthModel: HealthModel(10, 10),
       );
     });
 
@@ -135,8 +127,7 @@ class GameStateFactory {
     return List.generate(3, (index) {
       return BaseModel(
         name: 'Base ${index + 1}',
-        currentHealth: 10,
-        maxHealth: 10,
+        healthModel: HealthModel(10, 10),
       );
     });
   }

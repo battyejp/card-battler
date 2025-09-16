@@ -5,7 +5,6 @@ import 'package:card_battler/game/services/card/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
 class PlayerCoordinator {
-  //TODO should there be a class for these 3 list like there is in the shop
   final CardListCoordinator<CardCoordinator> _handCardsCoordinator;
   final CardListCoordinator<CardCoordinator> _deckCardsCoordinator;
   final CardListCoordinator<CardCoordinator> _discardCardsCoordinator;
@@ -44,7 +43,6 @@ class PlayerCoordinator {
 
     final drawnCards = deckCardsCoordinator.drawCards(numberOfCards);
 
-    //TODO check if have enough cards in deck first and if not get from discard pile
     if (drawnCards.length < numberOfCards) {
       moveCardsFromDiscardToDeck(numberOfCards, drawnCards);
     }
@@ -83,8 +81,6 @@ class PlayerCoordinator {
   }
 
   bool _isDrawingCardsPrevented() {
-    //TODO is first part needed?
-    return /*state.cardSelectionService.hasSelection ||*/ handCardsCoordinator
-        .hasCards;
+    return handCardsCoordinator.hasCards;
   }
 }

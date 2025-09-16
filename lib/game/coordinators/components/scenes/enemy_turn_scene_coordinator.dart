@@ -11,17 +11,23 @@ class EnemyTurnSceneCoordinator {
   final EffectProcessor _effectProcessor;
   final GamePhaseManager _gamePhaseManager;
 
+  int _numberOfCardsToDrawPerEnemyTurn;
+  set numberOfCardsToDrawPerEnemyTurn(int value) =>
+      _numberOfCardsToDrawPerEnemyTurn = value;
+
   EnemyTurnSceneCoordinator({
     required CardListCoordinator<CardCoordinator> playedCardsCoordinator,
     required CardListCoordinator<CardCoordinator> deckCardsCoordinator,
     required PlayersInfoCoordinator playersInfoCoordinator,
     required EffectProcessor effectProcessor,
     required GamePhaseManager gamePhaseManager,
+    required int numberOfCardsToDrawPerEnemyTurn,
   }) : _playedCardsCoordinator = playedCardsCoordinator,
        _deckCardsCoordinator = deckCardsCoordinator,
        _playersInfoCoordinator = playersInfoCoordinator,
        _effectProcessor = effectProcessor,
-       _gamePhaseManager = gamePhaseManager {
+       _gamePhaseManager = gamePhaseManager,
+       _numberOfCardsToDrawPerEnemyTurn = numberOfCardsToDrawPerEnemyTurn {
     _deckCardsCoordinator.shuffle();
   }
 
@@ -37,8 +43,9 @@ class EnemyTurnSceneCoordinator {
       return;
     }
 
-    //TODO determine number
-    final drawnCards = deckCardsCoordinator.drawCards(1);
+    final drawnCards = deckCardsCoordinator.drawCards(
+      _numberOfCardsToDrawPerEnemyTurn,
+    );
 
     if (drawnCards.isNotEmpty) {
       playedCardsCoordinator.addCards(drawnCards);

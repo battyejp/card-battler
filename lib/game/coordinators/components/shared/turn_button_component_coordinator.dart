@@ -63,7 +63,6 @@ class TurnButtonComponentCoordinator
     }
   }
 
-  //TODO think this needs to be called somewhere or perhaps is does automatically?
   @override
   void dispose() {
     super.dispose();
