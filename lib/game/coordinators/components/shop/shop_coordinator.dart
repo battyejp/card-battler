@@ -36,7 +36,7 @@ class ShopCoordinator {
 
   void _addCardsToDisplayFromInventory(int numberOfCards) {
     var drawnCards = _inventoryCoordinators.drawCards(numberOfCards);
-    for (var card in drawnCards) {
+    for (final card in drawnCards) {
       card.onCardPlayed = onCardPlayed;
     }
 

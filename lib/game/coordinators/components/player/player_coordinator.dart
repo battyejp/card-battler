@@ -48,7 +48,7 @@ class PlayerCoordinator {
       moveCardsFromDiscardToDeck(numberOfCards, drawnCards);
     }
 
-    for (var card in drawnCards) {
+    for (final card in drawnCards) {
       card.onCardPlayed = onCardPlayed;
     }
 

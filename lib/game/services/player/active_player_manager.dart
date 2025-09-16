@@ -33,7 +33,7 @@ class ActivePlayerManager {
       _activePlayer = _players[nextIndex];
     }
 
-    for (var player in _players) {
+    for (final player in _players) {
       player.playerInfoCoordinator.isActive = player == _activePlayer;
     }
 

@@ -27,7 +27,7 @@ class CardListCoordinator<T extends CardCoordinator>
     final drawnCards = _cardCoordinators.take(cardsToTake).toList();
     _cardCoordinators.removeRange(0, cardsToTake);
 
-    for (var card in drawnCards) {
+    for (final card in drawnCards) {
       card.isFaceUp = true;
     }
 
@@ -63,7 +63,7 @@ class CardListCoordinator<T extends CardCoordinator>
   }
 
   List<T> removeAllCards({bool refreshUi = true}) {
-    for (var card in _cardCoordinators) {
+    for (final card in _cardCoordinators) {
       card.onCardPlayed = null;
       card.isFaceUp = false;
     }
