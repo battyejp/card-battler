@@ -5,8 +5,6 @@ import 'package:card_battler/game/ui/components/scenes/enemy_turn_scene.dart';
 import 'package:card_battler/game/ui/components/scenes/player_turn_scene.dart';
 import 'package:flame/game.dart';
 
-/// Service responsible for managing scene transitions and routing operations
-/// This class handles all navigation logic, following the Single Responsibility Principle
 class RouterService {
   RouterComponent? _router;
   PlayerTurnScene? _playerTurnScene;
