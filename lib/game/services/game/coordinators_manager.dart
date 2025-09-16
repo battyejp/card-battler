@@ -12,10 +12,10 @@ import 'package:card_battler/game/coordinators/components/team/base_coordinator.
 import 'package:card_battler/game/coordinators/components/team/bases_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/services/card/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/services/game/game_state_facade.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 
 class CoordinatorsManager {
@@ -29,14 +29,14 @@ class CoordinatorsManager {
   EnemyTurnSceneCoordinator get enemyTurnSceneCoordinator =>
       _enemyTurnSceneCoordinator;
 
-  CoordinatorsManager(GamePhaseManager gamePhaseManager) {
+  CoordinatorsManager(GamePhaseManager gamePhaseManager, GameStateModel state) {
     var effectProcessor = EffectProcessor();
     var cardsSelectionManagerService = CardsSelectionManagerService();
     var activePlayerManager = ActivePlayerManager(
       gamePhaseManager: gamePhaseManager,
     );
 
-    _playerCoordinators = GameStateFacade.instance.state!.players
+    _playerCoordinators = state.players
         .map(
           (player) => PlayerCoordinator(
             handCardsCoordinator: CardListCoordinator<CardCoordinator>(
@@ -75,7 +75,7 @@ class CoordinatorsManager {
     activePlayerManager.players = _playerCoordinators;
     activePlayerManager.setNextPlayerToActive();
 
-    var enemyCoordinators = GameStateFacade.instance.state!.enemiesModel.enemies
+    var enemyCoordinators = state.enemiesModel.enemies
         .map((enemy) => EnemyCoordinator(model: enemy))
         .toList();
 
@@ -84,12 +84,7 @@ class CoordinatorsManager {
         cardCoordinators: [],
       ),
       deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
-        cardCoordinators: GameStateFacade
-            .instance
-            .state!
-            .enemiesModel
-            .deckCards
-            .allCards
+        cardCoordinators: state.enemiesModel.deckCards.allCards
             .map(
               (card) => CardCoordinator(
                 cardModel: card.copy(),
@@ -115,12 +110,7 @@ class CoordinatorsManager {
           cardCoordinators: [],
         ),
         inventoryCoordinators: CardListCoordinator<ShopCardCoordinator>(
-          cardCoordinators: GameStateFacade
-              .instance
-              .state!
-              .shop
-              .inventoryCards
-              .allCards
+          cardCoordinators: state.shop.inventoryCards.allCards
               .map(
                 (card) => ShopCardCoordinator(
                   card,
@@ -135,7 +125,7 @@ class CoordinatorsManager {
       teamCoordinator: TeamCoordinator(
         playersInfoCoordinator: _playersInfoCoordinator,
         basesCoordinator: BasesCoordinator(
-          baseCoordinators: GameStateFacade.instance.state!.bases
+          baseCoordinators: state.bases
               .map((base) => BaseCoordinator(model: base))
               .toList(),
         ),
@@ -143,12 +133,7 @@ class CoordinatorsManager {
       enemiesCoordinator: EnemiesCoordinator(
         enemyCoordinators: enemyCoordinators,
         deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
-          cardCoordinators: GameStateFacade
-              .instance
-              .state!
-              .enemiesModel
-              .deckCards
-              .allCards
+          cardCoordinators: state.enemiesModel.deckCards.allCards
               .map(
                 (card) => CardCoordinator(
                   cardModel: card.copy(),

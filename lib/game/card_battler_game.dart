@@ -1,9 +1,9 @@
 import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/card/card_loader_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/services/game/game_state_facade.dart';
 import 'package:card_battler/game/services/game/coordinators_manager.dart';
 import 'package:card_battler/game/services/ui/dialog_service.dart';
 import 'package:card_battler/game/services/ui/router_service.dart';
@@ -46,17 +46,19 @@ class CardBattlerGame extends FlameGame {
       CardModel.fromJson,
     );
 
-    GameStateFacade.instance.initialize(
+    var state = GameStateModel.initialize(
       shopCards,
       playerDeckCards,
       enemyCards,
       [],
     );
-
-    final gamePhaseManager = GamePhaseManager(); 
+    final gamePhaseManager = GamePhaseManager();
     final routerService = RouterService();
     final dialogService = DialogService();
-    final playerCoordinatorsManager = CoordinatorsManager(gamePhaseManager);
+    final playerCoordinatorsManager = CoordinatorsManager(
+      gamePhaseManager,
+      state,
+    );
     var router = SceneService(
       routerService,
       dialogService,
@@ -67,9 +69,7 @@ class CardBattlerGame extends FlameGame {
 
     var turnButtonComponent =
         TurnButtonComponent(
-            TurnButtonComponentCoordinator(
-              gamePhaseManager: gamePhaseManager
-            ),
+            TurnButtonComponentCoordinator(gamePhaseManager: gamePhaseManager),
           )
           ..priority = 10
           ..size = Vector2(200, 50)
@@ -77,7 +77,6 @@ class CardBattlerGame extends FlameGame {
 
     turnButtonComponent.priority = 10;
     router.add(turnButtonComponent);
-
     world.add(router);
   }
 }

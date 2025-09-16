@@ -58,6 +58,13 @@ class GameStateModel {
       playedCards: CardListModel<CardModel>.empty(),
     );
 
+    final basesModel = List.generate(3, (index) {
+      return BaseModel(
+        name: 'Base ${index + 1}',
+        healthModel: HealthModel(10, 10),
+      );
+    });
+
     return GameStateModel(
       shop: ShopModel(
         displayCards: CardListModel<ShopCardModel>.empty(),
@@ -65,70 +72,10 @@ class GameStateModel {
       ),
       players: players,
       enemiesModel: enemiesModel,
-      bases: bases,
+      bases: basesModel,
     );
   }
 
   PlayerModel get activePlayer =>
       players.firstWhere((player) => player.isActive);
-}
-
-class GameStateFactory {
-  GameStateModel createGameState(
-    List<ShopCardModel> shopCards,
-    List<CardModel> playerDeckCards,
-    List<CardModel> enemyCards,
-    List<BaseModel> bases,
-  ) {
-    return GameStateModel.initialize(
-      shopCards,
-      playerDeckCards,
-      enemyCards,
-      _createDefaultBases(),
-    );
-  }
-
-  // GameStateModel createDefaultGameState() {
-  //   final shopCards = _createDefaultShopCards();
-  //   final playerDeckCards = _createDefaultPlayerCards();
-  //   final enemyCards = _createDefaultEnemyCards();
-  //   final bases = _createDefaultBases();
-
-  //   return createGameState(shopCards, playerDeckCards, enemyCards, bases);
-  // }
-
-  // List<ShopCardModel> _createDefaultShopCards() {
-  //   return List.generate(10, (index) {
-  //     return ShopCardModel(name: 'Test Card ${index + 1}', cost: 1);
-  //   });
-  // }
-
-  // List<CardModel> _createDefaultPlayerCards() {
-  //   return List.generate(10, (index) {
-  //     return CardModel(
-  //       name: 'Card ${index + 1}',
-  //       type: 'Player',
-  //       isFaceUp: false,
-  //     );
-  //   });
-  // }
-
-  // List<CardModel> _createDefaultEnemyCards() {
-  //   return List.generate(10, (index) {
-  //     return CardModel(
-  //       name: 'Enemy Card ${index + 1}',
-  //       type: 'Enemy',
-  //       isFaceUp: false,
-  //     );
-  //   });
-  // }
-
-  List<BaseModel> _createDefaultBases() {
-    return List.generate(3, (index) {
-      return BaseModel(
-        name: 'Base ${index + 1}',
-        healthModel: HealthModel(10, 10),
-      );
-    });
-  }
 }
