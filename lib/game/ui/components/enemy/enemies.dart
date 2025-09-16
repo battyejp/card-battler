@@ -4,13 +4,12 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class Enemies extends PositionComponent {
-  final EnemiesCoordinator _coordinator;
-
-  final double _enemyHeightFactor = 0.6;
-  final double _enemyWidthFactor = 0.2;
-
   Enemies({required EnemiesCoordinator coordinator})
     : _coordinator = coordinator;
+
+  final EnemiesCoordinator _coordinator;
+  final double _enemyHeightFactor = 0.6;
+  final double _enemyWidthFactor = 0.2;
 
   @override
   void onLoad() {

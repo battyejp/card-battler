@@ -5,9 +5,9 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart' hide Card;
 
 class CardPile extends ReactivePositionComponent<CardListCoordinator> {
-  final bool showNext;
-
   CardPile(super.coordinator, {required this.showNext});
+
+  final bool showNext;
 
   // @override
   // void onLoad() {

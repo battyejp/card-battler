@@ -3,12 +3,12 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class Card extends PositionComponent {
+  Card({required CardCoordinator coordinator}) : _coordinator = coordinator;
+
   final CardCoordinator _coordinator;
 
   @protected
   late TextComponent nameTextComponent;
-
-  Card({required CardCoordinator coordinator}) : _coordinator = coordinator;
 
   @override
   void onLoad() {

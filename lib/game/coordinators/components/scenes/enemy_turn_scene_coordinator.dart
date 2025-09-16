@@ -5,16 +5,6 @@ import 'package:card_battler/game/services/card/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
 class EnemyTurnSceneCoordinator {
-  final CardListCoordinator<CardCoordinator> _playedCardsCoordinator;
-  final CardListCoordinator<CardCoordinator> _deckCardsCoordinator;
-  final PlayersInfoCoordinator _playersInfoCoordinator;
-  final EffectProcessor _effectProcessor;
-  final GamePhaseManager _gamePhaseManager;
-
-  int _numberOfCardsToDrawPerEnemyTurn;
-  set numberOfCardsToDrawPerEnemyTurn(int value) =>
-      _numberOfCardsToDrawPerEnemyTurn = value;
-
   EnemyTurnSceneCoordinator({
     required CardListCoordinator<CardCoordinator> playedCardsCoordinator,
     required CardListCoordinator<CardCoordinator> deckCardsCoordinator,
@@ -30,6 +20,16 @@ class EnemyTurnSceneCoordinator {
        _numberOfCardsToDrawPerEnemyTurn = numberOfCardsToDrawPerEnemyTurn {
     _deckCardsCoordinator.shuffle();
   }
+
+  final CardListCoordinator<CardCoordinator> _playedCardsCoordinator;
+  final CardListCoordinator<CardCoordinator> _deckCardsCoordinator;
+  final PlayersInfoCoordinator _playersInfoCoordinator;
+  final EffectProcessor _effectProcessor;
+  final GamePhaseManager _gamePhaseManager;
+
+  int _numberOfCardsToDrawPerEnemyTurn;
+  set numberOfCardsToDrawPerEnemyTurn(int value) =>
+      _numberOfCardsToDrawPerEnemyTurn = value;
 
   CardListCoordinator<CardCoordinator> get playedCardsCoordinator =>
       _playedCardsCoordinator;

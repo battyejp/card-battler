@@ -15,18 +15,14 @@ class DialogService {
   String _currentMessage = 'Are you sure you want to continue?';
 
   /// Get confirmation dialog route for router setup
-  Map<String, Route> getDialogRoutes() {
-    return {
-      'confirm': OverlayRoute((context, game) {
-        return ConfirmDialog(
+  Map<String, Route> getDialogRoutes() => {
+      'confirm': OverlayRoute((context, game) => ConfirmDialog(
           title: _currentTitle,
           message: _currentMessage,
           onCancel: _handleConfirmCancel,
           onConfirm: _handleConfirmAccept,
-        );
-      }),
+        )),
     };
-  }
 
   /// Show custom confirmation dialog with specified callbacks and messages
   void showCustomConfirmation({

@@ -5,13 +5,6 @@ import 'package:card_battler/game/services/card/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
 class PlayerCoordinator {
-  final CardListCoordinator<CardCoordinator> _handCardsCoordinator;
-  final CardListCoordinator<CardCoordinator> _deckCardsCoordinator;
-  final CardListCoordinator<CardCoordinator> _discardCardsCoordinator;
-  final PlayerInfoCoordinator _playerInfoCoordinator;
-  final GamePhaseManager _gamePhaseManager;
-  final EffectProcessor _effectProcessor;
-
   PlayerCoordinator({
     required CardListCoordinator<CardCoordinator> handCardsCoordinator,
     required CardListCoordinator<CardCoordinator> deckCardsCoordinator,
@@ -27,6 +20,13 @@ class PlayerCoordinator {
        _effectProcessor = effectProcessor {
     _deckCardsCoordinator.shuffle();
   }
+
+  final CardListCoordinator<CardCoordinator> _handCardsCoordinator;
+  final CardListCoordinator<CardCoordinator> _deckCardsCoordinator;
+  final CardListCoordinator<CardCoordinator> _discardCardsCoordinator;
+  final PlayerInfoCoordinator _playerInfoCoordinator;
+  final GamePhaseManager _gamePhaseManager;
+  final EffectProcessor _effectProcessor;
 
   CardListCoordinator<CardCoordinator> get handCardsCoordinator =>
       _handCardsCoordinator;
@@ -81,7 +81,5 @@ class PlayerCoordinator {
     _effectProcessor.applyCardEffects([cardCoordinator]);
   }
 
-  bool _isDrawingCardsPrevented() {
-    return handCardsCoordinator.hasCards;
-  }
+  bool _isDrawingCardsPrevented() => handCardsCoordinator.hasCards;
 }

@@ -3,11 +3,10 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class Base extends PositionComponent with HasVisibility {
-  final BaseCoordinator _coordinator;
-
-  late TextComponent _healthTextComponent;
-
   Base({required BaseCoordinator coordinator}) : _coordinator = coordinator;
+
+  final BaseCoordinator _coordinator;
+  late TextComponent _healthTextComponent;
 
   @override
   void onLoad() {

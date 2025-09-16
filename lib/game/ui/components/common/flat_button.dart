@@ -7,29 +7,6 @@ class _ButtonDisabler extends PositionComponent with IgnoreEvents {
 }
 
 class FlatButton extends ButtonComponent with HasVisibility {
-  bool _disabled = false;
-  double _opacity = 1.0;
-  late final _ButtonDisabler _disabler;
-  String _text;
-  
-  /// Whether the button is disabled (cannot be clicked)
-  bool get disabled => _disabled;
-  set disabled(bool value) {
-    if (_disabled != value) {
-      _disabled = value;
-      _updateVisualState();
-    }
-  }
-
-  /// The text displayed on the button
-  String get text => _text;
-  set text(String value) {
-    if (_text != value) {
-      _text = value;
-      _updateVisualState();
-    }
-  }
-
   FlatButton(
     String text, {
     super.size,
@@ -59,6 +36,29 @@ class FlatButton extends ButtonComponent with HasVisibility {
        ) {
     _disabler = _ButtonDisabler();
     if (_disabled) {
+      _updateVisualState();
+    }
+  }
+
+  bool _disabled = false;
+  double _opacity = 1.0;
+  late final _ButtonDisabler _disabler;
+  String _text;
+
+  /// Whether the button is disabled (cannot be clicked)
+  bool get disabled => _disabled;
+  set disabled(bool value) {
+    if (_disabled != value) {
+      _disabled = value;
+      _updateVisualState();
+    }
+  }
+
+  /// The text displayed on the button
+  String get text => _text;
+  set text(String value) {
+    if (_text != value) {
+      _text = value;
       _updateVisualState();
     }
   }
@@ -115,13 +115,12 @@ class FlatButton extends ButtonComponent with HasVisibility {
 }
 
 class ButtonBackground extends PositionComponent with HasAncestor<FlatButton> {
-  final _paint = Paint()..style = PaintingStyle.stroke;
-
-  late double cornerRadius;
-
   ButtonBackground(Color color) {
     _paint.color = color;
   }
+
+  final _paint = Paint()..style = PaintingStyle.stroke;
+  late double cornerRadius;
 
   @override
   void onMount() {

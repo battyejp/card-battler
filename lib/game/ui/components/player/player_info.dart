@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 enum PlayerInfoViewMode { summary, detailed }
 
 class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
-  final PlayerInfoViewMode _viewMode;
-  final Map<String, TextComponent> _labels = {};
-
   PlayerInfo(super.coordinator, {required PlayerInfoViewMode viewMode})
     : _viewMode = viewMode;
+
+  final PlayerInfoViewMode _viewMode;
+  final Map<String, TextComponent> _labels = {};
 
   @override
   void updateDisplay() {

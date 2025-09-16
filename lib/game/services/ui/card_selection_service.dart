@@ -8,11 +8,6 @@ import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 
 class CardSelectionService {
-  final ActionableCard _card;
-  final CardsSelectionManagerService _cardsSelectionManagerService;
-  final GamePhaseManager _gamePhaseManager;
-  final ActivePlayerManager _activePlayerManager;
-
   CardSelectionService({
     required ActionableCard card,
     required CardsSelectionManagerService cardsSelectionManagerService,
@@ -22,6 +17,11 @@ class CardSelectionService {
        _cardsSelectionManagerService = cardsSelectionManagerService,
        _gamePhaseManager = gamePhaseManager,
        _activePlayerManager = activePlayerManager;
+
+  final ActionableCard _card;
+  final CardsSelectionManagerService _cardsSelectionManagerService;
+  final GamePhaseManager _gamePhaseManager;
+  final ActivePlayerManager _activePlayerManager;
 
   final double _animationSpeed = 0.5;
   final double _scaleFactor = 2.5;
@@ -33,7 +33,9 @@ class CardSelectionService {
   bool get isAnyCardSelected => _cardsSelectionManagerService.hasSelection;
 
   bool onSelected(TapUpEvent event) {
-    if (_isAnimating || isAnyCardSelected) return false;
+    if (_isAnimating || isAnyCardSelected) {
+      return false;
+    }
 
     _selectAtPosition(event.localPosition);
     return true;
@@ -90,7 +92,9 @@ class CardSelectionService {
   }
 
   void _deselect() {
-    if (_isAnimating) return;
+    if (_isAnimating) {
+      return;
+    }
 
     _cardsSelectionManagerService.deselectCard();
 

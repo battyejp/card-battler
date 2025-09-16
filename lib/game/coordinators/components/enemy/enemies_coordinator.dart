@@ -3,12 +3,6 @@ import 'package:card_battler/game/coordinators/components/cards/card_list_coordi
 import 'package:card_battler/game/coordinators/components/enemy/enemy_coordinator.dart';
 
 class EnemiesCoordinator {
-  final List<EnemyCoordinator> _enemyCoordinators;
-  final CardListCoordinator<CardCoordinator> _deckCardsCoordinator;
-  final CardListCoordinator<CardCoordinator> _playedCardsCoordinator;
-
-  final int _maxNumberOfEnemiesInPlay = 3;
-
   EnemiesCoordinator({
     required List<EnemyCoordinator> enemyCoordinators,
     required CardListCoordinator<CardCoordinator> deckCardsCoordinator,
@@ -16,6 +10,12 @@ class EnemiesCoordinator {
   }) : _deckCardsCoordinator = deckCardsCoordinator,
        _playedCardsCoordinator = playedCardsCoordinator,
        _enemyCoordinators = enemyCoordinators;
+
+  final List<EnemyCoordinator> _enemyCoordinators;
+  final CardListCoordinator<CardCoordinator> _deckCardsCoordinator;
+  final CardListCoordinator<CardCoordinator> _playedCardsCoordinator;
+
+  final int _maxNumberOfEnemiesInPlay = 3;
 
   List<EnemyCoordinator> get allEnemyCoordinators => _enemyCoordinators;
   CardListCoordinator<CardCoordinator> get deckCardsCoordinator =>

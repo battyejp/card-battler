@@ -7,14 +7,14 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class EnemyTurnScene extends Component {
-  final Vector2 _size;
-  final EnemyTurnSceneCoordinator _coordinator;
-
   EnemyTurnScene({
     required Vector2 size,
     required EnemyTurnSceneCoordinator coordinator,
   }) : _size = size,
        _coordinator = coordinator;
+
+  final Vector2 _size;
+  final EnemyTurnSceneCoordinator _coordinator;
 
   @override
   void onMount() {

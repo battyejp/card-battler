@@ -1,7 +1,7 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/material.dart';
 import 'package:card_battler/screens/loading_screen.dart';
 import 'package:card_battler/screens/menu_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('LoadingScreen shows loading indicator then navigates to MenuScreen', (WidgetTester tester) async {

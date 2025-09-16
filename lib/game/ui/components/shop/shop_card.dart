@@ -1,12 +1,12 @@
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 import 'package:card_battler/game/ui/components/card/selectable_card.dart';
-import 'package:flutter/material.dart' hide Card;
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart' hide Card;
 
 class ShopCard extends SelectableCard {
-  final ShopCardCoordinator _coordinator;
+  ShopCard(ShopCardCoordinator super.coordinator) : _coordinator = coordinator;
 
-  ShopCard(this._coordinator) : super(_coordinator);
+  final ShopCardCoordinator _coordinator;
 
   @override
   String get buttonLabel => "Buy";

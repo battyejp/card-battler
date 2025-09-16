@@ -2,6 +2,7 @@ import 'package:card_battler/game/coordinators/components/common/actor_coordinat
 import 'package:card_battler/game/models/player/player_model.dart';
 
 class PlayerInfoCoordinator extends ActorCoordinator<PlayerInfoCoordinator> {
+  PlayerInfoCoordinator({required PlayerModel model}) : super(model: model);
   PlayerModel get _playerModel => model as PlayerModel;
 
   int get attack => _playerModel.attack;
@@ -10,10 +11,10 @@ class PlayerInfoCoordinator extends ActorCoordinator<PlayerInfoCoordinator> {
   bool get isActive => _playerModel.isActive;
   set isActive(bool value) => _playerModel.isActive = value;
 
-  PlayerInfoCoordinator({required PlayerModel model}) : super(model: model);
-
   void adjustCredits(int amount) {
-    if (_playerModel.credits + amount < 0) return;
+    if (_playerModel.credits + amount < 0) {
+      return;
+    }
 
     _playerModel.credits += amount;
     notifyChange();

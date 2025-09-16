@@ -6,13 +6,6 @@ import 'package:card_battler/game/services/ui/dialog_service.dart';
 
 class TurnButtonComponentCoordinator
     with ReactiveCoordinator<TurnButtonComponentCoordinator> {
-  final GamePhaseManager _gamePhaseManager;
-  final DialogService _dialogService;
-  final ActivePlayerManager _activePlayerManager;
-
-  String buttonText = "End Turn";
-  bool buttonVisible = false;
-
   TurnButtonComponentCoordinator({
     required GamePhaseManager gamePhaseManager,
     required DialogService dialogService,
@@ -23,6 +16,13 @@ class TurnButtonComponentCoordinator
        _activePlayerManager = activePlayerManager {
     _gamePhaseManager.addPhaseChangeListener(_onGamePhaseChanged);
   }
+
+  final GamePhaseManager _gamePhaseManager;
+  final DialogService _dialogService;
+  final ActivePlayerManager _activePlayerManager;
+
+  String buttonText = "End Turn";
+  bool buttonVisible = false;
 
   void handleTurnButtonPressed() {
     if (_gamePhaseManager.currentPhase == GamePhase.playerTakeActionsTurn &&

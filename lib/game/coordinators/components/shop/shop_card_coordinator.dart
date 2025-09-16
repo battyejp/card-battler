@@ -6,8 +6,6 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 
 class ShopCardCoordinator extends CardCoordinator {
-  final ShopCardModel _cardModel;
-
   ShopCardCoordinator(
     this._cardModel,
     CardsSelectionManagerService cardsSelectionManagerService,
@@ -20,10 +18,11 @@ class ShopCardCoordinator extends CardCoordinator {
         activePlayerManager: activePlayerManager,
       );
 
+  final ShopCardModel _cardModel;
+
   int get cost => _cardModel.cost;
 
   @override
-  bool isActionDisabled(PlayerInfoCoordinator playerInfoCoordinator) {
-    return playerInfoCoordinator.credits < cost;
-  }
+  bool isActionDisabled(PlayerInfoCoordinator playerInfoCoordinator) =>
+      playerInfoCoordinator.credits < cost;
 }

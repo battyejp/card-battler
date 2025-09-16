@@ -19,16 +19,6 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 
 class CoordinatorsManager {
-  late PlayerTurnSceneCoordinator _playerTurnSceneCoordinator;
-  late EnemyTurnSceneCoordinator _enemyTurnSceneCoordinator;
-  late PlayersInfoCoordinator _playersInfoCoordinator;
-  late List<PlayerCoordinator> _playerCoordinators;
-
-  PlayerTurnSceneCoordinator get playerTurnSceneCoordinator =>
-      _playerTurnSceneCoordinator;
-  EnemyTurnSceneCoordinator get enemyTurnSceneCoordinator =>
-      _enemyTurnSceneCoordinator;
-
   CoordinatorsManager(
     GamePhaseManager gamePhaseManager,
     GameStateModel state,
@@ -154,4 +144,14 @@ class CoordinatorsManager {
       activePlayerManager: activePlayerManager,
     );
   }
+
+  late PlayerTurnSceneCoordinator _playerTurnSceneCoordinator;
+  late EnemyTurnSceneCoordinator _enemyTurnSceneCoordinator;
+  late PlayersInfoCoordinator _playersInfoCoordinator;
+  late List<PlayerCoordinator> _playerCoordinators;
+
+  PlayerTurnSceneCoordinator get playerTurnSceneCoordinator =>
+      _playerTurnSceneCoordinator;
+  EnemyTurnSceneCoordinator get enemyTurnSceneCoordinator =>
+      _enemyTurnSceneCoordinator;
 }

@@ -5,8 +5,7 @@ class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -29,5 +28,4 @@ class MenuScreen extends StatelessWidget {
         ),
       ),
     );
-  }
 }

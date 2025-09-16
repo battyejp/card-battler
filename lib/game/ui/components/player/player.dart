@@ -8,11 +8,11 @@ import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
+  Player({required PlayerCoordinator playerModel}) : _coordinator = playerModel;
+
   final _handWidthFactor = 0.6;
   final _infoHeightFactor = 0.1;
   final PlayerCoordinator _coordinator;
-
-  Player({required PlayerCoordinator playerModel}) : _coordinator = playerModel;
 
   @override
   void onLoad() {

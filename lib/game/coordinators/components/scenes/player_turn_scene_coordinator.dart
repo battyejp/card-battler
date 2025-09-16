@@ -11,20 +11,6 @@ import 'package:card_battler/game/services/player/active_player_manager.dart';
 
 class PlayerTurnSceneCoordinator
     with ReactiveCoordinator<PlayerTurnSceneCoordinator> {
-  late PlayerCoordinator _playerCoordinator;
-  final ShopCoordinator _shopCoordinator;
-  final TeamCoordinator _teamCoordinator;
-  final EnemiesCoordinator _enemiesCoordinator;
-  final EffectProcessor _effectProcessor;
-  final GamePhaseManager _gamePhaseManager;
-  final ActivePlayerManager _activePlayerManager;
-
-  PlayerCoordinator get playerCoordinator => _playerCoordinator;
-  ShopCoordinator get shopCoordinator => _shopCoordinator;
-  TeamCoordinator get teamCoordinator => _teamCoordinator;
-  EnemiesCoordinator get enemiesCoordinator => _enemiesCoordinator;
-  EffectProcessor get effectProcessor => _effectProcessor;
-
   PlayerTurnSceneCoordinator({
     required PlayerCoordinator playerCoordinator,
     required ShopCoordinator shopCoordinator,
@@ -47,6 +33,20 @@ class PlayerTurnSceneCoordinator
     gamePhaseManager.addPhaseChangeListener(_onGamePhaseChanged);
     _activePlayerManager.addActivePlayerChangeListener(_onActivePlayerChanged);
   }
+
+  late PlayerCoordinator _playerCoordinator;
+  final ShopCoordinator _shopCoordinator;
+  final TeamCoordinator _teamCoordinator;
+  final EnemiesCoordinator _enemiesCoordinator;
+  final EffectProcessor _effectProcessor;
+  final GamePhaseManager _gamePhaseManager;
+  final ActivePlayerManager _activePlayerManager;
+
+  PlayerCoordinator get playerCoordinator => _playerCoordinator;
+  ShopCoordinator get shopCoordinator => _shopCoordinator;
+  TeamCoordinator get teamCoordinator => _teamCoordinator;
+  EnemiesCoordinator get enemiesCoordinator => _enemiesCoordinator;
+  EffectProcessor get effectProcessor => _effectProcessor;
 
   void onCardBought(ShopCardCoordinator shopCardCoordinator) {
     _playerCoordinator.playerInfoCoordinator.adjustCredits(
@@ -84,10 +84,9 @@ class PlayerTurnSceneCoordinator
     _playerCoordinator.deckCardsCoordinator.shuffle();
   }
 
-  bool _isTurnOver(GamePhase previousPhase, GamePhase newPhase) {
-    return previousPhase == GamePhase.playerTakeActionsTurn &&
-        newPhase == GamePhase.waitingToDrawPlayerCards;
-  }
+  bool _isTurnOver(GamePhase previousPhase, GamePhase newPhase) =>
+      previousPhase == GamePhase.playerTakeActionsTurn &&
+      newPhase == GamePhase.waitingToDrawPlayerCards;
 
   @override
   void dispose() {

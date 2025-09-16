@@ -1,10 +1,9 @@
 import 'package:card_battler/game/coordinators/components/team/base_coordinator.dart';
 
 class BasesCoordinator {
-  final List<BaseCoordinator> _baseCoordinators;
-
   BasesCoordinator({required List<BaseCoordinator> baseCoordinators})
     : _baseCoordinators = baseCoordinators;
+  final List<BaseCoordinator> _baseCoordinators;
 
   List<BaseCoordinator> get allBaseCoordinators => _baseCoordinators;
 

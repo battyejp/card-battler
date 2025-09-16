@@ -1,8 +1,8 @@
 class HealthModel {
+  HealthModel(this.currentHealth, this.maxHealth);
+
   int currentHealth;
   final int maxHealth;
-
-  HealthModel(this.currentHealth, this.maxHealth);
 
   String get display => 'HP: $currentHealth/$maxHealth';
 }

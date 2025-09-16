@@ -4,10 +4,6 @@ import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:flame/components.dart';
 
 class Players extends PositionComponent {
-  final PlayersInfoCoordinator _coordinator;
-  final bool _showActivePlayer;
-  final PlayerInfoViewMode _viewMode;
-
   Players({
     required PlayersInfoCoordinator coordinator,
     required bool showActivePlayer,
@@ -15,6 +11,10 @@ class Players extends PositionComponent {
   }) : _showActivePlayer = showActivePlayer,
        _coordinator = coordinator,
        _viewMode = viewMode;
+
+  final PlayersInfoCoordinator _coordinator;
+  final bool _showActivePlayer;
+  final PlayerInfoViewMode _viewMode;
 
   @override
   void onLoad() {

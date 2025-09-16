@@ -4,9 +4,9 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class Bases extends PositionComponent {
-  final BasesCoordinator _coordinator;
-
   Bases({required BasesCoordinator coordinator}) : _coordinator = coordinator;
+
+  final BasesCoordinator _coordinator;
 
   @override
   void onLoad() {

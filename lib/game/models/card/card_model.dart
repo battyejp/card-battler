@@ -3,26 +3,12 @@ import 'dart:convert';
 import 'package:card_battler/game/models/shared/effect_model.dart';
 
 class CardModel {
-  final String name;
-  final String type;
-  final List<EffectModel> effects;
-  bool isFaceUp;
-
   CardModel({
     required this.name,
     required this.type,
     List<EffectModel>? effects,
     this.isFaceUp = false,
   }) : effects = effects ?? [];
-  
-  CardModel copy() {
-    return CardModel(
-      name: name,
-      type: type,
-      effects: effects.map((e) => e.copy()).toList(),
-      isFaceUp: isFaceUp,
-    );
-  }
 
   factory CardModel.fromJson(Map<String, dynamic> json) {
     final effectsJson = json['effects'] as List<dynamic>?;
@@ -38,14 +24,24 @@ class CardModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'type': type,
-      'effects': effects.map((effect) => effect.toJson()).toList(),
-      'faceUp': isFaceUp,
-    };
-  }
+  final String name;
+  final String type;
+  final List<EffectModel> effects;
+  bool isFaceUp;
+
+  CardModel copy() => CardModel(
+    name: name,
+    type: type,
+    effects: effects.map((e) => e.copy()).toList(),
+    isFaceUp: isFaceUp,
+  );
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'type': type,
+    'effects': effects.map((effect) => effect.toJson()).toList(),
+    'faceUp': isFaceUp,
+  };
 }
 
 /// Loads cards from JSON string

@@ -6,14 +6,14 @@ import 'package:flame/components.dart';
 
 class TurnButtonComponent
     extends ReactivePositionComponent<TurnButtonComponentCoordinator> {
-  bool loadingComplete = false;
-  late FlatButton _turnButton;
-  final CardsSelectionManagerService _cardsSelectionManagerService;
-
   TurnButtonComponent(
     super.coordinator, {
     required CardsSelectionManagerService cardsSelectionManagerService,
   }) : _cardsSelectionManagerService = cardsSelectionManagerService;
+
+  bool loadingComplete = false;
+  late FlatButton _turnButton;
+  final CardsSelectionManagerService _cardsSelectionManagerService;
 
   @override
   void updateDisplay() {

@@ -3,11 +3,6 @@ import 'package:card_battler/game/coordinators/components/cards/card_list_coordi
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 
 class ShopCoordinator {
-  final CardListCoordinator<ShopCardCoordinator> _displayCoordinators;
-  final CardListCoordinator<ShopCardCoordinator> _inventoryCoordinators;
-
-  Function(ShopCardCoordinator shopCardCoordinator)? onCardBought;
-
   ShopCoordinator({
     required CardListCoordinator<ShopCardCoordinator> displayCoordinators,
     required CardListCoordinator<ShopCardCoordinator> inventoryCoordinators,
@@ -16,6 +11,11 @@ class ShopCoordinator {
     _inventoryCoordinators.shuffle();
     _addCardsToDisplayFromInventory(6);
   }
+
+  final CardListCoordinator<ShopCardCoordinator> _displayCoordinators;
+  final CardListCoordinator<ShopCardCoordinator> _inventoryCoordinators;
+
+  Function(ShopCardCoordinator shopCardCoordinator)? onCardBought;
 
   CardListCoordinator<ShopCardCoordinator> get displayCoordinator =>
       _displayCoordinators;

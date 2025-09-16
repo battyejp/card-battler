@@ -3,12 +3,12 @@ import 'package:card_battler/game/ui/components/card/actionable_card.dart';
 import 'package:flame/events.dart';
 
 class SelectedActionableCard extends ActionableCard with TapCallbacks {
+  SelectedActionableCard(super.coordinator);
+
   late final CardSelectionService _interactionService;
   // bool Function()? _determineIfButtonEnabled;
   // CardInteractionService? _cardInteractionService;
   // CardSelectionService? _cardSelectionService;
-
-  SelectedActionableCard(super.coordinator);
 
   @override
   void onLoad() {

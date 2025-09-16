@@ -5,11 +5,9 @@ class CardBattlerApp extends StatelessWidget {
   const CardBattlerApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context) => MaterialApp(
       title: 'Card Battler',
       theme: ThemeData.dark(),
       home: const LoadingScreen(),
     );
-  }
 }

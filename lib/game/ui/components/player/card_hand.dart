@@ -10,7 +10,9 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
   void updateDisplay() {
     super.updateDisplay();
 
-    if (coordinator.cardCoordinators.isEmpty) return;
+    if (coordinator.cardCoordinators.isEmpty) {
+      return;
+    }
 
     final cardWidth = size.x * 0.15;
     final cardHeight = size.y * 0.8;

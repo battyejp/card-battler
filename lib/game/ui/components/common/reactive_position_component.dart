@@ -8,10 +8,10 @@ import 'package:flame/components.dart';
 /// an abstract updateDisplay method that subclasses must implement
 abstract class ReactivePositionComponent<T extends ReactiveCoordinator<T>>
     extends PositionComponent {
+  ReactivePositionComponent(this.coordinator);
+
   final T coordinator;
   late StreamSubscription<T> _modelSubscription;
-
-  ReactivePositionComponent(this.coordinator);
 
   /// Base implementation that clears all child components
   /// Subclasses should call super.updateDisplay() first, then add their components

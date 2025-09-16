@@ -3,10 +3,10 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class Enemy extends PositionComponent {
+  Enemy({required EnemyCoordinator coordinator}) : _coordinator = coordinator;
+
   final EnemyCoordinator _coordinator;
   late TextComponent _healthTextComponent;
-
-  Enemy({required EnemyCoordinator coordinator}) : _coordinator = coordinator;
 
   @override
   void onLoad() {

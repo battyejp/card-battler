@@ -5,10 +5,10 @@ import 'package:card_battler/game/ui/components/common/flat_button.dart';
 import 'package:flame/components.dart';
 
 class ActionableCard extends Card {
+  ActionableCard(CardCoordinator coordinator) : super(coordinator: coordinator);
+
   late CardSelectionService? cardInteractionService;
   late FlatButton _actionButton;
-
-  ActionableCard(CardCoordinator coordinator) : super(coordinator: coordinator);
 
   String get buttonLabel => "Play";
 

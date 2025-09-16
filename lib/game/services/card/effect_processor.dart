@@ -4,9 +4,9 @@ import 'package:card_battler/game/coordinators/components/team/players_info_coor
 import 'package:card_battler/game/models/shared/effect_model.dart';
 
 class EffectProcessor {
-  late PlayersInfoCoordinator _playersInfoCoordinator;
-
   EffectProcessor();
+
+  late PlayersInfoCoordinator _playersInfoCoordinator;
 
   set playersInfoCoordinator(PlayersInfoCoordinator value) =>
       _playersInfoCoordinator = value;

@@ -1,17 +1,11 @@
+import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 
 class CardCoordinator {
-  final CardModel _cardModel;
-  final CardsSelectionManagerService _cardsSelectionManagerService;
-  final GamePhaseManager _gamePhaseManager;
-  final ActivePlayerManager _activePlayerManager;
-
-  Function(CardCoordinator)? onCardPlayed;
 
   CardCoordinator({
     required CardModel cardModel,
@@ -22,6 +16,13 @@ class CardCoordinator {
        _cardsSelectionManagerService = cardsSelectionManagerService,
        _gamePhaseManager = gamePhaseManager,
        _activePlayerManager = activePlayerManager;
+
+  final CardModel _cardModel;
+  final CardsSelectionManagerService _cardsSelectionManagerService;
+  final GamePhaseManager _gamePhaseManager;
+  final ActivePlayerManager _activePlayerManager;
+
+  Function(CardCoordinator)? onCardPlayed;
 
   String get name => _cardModel.name;
 
@@ -40,7 +41,5 @@ class CardCoordinator {
     onCardPlayed?.call(this);
   }
 
-  bool isActionDisabled(PlayerInfoCoordinator playerInfoCoordinator) {
-    return false;
-  }
+  bool isActionDisabled(PlayerInfoCoordinator playerInfoCoordinator) => false;
 }

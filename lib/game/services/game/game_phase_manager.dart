@@ -19,16 +19,17 @@ enum GamePhase {
 }
 
 class GamePhaseManager {
+  GamePhaseManager({required int numberOfPlayers})
+    : _numberOfPlayers = numberOfPlayers;
+
   GamePhase _currentPhase = GamePhase.waitingToDrawPlayerCards;
   GamePhase _previousPhase = GamePhase.waitingToDrawPlayerCards;
   int _round = 0;
   int _playerTurn = 0;
   final int _numberOfPlayers;
   final List<Function(GamePhase, GamePhase)> _phaseChangeListeners = [];
-  GamePhase get currentPhase => _currentPhase;
 
-  GamePhaseManager({required int numberOfPlayers})
-    : _numberOfPlayers = numberOfPlayers;
+  GamePhase get currentPhase => _currentPhase;
 
   void addPhaseChangeListener(Function(GamePhase, GamePhase) listener) {
     _phaseChangeListeners.add(listener);

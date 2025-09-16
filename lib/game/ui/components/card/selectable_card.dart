@@ -5,12 +5,12 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
 class SelectableCard extends ActionableCard with TapCallbacks {
+  SelectableCard(super.coordinator);
+
   late FlatButton _closeButton;
 
   bool get isCloseButtonVisible => _closeButton.isVisible;
   set isCloseButtonVisible(bool value) => _closeButton.isVisible = value;
-
-  SelectableCard(super.coordinator);
 
   @override
   void onLoad() {

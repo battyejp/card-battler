@@ -2,11 +2,6 @@ import 'package:card_battler/game/coordinators/components/player/player_coordina
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
 class ActivePlayerManager {
-  final GamePhaseManager _gamePhaseManager;
-  final List<Function(PlayerCoordinator newActivePlayer)>
-  _activePlayerChangeListeners = [];
-
-  late List<PlayerCoordinator> _players;
   ActivePlayerManager({required GamePhaseManager gamePhaseManager})
     : _gamePhaseManager = gamePhaseManager {
     _gamePhaseManager.addPhaseChangeListener((previousPhase, newPhase) {
@@ -15,6 +10,11 @@ class ActivePlayerManager {
       }
     });
   }
+
+  final GamePhaseManager _gamePhaseManager;
+  final List<Function(PlayerCoordinator newActivePlayer)>
+  _activePlayerChangeListeners = [];
+  late List<PlayerCoordinator> _players;
 
   set players(List<PlayerCoordinator> value) => _players = value;
 

@@ -4,8 +4,8 @@ import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/card/card_loader_service.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
-import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/game/coordinators_manager.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/services/ui/dialog_service.dart';
 import 'package:card_battler/game/services/ui/router_service.dart';
@@ -13,14 +13,15 @@ import 'package:card_battler/game/ui/components/shared/turn_button_component.dar
 import 'package:flame/game.dart';
 
 class CardBattlerGame extends FlameGame {
-  Vector2? _testSize;
-  late final RouterComponent router;
+
+  // Test-only constructor to set size before onLoad
+  CardBattlerGame.withSize(Vector2 testSize) : _testSize = testSize;
 
   // Default constructor with new game state
   CardBattlerGame();
 
-  // Test-only constructor to set size before onLoad
-  CardBattlerGame.withSize(Vector2 testSize) : _testSize = testSize;
+  Vector2? _testSize;
+  late final RouterComponent router;
 
   @override
   Future<void> onLoad() async {
