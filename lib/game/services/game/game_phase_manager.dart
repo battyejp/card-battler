@@ -18,38 +18,22 @@ enum GamePhase {
   playerCardsDrawnWaitingForPlayerSwitch,
 }
 
-//TODO consider stopping being a singleton as hard to test
-/// Dedicated service for managing game state transitions and phase management
-/// This extracts state management concerns from the GameStateModel singleton
 class GamePhaseManager {
-  // Current phase state
   GamePhase _currentPhase = GamePhase.waitingToDrawPlayerCards;
-
-  // Previous phase state (for reference)
   GamePhase _previousPhase = GamePhase.waitingToDrawPlayerCards;
-
-  // Current round number, round starts at 0 and increments each full cycle of all players taking a turn
   int _round = 0;
   int _playerTurn = 0;
-
-  // Listeners for phase changes
+  int _numberOfPlayers = 0;
   final List<Function(GamePhase, GamePhase)> _phaseChangeListeners = [];
+  GamePhase get currentPhase => _currentPhase;
 
-  // Listeners for turn button confirmation requests
-  //final List<VoidCallback> _confirmationRequestListeners = [];
+  GamePhaseManager({required int numberOfPlayers})
+    : _numberOfPlayers = numberOfPlayers;
 
-  /// Get current game phase
-  GamePhase get currentPhase {
-    return _currentPhase;
-  }
-
-  /// Add a listener for phase changes
-  /// Callback receives (previousPhase, newPhase)
   void addPhaseChangeListener(Function(GamePhase, GamePhase) listener) {
     _phaseChangeListeners.add(listener);
   }
 
-  /// Remove a phase change listener
   void removePhaseChangeListener(Function(GamePhase, GamePhase) listener) {
     _phaseChangeListeners.remove(listener);
   }
@@ -67,42 +51,6 @@ class GamePhaseManager {
     }
   }
 
-  /// Add a listener for turn confirmation requests
-  // void addConfirmationRequestListener(VoidCallback listener) {
-  //   _confirmationRequestListeners.add(listener);
-  // }
-
-  /// Remove a confirmation request listener
-  // void removeConfirmationRequestListener(VoidCallback listener) {
-  //   _confirmationRequestListeners.remove(listener);
-  // }
-
-  /// Request confirmation dialog (for when player wants to end turn with cards)
-  // void requestConfirmation() {
-  //   for (final listener in _confirmationRequestListeners) {
-  //     try {
-  //       listener();
-  //     } catch (e) {
-  //       // Continue notifying other listeners even if one fails
-  //       // Log error - in production, this should use proper logging
-  //       // print('Error in confirmation request listener: $e');
-  //     }
-  //   }
-  // }
-
-  /// Clear all listeners (useful for testing)
-  // void clearListeners() {
-  //   _phaseChangeListeners.clear();
-  //   _confirmationRequestListeners.clear();
-  // }
-
-  /// Set the game phase directly
-  /// This should be used sparingly; prefer nextPhase() for normal flow
-  // void setPhase(GamePhase newPhase) {
-  //   _setPhase(newPhase);
-  // }
-
-  /// Advance to the next logical phase
   GamePhase nextPhase() {
     switch (_currentPhase) {
       case GamePhase.playerCardsDrawnWaitingForEnemyTurn:
@@ -127,18 +75,15 @@ class GamePhaseManager {
       case GamePhase.playerCardsDrawnWaitingForPlayerSwitch:
         _playerTurn++;
 
-        //TODO for now hardcoded to 2 players but needs to match actual player count
-        _playerTurn = _playerTurn % 2;
+        _playerTurn = _playerTurn % _numberOfPlayers;
 
         if (_playerTurn == 0) {
           _round++;
         }
 
         if (_round == 0) {
-          // After the first round, switch to enemy turn
           _setPhase(GamePhase.waitingToDrawPlayerCards);
         } else {
-          // For the first round, switch back to player drawing cards
           _setPhase(GamePhase.playerCardsDrawnWaitingForEnemyTurn);
         }
         break;
@@ -147,20 +92,12 @@ class GamePhaseManager {
     return _currentPhase;
   }
 
-  /// Set game phase with proper notification
   void _setPhase(GamePhase newPhase) {
     if (_currentPhase != newPhase) {
       _previousPhase = _currentPhase;
       _currentPhase = newPhase;
 
-      // Notify all listeners
       _notifyPhaseChange(_previousPhase, newPhase);
     }
   }
-
-  /// Reset the state manager (useful for testing)
-  // void reset() {
-  //   _currentPhase = GamePhase.waitingToDrawCards;
-  //   _phaseChangeListeners.clear();
-  // }
 }

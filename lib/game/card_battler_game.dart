@@ -53,7 +53,7 @@ class CardBattlerGame extends FlameGame {
       [],
     );
 
-    final gamePhaseManager = GamePhaseManager();
+    final gamePhaseManager = GamePhaseManager(numberOfPlayers: state.players.length);
     final routerService = RouterService();
     final dialogService = DialogService();
     final playerCoordinatorsManager = CoordinatorsManager(
