@@ -53,20 +53,22 @@ class CardBattlerGame extends FlameGame {
       [],
     );
 
+    final gamePhaseManager = GamePhaseManager(); 
     final routerService = RouterService();
     final dialogService = DialogService();
-    final playerCoordinatorsManager = CoordinatorsManager();
+    final playerCoordinatorsManager = CoordinatorsManager(gamePhaseManager);
     var router = SceneService(
       routerService,
       dialogService,
       playerCoordinatorsManager.playerTurnSceneCoordinator,
       playerCoordinatorsManager.enemyTurnSceneCoordinator,
+      gamePhaseManager,
     ).createRouter(size);
 
     var turnButtonComponent =
         TurnButtonComponent(
             TurnButtonComponentCoordinator(
-              gamePhaseManager: GamePhaseManager.instance,
+              gamePhaseManager: gamePhaseManager
             ),
           )
           ..priority = 10

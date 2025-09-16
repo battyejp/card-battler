@@ -22,18 +22,6 @@ enum GamePhase {
 /// Dedicated service for managing game state transitions and phase management
 /// This extracts state management concerns from the GameStateModel singleton
 class GamePhaseManager {
-  // Private constructor
-  GamePhaseManager._();
-
-  // Static instance variable
-  static final GamePhaseManager _instance = GamePhaseManager._();
-
-  // Public getter for the singleton instance
-  static GamePhaseManager get instance => _instance;
-
-  // Factory constructor that returns the singleton instance
-  factory GamePhaseManager() => _instance;
-
   // Current phase state
   GamePhase _currentPhase = GamePhase.waitingToDrawPlayerCards;
 

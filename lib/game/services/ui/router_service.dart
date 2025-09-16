@@ -11,140 +11,18 @@ class RouterService {
   RouterComponent? _router;
   PlayerTurnScene? _playerTurnScene;
   EnemyTurnScene? _enemyTurnScene;
-  // late PlayersInfoCoordinator playersCoordinator;
-  // late PlayerTurnSceneCoordinator playerTurnSceneCoordinator;
-  // late EnemyTurnSceneCoordinator enemyTurnSceneCoordinator;
-  // late EffectProcessor effectProcessor;
-
-  // void initialize() {
-  //   playersCoordinator = PlayersInfoCoordinator(
-  //     players: GameStateFacade.instance.state!.players
-  //         .map((player) => PlayerInfoCoordinator(model: player))
-  //         .toList(),
-  //   );
-
-  //   //effectProcessor = EffectProcessor(playersCoordinator);
-
-  //   playerTurnSceneCoordinator = PlayerTurnSceneCoordinator(
-  //     playerCoordinator: PlayerCoordinator(
-  //       handCardsCoordinator: CardListCoordinator<CardCoordinator>(
-  //         cardCoordinators: [],
-  //       ),
-  //       deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
-  //         cardCoordinators: GameStateFacade
-  //             .instance
-  //             .state!
-  //             .activePlayer
-  //             .deckCards
-  //             .allCards
-  //             .map(
-  //               (card) => CardCoordinator(
-  //                 cardModel: card.copy(),
-  //                 cardsSelectionManagerService:
-  //                     CardsSelectionManagerService.instance,
-  //                 gamePhaseManager: GamePhaseManager.instance,
-  //               ),
-  //             )
-  //             .toList(),
-  //       ),
-  //       discardCardsCoordinator: CardListCoordinator<CardCoordinator>(
-  //         cardCoordinators: [],
-  //       ),
-  //       playerInfoCoordinator: playersCoordinator.activePlayer,
-  //       gamePhaseManager: GamePhaseManager.instance,
-  //     ),
-  //     shopCoordinator: ShopCoordinator(
-  //       displayCoordinator: ShopDisplayCoordinator(
-  //         shopCardCoordinators: GameStateFacade
-  //             .instance
-  //             .state!
-  //             .shop
-  //             .inventoryCards
-  //             .allCards
-  //             .map(
-  //               (card) => ShopCardCoordinator(
-  //                 card,
-  //                 CardsSelectionManagerService.instance,
-  //                 GamePhaseManager.instance,
-  //               ),
-  //             )
-  //             .toList(),
-  //         itemsPerRow: 3,
-  //         numberOfRows: 2,
-  //       ),
-  //       inventoryCoordinator: ShopInventoryCoordinator([]),
-  //     ),
-  //     teamCoordinator: TeamCoordinator(
-  //       playersInfoCoordinator: playersCoordinator,
-  //       basesCoordinator: BasesCoordinator(
-  //         baseCoordinators: GameStateFacade.instance.state!.bases
-  //             .map((base) => BaseCoordinator(model: base))
-  //             .toList(),
-  //       ),
-  //     ),
-  //     enemiesCoordinator: EnemiesCoordinator(
-  //       enemyCoordinators: GameStateFacade.instance.state!.enemiesModel.enemies
-  //           .map((enemy) => EnemyCoordinator(model: enemy))
-  //           .toList(),
-  //       deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
-  //         cardCoordinators: GameStateFacade
-  //             .instance
-  //             .state!
-  //             .enemiesModel
-  //             .deckCards
-  //             .allCards
-  //             .map(
-  //               (card) => CardCoordinator(
-  //                 cardModel: card.copy(),
-  //                 cardsSelectionManagerService:
-  //                     CardsSelectionManagerService.instance,
-  //                 gamePhaseManager: GamePhaseManager.instance,
-  //               ),
-  //             )
-  //             .toList(),
-  //       ),
-  //       playedCardsCoordinator: CardListCoordinator<CardCoordinator>(
-  //         cardCoordinators: [],
-  //       ),
-  //     ),
-  //     gamePhaseManager: GamePhaseManager.instance,
-  //     effectProcessor: effectProcessor,
-  //   );
-
-  //   enemyTurnSceneCoordinator = EnemyTurnSceneCoordinator(
-  //     playedCardsCoordinator: CardListCoordinator<CardCoordinator>(
-  //       cardCoordinators: [],
-  //     ),
-  //     deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
-  //       cardCoordinators: GameStateFacade
-  //           .instance
-  //           .state!
-  //           .enemiesModel
-  //           .deckCards
-  //           .allCards
-  //           .map(
-  //             (card) => CardCoordinator(
-  //               cardModel: card.copy(),
-  //               cardsSelectionManagerService:
-  //                   CardsSelectionManagerService.instance,
-  //               gamePhaseManager: GamePhaseManager.instance,
-  //             ),
-  //           )
-  //           .toList(),
-  //     ),
-  //     playersInfoCoordinator: playersCoordinator,
-  //     effectProcessor: effectProcessor,
-  //     gamePhaseManager: GamePhaseManager.instance,
-  //   );
-  // }
+  GamePhaseManager? _gamePhaseManager;
 
   /// Create and configure the router component with scene routes
   RouterComponent createRouter(
     Vector2 gameSize,
     PlayerTurnSceneCoordinator playerTurnSceneCoordinator,
-    EnemyTurnSceneCoordinator enemyTurnSceneCoordinator, {
+    EnemyTurnSceneCoordinator enemyTurnSceneCoordinator,
+    GamePhaseManager gamePhaseManager, {
     Map<String, Route>? additionalRoutes,
   }) {
+    _gamePhaseManager = gamePhaseManager;
+
     _playerTurnScene = PlayerTurnScene(
       playerTurnSceneCoordinator,
       size: gameSize,
@@ -166,7 +44,7 @@ class RouterService {
     }
 
     _router = RouterComponent(routes: routes, initialRoute: 'playerTurn');
-    GamePhaseManager.instance.addPhaseChangeListener(_onGamePhaseChanged);
+    _gamePhaseManager?.addPhaseChangeListener(_onGamePhaseChanged);
     return _router!;
   }
 
@@ -211,6 +89,6 @@ class RouterService {
 
   //TODO think this needs to be called somewhere
   void dispose() {
-    GamePhaseManager.instance.removePhaseChangeListener(_onGamePhaseChanged);
+    _gamePhaseManager?.removePhaseChangeListener(_onGamePhaseChanged);
   }
 }

@@ -16,6 +16,7 @@ class TurnButtonComponentCoordinator
 
   void handleTurnButtonPressed() {
     if (_gamePhaseManager.currentPhase == GamePhase.playerTakeActionsTurn) {
+      //TODO check has cards in hand
       DialogService().showCustomConfirmation(
         title: 'Confirm End Turn',
         message:

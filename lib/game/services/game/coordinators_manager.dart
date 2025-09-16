@@ -29,13 +29,13 @@ class CoordinatorsManager {
   EnemyTurnSceneCoordinator get enemyTurnSceneCoordinator =>
       _enemyTurnSceneCoordinator;
 
-  var effectProcessor = EffectProcessor();
-  var cardsSelectionManagerService = CardsSelectionManagerService();
-  var activePlayerManager = ActivePlayerManager(
-    gamePhaseManager: GamePhaseManager.instance,
-  );
+  CoordinatorsManager(GamePhaseManager gamePhaseManager) {
+    var effectProcessor = EffectProcessor();
+    var cardsSelectionManagerService = CardsSelectionManagerService();
+    var activePlayerManager = ActivePlayerManager(
+      gamePhaseManager: gamePhaseManager,
+    );
 
-  CoordinatorsManager() {
     _playerCoordinators = GameStateFacade.instance.state!.players
         .map(
           (player) => PlayerCoordinator(
@@ -49,7 +49,7 @@ class CoordinatorsManager {
                       cardModel: card.copy(),
                       cardsSelectionManagerService:
                           cardsSelectionManagerService,
-                      gamePhaseManager: GamePhaseManager.instance,
+                      gamePhaseManager: gamePhaseManager,
                       activePlayerManager: activePlayerManager,
                     ),
                   )
@@ -59,7 +59,7 @@ class CoordinatorsManager {
               cardCoordinators: [],
             ),
             playerInfoCoordinator: PlayerInfoCoordinator(model: player),
-            gamePhaseManager: GamePhaseManager.instance,
+            gamePhaseManager: gamePhaseManager,
             effectProcessor: effectProcessor,
           ),
         )
@@ -94,7 +94,7 @@ class CoordinatorsManager {
               (card) => CardCoordinator(
                 cardModel: card.copy(),
                 cardsSelectionManagerService: cardsSelectionManagerService,
-                gamePhaseManager: GamePhaseManager.instance,
+                gamePhaseManager: gamePhaseManager,
                 activePlayerManager: activePlayerManager,
               ),
             )
@@ -102,7 +102,7 @@ class CoordinatorsManager {
       ),
       playersInfoCoordinator: _playersInfoCoordinator,
       effectProcessor: effectProcessor,
-      gamePhaseManager: GamePhaseManager.instance,
+      gamePhaseManager: gamePhaseManager,
       numberOfCardsToDrawPerEnemyTurn: 1,
     );
 
@@ -125,7 +125,7 @@ class CoordinatorsManager {
                 (card) => ShopCardCoordinator(
                   card,
                   cardsSelectionManagerService,
-                  GamePhaseManager.instance,
+                  gamePhaseManager,
                   activePlayerManager,
                 ),
               )
@@ -153,7 +153,7 @@ class CoordinatorsManager {
                 (card) => CardCoordinator(
                   cardModel: card.copy(),
                   cardsSelectionManagerService: cardsSelectionManagerService,
-                  gamePhaseManager: GamePhaseManager.instance,
+                  gamePhaseManager: gamePhaseManager,
                   activePlayerManager: activePlayerManager,
                 ),
               )
@@ -163,7 +163,7 @@ class CoordinatorsManager {
           cardCoordinators: [],
         ),
       ),
-      gamePhaseManager: GamePhaseManager.instance,
+      gamePhaseManager: gamePhaseManager,
       effectProcessor: effectProcessor,
       activePlayerManager: activePlayerManager,
     );
