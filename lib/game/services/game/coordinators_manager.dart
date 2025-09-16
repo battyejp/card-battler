@@ -29,12 +29,13 @@ class CoordinatorsManager {
   EnemyTurnSceneCoordinator get enemyTurnSceneCoordinator =>
       _enemyTurnSceneCoordinator;
 
-  CoordinatorsManager(GamePhaseManager gamePhaseManager, GameStateModel state) {
+  CoordinatorsManager(
+    GamePhaseManager gamePhaseManager,
+    GameStateModel state,
+    ActivePlayerManager activePlayerManager,
+  ) {
     var effectProcessor = EffectProcessor();
     var cardsSelectionManagerService = CardsSelectionManagerService();
-    var activePlayerManager = ActivePlayerManager(
-      gamePhaseManager: gamePhaseManager,
-    );
 
     _playerCoordinators = state.players
         .map(

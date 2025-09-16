@@ -5,6 +5,7 @@ import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/card/card_loader_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/game/coordinators_manager.dart';
+import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/services/ui/dialog_service.dart';
 import 'package:card_battler/game/services/ui/router_service.dart';
 import 'package:card_battler/game/ui/components/shared/turn_button_component.dart';
@@ -52,14 +53,20 @@ class CardBattlerGame extends FlameGame {
       [],
     );
 
+    final dialogService = DialogService();
+
     final gamePhaseManager = GamePhaseManager(
       numberOfPlayers: state.players.length,
     );
 
-    final dialogService = DialogService();
+    final activePlayerManager = ActivePlayerManager(
+      gamePhaseManager: gamePhaseManager,
+    );
+
     final playerCoordinatorsManager = CoordinatorsManager(
       gamePhaseManager,
       state,
+      activePlayerManager,
     );
 
     var router = createRouter(size, gamePhaseManager, playerCoordinatorsManager, dialogService);
@@ -69,6 +76,7 @@ class CardBattlerGame extends FlameGame {
             TurnButtonComponentCoordinator(
               gamePhaseManager: gamePhaseManager,
               dialogService: dialogService,
+              activePlayerManager: activePlayerManager,
             ),
           )
           ..priority = 10
