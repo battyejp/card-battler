@@ -9,14 +9,6 @@ class Base extends PositionComponent with HasVisibility {
 
   Base({required BaseCoordinator coordinator}) : _coordinator = coordinator;
 
-  /// Updates the health display based on the current model state
-  /// TODO not used yet
-  void updateDisplay() {
-    if (hasChildren && _healthTextComponent.isMounted) {
-      _healthTextComponent.text = _coordinator.healthDisplay;
-    }
-  }
-
   @override
   void onLoad() {
     super.onLoad();

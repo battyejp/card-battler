@@ -23,7 +23,7 @@ class GamePhaseManager {
   GamePhase _previousPhase = GamePhase.waitingToDrawPlayerCards;
   int _round = 0;
   int _playerTurn = 0;
-  int _numberOfPlayers = 0;
+  final int _numberOfPlayers;
   final List<Function(GamePhase, GamePhase)> _phaseChangeListeners = [];
   GamePhase get currentPhase => _currentPhase;
 

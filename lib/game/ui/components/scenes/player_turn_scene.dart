@@ -17,7 +17,7 @@ class PlayerTurnScene
   // late FlatButton _turnButton;
   bool loadingComplete = false;
 
-  //TODO to we need to add all the components to a list and remove them on updateDisplay, when only Player changes
+  //TODO could we just update the player component
   @override
   void updateDisplay() {
     super.updateDisplay();

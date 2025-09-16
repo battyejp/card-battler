@@ -8,14 +8,6 @@ class Enemy extends PositionComponent {
 
   Enemy({required EnemyCoordinator coordinator}) : _coordinator = coordinator;
 
-  /// Updates the health display based on the current model state
-  // TODO not being used at momemnt
-  void updateDisplay() {
-    if (hasChildren && _healthTextComponent.isMounted) {
-      _healthTextComponent.text = _coordinator.healthDisplay;
-    }
-  }
-
   @override
   void onLoad() {
     super.onLoad();

@@ -1,4 +1,5 @@
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
+import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/ui/components/card/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/card_pile.dart';
 import 'package:card_battler/game/ui/components/player/card_hand.dart';
@@ -6,11 +7,8 @@ import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
-  static const _handWidthFactor = 0.6; //TODO not static
-  final _pileWidthFactor = (1 - _handWidthFactor) / 2;
+  final _handWidthFactor = 0.6;
   final _infoHeightFactor = 0.1;
-  // final _cardsToDrawPerTurn = 5;
-
   final PlayerCoordinator _coordinator;
 
   Player({required PlayerCoordinator playerModel}) : _coordinator = playerModel;
@@ -18,13 +16,16 @@ class Player extends PositionComponent {
   @override
   void onLoad() {
     final infoHeight = size.y * _infoHeightFactor;
+    final pileWidthFactor = (1 - _handWidthFactor) / 2;
 
     var deck = CardDeck(
       onTap: () => {
-        _coordinator.drawCardsFromDeck(5),
-      }, //TODO where should 5 live?
+        _coordinator.drawCardsFromDeck(
+          GameVariables.numberOfCardsDrawnByPlayer,
+        ),
+      },
       coordinator: _coordinator.deckCardsCoordinator,
-    )..size = Vector2(size.x * _pileWidthFactor, size.y);
+    )..size = Vector2(size.x * pileWidthFactor, size.y);
 
     add(deck);
 
@@ -45,7 +46,7 @@ class Player extends PositionComponent {
     add(hand);
 
     var discard = CardPile(_coordinator.discardCardsCoordinator, showNext: true)
-      ..size = Vector2(size.x * _pileWidthFactor, size.y)
+      ..size = Vector2(size.x * pileWidthFactor, size.y)
       ..position = Vector2(hand.x + hand.width, 0);
 
     add(discard);

@@ -87,7 +87,6 @@ class RouterService {
     pop();
   }
 
-  //TODO think this needs to be called somewhere
   void dispose() {
     _gamePhaseManager?.removePhaseChangeListener(_onGamePhaseChanged);
   }
