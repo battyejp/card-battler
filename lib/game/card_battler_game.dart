@@ -7,7 +7,6 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/game/coordinators_manager.dart';
 import 'package:card_battler/game/services/ui/dialog_service.dart';
 import 'package:card_battler/game/services/ui/router_service.dart';
-import 'package:card_battler/game/services/ui/scene_service.dart';
 import 'package:card_battler/game/ui/components/shared/turn_button_component.dart';
 import 'package:flame/game.dart';
 
@@ -53,20 +52,17 @@ class CardBattlerGame extends FlameGame {
       [],
     );
 
-    final gamePhaseManager = GamePhaseManager(numberOfPlayers: state.players.length);
-    final routerService = RouterService();
+    final gamePhaseManager = GamePhaseManager(
+      numberOfPlayers: state.players.length,
+    );
+
     final dialogService = DialogService();
     final playerCoordinatorsManager = CoordinatorsManager(
       gamePhaseManager,
       state,
     );
-    var router = SceneService(
-      routerService,
-      dialogService,
-      playerCoordinatorsManager.playerTurnSceneCoordinator,
-      playerCoordinatorsManager.enemyTurnSceneCoordinator,
-      gamePhaseManager,
-    ).createRouter(size);
+
+    var router = createRouter(size, gamePhaseManager, playerCoordinatorsManager, dialogService);
 
     var turnButtonComponent =
         TurnButtonComponent(
@@ -82,5 +78,19 @@ class CardBattlerGame extends FlameGame {
     turnButtonComponent.priority = 10;
     router.add(turnButtonComponent);
     world.add(router);
+  }
+
+  RouterComponent createRouter(Vector2 gameSize, GamePhaseManager gamePhaseManager,
+      CoordinatorsManager coordinatorsManager, DialogService dialogManager) {
+    final router = RouterService().createRouter(
+      gameSize,
+      coordinatorsManager.playerTurnSceneCoordinator,
+      coordinatorsManager.enemyTurnSceneCoordinator,
+      gamePhaseManager,
+      additionalRoutes: dialogManager.getDialogRoutes(),
+    );
+
+    dialogManager.initialize(router: router);
+    return router;
   }
 }
