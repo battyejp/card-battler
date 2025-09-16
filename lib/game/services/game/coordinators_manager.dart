@@ -30,6 +30,7 @@ class CoordinatorsManager {
       _enemyTurnSceneCoordinator;
 
   var effectProcessor = EffectProcessor();
+  var cardsSelectionManagerService = CardsSelectionManagerService();
   var activePlayerManager = ActivePlayerManager(
     gamePhaseManager: GamePhaseManager.instance,
   );
@@ -47,7 +48,7 @@ class CoordinatorsManager {
                     (card) => CardCoordinator(
                       cardModel: card.copy(),
                       cardsSelectionManagerService:
-                          CardsSelectionManagerService.instance,
+                          cardsSelectionManagerService,
                       gamePhaseManager: GamePhaseManager.instance,
                       activePlayerManager: activePlayerManager,
                     ),
@@ -92,8 +93,7 @@ class CoordinatorsManager {
             .map(
               (card) => CardCoordinator(
                 cardModel: card.copy(),
-                cardsSelectionManagerService:
-                    CardsSelectionManagerService.instance,
+                cardsSelectionManagerService: cardsSelectionManagerService,
                 gamePhaseManager: GamePhaseManager.instance,
                 activePlayerManager: activePlayerManager,
               ),
@@ -124,7 +124,7 @@ class CoordinatorsManager {
               .map(
                 (card) => ShopCardCoordinator(
                   card,
-                  CardsSelectionManagerService.instance,
+                  cardsSelectionManagerService,
                   GamePhaseManager.instance,
                   activePlayerManager,
                 ),
@@ -152,8 +152,7 @@ class CoordinatorsManager {
               .map(
                 (card) => CardCoordinator(
                   cardModel: card.copy(),
-                  cardsSelectionManagerService:
-                      CardsSelectionManagerService.instance,
+                  cardsSelectionManagerService: cardsSelectionManagerService,
                   gamePhaseManager: GamePhaseManager.instance,
                   activePlayerManager: activePlayerManager,
                 ),
