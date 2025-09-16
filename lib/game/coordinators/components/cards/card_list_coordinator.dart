@@ -1,35 +1,23 @@
-import 'dart:math';
-
 import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/services/card/card_collection_service.dart';
 
 class CardListCoordinator<T extends CardCoordinator>
     with ReactiveCoordinator<CardListCoordinator<T>> {
-
   CardListCoordinator({required List<T> cardCoordinators})
-    : _cardCoordinators = cardCoordinators;
+    : _collectionService = CardCollectionService<T>(
+        cardCoordinators: cardCoordinators,
+      );
 
-  final List<T> _cardCoordinators;
-  List<T> get cardCoordinators => _cardCoordinators;
+  final CardCollectionService<T> _collectionService;
+  List<T> get cardCoordinators => _collectionService.cardCoordinators;
 
-  bool get hasCards => _cardCoordinators.isNotEmpty;
+  bool get hasCards => _collectionService.hasCards;
 
-  bool get isEmpty => _cardCoordinators.isEmpty;
+  bool get isEmpty => _collectionService.isEmpty;
 
   List<T> drawCards(int count, {bool refreshUi = true}) {
-    if (count <= 0) {
-      return [];
-    }
-
-    final cardsToTake = count > _cardCoordinators.length
-        ? _cardCoordinators.length
-        : count;
-    final drawnCards = _cardCoordinators.take(cardsToTake).toList();
-    _cardCoordinators.removeRange(0, cardsToTake);
-
-    for (final card in drawnCards) {
-      card.isFaceUp = true;
-    }
+    final drawnCards = _collectionService.drawCards(count);
 
     if (refreshUi) {
       notifyChange();
@@ -39,7 +27,7 @@ class CardListCoordinator<T extends CardCoordinator>
   }
 
   void addCards(List<T> cards, {bool refreshUi = true}) {
-    _cardCoordinators.addAll(cards);
+    _collectionService.addCards(cards);
 
     if (refreshUi) {
       notifyChange();
@@ -47,7 +35,7 @@ class CardListCoordinator<T extends CardCoordinator>
   }
 
   void addCard(T card, {bool refreshUi = true}) {
-    _cardCoordinators.add(card);
+    _collectionService.addCard(card);
 
     if (refreshUi) {
       notifyChange();
@@ -55,7 +43,7 @@ class CardListCoordinator<T extends CardCoordinator>
   }
 
   void removeCard(T card, {bool refreshUi = true}) {
-    _cardCoordinators.remove(card);
+    _collectionService.removeCard(card);
 
     if (refreshUi) {
       notifyChange();
@@ -63,13 +51,7 @@ class CardListCoordinator<T extends CardCoordinator>
   }
 
   List<T> removeAllCards({bool refreshUi = true}) {
-    for (final card in _cardCoordinators) {
-      card.onCardPlayed = null;
-      card.isFaceUp = false;
-    }
-
-    final removedCards = List<T>.from(_cardCoordinators);
-    _cardCoordinators.clear();
+    final removedCards = _collectionService.removeAllCards();
 
     if (refreshUi) {
       notifyChange();
@@ -79,6 +61,6 @@ class CardListCoordinator<T extends CardCoordinator>
   }
 
   void shuffle() {
-    _cardCoordinators.shuffle(Random());
+    _collectionService.shuffle();
   }
 }

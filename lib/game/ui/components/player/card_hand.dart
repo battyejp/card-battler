@@ -17,7 +17,7 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
     final cardWidth = size.x * 0.15;
     final cardHeight = size.y * 0.8;
 
-    final spacing = 20; // Spacing between cards
+    final spacing = 20;
     final totalWidth =
         (cardWidth * coordinator.cardCoordinators.length) +
         (spacing * (coordinator.cardCoordinators.length - 1));
@@ -30,16 +30,9 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
       );
       var cardCoordinator = coordinator.cardCoordinators[i];
 
-      final card =
-          SelectableCard(
-              cardCoordinator,
-              // onButtonPressed: () {
-              //   //_cardSelectionService?.deselectCard();
-              //   //cardModel.playCard();
-              // },
-            )
-            ..size = Vector2(cardWidth, cardHeight)
-            ..position = cardPosition;
+      final card = SelectableCard(cardCoordinator)
+        ..size = Vector2(cardWidth, cardHeight)
+        ..position = cardPosition;
 
       add(card);
     }

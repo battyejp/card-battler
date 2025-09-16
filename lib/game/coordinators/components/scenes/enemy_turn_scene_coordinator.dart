@@ -3,6 +3,7 @@ import 'package:card_battler/game/coordinators/components/cards/card_list_coordi
 import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/services/card/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:card_battler/game/services/turn/enemy_turn_manager.dart';
 
 class EnemyTurnSceneCoordinator {
   EnemyTurnSceneCoordinator({
@@ -15,21 +16,23 @@ class EnemyTurnSceneCoordinator {
   }) : _playedCardsCoordinator = playedCardsCoordinator,
        _deckCardsCoordinator = deckCardsCoordinator,
        _playersInfoCoordinator = playersInfoCoordinator,
-       _effectProcessor = effectProcessor,
-       _gamePhaseManager = gamePhaseManager,
-       _numberOfCardsToDrawPerEnemyTurn = numberOfCardsToDrawPerEnemyTurn {
+       _turnManager = EnemyTurnManager(
+         playedCardsCoordinator: playedCardsCoordinator,
+         deckCardsCoordinator: deckCardsCoordinator,
+         effectProcessor: effectProcessor,
+         gamePhaseManager: gamePhaseManager,
+         numberOfCardsToDrawPerEnemyTurn: numberOfCardsToDrawPerEnemyTurn,
+       ) {
     _deckCardsCoordinator.shuffle();
   }
 
   final CardListCoordinator<CardCoordinator> _playedCardsCoordinator;
   final CardListCoordinator<CardCoordinator> _deckCardsCoordinator;
   final PlayersInfoCoordinator _playersInfoCoordinator;
-  final EffectProcessor _effectProcessor;
-  final GamePhaseManager _gamePhaseManager;
+  final EnemyTurnManager _turnManager;
 
-  int _numberOfCardsToDrawPerEnemyTurn;
   set numberOfCardsToDrawPerEnemyTurn(int value) =>
-      _numberOfCardsToDrawPerEnemyTurn = value;
+      _turnManager.numberOfCardsToDrawPerEnemyTurn = value;
 
   CardListCoordinator<CardCoordinator> get playedCardsCoordinator =>
       _playedCardsCoordinator;
@@ -38,20 +41,6 @@ class EnemyTurnSceneCoordinator {
   PlayersInfoCoordinator get playersCoordinator => _playersInfoCoordinator;
 
   void drawCardsFromDeck() {
-    if (_gamePhaseManager.currentPhase ==
-        GamePhase.enemiesTurnCardsDrawnWaitingForPlayersTurn) {
-      return;
-    }
-
-    final drawnCards = deckCardsCoordinator.drawCards(
-      _numberOfCardsToDrawPerEnemyTurn,
-    );
-
-    if (drawnCards.isNotEmpty) {
-      playedCardsCoordinator.addCards(drawnCards);
-      _effectProcessor.applyCardEffects(drawnCards);
-    }
-
-    _gamePhaseManager.nextPhase();
+    _turnManager.drawCardsFromDeck();
   }
 }

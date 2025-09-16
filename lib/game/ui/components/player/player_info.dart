@@ -53,7 +53,7 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
           text = coordinator.name;
           break;
         case 'health':
-          text = 'Health: ${coordinator.healthDisplay}';
+          text = coordinator.healthDisplay;
           break;
         case 'attack':
           text = 'Attack: ${coordinator.attack}';
