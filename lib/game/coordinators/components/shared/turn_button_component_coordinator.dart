@@ -1,4 +1,5 @@
 import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
+import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/services/ui/dialog_service.dart';
@@ -16,6 +17,7 @@ class TurnButtonComponentCoordinator
     required GamePhaseManager gamePhaseManager,
     required DialogService dialogService,
     required ActivePlayerManager activePlayerManager,
+    required CardsSelectionManagerService cardsSelectionManagerService,
   }) : _gamePhaseManager = gamePhaseManager,
        _dialogService = dialogService,
        _activePlayerManager = activePlayerManager {
@@ -25,11 +27,10 @@ class TurnButtonComponentCoordinator
   void handleTurnButtonPressed() {
     if (_gamePhaseManager.currentPhase == GamePhase.playerTakeActionsTurn &&
         _activePlayerManager
-                .activePlayer
-                ?.handCardsCoordinator
-                .cardCoordinators
-                .isNotEmpty ==
-            true) {
+            .activePlayer!
+            .handCardsCoordinator
+            .cardCoordinators
+            .isNotEmpty) {
       _dialogService.showCustomConfirmation(
         title: 'Confirm End Turn',
         message:

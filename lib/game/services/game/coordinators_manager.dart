@@ -33,9 +33,9 @@ class CoordinatorsManager {
     GamePhaseManager gamePhaseManager,
     GameStateModel state,
     ActivePlayerManager activePlayerManager,
+    CardsSelectionManagerService cardsSelectionManagerService,
   ) {
     var effectProcessor = EffectProcessor();
-    var cardsSelectionManagerService = CardsSelectionManagerService();
 
     _playerCoordinators = state.players
         .map(

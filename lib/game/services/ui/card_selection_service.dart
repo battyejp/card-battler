@@ -2,6 +2,7 @@ import 'package:card_battler/game/services/card/cards_selection_manager_service.
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/ui/components/card/actionable_card.dart';
+import 'package:card_battler/game/ui/components/card/selectable_card.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
@@ -43,7 +44,7 @@ class CardSelectionService {
   }
 
   void _selectAtPosition(Vector2 pressPosition) {
-    _cardsSelectionManagerService.selectCard(_card.coordinator);
+    _cardsSelectionManagerService.selectCard(_card.coordinator, this);
     _isAnimating = true;
     _originalPriority = _card.priority;
     _card.priority = 99999;
@@ -96,6 +97,11 @@ class CardSelectionService {
     _isAnimating = true;
 
     _card.isActionButtonVisible = false;
+
+    if (_card is SelectableCard) {
+      _card.isCloseButtonVisible = false;
+    }
+
     _card.priority = _originalPriority;
 
     final moveEffect = MoveEffect.to(

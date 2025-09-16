@@ -3,6 +3,7 @@ import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/services/card/card_loader_service.dart';
+import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/game/coordinators_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
@@ -54,6 +55,7 @@ class CardBattlerGame extends FlameGame {
     );
 
     final dialogService = DialogService();
+    final cardsSelectionManagerService = CardsSelectionManagerService();
 
     final gamePhaseManager = GamePhaseManager(
       numberOfPlayers: state.players.length,
@@ -67,9 +69,15 @@ class CardBattlerGame extends FlameGame {
       gamePhaseManager,
       state,
       activePlayerManager,
+      cardsSelectionManagerService,
     );
 
-    var router = createRouter(size, gamePhaseManager, playerCoordinatorsManager, dialogService);
+    var router = createRouter(
+      size,
+      gamePhaseManager,
+      playerCoordinatorsManager,
+      dialogService,
+    );
 
     var turnButtonComponent =
         TurnButtonComponent(
@@ -77,7 +85,9 @@ class CardBattlerGame extends FlameGame {
               gamePhaseManager: gamePhaseManager,
               dialogService: dialogService,
               activePlayerManager: activePlayerManager,
+              cardsSelectionManagerService: cardsSelectionManagerService,
             ),
+            cardsSelectionManagerService: cardsSelectionManagerService,
           )
           ..priority = 10
           ..size = Vector2(200, 50)
@@ -88,8 +98,12 @@ class CardBattlerGame extends FlameGame {
     world.add(router);
   }
 
-  RouterComponent createRouter(Vector2 gameSize, GamePhaseManager gamePhaseManager,
-      CoordinatorsManager coordinatorsManager, DialogService dialogManager) {
+  RouterComponent createRouter(
+    Vector2 gameSize,
+    GamePhaseManager gamePhaseManager,
+    CoordinatorsManager coordinatorsManager,
+    DialogService dialogManager,
+  ) {
     final router = RouterService().createRouter(
       gameSize,
       coordinatorsManager.playerTurnSceneCoordinator,

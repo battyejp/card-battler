@@ -1,4 +1,5 @@
 import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
+import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/ui/components/common/flat_button.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:flame/components.dart';
@@ -7,8 +8,12 @@ class TurnButtonComponent
     extends ReactivePositionComponent<TurnButtonComponentCoordinator> {
   bool loadingComplete = false;
   late FlatButton _turnButton;
+  final CardsSelectionManagerService _cardsSelectionManagerService;
 
-  TurnButtonComponent(super.coordinator);
+  TurnButtonComponent(
+    super.coordinator, {
+    required CardsSelectionManagerService cardsSelectionManagerService,
+  }) : _cardsSelectionManagerService = cardsSelectionManagerService;
 
   @override
   void updateDisplay() {
@@ -29,8 +34,11 @@ class TurnButtonComponent
       coordinator.buttonText,
       size: Vector2(size.x, size.y),
       onReleased: () {
+        if (_cardsSelectionManagerService.hasSelection) {
+          _cardsSelectionManagerService.selectionService?.onDeselect();
+        }
+
         coordinator.handleTurnButtonPressed();
-        //TODO bug when cards are not deselected when pressing the button
       },
     );
 
