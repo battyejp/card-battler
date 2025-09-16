@@ -2,7 +2,6 @@ import 'package:card_battler/game/models/card/card_list_model.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/enemy/enemy_model.dart';
 
-//TODO check all class as exposes all variables as properties are public
 class EnemiesModel {
   final List<EnemyModel> enemies;
   final CardListModel<CardModel> playedCards;

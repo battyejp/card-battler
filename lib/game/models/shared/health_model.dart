@@ -5,6 +5,4 @@ class HealthModel {
   HealthModel(this.currentHealth, this.maxHealth);
 
   String get display => 'HP: $currentHealth/$maxHealth';
-
-  int get health => currentHealth;
 }
