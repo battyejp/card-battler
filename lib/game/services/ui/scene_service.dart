@@ -5,6 +5,7 @@ import 'package:card_battler/game/services/ui/dialog_service.dart';
 import 'package:card_battler/game/services/ui/router_service.dart';
 import 'package:flame/game.dart';
 
+//TODO is this needed
 class SceneService {
   final RouterService _routerService;
   final DialogService _dialogManager;
@@ -17,7 +18,7 @@ class SceneService {
     this._dialogManager,
     this._playerTurnSceneCoordinator,
     this._enemyTurnSceneCoordinator,
-    this._gamePhaseManager
+    this._gamePhaseManager,
   );
 
   RouterComponent createRouter(Vector2 gameSize) {

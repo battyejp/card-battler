@@ -52,6 +52,7 @@ class CardBattlerGame extends FlameGame {
       enemyCards,
       [],
     );
+
     final gamePhaseManager = GamePhaseManager();
     final routerService = RouterService();
     final dialogService = DialogService();
@@ -69,7 +70,10 @@ class CardBattlerGame extends FlameGame {
 
     var turnButtonComponent =
         TurnButtonComponent(
-            TurnButtonComponentCoordinator(gamePhaseManager: gamePhaseManager),
+            TurnButtonComponentCoordinator(
+              gamePhaseManager: gamePhaseManager,
+              dialogService: dialogService,
+            ),
           )
           ..priority = 10
           ..size = Vector2(200, 50)
