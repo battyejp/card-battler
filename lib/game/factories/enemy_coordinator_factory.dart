@@ -6,7 +6,7 @@ import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scen
 import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
-import 'package:card_battler/game/services/card/effect_processor.dart';
+import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 

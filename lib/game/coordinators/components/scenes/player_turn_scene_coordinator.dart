@@ -4,7 +4,7 @@ import 'package:card_battler/game/coordinators/components/player/player_coordina
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
-import 'package:card_battler/game/services/card/effect_processor.dart';
+import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/services/turn/player_turn_lifecycle_manager.dart';

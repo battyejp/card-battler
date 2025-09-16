@@ -7,7 +7,7 @@ import 'package:card_battler/game/factories/player_coordinator_factory.dart';
 import 'package:card_battler/game/factories/player_turn_scene_coordinator_factory.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
-import 'package:card_battler/game/services/card/effect_processor.dart';
+import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 

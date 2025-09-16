@@ -1,7 +1,7 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
-import 'package:card_battler/game/services/card/effect_processor.dart';
+import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/card/player_card_manager.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
