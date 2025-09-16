@@ -5,7 +5,6 @@ import 'package:card_battler/game/coordinators/components/cards/card_coordinator
 
 class CardListCoordinator<T extends CardCoordinator>
     with ReactiveCoordinator<CardListCoordinator<T>> {
-  //TODO could this jusy inherit a List<CardCoordinator>?
   final List<T> _cardCoordinators;
 
   CardListCoordinator({required List<T> cardCoordinators})
