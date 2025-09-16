@@ -1,7 +1,7 @@
 import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
 import 'package:card_battler/game/models/common/actor_model.dart';
 
-class ActorCoordinator with ReactiveCoordinator<ActorCoordinator> {
+class ActorCoordinator<T extends ActorCoordinator<T>> with ReactiveCoordinator<T> {
   final ActorModel _model;
 
   ActorModel get model => _model;
