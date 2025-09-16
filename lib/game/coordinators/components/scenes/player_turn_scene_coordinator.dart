@@ -1,5 +1,4 @@
 import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/enemy/enemies_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
@@ -8,6 +7,7 @@ import 'package:card_battler/game/coordinators/components/team/team_coordinator.
 import 'package:card_battler/game/services/card/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
+import 'package:card_battler/game/services/turn/player_turn_lifecycle_manager.dart';
 
 class PlayerTurnSceneCoordinator
     with ReactiveCoordinator<PlayerTurnSceneCoordinator> {
@@ -25,7 +25,11 @@ class PlayerTurnSceneCoordinator
        _enemiesCoordinator = enemiesCoordinator,
        _gamePhaseManager = gamePhaseManager,
        _activePlayerManager = activePlayerManager,
-       _effectProcessor = effectProcessor {
+       _effectProcessor = effectProcessor,
+       _turnLifecycleManager = PlayerTurnLifecycleManager(
+         playerCoordinator: playerCoordinator,
+         shopCoordinator: shopCoordinator,
+       ) {
     _shopCoordinator.onCardBought = (shopCardCoordinator) {
       onCardBought(shopCardCoordinator);
     };
@@ -41,6 +45,7 @@ class PlayerTurnSceneCoordinator
   final EffectProcessor _effectProcessor;
   final GamePhaseManager _gamePhaseManager;
   final ActivePlayerManager _activePlayerManager;
+  final PlayerTurnLifecycleManager _turnLifecycleManager;
 
   PlayerCoordinator get playerCoordinator => _playerCoordinator;
   ShopCoordinator get shopCoordinator => _shopCoordinator;
@@ -57,36 +62,15 @@ class PlayerTurnSceneCoordinator
 
   void _onActivePlayerChanged(PlayerCoordinator newActivePlayer) {
     _playerCoordinator = newActivePlayer;
+    _turnLifecycleManager.updatePlayerCoordinator(newActivePlayer);
     notifyChange();
   }
 
   void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
-    if (_isTurnOver(previousPhase, newPhase)) {
-      _playerCoordinator.playerInfoCoordinator.resetCreditsAndAttack();
-      _shopCoordinator.refillShop();
-
-      var cards = _playerCoordinator.handCardsCoordinator.removeAllCards();
-
-      if (_playerCoordinator.deckCardsCoordinator.isEmpty) {
-        _refillDeck(cards);
-      } else {
-        _playerCoordinator.discardCardsCoordinator.addCards(cards);
-      }
+    if (_turnLifecycleManager.isTurnOver(previousPhase, newPhase)) {
+      _turnLifecycleManager.handleTurnEnd();
     }
   }
-
-  void _refillDeck(List<CardCoordinator> handCards) {
-    var discardCards = _playerCoordinator.discardCardsCoordinator
-        .removeAllCards();
-
-    var allCards = discardCards..addAll(handCards);
-    _playerCoordinator.deckCardsCoordinator.addCards(allCards);
-    _playerCoordinator.deckCardsCoordinator.shuffle();
-  }
-
-  bool _isTurnOver(GamePhase previousPhase, GamePhase newPhase) =>
-      previousPhase == GamePhase.playerTakeActionsTurn &&
-      newPhase == GamePhase.waitingToDrawPlayerCards;
 
   @override
   void dispose() {
