@@ -17,4 +17,3 @@ linter:
     - no_literal_bool_comparisons
     - prefer_final_in_for_each
     - prefer_function_declarations_over_variables
-    - 

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/models/card/card_model.dart';

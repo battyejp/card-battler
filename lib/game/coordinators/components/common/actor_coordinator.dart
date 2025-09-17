@@ -12,12 +12,8 @@ class ActorCoordinator<T extends ActorCoordinator<T>>
   String get healthDisplay => _model.healthModel.display;
 
   void adjustHealth(int amount) {
-    if (_model.healthModel.currentHealth > _model.healthModel.maxHealth ||
-        _model.healthModel.currentHealth < 0) {
-      return;
-    }
-
-    _model.healthModel.currentHealth += amount;
+    final newHealth = _model.healthModel.currentHealth + amount;
+    _model.healthModel.currentHealth = newHealth.clamp(0, _model.healthModel.maxHealth);
     notifyChange();
   }
 }

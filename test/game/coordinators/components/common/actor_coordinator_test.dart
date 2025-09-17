@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:card_battler/game/coordinators/components/common/actor_coordinator.dart';
 import 'package:card_battler/game/models/common/actor_model.dart';
 import 'package:card_battler/game/models/shared/health_model.dart';
@@ -7,12 +5,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Test implementation of ActorCoordinator
 class TestActorCoordinator extends ActorCoordinator<TestActorCoordinator> {
-  TestActorCoordinator({required ActorModel model}) : super(model: model);
+  TestActorCoordinator({required super.model});
 }
 
 // Mock ActorModel for testing
 class MockActorModel extends ActorModel {
-  MockActorModel({super.name = 'Test Actor', required super.healthModel});
+  MockActorModel({required super.healthModel, super.name = 'Test Actor'});
 }
 
 void main() {
