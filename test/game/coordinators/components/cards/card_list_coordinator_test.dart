@@ -1,40 +1,8 @@
-import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
-import 'package:card_battler/game/models/card/card_model.dart';
-import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
-import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-// Mock classes for testing
-class MockCardModel extends CardModel {
-  MockCardModel({
-    super.name = 'Test Card',
-    super.type = 'action',
-    super.isFaceUp = true,
-    super.effects = const [],
-  });
-}
+import '../../../../mocks/shared_mocks.dart';
 
-class MockCardCoordinator extends CardCoordinator {
-  MockCardCoordinator({String name = 'Test Card'})
-    : super(
-        cardModel: MockCardModel(name: name),
-        cardsSelectionManagerService: MockCardsSelectionManagerService(),
-        gamePhaseManager: MockGamePhaseManager(),
-        activePlayerManager: MockActivePlayerManager(),
-      );
-}
-
-class MockCardsSelectionManagerService extends CardsSelectionManagerService {}
-
-class MockGamePhaseManager extends GamePhaseManager {
-  MockGamePhaseManager() : super(numberOfPlayers: 2);
-}
-
-class MockActivePlayerManager extends ActivePlayerManager {
-  MockActivePlayerManager() : super(gamePhaseManager: MockGamePhaseManager());
-}
 
 void main() {
   group('CardListCoordinator', () {
