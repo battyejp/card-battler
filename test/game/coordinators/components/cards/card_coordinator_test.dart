@@ -1,13 +1,19 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
-import '../../../../mocks/shared_mocks.dart';
+// Mock classes
+class MockCardModel extends Mock implements CardModel {}
+class MockCardsSelectionManagerService extends Mock implements CardsSelectionManagerService {}
+class MockGamePhaseManager extends Mock implements GamePhaseManager {}
+class MockActivePlayerManager extends Mock implements ActivePlayerManager {}
+class MockPlayerInfoCoordinator extends Mock implements PlayerInfoCoordinator {}
 
 
 void main() {
@@ -19,10 +25,15 @@ void main() {
     late CardCoordinator cardCoordinator;
 
     setUp(() {
-      mockCardModel = createMockCardModel();
-      mockSelectionService = createMockCardsSelectionManagerService();
-      mockGamePhaseManager = createMockGamePhaseManager();
-      mockActivePlayerManager = createMockActivePlayerManager();
+      mockCardModel = MockCardModel();
+      when(() => mockCardModel.name).thenReturn('Test Card');
+      when(() => mockCardModel.type).thenReturn('action');
+      when(() => mockCardModel.isFaceUp).thenReturn(true);
+      when(() => mockCardModel.effects).thenReturn([]);
+
+      mockSelectionService = MockCardsSelectionManagerService();
+      mockGamePhaseManager = MockGamePhaseManager();
+      mockActivePlayerManager = MockActivePlayerManager();
 
       cardCoordinator = CardCoordinator(
         cardModel: mockCardModel,
@@ -65,10 +76,10 @@ void main() {
       });
 
       test('isFaceUp getter returns card model isFaceUp', () {
-        when(mockCardModel.isFaceUp).thenReturn(true);
+        when(() => mockCardModel.isFaceUp).thenReturn(true);
         expect(cardCoordinator.isFaceUp, isTrue);
 
-        when(mockCardModel.isFaceUp).thenReturn(false);
+        when(() => mockCardModel.isFaceUp).thenReturn(false);
         expect(cardCoordinator.isFaceUp, isFalse);
       });
 
@@ -86,7 +97,11 @@ void main() {
           ),
         ];
 
-        final cardWithEffects = createMockCardModel(effects: testEffects);
+        final cardWithEffects = MockCardModel();
+        when(() => cardWithEffects.name).thenReturn('Test Card');
+        when(() => cardWithEffects.type).thenReturn('action');
+        when(() => cardWithEffects.isFaceUp).thenReturn(true);
+        when(() => cardWithEffects.effects).thenReturn(testEffects);
         final coordinatorWithEffects = CardCoordinator(
           cardModel: cardWithEffects,
           cardsSelectionManagerService: mockSelectionService,
@@ -129,7 +144,7 @@ void main() {
 
     group('Action Disabled Check', () {
       test('isActionDisabled returns false by default', () {
-        final playerInfo = createMockPlayerInfoCoordinator();
+        final playerInfo = MockPlayerInfoCoordinator();
 
         expect(cardCoordinator.isActionDisabled(playerInfo), isFalse);
       });
@@ -172,7 +187,11 @@ void main() {
           ),
         ];
 
-        final cardWithEffects = createMockCardModel(effects: effects);
+        final cardWithEffects = MockCardModel();
+        when(() => cardWithEffects.name).thenReturn('Test Card');
+        when(() => cardWithEffects.type).thenReturn('action');
+        when(() => cardWithEffects.isFaceUp).thenReturn(true);
+        when(() => cardWithEffects.effects).thenReturn(effects);
         final coordinatorWithEffects = CardCoordinator(
           cardModel: cardWithEffects,
           cardsSelectionManagerService: mockSelectionService,

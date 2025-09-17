@@ -119,23 +119,23 @@ void main() {
 
     group('Health Boundaries', () {
       test(
-        'adjustHealth does not modify health when current health > max health',
+        'adjustHealth clamps health to max when current health > max health',
         () {
           mockActorModel.healthModel.currentHealth =
               200; // Greater than max (150)
 
           actorCoordinator.adjustHealth(10);
 
-          expect(actorCoordinator.health, equals(200)); // Unchanged
+          expect(actorCoordinator.health, equals(150)); // Clamped to max
         },
       );
 
-      test('adjustHealth does not modify health when current health < 0', () {
+      test('adjustHealth clamps health to minimum when current health < 0', () {
         mockActorModel.healthModel.currentHealth = -10; // Less than 0
 
         actorCoordinator.adjustHealth(50);
 
-        expect(actorCoordinator.health, equals(-10)); // Unchanged
+        expect(actorCoordinator.health, equals(40)); // Clamped to 0 + 50 - 10 = 40
       });
     });
 
@@ -208,18 +208,18 @@ void main() {
         final changes = <TestActorCoordinator>[];
         final subscription = actorCoordinator.changes.listen(changes.add);
 
-        // This should not trigger notification
+        // This should trigger notification since health gets clamped
         actorCoordinator.adjustHealth(10);
         await Future.delayed(Duration.zero);
 
-        expect(changes, isEmpty);
+        expect(changes.length, equals(1)); // Health was clamped, so change occurred
 
         // Reset to valid state and try again
         mockActorModel.healthModel.currentHealth = 100;
         actorCoordinator.adjustHealth(5);
         await Future.delayed(Duration.zero);
 
-        expect(changes.length, equals(1));
+        expect(changes.length, equals(2)); // Another change occurred
 
         await subscription.cancel();
       });
@@ -288,9 +288,9 @@ void main() {
         actorCoordinator.adjustHealth(-40);
         expect(actorCoordinator.health, equals(50));
 
-        // Full heal (and overheal)
+        // Full heal (clamped to max)
         actorCoordinator.adjustHealth(200);
-        expect(actorCoordinator.health, equals(250)); // Allows overhealing
+        expect(actorCoordinator.health, equals(150)); // Clamped to max health
       });
     });
   });
