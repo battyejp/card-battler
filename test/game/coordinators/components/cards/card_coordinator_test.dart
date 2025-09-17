@@ -8,13 +8,10 @@ import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-// Mock classes
-class MockCardModel extends Mock implements CardModel {}
-class MockCardsSelectionManagerService extends Mock implements CardsSelectionManagerService {}
-class MockGamePhaseManager extends Mock implements GamePhaseManager {}
-class MockActivePlayerManager extends Mock implements ActivePlayerManager {}
-class MockPlayerInfoCoordinator extends Mock implements PlayerInfoCoordinator {}
+import '../../../../helpers/mock_helpers.dart';
 
+// Additional mocks specific to this test
+class MockPlayerInfoCoordinator extends Mock implements PlayerInfoCoordinator {}
 
 void main() {
   group('CardCoordinator', () {
@@ -25,15 +22,11 @@ void main() {
     late CardCoordinator cardCoordinator;
 
     setUp(() {
-      mockCardModel = MockCardModel();
-      when(() => mockCardModel.name).thenReturn('Test Card');
-      when(() => mockCardModel.type).thenReturn('action');
-      when(() => mockCardModel.isFaceUp).thenReturn(true);
-      when(() => mockCardModel.effects).thenReturn([]);
-
-      mockSelectionService = MockCardsSelectionManagerService();
-      mockGamePhaseManager = MockGamePhaseManager();
-      mockActivePlayerManager = MockActivePlayerManager();
+      // Use shared mock helpers for common dependencies
+      mockCardModel = MockHelpers.createMockCard();
+      mockSelectionService = MockHelpers.createMockSelectionService();
+      mockGamePhaseManager = MockHelpers.createMockGamePhaseManager();
+      mockActivePlayerManager = MockHelpers.createMockActivePlayerManager();
 
       cardCoordinator = CardCoordinator(
         cardModel: mockCardModel,
@@ -84,24 +77,13 @@ void main() {
       });
 
       test('effects getter returns card model effects', () {
-        final testEffects = <EffectModel>[
-          EffectModel(
-            type: EffectType.attack,
-            target: EffectTarget.activePlayer,
-            value: 5,
-          ),
-          EffectModel(
-            type: EffectType.heal,
-            target: EffectTarget.self,
-            value: 3,
-          ),
-        ];
+        final testEffects = MockHelpers.createTestEffects().take(2).toList();
 
-        final cardWithEffects = MockCardModel();
-        when(() => cardWithEffects.name).thenReturn('Test Card');
-        when(() => cardWithEffects.type).thenReturn('action');
-        when(() => cardWithEffects.isFaceUp).thenReturn(true);
-        when(() => cardWithEffects.effects).thenReturn(testEffects);
+        final cardWithEffects = MockHelpers.createMockCard(
+          name: 'Test Card with Effects',
+          effects: testEffects,
+        );
+        
         final coordinatorWithEffects = CardCoordinator(
           cardModel: cardWithEffects,
           cardsSelectionManagerService: mockSelectionService,
@@ -111,6 +93,8 @@ void main() {
 
         expect(coordinatorWithEffects.effects, equals(testEffects));
         expect(coordinatorWithEffects.effects.length, equals(2));
+        expect(coordinatorWithEffects.effects[0].type, equals(EffectType.attack));
+        expect(coordinatorWithEffects.effects[1].type, equals(EffectType.heal));
       });
 
       test('service getters return correct instances', () {
@@ -169,29 +153,13 @@ void main() {
       });
 
       test('multiple effects are handled correctly', () {
-        final effects = <EffectModel>[
-          EffectModel(
-            type: EffectType.attack,
-            target: EffectTarget.activePlayer,
-            value: 10,
-          ),
-          EffectModel(
-            type: EffectType.heal,
-            target: EffectTarget.self,
-            value: 5,
-          ),
-          EffectModel(
-            type: EffectType.credits,
-            target: EffectTarget.self,
-            value: 3,
-          ),
-        ];
+        final effects = MockHelpers.createTestEffects();
 
-        final cardWithEffects = MockCardModel();
-        when(() => cardWithEffects.name).thenReturn('Test Card');
-        when(() => cardWithEffects.type).thenReturn('action');
-        when(() => cardWithEffects.isFaceUp).thenReturn(true);
-        when(() => cardWithEffects.effects).thenReturn(effects);
+        final cardWithEffects = MockHelpers.createMockCard(
+          name: 'Multi Effect Card',
+          effects: effects,
+        );
+        
         final coordinatorWithEffects = CardCoordinator(
           cardModel: cardWithEffects,
           cardsSelectionManagerService: mockSelectionService,
@@ -205,7 +173,10 @@ void main() {
           equals(EffectType.attack),
         );
         expect(coordinatorWithEffects.effects[0].value, equals(10));
-        expect(coordinatorWithEffects.effects[1].type, equals(EffectType.heal));
+        expect(
+          coordinatorWithEffects.effects[1].type,
+          equals(EffectType.heal),
+        );
         expect(coordinatorWithEffects.effects[1].value, equals(5));
         expect(
           coordinatorWithEffects.effects[2].type,
