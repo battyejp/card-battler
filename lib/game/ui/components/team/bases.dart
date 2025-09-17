@@ -11,16 +11,16 @@ class Bases extends PositionComponent {
   @override
   void onLoad() {
     // Calculate space below text for base components
-    final textHeight = 40.0; // Reserve space for text
-    final baseHeight = (size.y - textHeight);
+    const textHeight = 40.0; // Reserve space for text
+    final baseHeight = size.y - textHeight;
     final baseSize = Vector2(size.x, baseHeight);
-    final baseY = textHeight;
+    const baseY = textHeight;
 
     // Create UI components for each base model
-    List<Base> baseComponents = [];
+    final baseComponents = <Base>[];
     final allBaseCoordinators = _coordinator.allBaseCoordinators;
-    for (int i = 0; i < _coordinator.allBaseCoordinators.length; i++) {
-      var baseCoordinator = allBaseCoordinators[i];
+    for (var i = 0; i < _coordinator.allBaseCoordinators.length; i++) {
+      final baseCoordinator = allBaseCoordinators[i];
       final baseComponent = Base(coordinator: baseCoordinator)
         ..size = baseSize
         ..position = Vector2(0, baseY);
@@ -32,7 +32,7 @@ class Bases extends PositionComponent {
     }
 
     // Create text component with correct styling and positioning
-    var textComponent = TextComponent(
+    final textComponent = TextComponent(
       text:
           "Current Base: ${_coordinator.currentBaseIndex} of ${_coordinator.numberOfBases}",
       textRenderer: TextPaint(

@@ -28,7 +28,7 @@ class PlayerTurnScene
     final availableWidth = _size.x - (_margin * 2);
     final bottomLayoutHeight = availableHeight - topLayoutHeight;
 
-    var player = Player(playerModel: coordinator.playerCoordinator)
+    final player = Player(playerModel: coordinator.playerCoordinator)
       ..size = Vector2(availableWidth, bottomLayoutHeight)
       ..position = Vector2(
         (0 - _size.x / 2) + _margin,

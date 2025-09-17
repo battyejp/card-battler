@@ -20,7 +20,6 @@ class CardModel {
       name: json['name'],
       type: json['type'],
       effects: effects,
-      isFaceUp: false,
     );
   }
 

@@ -23,7 +23,6 @@ class ActionableCard extends Card {
 
     _actionButton = FlatButton(
       buttonLabel,
-      disabled: false,
       size: Vector2(size.x, 0.1 * size.y),
       position: Vector2(size.x / 2, size.y - (0.1 * size.y) / 2),
       onReleased: () {

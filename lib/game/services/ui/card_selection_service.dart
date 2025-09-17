@@ -45,9 +45,7 @@ class CardSelectionService {
   void _selectAtPosition(Vector2 pressPosition) {
     _cardsSelectionManagerService.selectCard(_card.coordinator, this);
 
-    _animationService.animateToSelection(pressPosition, () {
-      _uiStateService.updateSelectionUIState();
-    });
+    _animationService.animateToSelection(pressPosition, _uiStateService.updateSelectionUIState);
   }
 
   void _deselect() {

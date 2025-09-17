@@ -23,13 +23,13 @@ class ActivePlayerManager {
   PlayerCoordinator? get activePlayer => _activePlayer;
 
   void setNextPlayerToActive() {
-    var initActive = _activePlayer == null;
+    final initActive = _activePlayer == null;
 
     if (initActive) {
       _activePlayer = _players.first;
     } else {
-      var currentIndex = _players.indexOf(_activePlayer!);
-      var nextIndex = (currentIndex + 1) % _players.length;
+      final currentIndex = _players.indexOf(_activePlayer!);
+      final nextIndex = (currentIndex + 1) % _players.length;
       _activePlayer = _players[nextIndex];
     }
 

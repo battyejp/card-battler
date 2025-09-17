@@ -22,9 +22,9 @@ class Enemies extends PositionComponent {
     final y = (size.y - cardHeight) / 2;
 
     // Create UI components for each enemy model
-    List<Enemy> enemyComponents = [];
+    final enemyComponents = <Enemy>[];
     final allEnemyCoordinators = _coordinator.allEnemyCoordinators;
-    for (int i = 0; i < _coordinator.maxNumberOfEnemiesInPlay; i++) {
+    for (var i = 0; i < _coordinator.maxNumberOfEnemiesInPlay; i++) {
       final x = spacing + i * (cardWidth + spacing);
       final enemyComponent = Enemy(coordinator: allEnemyCoordinators[i])
         ..size = Vector2(cardWidth, cardHeight)
@@ -34,7 +34,7 @@ class Enemies extends PositionComponent {
       add(enemyComponent);
     }
 
-    var textComponent = TextComponent(
+    final textComponent = TextComponent(
       text: "Enemies to come: ${_coordinator.numberOfEnemiesNotInPlay}",
       textRenderer: TextPaint(
         style: const TextStyle(fontSize: 20, color: Colors.white),

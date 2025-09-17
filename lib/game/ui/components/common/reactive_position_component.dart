@@ -33,7 +33,7 @@ abstract class ReactivePositionComponent<T extends ReactiveCoordinator<T>>
   }
 
   @override
-  onLoad() {
+  void onLoad() {
     super.onLoad();
     updateDisplay();
   }

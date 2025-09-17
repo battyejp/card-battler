@@ -18,7 +18,7 @@ class CoordinatorsManager {
     ActivePlayerManager activePlayerManager,
     CardsSelectionManagerService cardsSelectionManagerService,
   ) {
-    var effectProcessor = EffectProcessor();
+    final effectProcessor = EffectProcessor();
 
     _playerCoordinators = PlayerCoordinatorFactory.createPlayerCoordinators(
       players: state.players,
@@ -36,7 +36,7 @@ class CoordinatorsManager {
     activePlayerManager.players = _playerCoordinators;
     activePlayerManager.setNextPlayerToActive();
 
-    var enemyCoordinators = EnemyCoordinatorFactory.createEnemyCoordinators(
+    final enemyCoordinators = EnemyCoordinatorFactory.createEnemyCoordinators(
       enemiesModel: state.enemiesModel,
     );
 
@@ -47,7 +47,6 @@ class CoordinatorsManager {
       gamePhaseManager: gamePhaseManager,
       cardsSelectionManagerService: cardsSelectionManagerService,
       activePlayerManager: activePlayerManager,
-      numberOfCardsToDrawPerEnemyTurn: 1,
     );
 
     _playerTurnSceneCoordinator = PlayerTurnSceneCoordinatorFactory.createPlayerTurnSceneCoordinator(

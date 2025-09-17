@@ -462,7 +462,7 @@ void main() {
       test('property access is fast', () {
         final stopwatch = Stopwatch()..start();
 
-        for (int i = 0; i < 1000; i++) {
+        for (var i = 0; i < 1000; i++) {
           cardListCoordinator.hasCards;
           cardListCoordinator.isEmpty;
           cardListCoordinator.cardCoordinators;

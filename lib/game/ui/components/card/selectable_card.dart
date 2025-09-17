@@ -18,7 +18,6 @@ class SelectableCard extends ActionableCard with TapCallbacks {
 
     _closeButton = FlatButton(
       "Close",
-      disabled: false,
       size: Vector2(size.x, 0.1 * size.y),
       position: Vector2(size.x / 2, 0.1 * size.y / 2),
       onReleased: () {
@@ -42,7 +41,7 @@ class SelectableCard extends ActionableCard with TapCallbacks {
 
   @override
   bool onTapUp(TapUpEvent event) {
-    var result = cardInteractionService?.onSelected(event) ?? false;
+    final result = cardInteractionService?.onSelected(event) ?? false;
 
     if (result) {
       isCloseButtonVisible = !isCloseButtonVisible;

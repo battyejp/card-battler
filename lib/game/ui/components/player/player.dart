@@ -19,7 +19,7 @@ class Player extends PositionComponent {
     final infoHeight = size.y * _infoHeightFactor;
     final pileWidthFactor = (1 - _handWidthFactor) / 2;
 
-    var deck = CardDeck(
+    final deck = CardDeck(
       onTap: () => {
         if (_coordinator.gamePhaseManager.currentPhase ==
             GamePhase.waitingToDrawPlayerCards)
@@ -34,7 +34,7 @@ class Player extends PositionComponent {
 
     add(deck);
 
-    var info =
+    final info =
         PlayerInfo(
             _coordinator.playerInfoCoordinator,
             viewMode: PlayerInfoViewMode.detailed,
@@ -44,13 +44,13 @@ class Player extends PositionComponent {
 
     add(info);
 
-    var hand = CardHand(_coordinator.handCardsCoordinator)
+    final hand = CardHand(_coordinator.handCardsCoordinator)
       ..size = Vector2(size.x * _handWidthFactor, size.y - infoHeight)
       ..position = Vector2(deck.x + deck.width, infoHeight);
 
     add(hand);
 
-    var discard = CardPile(_coordinator.discardCardsCoordinator, showNext: true)
+    final discard = CardPile(_coordinator.discardCardsCoordinator, showNext: true)
       ..size = Vector2(size.x * pileWidthFactor, size.y)
       ..position = Vector2(hand.x + hand.width, 0);
 

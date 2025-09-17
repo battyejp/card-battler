@@ -19,7 +19,7 @@ class ShopCard extends SelectableCard {
       add(nameTextComponent);
 
       // Add the cost text component
-      var costTextComponent = TextComponent(
+      final costTextComponent = TextComponent(
         text: "Cost: ${_coordinator.cost}",
         anchor: Anchor.center,
         position: Vector2(size.x / 2, size.y / 2 + 15),

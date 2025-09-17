@@ -30,9 +30,7 @@ class PlayerTurnSceneCoordinator
          playerCoordinator: playerCoordinator,
          shopCoordinator: shopCoordinator,
        ) {
-    _shopCoordinator.onCardBought = (shopCardCoordinator) {
-      onCardBought(shopCardCoordinator);
-    };
+    _shopCoordinator.onCardBought = onCardBought;
 
     gamePhaseManager.addPhaseChangeListener(_onGamePhaseChanged);
     _activePlayerManager.addActivePlayerChangeListener(_onActivePlayerChanged);

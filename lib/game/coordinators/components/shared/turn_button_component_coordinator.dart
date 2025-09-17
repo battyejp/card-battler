@@ -35,9 +35,7 @@ class TurnButtonComponentCoordinator
         title: 'Confirm End Turn',
         message:
             'You still have cards to play, are you sure you want to end your turn?',
-        onConfirm: () {
-          _gamePhaseManager.nextPhase();
-        },
+        onConfirm: _gamePhaseManager.nextPhase,
         onCancel: () {},
       );
     } else {
@@ -46,8 +44,8 @@ class TurnButtonComponentCoordinator
   }
 
   void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
-    String newButtonText = buttonText;
-    bool newButtonVisible = buttonVisible;
+    var newButtonText = buttonText;
+    var newButtonVisible = buttonVisible;
 
     switch (newPhase) {
       case GamePhase.playerCardsDrawnWaitingForEnemyTurn:

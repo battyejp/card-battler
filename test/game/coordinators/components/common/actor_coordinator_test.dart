@@ -228,7 +228,7 @@ void main() {
       test('health adjustments are fast', () {
         final stopwatch = Stopwatch()..start();
 
-        for (int i = 0; i < 1000; i++) {
+        for (var i = 0; i < 1000; i++) {
           actorCoordinator.adjustHealth(1);
         }
 
@@ -239,7 +239,7 @@ void main() {
       test('property access is fast', () {
         final stopwatch = Stopwatch()..start();
 
-        for (int i = 0; i < 1000; i++) {
+        for (var i = 0; i < 1000; i++) {
           actorCoordinator.name;
           actorCoordinator.health;
           actorCoordinator.healthDisplay;
@@ -256,7 +256,7 @@ void main() {
 
         final stopwatch = Stopwatch()..start();
 
-        for (int i = 0; i < 50; i++) {
+        for (var i = 0; i < 50; i++) {
           // Use smaller number to avoid boundary issues
           actorCoordinator.adjustHealth(1);
         }

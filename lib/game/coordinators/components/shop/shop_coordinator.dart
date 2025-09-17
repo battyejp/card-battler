@@ -22,20 +22,20 @@ class ShopCoordinator {
 
   void onCardPlayed(CardCoordinator cardCoordinator) {
     cardCoordinator.onCardPlayed = null;
-    var shopCardCoordinator = cardCoordinator as ShopCardCoordinator;
+    final shopCardCoordinator = cardCoordinator as ShopCardCoordinator;
     _displayCoordinators.removeCard(shopCardCoordinator);
     onCardBought?.call(shopCardCoordinator);
   }
 
   void refillShop() {
-    var numberOfCardsNeeded = 6 - _displayCoordinators.cardCoordinators.length;
+    final numberOfCardsNeeded = 6 - _displayCoordinators.cardCoordinators.length;
     if (numberOfCardsNeeded > 0) {
       _addCardsToDisplayFromInventory(numberOfCardsNeeded);
     }
   }
 
   void _addCardsToDisplayFromInventory(int numberOfCards) {
-    var drawnCards = _inventoryCoordinators.drawCards(numberOfCards);
+    final drawnCards = _inventoryCoordinators.drawCards(numberOfCards);
     for (final card in drawnCards) {
       card.onCardPlayed = onCardPlayed;
     }

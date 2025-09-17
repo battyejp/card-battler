@@ -33,8 +33,8 @@ class ShopDisplay extends ReactivePositionComponent<CardListCoordinator<ShopCard
     final vSpacing = (size.y - totalHeight) / (numberOfRows + 1);
     final startX = (size.x - totalWidth) / 2;
 
-    for (int row = 0; row < numberOfRows; row++) {
-      for (int col = 0; col < itemsPerRow; col++) {
+    for (var row = 0; row < numberOfRows; row++) {
+      for (var col = 0; col < itemsPerRow; col++) {
         final x = startX + col * (cardWidth + hSpacing);
         final y = vSpacing + row * (cardHeight + vSpacing);
         final cardIndex = row * itemsPerRow + col;

@@ -24,16 +24,16 @@ class EnemyTurnScene extends Component {
   }
 
   void _loadGameComponents() {
-    var playArea = RectangleComponent(
+    final playArea = RectangleComponent(
       size: Vector2(_size.x, _size.y),
       anchor: Anchor.center,
       position: Vector2(0, 0),
-      paint: Paint()..color = Colors.black.withAlpha((255)),
+      paint: Paint()..color = Colors.black.withAlpha(255),
     );
 
     add(playArea);
 
-    var deck =
+    final deck =
         CardDeck(
             coordinator: _coordinator.deckCardsCoordinator,
             onTap: () => {_coordinator.drawCardsFromDeck()},
@@ -44,7 +44,7 @@ class EnemyTurnScene extends Component {
 
     playArea.add(deck);
 
-    var playedCards =
+    final playedCards =
         CardPile(_coordinator.playedCardsCoordinator, showNext: false)
           ..anchor = Anchor.topRight
           ..position = Vector2(_size.x, 0)
@@ -52,7 +52,7 @@ class EnemyTurnScene extends Component {
 
     playArea.add(playedCards);
 
-    var team =
+    final team =
         Players(
             coordinator: _coordinator.playersCoordinator,
             showActivePlayer: true,

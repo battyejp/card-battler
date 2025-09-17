@@ -13,7 +13,7 @@ class CardLoaderService {
     String filePath, 
     T Function(Map<String, dynamic>) fromJson
   ) async {
-    final String jsonString = await rootBundle.loadString(filePath);
+    final jsonString = await rootBundle.loadString(filePath);
     return loadCardsFromJsonString(jsonString, fromJson);
   }
 

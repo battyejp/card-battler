@@ -1,4 +1,3 @@
-import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:flame/components.dart';
@@ -20,16 +19,16 @@ class Players extends PositionComponent {
   void onLoad() {
     super.onLoad();
 
-    late List<PlayerInfoCoordinator> playersCoordinatorsToShow = _coordinator
+    late final playersCoordinatorsToShow = _coordinator
         .players
         .where((player) => !player.isActive || _showActivePlayer)
         .toList();
 
-    double playerHeight = size.y / playersCoordinatorsToShow.length;
+    final playerHeight = size.y / playersCoordinatorsToShow.length;
     double currentY = 0;
 
-    for (int i = 0; i < playersCoordinatorsToShow.length; i++) {
-      var playerCoordinator = playersCoordinatorsToShow[i];
+    for (var i = 0; i < playersCoordinatorsToShow.length; i++) {
+      final playerCoordinator = playersCoordinatorsToShow[i];
 
       final playerInfo = PlayerInfo(playerCoordinator, viewMode: _viewMode)
         ..size = Vector2(size.x, playerHeight)
