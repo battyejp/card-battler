@@ -1,14 +1,5 @@
-import 'package:card_battler/game/models/shared/health_model.dart';
+import 'package:card_battler/game/models/common/actor_model.dart';
 
-class EnemyModel {
-  final HealthModel _health;
-  final String name;
-
-  EnemyModel({
-    required this.name,
-    required int maxHealth
-  }) : _health = HealthModel(maxHealth: maxHealth);
-
-  /// Gets the health display string (e.g., "75/100")
-  String get healthDisplay => _health.healthDisplay;
+class EnemyModel extends ActorModel {
+  EnemyModel({required super.name, required super.healthModel});
 }

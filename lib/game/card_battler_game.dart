@@ -1,61 +1,30 @@
-import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
-import 'package:card_battler/game/services/card/card_loader_service.dart';
-import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/services/ui/scene_manager.dart';
+import 'package:card_battler/game/services/initialization/game_component_builder.dart';
+import 'package:card_battler/game/services/initialization/game_initialization_service.dart';
 import 'package:flame/game.dart';
-import 'package:flame/events.dart';
 
-class CardBattlerGame extends FlameGame with TapCallbacks {
-  Vector2? _testSize;
-  late final RouterComponent router;
-  final SceneManager _sceneManager = SceneManager();
+class CardBattlerGame extends FlameGame {
+  // Test-only constructor to set size before onLoad
+  CardBattlerGame.withSize(Vector2 testSize) : _testSize = testSize;
 
   // Default constructor with new game state
   CardBattlerGame();
 
-  // Test-only constructor to set size before onLoad
-  CardBattlerGame.withSize(Vector2 testSize) : _testSize = testSize;
-
-  static const double margin = 20.0;
-  static const double topLayoutHeightFactor = 0.6;
-
-  @override
-  void onTapUp(TapUpEvent event) {
-    _sceneManager.handleBackgroundDeselection();
-    super.onTapUp(event);
-  }
+  Vector2? _testSize;
+  late final RouterComponent router;
 
   @override
   Future<void> onLoad() async {
-    List<ShopCardModel> shopCards = [];
-    List<CardModel> playerDeckCards = [];
-    List<CardModel> enemyCards = [];
-
     if (_testSize != null) {
       onGameResize(_testSize!);
     }
-    else {
-      shopCards = await CardLoaderService.loadCardsFromJson<ShopCardModel>(
-        'assets/data/shop_cards.json',
-        ShopCardModel.fromJson,
-      );
 
-      playerDeckCards = await CardLoaderService.loadCardsFromJson<CardModel>(
-        'assets/data/hero_starting_cards.json',
-        CardModel.fromJson,
-      );
-
-      enemyCards = await CardLoaderService.loadCardsFromJson<CardModel>(
-        'assets/data/enemy_cards.json',
-        CardModel.fromJson,
-      );
-
-      GameStateModel.initialize(shopCards, playerDeckCards, enemyCards);
-    }
-
-    world.add(
-      router = _sceneManager.createRouter(size),
+    final gameState = await GameInitializationService.initializeGameState();
+    final services = GameInitializationService.createServices(gameState);
+    final router = GameComponentBuilder.buildGameComponents(
+      gameSize: size,
+      services: services,
     );
+
+    world.add(router);
   }
 }

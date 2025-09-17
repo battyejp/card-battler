@@ -1,46 +1,69 @@
-import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/components/scenes/enemy_turn_scene.dart';
-import 'package:card_battler/game/components/scenes/player_turn_scene.dart';
-import 'package:card_battler/game/services/game_state/game_state_manager.dart';
+import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:card_battler/game/ui/components/scenes/enemy_turn_scene.dart';
+import 'package:card_battler/game/ui/components/scenes/player_turn_scene.dart';
 import 'package:flame/game.dart';
 
-/// Service responsible for managing scene transitions and routing operations
-/// This class handles all navigation logic, following the Single Responsibility Principle
 class RouterService {
-  static final RouterService _instance = RouterService._internal();
-  factory RouterService() => _instance;
-  RouterService._internal();
-
   RouterComponent? _router;
   PlayerTurnScene? _playerTurnScene;
-  final GameStateManager _gameStateManager = GameStateManager();
+  EnemyTurnScene? _enemyTurnScene;
+  GamePhaseManager? _gamePhaseManager;
 
   /// Create and configure the router component with scene routes
-  RouterComponent createRouter(Vector2 gameSize, {Map<String, Route>? additionalRoutes}) {
+  RouterComponent createRouter(
+    Vector2 gameSize,
+    PlayerTurnSceneCoordinator playerTurnSceneCoordinator,
+    EnemyTurnSceneCoordinator enemyTurnSceneCoordinator,
+    GamePhaseManager gamePhaseManager, {
+    Map<String, Route>? additionalRoutes,
+  }) {
+    _gamePhaseManager = gamePhaseManager;
+
     _playerTurnScene = PlayerTurnScene(
-      model: GameStateModel.instance.playerTurn,
+      playerTurnSceneCoordinator,
+      size: gameSize,
+    );
+
+    _enemyTurnScene = EnemyTurnScene(
+      coordinator: enemyTurnSceneCoordinator,
       size: gameSize,
     );
 
     final routes = {
       'playerTurn': Route(() => _playerTurnScene!),
-      'enemyTurn': Route(() => EnemyTurnScene(
-        model: GameStateModel.instance.enemyTurnArea,
-        size: gameSize,
-      )),
+      'enemyTurn': Route(() => _enemyTurnScene!),
     };
 
+    // Add additional routes if provided
     if (additionalRoutes != null) {
       routes.addAll(additionalRoutes);
     }
 
-    _router = RouterComponent(
-      routes: routes,
-      initialRoute: 'playerTurn',
-    );
-
-    _setupPhaseListener();
+    _router = RouterComponent(routes: routes, initialRoute: 'playerTurn');
+    _gamePhaseManager?.addPhaseChangeListener(_onGamePhaseChanged);
     return _router!;
+  }
+
+  void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
+    if (newPhase == GamePhase.enemyTurnWaitingToDrawCards) {
+      goToEnemyTurn();
+    } else if (previousPhase == GamePhase.enemyTurnWaitingToDrawCards &&
+        newPhase == GamePhase.playerTakeActionsTurn) {
+      _handleEnemyTurnToPlayerTurn();
+    }
+
+    switch (newPhase) {
+      case GamePhase.enemyTurnWaitingToDrawCards:
+        goToEnemyTurn();
+        break;
+      case GamePhase.playerTakeActionsTurn:
+        goToPlayerTurn();
+        break;
+      default:
+        break;
+    }
   }
 
   /// Transition to player turn scene
@@ -58,29 +81,11 @@ class RouterService {
     _router?.pop();
   }
 
-  /// Set up phase change listener for automatic scene transitions
-  void _setupPhaseListener() {
-    _gameStateManager.addPhaseChangeListener((previousPhase, newPhase) {
-      if (newPhase == GamePhase.enemyTurn) {
-        goToEnemyTurn();
-      } else if (previousPhase == GamePhase.enemyTurn && newPhase == GamePhase.playerTurn) {
-        _handleEnemyTurnToPlayerTurn();
-      }
-    });
-  }
-
-  /// Handle enemy turn completion with delay (called via phase transitions)
   void _handleEnemyTurnToPlayerTurn() {
-    Future.delayed(const Duration(seconds: 1), () {
-      // Reset the enemy turn state for the next enemy turn
-      GameStateModel.instance.enemyTurnArea.resetTurn();
-      _router?.pop();
-    });
+    pop();
   }
 
-  /// Get the player turn scene reference (needed for background interactions)
-  PlayerTurnScene? get playerTurnScene => _playerTurnScene;
-
-  /// Get debug information about current routing state
-  String get debugInfo => 'RouterService: router initialized';
+  void dispose() {
+    _gamePhaseManager?.removePhaseChangeListener(_onGamePhaseChanged);
+  }
 }

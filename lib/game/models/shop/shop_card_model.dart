@@ -1,21 +1,19 @@
-import '../shared/card_model.dart';
+import 'package:card_battler/game/models/card/card_model.dart';
 
 class ShopCardModel extends CardModel {
-  final int _cost;
+  ShopCardModel({
+    required super.name,
+    required this.cost,
+    super.isFaceUp = true,
+  }) : super(type: 'Shop');
 
-  ShopCardModel({required super.name, required int cost, super.isFaceUp = true})
-    : _cost = cost,
-      super(type: 'Shop');
+  factory ShopCardModel.fromJson(Map<String, dynamic> json) => ShopCardModel(
+    name: json['name'],
+    cost: json['cost'],
+    isFaceUp: json['faceUp'] ?? true,
+  );
 
-  int get cost => _cost;
-
-  factory ShopCardModel.fromJson(Map<String, dynamic> json) {
-    return ShopCardModel(
-      name: json['name'],
-      cost: json['cost'],
-      isFaceUp: json['faceUp'] ?? true,
-    );
-  }
+  final int cost;
 
   @override
   Map<String, dynamic> toJson() {
@@ -24,4 +22,3 @@ class ShopCardModel extends CardModel {
     return json;
   }
 }
-  

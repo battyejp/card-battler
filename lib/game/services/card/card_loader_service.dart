@@ -1,5 +1,6 @@
-import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
+
+import 'package:flutter/services.dart' show rootBundle;
 
 /// Service responsible for loading cards from JSON files
 /// This isolates Flutter dependencies from domain models
@@ -12,7 +13,7 @@ class CardLoaderService {
     String filePath, 
     T Function(Map<String, dynamic>) fromJson
   ) async {
-    final String jsonString = await rootBundle.loadString(filePath);
+    final jsonString = await rootBundle.loadString(filePath);
     return loadCardsFromJsonString(jsonString, fromJson);
   }
 

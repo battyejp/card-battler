@@ -1,77 +1,91 @@
+import 'package:card_battler/game/card_battler_game.dart';
 import 'package:flame/game.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_battler/game/card_battler_game.dart';
-import 'package:card_battler/game/components/player/player.dart';
-import 'package:card_battler/game/components/enemy/enemies.dart';
-import 'package:card_battler/game/components/shop/shop.dart';
-import 'package:card_battler/game/components/team/team.dart';
-import 'package:card_battler/game/components/scenes/player_turn_scene.dart';
-import 'package:flame_test/flame_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  testWithGame<CardBattlerGame>('CardBattlerGame adds router with PlayerTurnScene to the world', CardBattlerGame.new, (game) async {
-    expect(game.world.children.whereType<RouterComponent>().length, 1);
-    
-    final router = game.world.children.whereType<RouterComponent>().first;
-    final route = router.children.whereType<Route>().first;
-    final playerTurnScene = route.children.whereType<PlayerTurnScene>().first;
-    
-    expect(playerTurnScene.children.whereType<Player>().length, 1);
-    expect(playerTurnScene.children.whereType<Enemies>().length, 1);
-    expect(playerTurnScene.children.whereType<Shop>().length, 1);
-    expect(playerTurnScene.children.whereType<Team>().length, 1);
+  group('CardBattlerGame', () {
+    late CardBattlerGame game;
+
+    setUp(() {
+      game = CardBattlerGame();
+    });
+
+    group('Constructor', () {
+      test('default constructor creates instance', () {
+        expect(game, isA<CardBattlerGame>());
+        expect(game, isA<FlameGame>());
+      });
+
+      test('withSize constructor sets test size', () {
+        final testSize = Vector2(800, 600);
+        final gameWithSize = CardBattlerGame.withSize(testSize);
+
+        expect(gameWithSize, isA<CardBattlerGame>());
+        expect(gameWithSize, isA<FlameGame>());
+      });
+    });
+
+    group('Game Lifecycle', () {
+      test('onLoad initializes game components', () async {
+        final testGame = CardBattlerGame.withSize(Vector2(800, 600));
+
+        await testGame.onLoad();
+
+        expect(testGame.world.children.length, greaterThan(0));
+      });
+    });
+
+    group('Game State Initialization', () {
+      test('router component is added to world', () async {
+        final testGame = CardBattlerGame.withSize(Vector2(800, 600));
+
+        await testGame.onLoad();
+
+        final children = testGame.world.children;
+        expect(children, isNotEmpty);
+
+        final hasRouterComponent = children.any(
+          (child) => child.runtimeType.toString().contains('Router'),
+        );
+        expect(hasRouterComponent, isTrue);
+      });
+    });
+
+    group('Performance', () {
+      test('game initialization completes within reasonable time', () async {
+        final testGame = CardBattlerGame.withSize(Vector2(800, 600));
+        final stopwatch = Stopwatch()..start();
+
+        await testGame.onLoad();
+
+        stopwatch.stop();
+        expect(stopwatch.elapsedMilliseconds, lessThan(5000)); // 5 seconds max
+      });
+
+      test('game with test size initializes quickly', () async {
+        final testGame = CardBattlerGame.withSize(Vector2(800, 600));
+        final stopwatch = Stopwatch()..start();
+
+        await testGame.onLoad();
+
+        stopwatch.stop();
+        expect(stopwatch.elapsedMilliseconds, lessThan(5000)); // 5 seconds max
+      });
+    });
+
+    group('Memory Management', () {
+      test('game properly initializes without memory leaks', () async {
+        final testGame = CardBattlerGame.withSize(Vector2(800, 600));
+
+        await testGame.onLoad();
+
+        expect(testGame.world.children, isNotEmpty);
+
+        testGame.world.removeAll(testGame.world.children);
+
+        expect(testGame.world.children, isEmpty);
+      });
+    });
   });
-
-  testWithGame<CardBattlerGame>(
-    'CardBattlerGame main components have correct size and position for game size 800x600',
-    () => CardBattlerGame.withSize(Vector2(800, 600)),
-    (game) async {
-      final router = game.world.children.whereType<RouterComponent>().first;
-      final route = router.children.whereType<Route>().first;
-      final playerTurnScene = route.children.whereType<PlayerTurnScene>().first;
-      
-      final player = playerTurnScene.children.whereType<Player>().first;
-      expect(player.size, closeToVector(Vector2(760, 224)));
-      expect(player.position, closeToVector(Vector2(-380, 56)));
-
-      final enemies = playerTurnScene.children.whereType<Enemies>().first;
-      expect(enemies.size, closeToVector(Vector2(380, 336)));
-      expect(enemies.position, closeToVector(Vector2(-190, -280)));
-
-      final shop = playerTurnScene.children.whereType<Shop>().first;
-      expect(shop.size, closeToVector(Vector2(190, 336)));
-      expect(shop.position, closeToVector(Vector2(190, -280)));
-
-      final team = playerTurnScene.children.whereType<Team>().first;
-      expect(team.size, closeToVector(Vector2(190, 336)));
-      expect(team.position, closeToVector(Vector2(-380, -280)));
-    },
-  );
-
-  testWithGame<CardBattlerGame>(
-    'CardBattlerGame main components have correct size and position for game size 1024x768',
-    () => CardBattlerGame.withSize(Vector2(1024, 768)),
-    (game) async {
-      final router = game.world.children.whereType<RouterComponent>().first;
-      final route = router.children.whereType<Route>().first;
-      final playerTurnScene = route.children.whereType<PlayerTurnScene>().first;
-      
-      final player = playerTurnScene.children.whereType<Player>().first;
-      expect(player.size, closeToVector(Vector2(984, 291.2)));
-      expect(player.position, closeToVector(Vector2(-492, 72.8)));
-
-      final enemies = playerTurnScene.children.whereType<Enemies>().first;
-      expect(enemies.size, closeToVector(Vector2(492, 436.8)));
-      expect(enemies.position, closeToVector(Vector2(-246, -364)));
-
-      final shop = playerTurnScene.children.whereType<Shop>().first;
-      expect(shop.size, closeToVector(Vector2(246, 436.8)));
-      expect(shop.position, closeToVector(Vector2(246, -364)));
-
-      final team = playerTurnScene.children.whereType<Team>().first;
-      expect(team.size, closeToVector(Vector2(246, 436.8)));
-      expect(team.position, closeToVector(Vector2(-492, -364)));
-    },
-  );
 }

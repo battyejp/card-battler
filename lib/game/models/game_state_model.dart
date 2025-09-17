@@ -1,59 +1,82 @@
-import 'package:card_battler/game/services/enemy/enemy_turn_coordinator.dart';
-import 'package:card_battler/game/services/player/player_coordinator.dart';
-import 'package:card_battler/game/models/shared/card_model.dart';
+import 'package:card_battler/game/models/base/base_model.dart';
+import 'package:card_battler/game/models/card/card_list_model.dart';
+import 'package:card_battler/game/models/card/card_model.dart';
+import 'package:card_battler/game/models/enemy/enemies_model.dart';
+import 'package:card_battler/game/models/enemy/enemy_model.dart';
+import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/services/game_state/game_state_facade.dart';
-import 'package:card_battler/game/services/player_turn/player_turn_coordinator.dart';
+import 'package:card_battler/game/models/shop/shop_model.dart';
 
-/// Represents the different phases of the game
-enum GamePhase {
-  /// Initial phase when waiting for player to draw cards
-  waitingToDrawCards,
-  
-  /// Phase after player has drawn their cards but before enemy turn
-  cardsDrawnWaitingForEnemyTurn,
-  
-  /// Enemy's turn to play cards and take actions
-  enemyTurn,
-  
-  /// Player's turn to play cards and take actions
-  playerTurn,
-
-  /// Phase to switch to the next player after cards have been drawn
-  cardsDrawnWaitingForPlayerSwitch,
-}
-
-/// Simplified game state model that delegates to the facade
-/// This model now follows SRP by focusing solely on providing backward compatibility
-/// All complex logic has been moved to appropriate services (Factory and Facade)
 class GameStateModel {
-  static final GameStateFacade _facade = GameStateFacade.instance;
+  GameStateModel({
+    required this.shop,
+    required this.players,
+    required this.bases,
+    required this.enemiesModel,
+  });
 
-  /// Gets the singleton instance of GameStateModel
-  /// This maintains backward compatibility while using the new architecture
-  static GameStateModel get instance => GameStateModel();
+  factory GameStateModel.initialize(
+    List<ShopCardModel> shopCards,
+    List<CardModel> playerDeckCards,
+    List<CardModel> enemyCards,
+    List<BaseModel> bases,
+  ) {
+    final players = List<PlayerModel>.generate(2, (index) {
+      final isActive = index == 0; // Only the first player is active
+      final playerDeckCopy = List<CardModel>.from(
+        playerDeckCards.map((card) => card.copy()),
+      );
+      return PlayerModel(
+        name: 'Player ${index + 1}',
+        healthModel: HealthModel(10, 10),
+        handCards: CardListModel<CardModel>.empty(),
+        deckCards: CardListModel<CardModel>(cards: playerDeckCopy),
+        discardCards: CardListModel<CardModel>.empty(),
+        isActive: isActive,
+        credits: 0,
+        attack: 0,
+      );
+    });
 
-  /// Initializes the game state with provided cards
-  /// Delegates to the facade which manages the complexity
-  static GameStateModel initialize(List<ShopCardModel> shopCards, List<CardModel> playerDeckCards, List<CardModel> enemyCards) {
-    _facade.initialize(shopCards, playerDeckCards, enemyCards);
-    return instance;
+    final enemies = List<EnemyModel>.generate(
+      4,
+      (index) => EnemyModel(
+        name: 'Player ${index + 1}',
+        healthModel: HealthModel(10, 10),
+      ),
+    );
+
+    final enemiesModel = EnemiesModel(
+      enemies: enemies,
+      deckCards: CardListModel<CardModel>(cards: enemyCards),
+      playedCards: CardListModel<CardModel>.empty(),
+    );
+
+    final basesModel = List.generate(
+      3,
+      (index) => BaseModel(
+        name: 'Base ${index + 1}',
+        healthModel: HealthModel(10, 10),
+      ),
+    );
+
+    return GameStateModel(
+      shop: ShopModel(
+        displayCards: CardListModel<ShopCardModel>.empty(),
+        inventoryCards: CardListModel<ShopCardModel>(cards: shopCards),
+      ),
+      players: players,
+      enemiesModel: enemiesModel,
+      bases: basesModel,
+    );
   }
 
-  /// Resets the game state (useful for testing or starting a new game)
-  static void reset() {
-    _facade.reset();
-  }
+  final ShopModel shop;
+  final List<PlayerModel> players;
+  final EnemiesModel enemiesModel;
+  final List<BaseModel> bases;
 
-  /// Gets the enemy turn area - delegates to facade
-  EnemyTurnCoordinator get enemyTurnArea => _facade.enemyTurnArea;
-
-  /// Gets the player turn coordinator - delegates to facade
-  PlayerTurnCoordinator get playerTurn => _facade.playerTurn;
-
-  /// Gets the selected player - delegates to facade
-  PlayerCoordinator? get selectedPlayer => _facade.selectedPlayer;
-
-  /// Gets debug information about the current game state
-  String get debugInfo => _facade.debugInfo;
+  PlayerModel get activePlayer =>
+      players.firstWhere((player) => player.isActive);
 }
