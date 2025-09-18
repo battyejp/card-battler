@@ -20,6 +20,15 @@ class PlayerInfoCoordinator extends ActorCoordinator<PlayerInfoCoordinator> {
     notifyChange();
   }
 
+  void adjustAttack(int amount) {
+    if (_playerModel.attack + amount < 0) {
+      return;
+    }
+
+    _playerModel.attack += amount;
+    notifyChange();
+  }
+
   void resetCreditsAndAttack() {
     _playerModel.credits = 0;
     _playerModel.attack = 0;

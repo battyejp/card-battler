@@ -1,23 +1,290 @@
 [
-  {"name": "Health Potion", "type": "Shop", "cost": 2, "effectOperator": "And", "effects": [{"type": "Heal", "value": 2, "target": "Self"}]},
-  {"name": "Health Potion", "type": "Shop", "cost": 2, "effectOperator": "And", "effects": [{"type": "Heal", "value": 2, "target": "Self"}]},
-  {"name": "Sword", "type": "Shop", "cost": 2, "effectOperator": "And", "effects": [{"type": "Attack", "value": 1, "target": "Enemy"}]},
-  {"name": "Cards", "type": "Shop", "cost": 4, "effectOperator": "And", "effects": [{"type": "DrawCard", "value": 2, "target": "Self"}]},
-  {"name": "Health Potion and Cards", "type": "Shop", "cost": 6, "effectOperator": "And", "effects": [{"type": "Heal", "value": 2, "target": "Self"}, {"type": "DrawCard", "value": 1, "target": "Self"}]},
-  {"name": "Health Potion Base", "type": "Shop", "cost": 4, "effectOperator": "And", "effects": [{"type": "Heal", "value": 1, "target": "Base"}]},
-  {"name": "Mega Health Potion", "type": "Shop", "cost": 6, "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "AllPlayers"}]},
-  {"name": "Health Potion", "type": "Shop", "cost": 2, "effectOperator": "And", "effects": [{"type": "Heal", "value": 2, "target": "Self"}]},
-  {"name": "Health Potion", "type": "Shop", "cost": 2, "effectOperator": "And", "effects": [{"type": "Heal", "value": 2, "target": "Self"}]},
-  {"name": "Sword", "type": "Shop", "cost": 2, "effectOperator": "And", "effects": [{"type": "Attack", "value": 1, "target": "Enemy"}]},
-  {"name": "Cards", "type": "Shop", "cost": 4, "effectOperator": "And", "effects": [{"type": "DrawCard", "value": 2, "target": "Self"}]},
-  {"name": "Health Potion and Cards", "type": "Shop", "cost": 6, "effectOperator": "And", "effects": [{"type": "Heal", "value": 2, "target": "Self"}, {"type": "DrawCard", "value": 1, "target": "Self"}]},
-  {"name": "Health Potion Base", "type": "Shop", "cost": 4, "effectOperator": "And", "effects": [{"type": "Heal", "value": 1, "target": "Base"}]},
-  {"name": "Mega Health Potion", "type": "Shop", "cost": 6, "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "AllPlayers"}]},
-  {"name": "Health Potion", "type": "Shop", "cost": 2, "effectOperator": "And", "effects": [{"type": "Heal", "value": 2, "target": "Self"}]},
-  {"name": "Health Potion", "type": "Shop", "cost": 2, "effectOperator": "And", "effects": [{"type": "Heal", "value": 2, "target": "Self"}]},
-  {"name": "Sword", "type": "Shop", "cost": 2, "effectOperator": "And", "effects": [{"type": "Attack", "value": 1, "target": "Enemy"}]},
-  {"name": "Cards", "type": "Shop", "cost": 4, "effectOperator": "And", "effects": [{"type": "DrawCard", "value": 2, "target": "Self"}]},
-  {"name": "Health Potion and Cards", "type": "Shop", "cost": 6, "effectOperator": "And", "effects": [{"type": "Heal", "value": 2, "target": "Self"}, {"type": "DrawCard", "value": 1, "target": "Self"}]},
-  {"name": "Health Potion Base", "type": "Shop", "cost": 4, "effectOperator": "And", "effects": [{"type": "Heal", "value": 1, "target": "Base"}]},
-  {"name": "Mega Health Potion", "type": "Shop", "cost": 6, "effectOperator": "And", "effects": [{"type": "Credits", "value": 1, "target": "AllPlayers"}]}
+  {
+    "name": "Health Potion",
+    "type": "Shop",
+    "cost": 2,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Heal",
+        "value": 2,
+        "target": "ActivePlayer"
+      }
+    ]
+  },
+  {
+    "name": "Health Potion",
+    "type": "Shop",
+    "cost": 2,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Heal",
+        "value": 2,
+        "target": "ActivePlayer"
+      }
+    ]
+  },
+  {
+    "name": "Sword",
+    "type": "Shop",
+    "cost": 2,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Attack",
+        "value": 1,
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "name": "Cards",
+    "type": "Shop",
+    "cost": 4,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "DrawCard",
+        "value": 2,
+        "target": "ActivePlayer"
+      }
+    ]
+  },
+  {
+    "name": "Health Potion and Cards",
+    "type": "Shop",
+    "cost": 6,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Heal",
+        "value": 2,
+        "target": "ActivePlayer"
+      },
+      {
+        "type": "DrawCard",
+        "value": 1,
+        "target": "ActivePlayer"
+      }
+    ]
+  },
+  {
+    "name": "Health Potion Base",
+    "type": "Shop",
+    "cost": 4,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Heal",
+        "value": 1,
+        "target": "Base"
+      }
+    ]
+  },
+  {
+    "name": "Mega Health Potion",
+    "type": "Shop",
+    "cost": 6,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Credits",
+        "value": 1,
+        "target": "AllPlayers"
+      }
+    ]
+  },
+  {
+    "name": "Health Potion",
+    "type": "Shop",
+    "cost": 2,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Heal",
+        "value": 2,
+        "target": "ActivePlayer"
+      }
+    ]
+  },
+  {
+    "name": "Health Potion",
+    "type": "Shop",
+    "cost": 2,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Heal",
+        "value": 2,
+        "target": "ActivePlayer"
+      }
+    ]
+  },
+  {
+    "name": "Sword",
+    "type": "Shop",
+    "cost": 2,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Attack",
+        "value": 1,
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "name": "Cards",
+    "type": "Shop",
+    "cost": 4,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "DrawCard",
+        "value": 2,
+        "target": "ActivePlayer"
+      }
+    ]
+  },
+  {
+    "name": "Health Potion and Cards",
+    "type": "Shop",
+    "cost": 6,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Heal",
+        "value": 2,
+        "target": "ActivePlayer"
+      },
+      {
+        "type": "DrawCard",
+        "value": 1,
+        "target": "ActivePlayer"
+      }
+    ]
+  },
+  {
+    "name": "Health Potion Base",
+    "type": "Shop",
+    "cost": 4,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Heal",
+        "value": 1,
+        "target": "Base"
+      }
+    ]
+  },
+  {
+    "name": "Mega Health Potion",
+    "type": "Shop",
+    "cost": 6,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Credits",
+        "value": 1,
+        "target": "AllPlayers"
+      }
+    ]
+  },
+  {
+    "name": "Health Potion",
+    "type": "Shop",
+    "cost": 2,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Heal",
+        "value": 2,
+        "target": "ActivePlayer"
+      }
+    ]
+  },
+  {
+    "name": "Health Potion",
+    "type": "Shop",
+    "cost": 2,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Heal",
+        "value": 2,
+        "target": "ActivePlayer"
+      }
+    ]
+  },
+  {
+    "name": "Sword",
+    "type": "Shop",
+    "cost": 2,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Attack",
+        "value": 1,
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "name": "Cards",
+    "type": "Shop",
+    "cost": 4,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "DrawCard",
+        "value": 2,
+        "target": "ActivePlayer"
+      }
+    ]
+  },
+  {
+    "name": "Health Potion and Cards",
+    "type": "Shop",
+    "cost": 6,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Heal",
+        "value": 2,
+        "target": "ActivePlayer"
+      },
+      {
+        "type": "DrawCard",
+        "value": 1,
+        "target": "ActivePlayer"
+      }
+    ]
+  },
+  {
+    "name": "Health Potion Base",
+    "type": "Shop",
+    "cost": 4,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Heal",
+        "value": 1,
+        "target": "Base"
+      }
+    ]
+  },
+  {
+    "name": "Mega Health Potion",
+    "type": "Shop",
+    "cost": 6,
+    "effectOperator": "And",
+    "effects": [
+      {
+        "type": "Credits",
+        "value": 1,
+        "target": "AllPlayers"
+      }
+    ]
+  }
 ]

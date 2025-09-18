@@ -2,6 +2,7 @@ import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scen
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/scenes/enemy_turn_scene.dart';
+import 'package:card_battler/game/ui/components/scenes/layout_scene.dart';
 import 'package:card_battler/game/ui/components/scenes/player_turn_scene.dart';
 import 'package:flame/game.dart';
 
@@ -32,6 +33,7 @@ class RouterService {
     );
 
     final routes = {
+      'layout': Route(() => Layout(size: gameSize)),
       'playerTurn': Route(() => _playerTurnScene!),
       'enemyTurn': Route(() => _enemyTurnScene!),
     };
@@ -41,7 +43,7 @@ class RouterService {
       routes.addAll(additionalRoutes);
     }
 
-    _router = RouterComponent(routes: routes, initialRoute: 'playerTurn');
+    _router = RouterComponent(routes: routes, initialRoute: 'layout');
     _gamePhaseManager?.addPhaseChangeListener(_onGamePhaseChanged);
     return _router!;
   }
