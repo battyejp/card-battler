@@ -1,7 +1,6 @@
 import 'dart:ui';
-
-import 'package:card_battler/game/ui/components/common/flat_button.dart';
 import 'package:card_battler/game/ui/components/scenes/layout_stuff/card_fan.dart';
+import 'package:card_battler/game/ui/components/scenes/layout_stuff/card_pile.dart';
 import 'package:flame/components.dart';
 
 class Layout extends PositionComponent {
@@ -30,14 +29,30 @@ class Layout extends PositionComponent {
       ),
     );
 
-    final cardFan = CardFan(
-      position: Vector2(size.x / 2, size.y + size.y / 10),
+    final cardPile = CardPile(
+      position: Vector2(size.x / 7, size.y / 2 + size.y / 2.25),
       initialCardCount: 5,
+      cardImagePath: 'card_face_down_0.03.png',
+    );
+    add(cardPile);
+
+    final cardPile2 = CardPile(
+      position: Vector2(size.x - size.x / 7, size.y / 2 + size.y / 2.25),
+      initialCardCount: 5,
+      cardImagePath: 'card_face_down_0.03.png',
+    );
+    add(cardPile2);
+
+    final cardFan = CardFan(
+      position: Vector2(size.x / 2, size.y - 50),
+      initialCardCount: 8,
+      fanRadius: 100.0,
+      cardScale: 0.35,
     );
     add(cardFan);
 
     final cardFan1 = CardFan(
-      position: Vector2(size.x / 5, size.y / 2 + size.y / 6),
+      position: Vector2(size.x / 5, size.y / 2 + size.y / 6.5),
       initialCardCount: 5,
       cardScale: 1.0,
       cardImagePath: 'card_face_up_0.02.png',

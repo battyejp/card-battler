@@ -30,17 +30,17 @@ class CardFan extends PositionComponent {
     await super.onLoad();
 
     // Add transparent background for the fan area
-    add(
-      RectangleComponent(
-        size: Vector2(
-          fanRadius * 2.5,
-          fanRadius * 1.2,
-        ), // Size to cover fan area
-        paint: Paint()
-          ..color = const Color.fromARGB(255, 125, 5, 5).withValues(alpha: 0.3),
-        anchor: Anchor.center,
-      ),
-    );
+    // add(
+    //   RectangleComponent(
+    //     size: Vector2(
+    //       fanRadius * 2.5,
+    //       fanRadius * 1.2,
+    //     ), // Size to cover fan area
+    //     paint: Paint()
+    //       ..color = const Color.fromARGB(255, 125, 5, 5).withValues(alpha: 0.3),
+    //     anchor: Anchor.center,
+    //   ),
+    // );
 
     await _createCardFan();
   }
