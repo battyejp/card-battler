@@ -24,3 +24,4 @@ flutter:
     - assets/data/enemy_cards.json
     - assets/data/shop_cards.json
     - assets/data/hero_starting_cards.json
+    - assets/images/
