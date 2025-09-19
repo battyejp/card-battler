@@ -1,7 +1,9 @@
-import 'dart:ui';
-import 'package:card_battler/game/ui/components/scenes/layout_stuff/card_fan.dart';
-import 'package:card_battler/game/ui/components/scenes/layout_stuff/card_pile.dart';
+import 'package:card_battler/game/ui/components/scenes/layout_stuff/team/base.dart';
+import 'package:card_battler/game/ui/components/scenes/layout_stuff/player/card_fan.dart';
+import 'package:card_battler/game/ui/components/scenes/layout_stuff/player/card_pile.dart';
+import 'package:card_battler/game/ui/components/scenes/layout_stuff/team/team_mate.dart';
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 
 class Layout extends PositionComponent {
   Layout({required Vector2 size})
@@ -31,15 +33,11 @@ class Layout extends PositionComponent {
 
     final cardPile = CardPile(
       position: Vector2(size.x / 7, size.y / 2 + size.y / 2.25),
-      initialCardCount: 5,
-      cardImagePath: 'card_face_down_0.03.png',
     );
     add(cardPile);
 
     final cardPile2 = CardPile(
       position: Vector2(size.x - size.x / 7, size.y / 2 + size.y / 2.25),
-      initialCardCount: 5,
-      cardImagePath: 'card_face_down_0.03.png',
     );
     add(cardPile2);
 
@@ -51,50 +49,24 @@ class Layout extends PositionComponent {
     );
     add(cardFan);
 
-    final cardFan1 = CardFan(
-      position: Vector2(size.x / 5, size.y / 2 + size.y / 6.5),
-      initialCardCount: 5,
-      cardScale: 1.0,
-      cardImagePath: 'card_face_up_0.02.png',
-      fanRadius: 50.0,
-    );
-    add(cardFan1);
+    final teamMate1 = TeamMate()
+      ..position = Vector2(size.x / 5, size.y / 2 + size.y / 6.5);
+    add(teamMate1);
 
-    final cardFan2 = CardFan(
-      position: Vector2(size.x - size.x / 5, size.y / 2 + size.y / 6),
-      initialCardCount: 5,
-      cardScale: 1.0,
-      cardImagePath: 'card_face_up_0.02.png',
-      fanRadius: 50.0,
-    );
-    add(cardFan2);
+    final teamMate2 = TeamMate()
+      ..position = Vector2(size.x - size.x / 5, size.y / 2 + size.y / 6);
+    add(teamMate2);
 
-    final cardFan3 = CardFan(
-      position: Vector2(size.x / 5, size.y / 2),
-      initialCardCount: 5,
-      cardScale: 1.0,
-      cardImagePath: 'card_face_up_0.02.png',
-      fanRadius: 50.0,
-    );
-    add(cardFan3);
+    final teamMate3 = TeamMate()..position = Vector2(size.x / 5, size.y / 2);
+    add(teamMate3);
 
-    final cardFan4 = CardFan(
-      position: Vector2(size.x - size.x / 5, size.y / 2),
-      initialCardCount: 5,
-      cardScale: 1.0,
-      cardImagePath: 'card_face_up_0.02.png',
-      fanRadius: 50.0,
-    );
-    add(cardFan4);
+    final teamMate4 = TeamMate()
+      ..position = Vector2(size.x - size.x / 5, size.y / 2);
+    add(teamMate4);
 
-    // Add a button in the middle of the screen
-    /*final addCardBtn = FlatButton(
-      'Add Card',
-      size: Vector2(size.x * 0.2, 0.1 * size.y),
-      position: Vector2(size.x / 2, size.y / 2),
-      onReleased: cardFan.addCard,
-    )..anchor = Anchor.center;
-
-    add(addCardBtn);*/
+    final base = Base()
+      ..size = Vector2(100, 100)
+      ..position = Vector2(size.x / 2 - 50, size.y / 2 - 50);
+    add(base);
   }
 }

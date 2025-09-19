@@ -1,8 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:card_battler/game/ui/components/scenes/layout_stuff/card_sprite.dart';
+import 'package:card_battler/game/ui/components/scenes/layout_stuff/player/card_sprite.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
 
 class CardFan extends PositionComponent {
   CardFan({
