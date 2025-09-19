@@ -14,7 +14,7 @@ class Layout extends PositionComponent {
   final margin = 20.0;
 
   @override
-  bool get debugMode => true; // Turn off debug mode
+  bool get debugMode => false; // Turn off debug mode
 
   @override
   Future<void> onLoad() async {
@@ -32,17 +32,54 @@ class Layout extends PositionComponent {
 
     final cardFan = CardFan(
       position: Vector2(size.x / 2, size.y + size.y / 10),
+      initialCardCount: 5,
     );
     add(cardFan);
 
+    final cardFan1 = CardFan(
+      position: Vector2(size.x / 5, size.y / 2 + size.y / 6),
+      initialCardCount: 5,
+      cardScale: 1.0,
+      cardImagePath: 'card_face_up_0.02.png',
+      fanRadius: 50.0,
+    );
+    add(cardFan1);
+
+    final cardFan2 = CardFan(
+      position: Vector2(size.x - size.x / 5, size.y / 2 + size.y / 6),
+      initialCardCount: 5,
+      cardScale: 1.0,
+      cardImagePath: 'card_face_up_0.02.png',
+      fanRadius: 50.0,
+    );
+    add(cardFan2);
+
+    final cardFan3 = CardFan(
+      position: Vector2(size.x / 5, size.y / 2),
+      initialCardCount: 5,
+      cardScale: 1.0,
+      cardImagePath: 'card_face_up_0.02.png',
+      fanRadius: 50.0,
+    );
+    add(cardFan3);
+
+    final cardFan4 = CardFan(
+      position: Vector2(size.x - size.x / 5, size.y / 2),
+      initialCardCount: 5,
+      cardScale: 1.0,
+      cardImagePath: 'card_face_up_0.02.png',
+      fanRadius: 50.0,
+    );
+    add(cardFan4);
+
     // Add a button in the middle of the screen
-    final addCardBtn = FlatButton(
+    /*final addCardBtn = FlatButton(
       'Add Card',
       size: Vector2(size.x * 0.2, 0.1 * size.y),
       position: Vector2(size.x / 2, size.y / 2),
       onReleased: cardFan.addCard,
     )..anchor = Anchor.center;
 
-    add(addCardBtn);
+    add(addCardBtn);*/
   }
 }

@@ -2,10 +2,7 @@ import 'package:flame/components.dart';
 
 class CardSprite extends SpriteComponent {
   CardSprite(Vector2 position, String fileName)
-    : super(
-        position: position,
-        anchor: Anchor.center,
-      ) {
+    : super(position: position, anchor: Anchor.center) {
     _fileName = fileName;
   }
 
@@ -13,6 +10,6 @@ class CardSprite extends SpriteComponent {
 
   @override
   Future<void> onLoad() async {
-    sprite = await Sprite.load(_fileName);
+    sprite = await Sprite.load(_fileName); //TODO can we just load once
   }
 }

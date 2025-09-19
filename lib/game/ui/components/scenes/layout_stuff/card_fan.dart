@@ -10,14 +10,11 @@ class CardFan extends PositionComponent {
     int initialCardCount = 0,
     this.fanAngle = math.pi / 2, // pi is 180 degrees so pi/2 is 90 degrees
     this.fanRadius = 200.0,
-    this.cardImagePath = 'card_face_up0.2.png',
+    this.cardImagePath = 'card_face_up_0.2.png',
     this.cardScale = 0.4,
   }) : super(position: position) {
     cardCount = initialCardCount;
   }
-
-  @override
-  bool get debugMode => true; // Set to true to see bounding box
 
   int cardCount = 0;
   final double fanAngle;
