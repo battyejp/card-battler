@@ -7,14 +7,14 @@ class TeamMate extends PositionComponent {
   void onLoad() {
     super.onLoad();
 
-    final cardFan1 = CardFan(
-      position: Vector2(size.x / 5, size.y / 2 + size.y / 6.5),
+    final cardFan = CardFan(
+      position: Vector2(0, 0),
       initialCardCount: 5,
       cardScale: 1.0,
       cardImagePath: 'card_face_up_0.02.png',
       fanRadius: 50.0,
     );
-    add(cardFan1);
+    add(cardFan);
 
     final healthTextComponent = TextComponent(
       text: "HP: 10/10",

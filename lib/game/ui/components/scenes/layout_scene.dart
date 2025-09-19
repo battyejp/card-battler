@@ -1,7 +1,6 @@
-import 'package:card_battler/game/ui/components/scenes/layout_stuff/team/base.dart';
 import 'package:card_battler/game/ui/components/scenes/layout_stuff/player/card_fan.dart';
 import 'package:card_battler/game/ui/components/scenes/layout_stuff/player/card_pile.dart';
-import 'package:card_battler/game/ui/components/scenes/layout_stuff/team/team_mate.dart';
+import 'package:card_battler/game/ui/components/scenes/layout_stuff/team/team.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
@@ -49,24 +48,9 @@ class Layout extends PositionComponent {
     );
     add(cardFan);
 
-    final teamMate1 = TeamMate()
-      ..position = Vector2(size.x / 5, size.y / 2 + size.y / 6.5);
-    add(teamMate1);
-
-    final teamMate2 = TeamMate()
-      ..position = Vector2(size.x - size.x / 5, size.y / 2 + size.y / 6);
-    add(teamMate2);
-
-    final teamMate3 = TeamMate()..position = Vector2(size.x / 5, size.y / 2);
-    add(teamMate3);
-
-    final teamMate4 = TeamMate()
-      ..position = Vector2(size.x - size.x / 5, size.y / 2);
-    add(teamMate4);
-
-    final base = Base()
-      ..size = Vector2(100, 100)
-      ..position = Vector2(size.x / 2 - 50, size.y / 2 - 50);
-    add(base);
+    final teamMate = Team()
+      ..size = Vector2(size.x, size.y / 2.5)
+      ..position = Vector2(0, size.y / 2 - size.y / 6);
+    add(teamMate);
   }
 }
