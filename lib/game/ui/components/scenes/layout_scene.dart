@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:card_battler/game/ui/components/common/flat_button.dart';
 import 'package:card_battler/game/ui/components/scenes/layout_stuff/card_fan.dart';
 import 'package:flame/components.dart';
 
@@ -30,9 +31,19 @@ class Layout extends PositionComponent {
     );
 
     final cardFan = CardFan(
-      position: Vector2(size.x / 2, size.y / 2 + size.y / 2),
+      position: Vector2(size.x / 2, size.y / 2),
       fanRadius: 200.0, // Reduced from 500.0 to make a smaller circle
     );
     add(cardFan);
+
+    // Add a button in the middle of the screen
+    final addCardBtn = FlatButton(
+      'Add Card',
+      size: Vector2(size.x * 0.2, 0.1 * size.y),
+      position: Vector2(size.x / 2, size.y / 2),
+      onReleased: cardFan.addCard,
+    );
+
+    add(addCardBtn);
   }
 }

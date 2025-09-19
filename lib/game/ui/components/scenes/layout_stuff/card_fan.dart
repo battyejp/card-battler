@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class CardFan extends PositionComponent {
   CardFan({
     required Vector2 position,
-    this.cardCount = 5,
+    this.cardCount = 0,
     this.fanAngle = math.pi / 2, // pi is 180 degrees so pi/2 is 90 degrees
     this.fanRadius = 250.0,
     this.cardImagePath = 'card_face_up0.2.png',
@@ -17,11 +17,14 @@ class CardFan extends PositionComponent {
   @override
   bool get debugMode => true; // Set to true to see bounding box
 
-  final int cardCount;
+  int cardCount;
   final double fanAngle;
   final double fanRadius;
   final String cardImagePath;
   final double cardScale;
+
+  // List to track the cards in the fan
+  final List<CardSprite> _cards = [];
 
   @override
   Future<void> onLoad() async {
@@ -45,10 +48,12 @@ class CardFan extends PositionComponent {
 
   Future<void> _createCardFan() async {
     final startAngle = -fanAngle / 2; // Start from left side of fan
-    final angleStep = fanAngle / (cardCount - 1); // Angle between cards
+    final angleStep = cardCount > 1
+        ? fanAngle / (cardCount - 1)
+        : 0; // Angle between cards
 
     for (var i = 0; i < cardCount; i++) {
-      final angle = startAngle + (i * angleStep);
+      final angle = cardCount == 1 ? 0 : startAngle + (i * angleStep);
 
       // Calculate card position on the fan arc
       final cardX = fanRadius * math.sin(angle);
@@ -63,6 +68,25 @@ class CardFan extends PositionComponent {
       card.angle = angle * 0.5; // Reduced rotation for subtle effect
 
       add(card);
+      _cards.add(card);
     }
+  }
+
+  /// Add a new card to the fan and redraw
+  void addCard({String? imagePath}) {
+    cardCount++;
+    _redrawFan();
+  }
+
+  /// Remove all cards and redraw the fan with current cardCount
+  void _redrawFan() {
+    // Remove all existing cards
+    for (final card in _cards) {
+      remove(card);
+    }
+    _cards.clear();
+
+    // Redraw the fan with new card count
+    _createCardFan();
   }
 }
