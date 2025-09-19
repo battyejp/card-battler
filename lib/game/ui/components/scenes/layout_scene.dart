@@ -31,9 +31,8 @@ class Layout extends PositionComponent {
     );
 
     final cardFan = CardFan(
-      position: Vector2(size.x / 2, size.y / 2),
-      fanRadius: 200.0, // Reduced from 500.0 to make a smaller circle
-    );
+      position: Vector2(size.x / 2, size.y + size.y / 10),
+    ); // Reduced from 500.0 to make a smaller circle
     add(cardFan);
 
     // Add a button in the middle of the screen
@@ -42,7 +41,7 @@ class Layout extends PositionComponent {
       size: Vector2(size.x * 0.2, 0.1 * size.y),
       position: Vector2(size.x / 2, size.y / 2),
       onReleased: cardFan.addCard,
-    );
+    )..anchor = Anchor.center;
 
     add(addCardBtn);
   }
