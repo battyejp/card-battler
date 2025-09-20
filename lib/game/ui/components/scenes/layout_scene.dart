@@ -1,5 +1,6 @@
 import 'package:card_battler/game/ui/components/scenes/layout_stuff/player/card_fan.dart';
 import 'package:card_battler/game/ui/components/scenes/layout_stuff/player/card_pile.dart';
+import 'package:card_battler/game/ui/components/scenes/layout_stuff/player/card_pile2.dart';
 import 'package:card_battler/game/ui/components/scenes/layout_stuff/team/team.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class Layout extends PositionComponent {
       ),
     );
 
-    final cardPile = CardPile(
+    final cardPile = CardPile2(
       position: Vector2(size.x / 7, size.y / 2 + size.y / 2.25),
     );
     add(cardPile);
