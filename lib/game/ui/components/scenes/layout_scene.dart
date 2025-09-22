@@ -29,8 +29,8 @@ class Layout extends PositionComponent {
     // add(cardPile2);
 
     final cardFan = CardFan(
-      position: Vector2(size.x / 2, size.y - 200),
-      initialCardCount: 8,
+      position: Vector2(size.x / 2, size.y - 50),
+      initialCardCount: 7,
       fanRadius: 100.0,
       cardScale: 0.35,
     )..size = Vector2(100000, 100000);

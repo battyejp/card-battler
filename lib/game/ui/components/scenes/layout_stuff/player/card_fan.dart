@@ -60,12 +60,12 @@ class CardFan extends PositionComponent {
     for (var i = 0; i < cardCount; i++) {
       final angle = cardCount == 1 ? 0 : startAngle + (i * angleStep);
 
-      // Calculate card position on the fan arc
+      // Calculate card position on the fan arc7
       final cardX = fanRadius * math.sin(angle);
       final cardY = -fanRadius * math.cos(angle);
 
       // Create card sprite component
-      final cardImagePath = arrayOfImages[i % 6].replaceAll(
+      final cardImagePath = arrayOfImages[i % cardCount].replaceAll(
         'size',
         mini ? '60' : '560',
       );
@@ -238,7 +238,7 @@ class CardFanDraggableArea extends PositionComponent
     card.setSelected(true);
 
     _clonedCard = card.clone();
-    _clonedCard!.position = Vector2(150, -100);
+    _clonedCard!.position = Vector2(150, -300);
     _clonedCard!.angle = 0;
     add(_clonedCard!);
   }

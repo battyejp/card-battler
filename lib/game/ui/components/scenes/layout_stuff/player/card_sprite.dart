@@ -21,7 +21,7 @@ class CardSprite extends SpriteComponent {
 
   CardSprite clone() => CardSprite(position.clone(), _fileName, name)
     ..angle = angle
-    ..scale = scale.clone()
+    ..scale = Vector2.all(1.0)
     ..anchor = anchor;
 
   @override
