@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 
 import 'package:card_battler/game/ui/components/scenes/layout_stuff/player/card_sprite.dart';
 import 'package:flame/components.dart';
@@ -20,7 +19,7 @@ class CardPile extends PositionComponent {
 
     for (var i = 0; i < 10; i++) {
       add(
-        CardSprite(Vector2.zero(), cardImagePath)
+        CardSprite(Vector2.zero(), cardImagePath, 'Card $i')
           ..position = Vector2(-i * 1.0, -i * 1.0),
       );
     }

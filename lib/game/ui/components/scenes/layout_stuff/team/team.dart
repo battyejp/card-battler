@@ -3,7 +3,7 @@ import 'package:card_battler/game/ui/components/scenes/layout_stuff/team/team_ma
 import 'package:flame/components.dart';
 
 class Team extends PositionComponent {
-  var pos = 80.0;
+  double pos = 80.0;
 
   @override
   Future<void> onLoad() async {

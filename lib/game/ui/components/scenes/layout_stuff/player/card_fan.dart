@@ -1,7 +1,11 @@
 import 'dart:math' as math;
+import 'dart:ui';
 
+import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/ui/components/scenes/layout_stuff/player/card_sprite.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
+import 'package:flutter/material.dart';
 
 class CardFan extends PositionComponent {
   CardFan({
@@ -27,21 +31,14 @@ class CardFan extends PositionComponent {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
-    // Add transparent background for the fan area
-    // add(
-    //   RectangleComponent(
-    //     size: Vector2(
-    //       fanRadius * 2.5,
-    //       fanRadius * 1.2,
-    //     ), // Size to cover fan area
-    //     paint: Paint()
-    //       ..color = const Color.fromARGB(255, 125, 5, 5).withValues(alpha: 0.3),
-    //     anchor: Anchor.center,
-    //   ),
-    // );
-
     await _createCardFan();
+
+    final draggableArea = CardFanDraggableArea(
+      position: Vector2(-fanRadius - 50, -fanRadius - 100),
+      size: Vector2((fanRadius + 50) * 2, fanRadius + 120),
+    );
+
+    add(draggableArea);
   }
 
   Future<void> _createCardFan() async {
@@ -58,9 +55,10 @@ class CardFan extends PositionComponent {
       final cardY = -fanRadius * math.cos(angle);
 
       // Create card sprite component
-      final card = CardSprite(Vector2(cardX, cardY), cardImagePath)
+      final card = CardSprite(Vector2(cardX, cardY), cardImagePath, 'Card $i')
         ..scale = Vector2.all(cardScale)
-        ..anchor = Anchor.center;
+        ..anchor = Anchor.center
+        ..priority = i; // Ensure correct rendering order
 
       // Rotate card to follow fan angle for realistic hand appearance
       card.angle = angle * 0.5; // Reduced rotation for subtle effect
@@ -86,5 +84,128 @@ class CardFan extends PositionComponent {
 
     // Redraw the fan with new card count
     _createCardFan();
+  }
+}
+
+class CardFanDraggableArea extends PositionComponent
+    with DragCallbacks, TapCallbacks {
+  CardFanDraggableArea({required Vector2 position, required Vector2 size})
+    : super(position: position, size: size);
+
+  late CardBattlerGame _game;
+  bool _isSelectingCards = false;
+  late CardSprite? _selectedCard;
+
+  /// Finds the nearest CardSprite to the given position
+  CardSprite? findNearestCardSprite(Vector2 position) {
+    _game = findGame() as CardBattlerGame;
+    final components = _game.componentsAtPoint(position);
+
+    // Filter to only CardSprite components
+    final cardSprites = components.whereType<CardSprite>().toList();
+
+    if (cardSprites.isEmpty) {
+      return null;
+    }
+
+    if (cardSprites.length == 1) {
+      return cardSprites.first;
+    }
+
+    // Find the nearest card by calculating distance
+    CardSprite? nearestCard;
+    double nearestDistance = double.infinity;
+
+    for (final card in cardSprites) {
+      final distance = (card.position - position).length;
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestCard = card;
+      }
+    }
+
+    return nearestCard;
+  }
+
+  CardSprite? findHighestPriorityCardSprite(Vector2 position) {
+    _game = findGame() as CardBattlerGame;
+    final components = _game.componentsAtPoint(position);
+
+    // Filter to only CardSprite components
+    final cardSprites = components.whereType<CardSprite>().toList();
+
+    if (cardSprites.isEmpty) {
+      return null;
+    }
+
+    var highestPriority = -1;
+    final comps = cardSprites.whereType<PositionComponent>();
+    for (final comp in comps) {
+      if (comp.priority > highestPriority) {
+        highestPriority = comp.priority;
+      }
+    }
+
+    // Return the topmost card (last in the list)
+    return cardSprites.lastWhere((card) => card.priority == highestPriority);
+  }
+
+  @override
+  void onTapDown(TapDownEvent event) {
+    super.onTapDown(event);
+    _game = findGame() as CardBattlerGame;
+
+    _isSelectingCards = true;
+    var card = findHighestPriorityCardSprite(event.canvasPosition);
+    _selectedCard = card;
+
+    if (card != null) {
+      card.setSelected(!card.isSelected);
+    }
+
+    print('Tap down started: ${event.toString()}');
+  }
+
+  @override
+  void onDragStart(DragStartEvent event) {
+    super.onDragStart(event);
+    _isSelectingCards = true;
+
+    print('Drag started: ${event.toString()}');
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    super.onDragUpdate(event);
+    _isSelectingCards = true;
+
+    print('Dragging at: ${event.toString()}');
+  }
+
+  @override
+  void onDragEnd(DragEndEvent event) {
+    super.onDragEnd(event);
+    _selectedCard?.setSelected(false);
+    _isSelectingCards = false;
+    _selectedCard = null;
+
+    print('Drag ended: ${event.toString()}');
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    super.onTapUp(event);
+    _selectedCard?.setSelected(false);
+    _selectedCard = null;
+    _isSelectingCards = false;
+
+    print('Tap up ended: ${event.toString()}');
+  }
+
+  @override
+  void render(Canvas canvas) {
+    final paint = Paint()
+      ..color = const Color.fromARGB(77, 195, 4, 4); // Red with 0.3 opacity
+    canvas.drawRect(size.toRect(), paint);
   }
 }
