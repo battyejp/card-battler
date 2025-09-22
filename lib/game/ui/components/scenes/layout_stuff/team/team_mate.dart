@@ -11,7 +11,7 @@ class TeamMate extends PositionComponent {
       position: Vector2(0, 0),
       initialCardCount: 5,
       cardScale: 1.0,
-      cardImagePath: 'card_face_up_0.02.png',
+      mini: true,
       fanRadius: 50.0,
     );
     add(cardFan);

@@ -1,5 +1,7 @@
-import 'package:flame/components.dart';
 import 'dart:ui';
+
+import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 
 class CardSprite extends SpriteComponent {
   CardSprite(Vector2 position, String fileName, this.name)
@@ -16,6 +18,11 @@ class CardSprite extends SpriteComponent {
   void setSelected(bool selected) {
     _isSelected = selected;
   }
+
+  CardSprite clone() => CardSprite(position.clone(), _fileName, name)
+    ..angle = angle
+    ..scale = scale.clone()
+    ..anchor = anchor;
 
   @override
   Future<void> onLoad() async {

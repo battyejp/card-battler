@@ -13,7 +13,7 @@ class CardFan extends PositionComponent {
     int initialCardCount = 0,
     this.fanAngle = math.pi / 2, // pi is 180 degrees so pi/2 is 90 degrees
     this.fanRadius = 200.0,
-    this.cardImagePath = 'card_face_up_0.2.png',
+    this.mini = false,
     this.cardScale = 0.4,
   }) : super(position: position) {
     cardCount = initialCardCount;
@@ -22,7 +22,7 @@ class CardFan extends PositionComponent {
   int cardCount = 0;
   final double fanAngle;
   final double fanRadius;
-  final String cardImagePath;
+  final bool mini;
   final double cardScale;
 
   // List to track the cards in the fan
@@ -47,6 +47,16 @@ class CardFan extends PositionComponent {
         ? fanAngle / (cardCount - 1)
         : 0; // Angle between cards
 
+    final arrayOfImages = [
+      'card_alien_size.png',
+      'card_alien2_size.png',
+      'card_human_f_size.png',
+      'card_human_m_size.png',
+      'card_robot_size.png',
+      'card_robot2_size.png',
+      'card_human_f2_size.png',
+    ];
+
     for (var i = 0; i < cardCount; i++) {
       final angle = cardCount == 1 ? 0 : startAngle + (i * angleStep);
 
@@ -55,6 +65,10 @@ class CardFan extends PositionComponent {
       final cardY = -fanRadius * math.cos(angle);
 
       // Create card sprite component
+      final cardImagePath = arrayOfImages[i % 6].replaceAll(
+        'size',
+        mini ? '60' : '560',
+      );
       final card = CardSprite(Vector2(cardX, cardY), cardImagePath, 'Card $i')
         ..scale = Vector2.all(cardScale)
         ..anchor = Anchor.center
@@ -199,9 +213,11 @@ class CardFanDraggableArea extends PositionComponent
     }
 
     if (_selectedCard != null) {
+      _returnCardToOriginalPosition(_selectedCard!);
       _selectedCard?.setSelected(false);
     }
 
+    _moveCardToCenter(card);
     _selectedCard = card;
     _selectedCard?.setSelected(true);
   }
@@ -210,8 +226,26 @@ class CardFanDraggableArea extends PositionComponent
     if (_selectedCard == null) {
       return;
     }
+
+    _returnCardToOriginalPosition(_selectedCard!);
     _selectedCard?.setSelected(false);
     _selectedCard = null;
+  }
+
+  CardSprite? _clonedCard;
+
+  void _moveCardToCenter(CardSprite card) {
+    card.setSelected(true);
+
+    _clonedCard = card.clone();
+    _clonedCard!.position = Vector2(150, -100);
+    _clonedCard!.angle = 0;
+    add(_clonedCard!);
+  }
+
+  void _returnCardToOriginalPosition(CardSprite card) {
+    remove(_clonedCard!);
+    card.setSelected(false);
   }
 
   @override
