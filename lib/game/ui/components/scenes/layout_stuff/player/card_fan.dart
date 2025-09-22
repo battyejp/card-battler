@@ -174,27 +174,57 @@ class CardFanDraggableArea extends PositionComponent
     print('Tap down started: ${event.toString()}');
   }
 
+  var _dragStartPosition = Vector2.zero();
+
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
 
+    _dragStartPosition = event.canvasPosition;
     print('Drag started: ${event.toString()}');
   }
+
+  bool _isBeingDragged = false;
+  Vector2 _originalPositionBeforeDrag = Vector2.zero();
+  double _originalAngleBeforeDrag = 0.0;
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
 
-    final card = findHighestPriorityCardSprite(event.canvasStartPosition);
-    _selectCard(card);
+    final deltaY = _dragStartPosition.y - event.canvasStartPosition.y;
+    final deltaX = _dragStartPosition.x - event.canvasStartPosition.x;
 
-    print('Dragging at: ${event.toString()}');
+    if (_isBeingDragged) {
+      _selectedCard?.position += event.canvasDelta;
+    } else if (deltaX.abs() > 15) {
+      _dragStartPosition = event.canvasStartPosition;
+      final card = findHighestPriorityCardSprite(event.canvasStartPosition);
+      _selectCard(card);
+    } else if (deltaY > 30 && !_isBeingDragged) {
+      _originalPositionBeforeDrag = _selectedCard!.position.clone();
+      _originalAngleBeforeDrag = _selectedCard!.angle;
+      _selectedCard?.angle = 0;
+      _isBeingDragged = true;
+      remove(_clonedCard!);
+      _selectedCard?.position += event.canvasDelta;
+    }
   }
 
   @override
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
-    _deselectCard();
+    _dragStartPosition = Vector2.zero();
+
+    if (_isBeingDragged) {
+      _isBeingDragged = false;
+      _selectedCard?.position = _originalPositionBeforeDrag;
+      _selectedCard?.angle = _originalAngleBeforeDrag;
+      _selectedCard?.setSelected(false);
+      _selectedCard = null;
+    } else {
+      _deselectCard();
+    }
 
     print('Drag ended: ${event.toString()}');
   }
