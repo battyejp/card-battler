@@ -1,9 +1,9 @@
+import 'dart:ui';
+
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
+import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:card_battler/game/ui/components/enemy/enemies.dart';
-import 'package:card_battler/game/ui/components/player/player.dart';
-import 'package:card_battler/game/ui/components/shop/shop_display.dart';
-import 'package:card_battler/game/ui/components/team/team.dart';
 import 'package:flame/components.dart';
 
 class PlayerTurnScene
@@ -11,50 +11,50 @@ class PlayerTurnScene
   PlayerTurnScene(super.coordinator, {required Vector2 size}) : _size = size;
 
   final Vector2 _size;
-  final double _margin = 20.0;
-  final double _topLayoutHeightFactor = 0.6;
-
-  // late FlatButton _turnButton;
-  bool loadingComplete = false;
 
   //TODO could we just update the player component
   @override
   void updateDisplay() {
     super.updateDisplay();
 
-    final availableHeight = _size.y - (_margin * 2);
-    final topLayoutHeight = availableHeight * _topLayoutHeightFactor;
-    final topPositionY = -1 * (_size.y / 2) + _margin;
-    final availableWidth = _size.x - (_margin * 2);
-    final bottomLayoutHeight = availableHeight - topLayoutHeight;
+    final startY = 0 - _size.y / 2;
+    final startX = 0 - _size.x / 2;
+    final enemiesAvailableHeight = _size.y / 4;
+    final availableHeightForCardFan = _size.y / 8 * 3;
 
-    final player = Player(playerModel: coordinator.playerCoordinator)
-      ..size = Vector2(availableWidth, bottomLayoutHeight)
-      ..position = Vector2(
-        (0 - _size.x / 2) + _margin,
-        (_size.y / 2) - _margin - bottomLayoutHeight,
-      );
+    final rect1 = RectangleComponent(
+      size: Vector2(_size.x, _size.y / 4),
+      position: Vector2(startX, startY),
+      paint: Paint()..color = const Color.fromARGB(64, 170, 0, 0),
+    );
 
-    add(player);
+    final rect2 = RectangleComponent(
+      size: Vector2(_size.x, _size.y / 8 * 3),
+      position: Vector2(startX, rect1.position.y + rect1.size.y),
+      paint: Paint()..color = const Color.fromARGB(64, 0, 170, 0),
+    );
 
-    final enemiesWidth = availableWidth * 0.5;
+    final rect3 = RectangleComponent(
+      size: Vector2(_size.x, _size.y / 8 * 3),
+      position: Vector2(startX, rect2.position.y + rect2.size.y),
+      paint: Paint()..color = const Color.fromARGB(64, 0, 0, 170),
+    );
+
+    add(rect1);
+    add(rect2);
+    add(rect3);
+
     final enemies = Enemies(coordinator: coordinator.enemiesCoordinator)
-      ..size = Vector2(enemiesWidth, topLayoutHeight)
-      ..position = Vector2((0 - enemiesWidth / 2), topPositionY);
+      ..size = Vector2(_size.x, enemiesAvailableHeight)
+      ..position = Vector2((0 - _size.x / 2), startY);
 
     add(enemies);
 
-    final shopWidth = availableWidth * 0.5 / 2;
-    final shop = ShopDisplay(coordinator.shopCoordinator.displayCoordinator)
-      ..size = Vector2(shopWidth, topLayoutHeight)
-      ..position = Vector2(enemies.position.x + enemiesWidth, topPositionY);
-
-    add(shop);
-
-    final team = Team(coordinator: coordinator.teamCoordinator)
-      ..size = Vector2(shopWidth, topLayoutHeight)
-      ..position = Vector2(0 - enemiesWidth / 2 - shopWidth, topPositionY);
-
-    add(team);
+    //TODO figure out these hardcoded values. Probably should be based on fan radius
+    final cardFan =
+        CardFan(initialCardCount: 7, fanRadius: 150.0, cardScale: 0.35)
+          ..size = Vector2(_size.x, availableHeightForCardFan)
+          ..position = Vector2(0, _size.y / 2 - 50);
+    add(cardFan);
   }
 }

@@ -1,13 +1,14 @@
 import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/ui/components/scenes/layout_scene.dart';
+import 'package:card_battler/game/ui/components/scenes/enemy_turn_scene.dart';
+import 'package:card_battler/game/ui/components/scenes/player_turn_scene.dart';
 import 'package:flame/game.dart';
 
 class RouterService {
   RouterComponent? _router;
-  // PlayerTurnScene? _playerTurnScene;
-  // EnemyTurnScene? _enemyTurnScene;
+  PlayerTurnScene? _playerTurnScene;
+  EnemyTurnScene? _enemyTurnScene;
   GamePhaseManager? _gamePhaseManager;
 
   /// Create and configure the router component with scene routes
@@ -20,20 +21,19 @@ class RouterService {
   }) {
     _gamePhaseManager = gamePhaseManager;
 
-    // _playerTurnScene = PlayerTurnScene(
-    //   playerTurnSceneCoordinator,
-    //   size: gameSize,
-    // );
+    _playerTurnScene = PlayerTurnScene(
+      playerTurnSceneCoordinator,
+      size: gameSize,
+    );
 
-    // _enemyTurnScene = EnemyTurnScene(
-    //   coordinator: enemyTurnSceneCoordinator,
-    //   size: gameSize,
-    // );
+    _enemyTurnScene = EnemyTurnScene(
+      coordinator: enemyTurnSceneCoordinator,
+      size: gameSize,
+    );
 
     final routes = {
-      'layout': Route(() => Layout(size: gameSize)),
-      // 'playerTurn': Route(() => _playerTurnScene!),
-      // 'enemyTurn': Route(() => _enemyTurnScene!),
+      'playerTurn': Route(() => _playerTurnScene!),
+      'enemyTurn': Route(() => _enemyTurnScene!),
     };
 
     // Add additional routes if provided
@@ -41,7 +41,7 @@ class RouterService {
       routes.addAll(additionalRoutes);
     }
 
-    _router = RouterComponent(routes: routes, initialRoute: 'layout');
+    _router = RouterComponent(routes: routes, initialRoute: 'playerTurn');
     _gamePhaseManager?.addPhaseChangeListener(_onGamePhaseChanged);
     return _router!;
   }

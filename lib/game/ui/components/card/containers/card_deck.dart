@@ -1,4 +1,4 @@
-import 'package:card_battler/game/ui/components/card/card_pile.dart';
+import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
 import 'package:flame/events.dart';
 
 class CardDeck extends CardPile with TapCallbacks {

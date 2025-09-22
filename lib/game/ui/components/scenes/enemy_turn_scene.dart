@@ -1,6 +1,6 @@
 import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
-import 'package:card_battler/game/ui/components/card/card_deck.dart';
-import 'package:card_battler/game/ui/components/card/card_pile.dart';
+import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
+import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
 import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:card_battler/game/ui/components/team/players.dart';
 import 'package:flame/components.dart';

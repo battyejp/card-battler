@@ -4,8 +4,8 @@ import 'package:card_battler/game/ui/components/team/bases.dart';
 import 'package:card_battler/game/ui/components/team/players.dart';
 import 'package:flame/components.dart';
 
-class Team extends PositionComponent {
-  Team({required TeamCoordinator coordinator}) : _coordinator = coordinator;
+class TeamOld extends PositionComponent {
+  TeamOld({required TeamCoordinator coordinator}) : _coordinator = coordinator;
   final TeamCoordinator _coordinator;
 
   @override

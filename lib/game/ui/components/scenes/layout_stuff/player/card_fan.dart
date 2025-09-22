@@ -127,7 +127,7 @@ class CardFanDraggableArea extends PositionComponent
 
     // Find the nearest card by calculating distance
     CardSprite? nearestCard;
-    double nearestDistance = double.infinity;
+    var nearestDistance = double.infinity;
 
     for (final card in cardSprites) {
       final distance = (card.position - position).length;
@@ -170,8 +170,6 @@ class CardFanDraggableArea extends PositionComponent
 
     final card = findHighestPriorityCardSprite(event.canvasPosition);
     _selectCard(card);
-
-    print('Tap down started: ${event.toString()}');
   }
 
   var _dragStartPosition = Vector2.zero();
@@ -181,7 +179,6 @@ class CardFanDraggableArea extends PositionComponent
     super.onDragStart(event);
 
     _dragStartPosition = event.canvasPosition;
-    print('Drag started: ${event.toString()}');
   }
 
   bool _isBeingDragged = false;
@@ -225,16 +222,12 @@ class CardFanDraggableArea extends PositionComponent
     } else {
       _deselectCard();
     }
-
-    print('Drag ended: ${event.toString()}');
   }
 
   @override
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
     _deselectCard();
-
-    print('Tap up ended: ${event.toString()}');
   }
 
   void _selectCard(CardSprite? card) {
