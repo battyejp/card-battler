@@ -93,7 +93,7 @@ class CardFanDraggableArea extends PositionComponent
     : super(position: position, size: size);
 
   late CardBattlerGame _game;
-  late CardSprite? _selectedCard;
+  CardSprite? _selectedCard;
 
   /// Finds the nearest CardSprite to the given position
   CardSprite? findNearestCardSprite(Vector2 position) {
@@ -154,12 +154,8 @@ class CardFanDraggableArea extends PositionComponent
     super.onTapDown(event);
     _game = findGame() as CardBattlerGame;
 
-    var card = findHighestPriorityCardSprite(event.canvasPosition);
-    _selectedCard = card;
-
-    if (card != null) {
-      card.setSelected(!card.isSelected);
-    }
+    final card = findHighestPriorityCardSprite(event.canvasPosition);
+    _selectCard(card);
 
     print('Tap down started: ${event.toString()}');
   }
@@ -175,13 +171,8 @@ class CardFanDraggableArea extends PositionComponent
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
 
-    var card = findHighestPriorityCardSprite(event.canvasStartPosition);
-
-    if (card != null && card != _selectedCard) {
-      _selectedCard?.setSelected(false);
-      _selectedCard = card;
-      _selectedCard?.setSelected(true);
-    }
+    final card = findHighestPriorityCardSprite(event.canvasStartPosition);
+    _selectCard(card);
 
     print('Dragging at: ${event.toString()}');
   }
@@ -189,8 +180,7 @@ class CardFanDraggableArea extends PositionComponent
   @override
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
-    _selectedCard?.setSelected(false);
-    _selectedCard = null;
+    _deselectCard();
 
     print('Drag ended: ${event.toString()}');
   }
@@ -198,10 +188,30 @@ class CardFanDraggableArea extends PositionComponent
   @override
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
-    _selectedCard?.setSelected(false);
-    _selectedCard = null;
+    _deselectCard();
 
     print('Tap up ended: ${event.toString()}');
+  }
+
+  void _selectCard(CardSprite? card) {
+    if (card == null || card == _selectedCard) {
+      return;
+    }
+
+    if (_selectedCard != null) {
+      _selectedCard?.setSelected(false);
+    }
+
+    _selectedCard = card;
+    _selectedCard?.setSelected(true);
+  }
+
+  void _deselectCard() {
+    if (_selectedCard == null) {
+      return;
+    }
+    _selectedCard?.setSelected(false);
+    _selectedCard = null;
   }
 
   @override
