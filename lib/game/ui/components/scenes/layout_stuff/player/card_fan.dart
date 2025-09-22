@@ -93,7 +93,6 @@ class CardFanDraggableArea extends PositionComponent
     : super(position: position, size: size);
 
   late CardBattlerGame _game;
-  bool _isSelectingCards = false;
   late CardSprite? _selectedCard;
 
   /// Finds the nearest CardSprite to the given position
@@ -155,7 +154,6 @@ class CardFanDraggableArea extends PositionComponent
     super.onTapDown(event);
     _game = findGame() as CardBattlerGame;
 
-    _isSelectingCards = true;
     var card = findHighestPriorityCardSprite(event.canvasPosition);
     _selectedCard = card;
 
@@ -169,7 +167,6 @@ class CardFanDraggableArea extends PositionComponent
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
-    _isSelectingCards = true;
 
     print('Drag started: ${event.toString()}');
   }
@@ -177,7 +174,14 @@ class CardFanDraggableArea extends PositionComponent
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
-    _isSelectingCards = true;
+
+    var card = findHighestPriorityCardSprite(event.canvasStartPosition);
+
+    if (card != null && card != _selectedCard) {
+      _selectedCard?.setSelected(false);
+      _selectedCard = card;
+      _selectedCard?.setSelected(true);
+    }
 
     print('Dragging at: ${event.toString()}');
   }
@@ -186,7 +190,6 @@ class CardFanDraggableArea extends PositionComponent
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
     _selectedCard?.setSelected(false);
-    _isSelectingCards = false;
     _selectedCard = null;
 
     print('Drag ended: ${event.toString()}');
@@ -197,7 +200,6 @@ class CardFanDraggableArea extends PositionComponent
     super.onTapUp(event);
     _selectedCard?.setSelected(false);
     _selectedCard = null;
-    _isSelectingCards = false;
 
     print('Tap up ended: ${event.toString()}');
   }
