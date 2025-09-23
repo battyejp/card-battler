@@ -33,6 +33,7 @@ class TurnButtonComponent
     _turnButton = FlatButton(
       coordinator.buttonText,
       size: Vector2(size.x, size.y),
+      position: Vector2(0, 250),
       onReleased: () {
         if (_cardsSelectionManagerService.hasSelection) {
           _cardsSelectionManagerService.selectionService?.onDeselect();

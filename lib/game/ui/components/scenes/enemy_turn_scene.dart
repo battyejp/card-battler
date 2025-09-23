@@ -6,6 +6,7 @@ import 'package:card_battler/game/ui/components/team/players_old.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
+//TODO to be deleted once EnemyTurnScene is re-implemented
 class EnemyTurnScene extends Component {
   EnemyTurnScene({
     required Vector2 size,

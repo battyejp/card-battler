@@ -50,6 +50,7 @@ class PlayerTurnSceneCoordinator
   TeamCoordinator get teamCoordinator => _teamCoordinator;
   EnemiesCoordinator get enemiesCoordinator => _enemiesCoordinator;
   EffectProcessor get effectProcessor => _effectProcessor;
+  GamePhaseManager get gamePhaseManager => _gamePhaseManager;
 
   void onCardBought(ShopCardCoordinator shopCardCoordinator) {
     _playerCoordinator.playerInfoCoordinator.adjustCredits(

@@ -1,4 +1,5 @@
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:card_battler/game/ui/components/enemy/enemies.dart';
 import 'package:card_battler/game/ui/components/player/player.dart';
@@ -7,7 +8,9 @@ import 'package:flame/components.dart';
 
 class PlayerTurnScene
     extends ReactivePositionComponent<PlayerTurnSceneCoordinator> {
-  PlayerTurnScene(super.coordinator);
+  PlayerTurnScene(super.coordinator) {
+    coordinator.gamePhaseManager.addPhaseChangeListener(_onGamePhaseChanged);
+  }
 
   //TODO could we just update the player component
   @override
@@ -35,4 +38,17 @@ class PlayerTurnScene
       ..position = Vector2(startX, team.position.y + team.size.y);
     add(player);
   }
+
+  void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
+    if (newPhase == GamePhase.enemyTurnWaitingToDrawCards) {
+      goToEnemyTurn();
+    } else if (previousPhase == GamePhase.enemyTurnWaitingToDrawCards &&
+        newPhase == GamePhase.playerTakeActionsTurn) {
+      _handleEnemyTurnToPlayerTurn();
+    }
+  }
+  
+  void goToEnemyTurn() {}
+  
+  void _handleEnemyTurnToPlayerTurn() {}
 }

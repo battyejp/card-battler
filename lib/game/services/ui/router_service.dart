@@ -1,7 +1,6 @@
 import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/ui/components/scenes/enemy_turn_scene.dart';
 import 'package:card_battler/game/ui/components/scenes/player_turn_scene.dart';
 import 'package:card_battler/game/ui/components/scenes/shop_scene.dart';
 import 'package:flame/game.dart';
@@ -9,9 +8,9 @@ import 'package:flame/game.dart';
 class RouterService {
   RouterComponent? _router;
   PlayerTurnScene? _playerTurnScene;
-  EnemyTurnScene? _enemyTurnScene;
+  //EnemyTurnScene? _enemyTurnScene;
   ShopScene? _shopScene;
-  GamePhaseManager? _gamePhaseManager;
+  //GamePhaseManager? _gamePhaseManager;
 
   /// Create and configure the router component with scene routes
   RouterComponent createRouter(
@@ -21,21 +20,21 @@ class RouterService {
     GamePhaseManager gamePhaseManager, {
     Map<String, Route>? additionalRoutes,
   }) {
-    _gamePhaseManager = gamePhaseManager;
+    //_gamePhaseManager = gamePhaseManager;
 
     _playerTurnScene = PlayerTurnScene(playerTurnSceneCoordinator)
       ..size = gameSize;
 
-    _enemyTurnScene = EnemyTurnScene(
-      coordinator: enemyTurnSceneCoordinator,
-      size: gameSize,
-    );
+    // _enemyTurnScene = EnemyTurnScene(
+    //   coordinator: enemyTurnSceneCoordinator,
+    //   size: gameSize,
+    // );
 
     _shopScene = ShopScene()..size = gameSize;
 
     final routes = {
       'playerTurn': Route(() => _playerTurnScene!),
-      'enemyTurn': Route(() => _enemyTurnScene!),
+      // 'enemyTurn': Route(() => _enemyTurnScene!),
       'shop': Route(() => _shopScene!),
     };
 
@@ -45,55 +44,55 @@ class RouterService {
     }
 
     _router = RouterComponent(routes: routes, initialRoute: 'playerTurn');
-    _gamePhaseManager?.addPhaseChangeListener(_onGamePhaseChanged);
+    //_gamePhaseManager?.addPhaseChangeListener(_onGamePhaseChanged);
     return _router!;
   }
 
-  void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
-    if (newPhase == GamePhase.enemyTurnWaitingToDrawCards) {
-      goToEnemyTurn();
-    } else if (previousPhase == GamePhase.enemyTurnWaitingToDrawCards &&
-        newPhase == GamePhase.playerTakeActionsTurn) {
-      _handleEnemyTurnToPlayerTurn();
-    }
+  // void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
+  //   if (newPhase == GamePhase.enemyTurnWaitingToDrawCards) {
+  //     goToEnemyTurn();
+  //   } else if (previousPhase == GamePhase.enemyTurnWaitingToDrawCards &&
+  //       newPhase == GamePhase.playerTakeActionsTurn) {
+  //     _handleEnemyTurnToPlayerTurn();
+  //   }
 
-    switch (newPhase) {
-      case GamePhase.enemyTurnWaitingToDrawCards:
-        goToEnemyTurn();
-        break;
-      case GamePhase.playerTakeActionsTurn:
-        goToPlayerTurn();
-        break;
-      default:
-        break;
-    }
-  }
+  //   switch (newPhase) {
+  //     case GamePhase.enemyTurnWaitingToDrawCards:
+  //       goToEnemyTurn();
+  //       break;
+  //     case GamePhase.playerTakeActionsTurn:
+  //       goToPlayerTurn();
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 
   /// Transition to player turn scene
-  void goToPlayerTurn() {
-    _router?.pushNamed('playerTurn');
-  }
+  // void goToPlayerTurn() {
+  //   _router?.pushNamed('playerTurn');
+  // }
 
-  /// Transition to enemy turn scene
-  void goToEnemyTurn() {
-    _router?.pushNamed('enemyTurn');
-  }
+  // /// Transition to enemy turn scene
+  // void goToEnemyTurn() {
+  //   _router?.pushNamed('enemyTurn');
+  // }
 
-  /// Transition to shop scene
-  void goToShop() {
-    _router?.pushNamed('shop');
-  }
+  // /// Transition to shop scene
+  // void goToShop() {
+  //   _router?.pushNamed('shop');
+  // }
 
-  /// Pop current route (generic navigation)
-  void pop() {
-    _router?.pop();
-  }
+  // /// Pop current route (generic navigation)
+  // void pop() {
+  //   _router?.pop();
+  // }
 
-  void _handleEnemyTurnToPlayerTurn() {
-    pop();
-  }
+  // void _handleEnemyTurnToPlayerTurn() {
+  //   pop();
+  // }
 
-  void dispose() {
-    _gamePhaseManager?.removePhaseChangeListener(_onGamePhaseChanged);
-  }
+  // void dispose() {
+  //   _gamePhaseManager?.removePhaseChangeListener(_onGamePhaseChanged);
+  // }
 }
