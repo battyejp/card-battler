@@ -51,7 +51,7 @@ class CardFan extends PositionComponent {
     for (var i = 0; i < _cardCount; i++) {
       final angle = _cardCount == 1 ? 0 : startAngle + (i * angleStep);
 
-      final cardX = _fanRadius * math.sin(angle);
+      final cardX = _fanRadius * math.sin(angle) + size.x / 2;
       final cardY = -_fanRadius * math.cos(angle);
 
       final cardImagePath = arrayOfImages[i % _cardCount].replaceAll(
@@ -70,11 +70,11 @@ class CardFan extends PositionComponent {
     }
   }
 
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-    final paint = Paint()
-      ..color = const Color.fromARGB(199, 237, 245, 2);
-    canvas.drawRect(size.toRect(), paint);
-  }
+  // @override
+  // void render(Canvas canvas) {
+  //   super.render(canvas);
+  //   final paint = Paint()
+  //     ..color = const Color.fromARGB(199, 237, 245, 2);
+  //   canvas.drawRect(size.toRect(), paint);
+  // }
 }

@@ -4,6 +4,7 @@ import 'package:card_battler/game/coordinators/components/scenes/player_turn_sce
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:card_battler/game/ui/components/enemy/enemies.dart';
+import 'package:card_battler/game/ui/components/player/player.dart';
 import 'package:flame/components.dart';
 
 class PlayerTurnScene
@@ -51,10 +52,9 @@ class PlayerTurnScene
     add(enemies);
 
     //TODO figure out these hardcoded values. Probably should be based on fan radius
-    final cardFan =
-        CardFan(initialCardCount: 7, fanRadius: 150.0, cardScale: 0.35)
-          // ..size = Vector2(_size.x, availableHeightForCardFan)
-          ..position = Vector2(0, _size.y / 2 - 50);
-    add(cardFan);
+    final player = Player(Vector2(_size.x, availableHeightForCardFan))
+      ..size = Vector2(_size.x, availableHeightForCardFan)
+      ..position = Vector2(-_size.x / 2, rect3.position.y);
+    add(player);
   }
 }

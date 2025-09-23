@@ -1,7 +1,7 @@
 import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:card_battler/game/ui/components/enemy/enemies.dart';
-import 'package:card_battler/game/ui/components/player/player.dart';
+import 'package:card_battler/game/ui/components/player/player_old.dart';
 import 'package:card_battler/game/ui/components/shop/shop_display.dart';
 import 'package:card_battler/game/ui/components/team/team_old.dart';
 import 'package:flame/components.dart';
@@ -28,7 +28,7 @@ class PlayerTurnSceneOld
     final availableWidth = _size.x - (_margin * 2);
     final bottomLayoutHeight = availableHeight - topLayoutHeight;
 
-    final player = Player(playerModel: coordinator.playerCoordinator)
+    final player = PlayerOld(playerModel: coordinator.playerCoordinator)
       ..size = Vector2(availableWidth, bottomLayoutHeight)
       ..position = Vector2(
         (0 - _size.x / 2) + _margin,
