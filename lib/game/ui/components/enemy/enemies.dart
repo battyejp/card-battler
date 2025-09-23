@@ -44,12 +44,4 @@ class Enemies extends PositionComponent {
     textComponent.position = Vector2(size.x / 2, size.y - size.y * 0.1);
     add(textComponent);
   }
-
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-    final paint = Paint()
-      ..color = const Color.fromARGB(77, 8, 201, 37); // Red with 0.3 opacity
-    canvas.drawRect(size.toRect(), paint);
-  }
 }

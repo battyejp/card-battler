@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:card_battler/game/card_battler_game.dart';
-import 'package:card_battler/game/ui/components/scenes/layout_stuff/player/card_sprite.dart';
+import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +69,7 @@ class CardFan extends PositionComponent {
         'size',
         mini ? '60' : '560',
       );
-      final card = CardSprite(Vector2(cardX, cardY), cardImagePath, 'Card $i')
+      final card = CardSprite(Vector2(cardX, cardY), cardImagePath)
         ..scale = Vector2.all(cardScale)
         ..anchor = Anchor.center
         ..priority = i; // Ensure correct rendering order
@@ -217,7 +217,7 @@ class CardFanDraggableArea extends PositionComponent
       _isBeingDragged = false;
       _selectedCard?.position = _originalPositionBeforeDrag;
       _selectedCard?.angle = _originalAngleBeforeDrag;
-      _selectedCard?.setSelected(false);
+      _selectedCard?.isSelected = false;
       _selectedCard = null;
     } else {
       _deselectCard();
@@ -237,12 +237,12 @@ class CardFanDraggableArea extends PositionComponent
 
     if (_selectedCard != null) {
       _returnCardToOriginalPosition(_selectedCard!);
-      _selectedCard?.setSelected(false);
+      _selectedCard?.isSelected = false;
     }
 
     _moveCardToCenter(card);
     _selectedCard = card;
-    _selectedCard?.setSelected(true);
+    _selectedCard?.isSelected = true;
   }
 
   void _deselectCard() {
@@ -251,14 +251,14 @@ class CardFanDraggableArea extends PositionComponent
     }
 
     _returnCardToOriginalPosition(_selectedCard!);
-    _selectedCard?.setSelected(false);
+    _selectedCard?.isSelected = false;
     _selectedCard = null;
   }
 
   CardSprite? _clonedCard;
 
   void _moveCardToCenter(CardSprite card) {
-    card.setSelected(true);
+    card.isSelected = true;
 
     _clonedCard = card.clone();
     _clonedCard!.position = Vector2(150, -300);
@@ -268,7 +268,7 @@ class CardFanDraggableArea extends PositionComponent
 
   void _returnCardToOriginalPosition(CardSprite card) {
     remove(_clonedCard!);
-    card.setSelected(false);
+    card.isSelected = false;
   }
 
   @override

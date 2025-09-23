@@ -1,5 +1,8 @@
-import 'package:flame/components.dart';
 import 'dart:ui';
+
+import 'package:card_battler/game/ui/components/team/base.dart';
+import 'package:card_battler/game/ui/components/team/team_mate.dart';
+import 'package:flame/components.dart';
 
 class Team extends PositionComponent {
   Team();
@@ -8,40 +11,46 @@ class Team extends PositionComponent {
   void onMount() {
     super.onMount();
 
-    final halfWidth = size.x / 2;
+    final halfWidth = size.x / 3;
     final halfHeight = size.y / 2;
 
-    // Top-left quarter (red)
-    final topLeft = RectangleComponent(
-      size: Vector2(halfWidth, halfHeight),
-      position: Vector2(0, 0),
-      paint: Paint()..color = const Color(0xFFFF0000),
+    final border = RectangleComponent(
+      size: size,
+      position: Vector2.zero(),
+      paint: Paint()
+        ..color = const Color.fromARGB(255, 255, 255, 255)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.0,
     );
+    add(border);
 
-    // Top-right quarter (green)
-    final topRight = RectangleComponent(
-      size: Vector2(halfWidth, halfHeight),
-      position: Vector2(halfWidth, 0),
-      paint: Paint()..color = const Color(0xFF00FF00),
-    );
+    final teamMate1 = TeamMate()
+      ..size = Vector2(halfWidth, halfHeight)
+      ..position = Vector2.zero();
+    add(teamMate1);
 
-    // Bottom-left quarter (blue)
-    final bottomLeft = RectangleComponent(
-      size: Vector2(halfWidth, halfHeight),
-      position: Vector2(0, halfHeight),
-      paint: Paint()..color = const Color(0xFF0000FF),
-    );
+    final teamMate2 = TeamMate()
+      ..size = Vector2(halfWidth, halfHeight)
+      ..position = Vector2(size.x - halfWidth, 0);
+    add(teamMate2);
 
-    // Bottom-right quarter (yellow)
-    final bottomRight = RectangleComponent(
-      size: Vector2(halfWidth, halfHeight),
-      position: Vector2(halfWidth, halfHeight),
-      paint: Paint()..color = const Color(0xFFFFFF00),
-    );
+    final teamMate3 = TeamMate()
+      ..size = Vector2(halfWidth, halfHeight)
+      ..position = Vector2(0, halfHeight);
+    add(teamMate3);
 
-    add(topLeft);
-    add(topRight);
-    add(bottomLeft);
-    add(bottomRight);
+    final teamMate4 = TeamMate()
+      ..size = Vector2(halfWidth, halfHeight)
+      ..position = Vector2(size.x - halfWidth, halfHeight);
+    add(teamMate4);
+
+    final baseSize = size.x / 3;
+    final base = Base()
+      ..size = Vector2(baseSize, baseSize)
+      ..position = Vector2(
+        size.x / 2 - baseSize / 2,
+        size.y / 2 - baseSize / 2,
+      );
+    add(base);
   }
 }

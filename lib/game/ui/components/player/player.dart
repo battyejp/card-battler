@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
 import 'package:flame/components.dart';
@@ -8,6 +10,16 @@ class Player extends PositionComponent {
   @override
   void onMount() {
     super.onMount();
+
+    final border = RectangleComponent(
+      size: size,
+      position: Vector2.zero(),
+      paint: Paint()
+        ..color = const Color.fromARGB(255, 255, 255, 255)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.0,
+    );
+    add(border);
 
     final cardFan =
         CardFan(initialCardCount: 7, fanRadius: 150.0, cardScale: 0.35)

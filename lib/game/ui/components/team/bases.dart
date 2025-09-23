@@ -1,5 +1,5 @@
 import 'package:card_battler/game/coordinators/components/team/bases_coordinator.dart';
-import 'package:card_battler/game/ui/components/team/base.dart';
+import 'package:card_battler/game/ui/components/team/base_old.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
@@ -17,11 +17,11 @@ class Bases extends PositionComponent {
     const baseY = textHeight;
 
     // Create UI components for each base model
-    final baseComponents = <Base>[];
+    final baseComponents = <BaseOld>[];
     final allBaseCoordinators = _coordinator.allBaseCoordinators;
     for (var i = 0; i < _coordinator.allBaseCoordinators.length; i++) {
       final baseCoordinator = allBaseCoordinators[i];
-      final baseComponent = Base(coordinator: baseCoordinator)
+      final baseComponent = BaseOld(coordinator: baseCoordinator)
         ..size = baseSize
         ..position = Vector2(0, baseY);
 

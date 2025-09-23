@@ -1,11 +1,11 @@
-import 'package:card_battler/game/coordinators/components/enemy/enemy_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/base_coordinator.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-class Enemy extends PositionComponent {
-  Enemy({required EnemyCoordinator coordinator}) : _coordinator = coordinator;
+class BaseOld extends PositionComponent with HasVisibility {
+  BaseOld({required BaseCoordinator coordinator}) : _coordinator = coordinator;
 
-  final EnemyCoordinator _coordinator;
+  final BaseCoordinator _coordinator;
   late TextComponent _healthTextComponent;
 
   @override
@@ -26,7 +26,7 @@ class Enemy extends PositionComponent {
   void render(Canvas canvas) {
     super.render(canvas);
     final paint = Paint()
-      ..color = const Color.fromARGB(255, 5, 49, 19); // Purple with 0.3 opacity
+      ..color = const Color.fromARGB(77, 62, 173, 10); // Red with 0.3 opacity
     canvas.drawRect(size.toRect(), paint);
   }
 }

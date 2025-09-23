@@ -1,25 +1,29 @@
-import 'package:card_battler/game/coordinators/components/team/base_coordinator.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-class Base extends PositionComponent with HasVisibility {
-  Base({required BaseCoordinator coordinator}) : _coordinator = coordinator;
-
-  final BaseCoordinator _coordinator;
-  late TextComponent _healthTextComponent;
-
+class Base extends PositionComponent {
   @override
   void onLoad() {
     super.onLoad();
-    _healthTextComponent = TextComponent(
-      text: _coordinator.healthDisplay,
+    final nameLabel = TextComponent(
+      text: "Base: 1/3",
+      anchor: Anchor.center,
+      position: Vector2(size.x / 2, 20),
+      textRenderer: TextPaint(
+        style: const TextStyle(fontSize: 14, color: Colors.white),
+      ),
+    );
+    add(nameLabel);
+
+    final healthTextComponent = TextComponent(
+      text: "HP: 10/10",
       anchor: Anchor.center,
       position: Vector2(size.x / 2, size.y / 2),
       textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 20, color: Colors.white),
+        style: const TextStyle(fontSize: 14, color: Colors.white),
       ),
     );
-    add(_healthTextComponent);
+    add(healthTextComponent);
   }
 
   @override
