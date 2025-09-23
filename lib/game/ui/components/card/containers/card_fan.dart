@@ -140,7 +140,7 @@ class CardFanDraggableArea extends PositionComponent
     _game = findGame() as CardBattlerGame;
     final components = _game.componentsAtPoint(
       position,
-    ); //TODO just look for components in this area/card fan
+    );
 
     // Filter to only InteractiveCardSprite components
     final cardSprites = components.whereType<InteractiveCardSprite>().toList();
