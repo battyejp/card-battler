@@ -9,6 +9,7 @@ class TeamMate extends ReactivePositionComponent<PlayerInfoCoordinator> {
 
   final double margin = 5.0;
 
+  //TODO look at PlayerInfo on how to update labels rather than recreating every time
   @override
   void updateDisplay() {
     super.updateDisplay();

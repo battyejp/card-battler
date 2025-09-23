@@ -1,5 +1,5 @@
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
-import 'package:card_battler/game/ui/components/player/player_info.dart';
+import 'package:card_battler/game/ui/components/player/player_info_old.dart';
 import 'package:card_battler/game/ui/components/team/bases.dart';
 import 'package:card_battler/game/ui/components/team/players_old.dart';
 import 'package:flame/components.dart';

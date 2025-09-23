@@ -6,6 +6,7 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
+import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
@@ -64,5 +65,10 @@ class Player extends PositionComponent {
       ..position = Vector2(size.x - deckWidth, size.y - deckHeight);
 
     add(discardPile);
+
+    final playerInfo = PlayerInfo(_coordinator.playerInfoCoordinator)
+      ..size = Vector2(size.x, size.y)
+      ..position = Vector2(0, 0);
+    add(playerInfo);
   }
 }

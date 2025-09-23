@@ -4,7 +4,7 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_deck_old.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile_old.dart';
 import 'package:card_battler/game/ui/components/player/card_hand.dart';
-import 'package:card_battler/game/ui/components/player/player_info.dart';
+import 'package:card_battler/game/ui/components/player/player_info_old.dart';
 import 'package:flame/components.dart';
 
 class PlayerOld extends PositionComponent {
@@ -36,7 +36,7 @@ class PlayerOld extends PositionComponent {
     add(deck);
 
     final info =
-        PlayerInfo(
+        PlayerInfoOld(
             _coordinator.playerInfoCoordinator,
             viewMode: PlayerInfoViewMode.detailed,
           )
