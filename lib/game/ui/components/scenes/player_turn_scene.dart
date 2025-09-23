@@ -53,7 +53,7 @@ class PlayerTurnScene
     //TODO figure out these hardcoded values. Probably should be based on fan radius
     final cardFan =
         CardFan(initialCardCount: 7, fanRadius: 150.0, cardScale: 0.35)
-          ..size = Vector2(_size.x, availableHeightForCardFan)
+          // ..size = Vector2(_size.x, availableHeightForCardFan)
           ..position = Vector2(0, _size.y / 2 - 50);
     add(cardFan);
   }

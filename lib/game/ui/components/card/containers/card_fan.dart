@@ -51,11 +51,9 @@ class CardFan extends PositionComponent {
     for (var i = 0; i < _cardCount; i++) {
       final angle = _cardCount == 1 ? 0 : startAngle + (i * angleStep);
 
-      // Calculate card position on the fan arc7
       final cardX = _fanRadius * math.sin(angle);
       final cardY = -_fanRadius * math.cos(angle);
 
-      // Create card sprite component
       final cardImagePath = arrayOfImages[i % _cardCount].replaceAll(
         'size',
         _mini ? '60' : '560',
@@ -63,7 +61,7 @@ class CardFan extends PositionComponent {
       final card = CardSprite(Vector2(cardX, cardY), cardImagePath)
         ..scale = Vector2.all(_cardScale)
         ..anchor = Anchor.center
-        ..priority = i; // Ensure correct rendering order
+        ..priority = i;
 
       card.angle = angle * 0.5; // Reduced rotation for subtle effect
 
@@ -76,7 +74,7 @@ class CardFan extends PositionComponent {
   void render(Canvas canvas) {
     super.render(canvas);
     final paint = Paint()
-      ..color = const Color.fromARGB(199, 237, 245, 2); // Red with 0.3 opacity
+      ..color = const Color.fromARGB(199, 237, 245, 2);
     canvas.drawRect(size.toRect(), paint);
   }
 }
