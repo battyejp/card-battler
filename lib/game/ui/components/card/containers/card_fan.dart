@@ -202,11 +202,11 @@ class CardFanDraggableArea extends PositionComponent
   }
 
   void _setupForDraggings(DragUpdateEvent event) {
+    remove(_duplicateCard!);
     _originalPositionBeforeDrag = _selectedCard!.position.clone();
     _originalAngleBeforeDrag = _selectedCard!.angle;
     _selectedCard?.angle = 0;
     _isBeingDragged = true;
-    remove(_clonedCard!);
     _selectedCard?.position += event.canvasDelta;
   }
 
@@ -261,23 +261,22 @@ class CardFanDraggableArea extends PositionComponent
     _selectedCard = null;
   }
 
-  SpriteComponent? _clonedCard;
-
+  SpriteComponent? _duplicateCard;
   void _showDuplicateCardAtCenter(InteractiveCardSprite card) {
     card.isSelected = true;
 
     final image = _game.images.fromCache(card.getFileName);
-    _clonedCard = SpriteComponent(sprite: Sprite(image));
+    _duplicateCard = SpriteComponent(sprite: Sprite(image));
 
-    _clonedCard!.position = Vector2(
-      size.x / 2 - _clonedCard!.size.x / 2,
-      -_clonedCard!.size.y,
+    _duplicateCard!.position = Vector2(
+      size.x / 2 - _duplicateCard!.size.x / 2,
+      -_duplicateCard!.size.y,
     );
-    add(_clonedCard!);
+    add(_duplicateCard!);
   }
 
   void _removeDuplicateCardAtCenter(InteractiveCardSprite card) {
-    remove(_clonedCard!);
+    remove(_duplicateCard!);
     card.isSelected = false;
   }
 
