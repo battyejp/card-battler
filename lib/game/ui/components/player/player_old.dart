@@ -1,7 +1,7 @@
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
+import 'package:card_battler/game/ui/components/card/containers/card_deck_old.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile_old.dart';
 import 'package:card_battler/game/ui/components/player/card_hand.dart';
 import 'package:card_battler/game/ui/components/player/player_info.dart';
@@ -20,7 +20,7 @@ class PlayerOld extends PositionComponent {
     final infoHeight = size.y * _infoHeightFactor;
     final pileWidthFactor = (1 - _handWidthFactor) / 2;
 
-    final deck = CardDeck(
+    final deck = CardDeckOld(
       onTap: () => {
         if (_coordinator.gamePhaseManager.currentPhase ==
             GamePhase.waitingToDrawPlayerCards)

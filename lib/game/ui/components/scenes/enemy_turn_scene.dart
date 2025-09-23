@@ -1,5 +1,5 @@
 import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
-import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
+import 'package:card_battler/game/ui/components/card/containers/card_deck_old.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile_old.dart';
 import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:card_battler/game/ui/components/team/players_old.dart';
@@ -34,7 +34,7 @@ class EnemyTurnScene extends Component {
     add(playArea);
 
     final deck =
-        CardDeck(
+        CardDeckOld(
             coordinator: _coordinator.deckCardsCoordinator,
             onTap: () => {_coordinator.drawCardsFromDeck()},
           )

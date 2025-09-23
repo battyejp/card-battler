@@ -1,6 +1,9 @@
 import 'dart:ui';
 
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
+import 'package:card_battler/game/game_variables.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
 import 'package:flame/components.dart';
@@ -42,13 +45,21 @@ class Player extends PositionComponent {
     final deckHeight = size.y * 0.3;
     final deckWidth = size.x / 2 * 0.45;
 
-    final deck = CardPile()
-      ..size = Vector2(deckWidth, deckHeight)
-      ..position = Vector2(0, size.y - deckHeight);
+    final deck =
+        CardDeck(() {
+            if (_coordinator.gamePhaseManager.currentPhase ==
+                GamePhase.waitingToDrawPlayerCards) {
+              _coordinator.drawCardsFromDeck(
+                GameVariables.numberOfCardsDrawnByPlayer,
+              );
+            }
+          }, _coordinator.deckCardsCoordinator)
+          ..size = Vector2(deckWidth, deckHeight)
+          ..position = Vector2(0, size.y - deckHeight);
 
     add(deck);
 
-    final discardPile = CardPile()
+    final discardPile = CardPile(_coordinator.discardCardsCoordinator)
       ..size = Vector2(size.x / 2 * 0.45, deckHeight)
       ..position = Vector2(size.x - deckWidth, size.y - deckHeight);
 
