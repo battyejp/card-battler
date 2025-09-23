@@ -1,6 +1,10 @@
 import 'dart:math' as math;
+import 'dart:ui';
+import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
+import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 
 class CardFan extends PositionComponent {
   CardFan({
@@ -28,6 +32,18 @@ class CardFan extends PositionComponent {
   Future<void> onLoad() async {
     await super.onLoad();
     await _createCardFan();
+
+    if (!_mini) {
+      final draggableArea = CardFanDraggableArea(
+        position: Vector2(
+          0,
+          -300,
+        ), //TODO needs to be dynamic based on fanRadius and size could be smaller
+        size: Vector2(size.x, size.y),
+      );
+
+      add(draggableArea);
+    }
   }
 
   Future<void> _createCardFan() async {
@@ -56,7 +72,12 @@ class CardFan extends PositionComponent {
         'size',
         _mini ? '60' : '560',
       );
-      final card = CardSprite(Vector2(cardX, cardY), cardImagePath)
+
+      final card = _mini
+          ? CardSprite(Vector2(cardX, cardY), cardImagePath)
+          : InteractiveCardSprite(Vector2(cardX, cardY), cardImagePath);
+
+      card
         ..scale = Vector2.all(_cardScale)
         ..anchor = Anchor.center
         ..priority = i;
@@ -75,4 +96,184 @@ class CardFan extends PositionComponent {
   //     ..color = const Color.fromARGB(199, 237, 245, 2);
   //   canvas.drawRect(size.toRect(), paint);
   // }
+}
+
+class CardFanDraggableArea extends PositionComponent
+    with DragCallbacks, TapCallbacks {
+  CardFanDraggableArea({required Vector2 position, required Vector2 size})
+    : super(position: position, size: size);
+
+  late CardBattlerGame _game;
+  InteractiveCardSprite? _selectedCard;
+
+  /// Finds the nearest CardSprite to the given position
+  InteractiveCardSprite? findNearestCardSprite(Vector2 position) {
+    _game = findGame() as CardBattlerGame;
+    final components = _game.componentsAtPoint(position);
+
+    // Filter to only CardSprite components
+    final cardSprites = components.whereType<InteractiveCardSprite>().toList();
+
+    if (cardSprites.isEmpty) {
+      return null;
+    }
+
+    if (cardSprites.length == 1) {
+      return cardSprites.first;
+    }
+
+    // Find the nearest card by calculating distance
+    InteractiveCardSprite? nearestCard;
+    var nearestDistance = double.infinity;
+
+    for (final card in cardSprites) {
+      final distance = (card.position - position).length;
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestCard = card;
+      }
+    }
+
+    return nearestCard;
+  }
+
+  InteractiveCardSprite? findHighestPriorityCardSprite(Vector2 position) {
+    _game = findGame() as CardBattlerGame;
+    final components = _game.componentsAtPoint(
+      position,
+    ); //TODO just look for components in this area/card fan
+
+    // Filter to only InteractiveCardSprite components
+    final cardSprites = components.whereType<InteractiveCardSprite>().toList();
+
+    if (cardSprites.isEmpty) {
+      return null;
+    }
+
+    var highestPriority = -1;
+    final comps = cardSprites.whereType<PositionComponent>();
+    for (final comp in comps) {
+      if (comp.priority > highestPriority) {
+        highestPriority = comp.priority;
+      }
+    }
+
+    // Return the topmost card (last in the list)
+    return cardSprites.lastWhere((card) => card.priority == highestPriority);
+  }
+
+  @override
+  void onTapDown(TapDownEvent event) {
+    super.onTapDown(event);
+    _game = findGame() as CardBattlerGame;
+
+    final card = findHighestPriorityCardSprite(event.canvasPosition);
+    _selectCard(card);
+  }
+
+  var _dragStartPosition = Vector2.zero();
+
+  @override
+  void onDragStart(DragStartEvent event) {
+    super.onDragStart(event);
+
+    _dragStartPosition = event.canvasPosition;
+  }
+
+  bool _isBeingDragged = false;
+  Vector2 _originalPositionBeforeDrag = Vector2.zero();
+  double _originalAngleBeforeDrag = 0.0;
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    super.onDragUpdate(event);
+
+    final deltaY = _dragStartPosition.y - event.canvasStartPosition.y;
+    final deltaX = _dragStartPosition.x - event.canvasStartPosition.x;
+
+    if (_isBeingDragged) {
+      _selectedCard?.position += event.canvasDelta;
+    } else if (deltaX.abs() > 15) {
+      _dragStartPosition = event.canvasStartPosition;
+      final card = findHighestPriorityCardSprite(event.canvasStartPosition);
+      _selectCard(card);
+    } else if (deltaY > 30 && !_isBeingDragged && _selectedCard != null) {
+      _originalPositionBeforeDrag = _selectedCard!.position.clone();
+      _originalAngleBeforeDrag = _selectedCard!.angle;
+      _selectedCard?.angle = 0;
+      _isBeingDragged = true;
+      remove(_clonedCard!);
+      _selectedCard?.position += event.canvasDelta;
+    }
+  }
+
+  @override
+  void onDragEnd(DragEndEvent event) {
+    super.onDragEnd(event);
+    _dragStartPosition = Vector2.zero();
+
+    if (_isBeingDragged) {
+      _isBeingDragged = false;
+      _selectedCard?.position = _originalPositionBeforeDrag;
+      _selectedCard?.angle = _originalAngleBeforeDrag;
+      _selectedCard?.isSelected = false;
+      _selectedCard = null;
+    } else {
+      _deselectCard();
+    }
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    super.onTapUp(event);
+    _deselectCard();
+  }
+
+  void _selectCard(InteractiveCardSprite? card) {
+    if (card == null || card == _selectedCard) {
+      return;
+    }
+
+    if (_selectedCard != null) {
+      _returnCardToOriginalPosition(_selectedCard!);
+      _selectedCard?.isSelected = false;
+    }
+
+    _moveCardToCenter(card);
+    _selectedCard = card;
+    _selectedCard?.isSelected = true;
+  }
+
+  void _deselectCard() {
+    if (_selectedCard == null) {
+      return;
+    }
+
+    _returnCardToOriginalPosition(_selectedCard!);
+    _selectedCard?.isSelected = false;
+    _selectedCard = null;
+  }
+
+  InteractiveCardSprite? _clonedCard;
+
+  void _moveCardToCenter(InteractiveCardSprite card) {
+    card.isSelected = true;
+
+    _clonedCard = card.clone();
+    _clonedCard!.position = Vector2(150, -300);
+    _clonedCard!.angle = 0;
+    add(_clonedCard!);
+  }
+
+  void _returnCardToOriginalPosition(InteractiveCardSprite card) {
+    remove(_clonedCard!);
+    card.isSelected = false;
+  }
+
+  @override
+  void render(Canvas canvas) {
+    final paint = Paint()
+      ..color = const Color.fromARGB(77, 195, 4, 4); // Red with 0.3 opacity
+    canvas.drawRect(size.toRect(), paint);
+  }
 }

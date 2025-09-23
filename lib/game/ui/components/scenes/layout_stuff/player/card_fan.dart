@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
+import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,8 @@ class CardFan extends PositionComponent {
         'size',
         mini ? '60' : '560',
       );
-      final card = CardSprite(Vector2(cardX, cardY), cardImagePath)
+      final card = InteractiveCardSprite(Vector2(cardX, cardY), cardImagePath)
+        ..isDraggable = true
         ..scale = Vector2.all(cardScale)
         ..anchor = Anchor.center
         ..priority = i; // Ensure correct rendering order
@@ -107,15 +109,15 @@ class CardFanDraggableArea extends PositionComponent
     : super(position: position, size: size);
 
   late CardBattlerGame _game;
-  CardSprite? _selectedCard;
+  InteractiveCardSprite? _selectedCard;
 
   /// Finds the nearest CardSprite to the given position
-  CardSprite? findNearestCardSprite(Vector2 position) {
+  InteractiveCardSprite? findNearestCardSprite(Vector2 position) {
     _game = findGame() as CardBattlerGame;
     final components = _game.componentsAtPoint(position);
 
     // Filter to only CardSprite components
-    final cardSprites = components.whereType<CardSprite>().toList();
+    final cardSprites = components.whereType<InteractiveCardSprite>().toList();
 
     if (cardSprites.isEmpty) {
       return null;
@@ -126,7 +128,7 @@ class CardFanDraggableArea extends PositionComponent
     }
 
     // Find the nearest card by calculating distance
-    CardSprite? nearestCard;
+    InteractiveCardSprite? nearestCard;
     var nearestDistance = double.infinity;
 
     for (final card in cardSprites) {
@@ -140,12 +142,12 @@ class CardFanDraggableArea extends PositionComponent
     return nearestCard;
   }
 
-  CardSprite? findHighestPriorityCardSprite(Vector2 position) {
+  InteractiveCardSprite? findHighestPriorityCardSprite(Vector2 position) {
     _game = findGame() as CardBattlerGame;
     final components = _game.componentsAtPoint(position);
 
     // Filter to only CardSprite components
-    final cardSprites = components.whereType<CardSprite>().toList();
+    final cardSprites = components.whereType<InteractiveCardSprite>().toList();
 
     if (cardSprites.isEmpty) {
       return null;
@@ -230,7 +232,7 @@ class CardFanDraggableArea extends PositionComponent
     _deselectCard();
   }
 
-  void _selectCard(CardSprite? card) {
+  void _selectCard(InteractiveCardSprite? card) {
     if (card == null || card == _selectedCard) {
       return;
     }
@@ -255,9 +257,9 @@ class CardFanDraggableArea extends PositionComponent
     _selectedCard = null;
   }
 
-  CardSprite? _clonedCard;
+  InteractiveCardSprite? _clonedCard;
 
-  void _moveCardToCenter(CardSprite card) {
+  void _moveCardToCenter(InteractiveCardSprite card) {
     card.isSelected = true;
 
     _clonedCard = card.clone();
@@ -266,7 +268,7 @@ class CardFanDraggableArea extends PositionComponent
     add(_clonedCard!);
   }
 
-  void _returnCardToOriginalPosition(CardSprite card) {
+  void _returnCardToOriginalPosition(InteractiveCardSprite card) {
     remove(_clonedCard!);
     card.isSelected = false;
   }
