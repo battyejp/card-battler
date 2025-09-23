@@ -6,6 +6,70 @@ class GameScreen extends StatelessWidget {
   const GameScreen({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(body: GameWidget(game: CardBattlerGame()));
+  Widget build(BuildContext context) {
+    final game = CardBattlerGame();
+
+    return Scaffold(
+      body: Stack(
+        children: [
+          GameWidget(game: game),
+          GameOverlay(game: game),
+        ],
+      ),
+    );
+  }
+}
+
+class GameOverlay extends StatefulWidget {
+  const GameOverlay({required this.game, super.key});
+  final CardBattlerGame game;
+
+  @override
+  State<GameOverlay> createState() => _GameOverlayState();
+}
+
+class _GameOverlayState extends State<GameOverlay> {
+  bool _isInShop = false;
+
+  void _toggleView() {
+    setState(() {
+      _isInShop = !_isInShop;
+    });
+
+    if (_isInShop) {
+      widget.game.router.pushNamed('enemyTurn');
+    } else {
+      widget.game.router.pop();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => SafeArea(
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(Icons.arrow_back, size: 20),
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.black.withAlpha(179),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.all(1),
+            ),
+          ),
+          IconButton(
+            onPressed: _toggleView,
+            icon: Icon(_isInShop ? Icons.gamepad : Icons.shop_2, size: 20),
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.black.withAlpha(179),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.all(1),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
