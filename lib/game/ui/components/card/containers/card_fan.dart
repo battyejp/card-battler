@@ -1,6 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui';
-
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:flame/components.dart';
 

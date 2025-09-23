@@ -17,7 +17,6 @@ class PlayerTurnSceneOld
   // late FlatButton _turnButton;
   bool loadingComplete = false;
 
-  //TODO could we just update the player component
   @override
   void updateDisplay() {
     super.updateDisplay();

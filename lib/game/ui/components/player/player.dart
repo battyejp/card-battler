@@ -3,9 +3,7 @@ import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
-  Player(Vector2 size) {
-    this.size = size;
-  }
+  Player();
 
   @override
   void onMount() {

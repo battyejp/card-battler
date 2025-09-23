@@ -26,7 +26,7 @@ class CardSprite extends SpriteComponent {
 
   @override
   Future<void> onLoad() async {
-    sprite = await Sprite.load(_fileName); //TODO can we just load once
+    sprite = await Sprite.load(_fileName);
   }
 
   @override

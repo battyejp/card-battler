@@ -35,6 +35,6 @@ abstract class ReactivePositionComponent<T extends ReactiveCoordinator<T>>
   @override
   void onLoad() {
     super.onLoad();
-    updateDisplay();
+    updateDisplay(); //TODO Should this be in onMount?
   }
 }
