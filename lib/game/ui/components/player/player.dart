@@ -1,11 +1,14 @@
 import 'dart:ui';
 
+import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
-  Player();
+  Player(PlayerCoordinator coordinator) : _coordinator = coordinator;
+
+  final PlayerCoordinator _coordinator;
 
   @override
   void onMount() {
@@ -22,7 +25,11 @@ class Player extends PositionComponent {
     add(border);
 
     final cardFan =
-        CardFan(initialCardCount: 7, fanRadius: 150.0, cardScale: 0.35)
+        CardFan(
+            _coordinator.handCardsCoordinator,
+            fanRadius: 150.0,
+            cardScale: 0.35,
+          )
           ..size = Vector2(size.x, size.y)
           ..position = Vector2(
             0,

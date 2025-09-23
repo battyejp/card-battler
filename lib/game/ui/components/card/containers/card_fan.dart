@@ -1,28 +1,28 @@
 import 'dart:math' as math;
 import 'dart:ui';
 import 'package:card_battler/game/card_battler_game.dart';
+import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
+import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
 //TODO so indication of no cards
-class CardFan extends PositionComponent {
-  CardFan({
-    int initialCardCount = 0,
+class CardFan extends ReactivePositionComponent<CardListCoordinator> {
+  CardFan(
+    super.coordinator, {
     double fanAngle = math.pi / 2, // pi is 180 degrees so pi/2 is 90 degrees
     double fanRadius = 200.0,
     bool mini = false,
     double cardScale = 0.4,
   }) {
-    _cardCount = initialCardCount;
     _fanAngle = fanAngle;
     _fanRadius = fanRadius;
     _mini = mini;
     _cardScale = cardScale;
   }
 
-  late int _cardCount;
   late double _fanAngle;
   late double _fanRadius;
   late bool _mini;
@@ -30,9 +30,9 @@ class CardFan extends PositionComponent {
   final List<CardSprite> _cards = [];
 
   @override
-  Future<void> onLoad() async {
-    await super.onLoad();
-    await _createCardFan();
+  void updateDisplay() {
+    super.updateDisplay();
+    _createCardFan();
 
     if (!_mini) {
       final draggableArea = CardFanDraggableArea()
@@ -46,10 +46,11 @@ class CardFan extends PositionComponent {
     }
   }
 
-  Future<void> _createCardFan() async {
+  void _createCardFan() {
+    final cardCount = coordinator.cardCoordinators.length;
     final startAngle = -_fanAngle / 2; // Start from left side of fan
-    final angleStep = _cardCount > 1
-        ? _fanAngle / (_cardCount - 1)
+    final angleStep = cardCount > 1
+        ? _fanAngle / (cardCount - 1)
         : 0; // Angle between cards
 
     final arrayOfImages = [
@@ -62,13 +63,13 @@ class CardFan extends PositionComponent {
       'card_human_f2_size.png',
     ];
 
-    for (var i = 0; i < _cardCount; i++) {
-      final angle = _cardCount == 1 ? 0 : startAngle + (i * angleStep);
+    for (var i = 0; i < cardCount; i++) {
+      final angle = cardCount == 1 ? 0 : startAngle + (i * angleStep);
 
       final cardX = _fanRadius * math.sin(angle) + size.x / 2;
       final cardY = -_fanRadius * math.cos(angle);
 
-      final cardImagePath = arrayOfImages[i % _cardCount].replaceAll(
+      final cardImagePath = arrayOfImages[i % cardCount].replaceAll(
         'size',
         _mini ? '60' : '560',
       );
@@ -89,14 +90,6 @@ class CardFan extends PositionComponent {
       _cards.add(card);
     }
   }
-
-  // @override
-  // void render(Canvas canvas) {
-  //   super.render(canvas);
-  //   final paint = Paint()
-  //     ..color = const Color.fromARGB(199, 237, 245, 2);
-  //   canvas.drawRect(size.toRect(), paint);
-  // }
 }
 
 class CardFanDraggableArea extends PositionComponent

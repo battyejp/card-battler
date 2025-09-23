@@ -24,7 +24,7 @@ class TeamMate extends ReactivePositionComponent<PlayerInfoCoordinator> {
     add(playerName);
 
     final cardFan = CardFan(
-      initialCardCount: coordinator.handCardsCoordinator.length,
+      coordinator.handCardsCoordinator,
       cardScale: 1.0,
       mini: true,
       fanRadius: 50.0,

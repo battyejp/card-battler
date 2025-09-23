@@ -30,7 +30,7 @@ class PlayerTurnScene
       ..position = Vector2(startX, enemies.position.y + enemies.size.y);
     add(team);
 
-    final player = Player()
+    final player = Player(coordinator.playerCoordinator)
       ..size = Vector2(size.x, availableHeightForPlayer)
       ..position = Vector2(startX, team.position.y + team.size.y);
     add(player);

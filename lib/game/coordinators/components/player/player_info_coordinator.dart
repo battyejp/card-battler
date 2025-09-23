@@ -10,8 +10,8 @@ class PlayerInfoCoordinator extends ActorCoordinator<PlayerInfoCoordinator> {
   ) : _handCardsCoordinator = handCardsCoordinator;
 
   final CardListCoordinator<CardCoordinator> _handCardsCoordinator;
-  List<CardCoordinator> get handCardsCoordinator =>
-      _handCardsCoordinator.cardCoordinators;
+  CardListCoordinator<CardCoordinator> get handCardsCoordinator =>
+      _handCardsCoordinator;
 
   PlayerModel get _playerModel => model as PlayerModel;
 
