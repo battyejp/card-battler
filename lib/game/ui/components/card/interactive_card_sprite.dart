@@ -1,20 +1,13 @@
 import 'dart:ui';
 
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
-import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class InteractiveCardSprite extends CardSprite {
-  InteractiveCardSprite(super.position, super.fileName);
+  InteractiveCardSprite(super.fileName);
 
   bool isSelected = false;
   bool isDraggable = false;
-
-  InteractiveCardSprite clone() =>
-      InteractiveCardSprite(position.clone(), fileName)
-        ..angle = angle
-        ..scale = Vector2.all(1.0)
-        ..anchor = anchor;
 
   @override
   void render(Canvas canvas) {

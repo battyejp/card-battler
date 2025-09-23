@@ -34,13 +34,12 @@ class CardFan extends PositionComponent {
     await _createCardFan();
 
     if (!_mini) {
-      final draggableArea = CardFanDraggableArea(
-        position: Vector2(
+      final draggableArea = CardFanDraggableArea()
+        ..size = Vector2(size.x, size.y)
+        ..position = Vector2(
           0,
-          -300,
-        ), //TODO needs to be dynamic based on fanRadius and size could be smaller
-        size: Vector2(size.x, size.y),
-      );
+          -320,
+        ); //TODO needs to be dynamic based on fanRadius and size could be smaller
 
       add(draggableArea);
     }
@@ -74,10 +73,11 @@ class CardFan extends PositionComponent {
       );
 
       final card = _mini
-          ? CardSprite(Vector2(cardX, cardY), cardImagePath)
-          : InteractiveCardSprite(Vector2(cardX, cardY), cardImagePath);
+          ? CardSprite(cardImagePath)
+          : InteractiveCardSprite(cardImagePath);
 
       card
+        ..position = Vector2(cardX, cardY)
         ..scale = Vector2.all(_cardScale)
         ..anchor = Anchor.center
         ..priority = i;
@@ -100,8 +100,7 @@ class CardFan extends PositionComponent {
 
 class CardFanDraggableArea extends PositionComponent
     with DragCallbacks, TapCallbacks {
-  CardFanDraggableArea({required Vector2 position, required Vector2 size})
-    : super(position: position, size: size);
+  CardFanDraggableArea();
 
   late CardBattlerGame _game;
   InteractiveCardSprite? _selectedCard;
@@ -184,6 +183,7 @@ class CardFanDraggableArea extends PositionComponent
   Vector2 _originalPositionBeforeDrag = Vector2.zero();
   double _originalAngleBeforeDrag = 0.0;
 
+  //TODO tidy up as probably repeated code
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
@@ -235,11 +235,11 @@ class CardFanDraggableArea extends PositionComponent
     }
 
     if (_selectedCard != null) {
-      _returnCardToOriginalPosition(_selectedCard!);
+      _removeDuplicateCardAtCenter(_selectedCard!);
       _selectedCard?.isSelected = false;
     }
 
-    _moveCardToCenter(card);
+    _showDuplicateCardAtCenter(card);
     _selectedCard = card;
     _selectedCard?.isSelected = true;
   }
@@ -249,23 +249,27 @@ class CardFanDraggableArea extends PositionComponent
       return;
     }
 
-    _returnCardToOriginalPosition(_selectedCard!);
+    _removeDuplicateCardAtCenter(_selectedCard!);
     _selectedCard?.isSelected = false;
     _selectedCard = null;
   }
 
-  InteractiveCardSprite? _clonedCard;
+  SpriteComponent? _clonedCard;
 
-  void _moveCardToCenter(InteractiveCardSprite card) {
+  void _showDuplicateCardAtCenter(InteractiveCardSprite card) {
     card.isSelected = true;
 
-    _clonedCard = card.clone();
-    _clonedCard!.position = Vector2(150, -300);
-    _clonedCard!.angle = 0;
+    final image = _game.images.fromCache(card.getFileName);
+    _clonedCard = SpriteComponent(sprite: Sprite(image));
+
+    _clonedCard!.position = Vector2(
+      size.x / 2 - _clonedCard!.size.x / 2,
+      -_clonedCard!.size.y,
+    );
     add(_clonedCard!);
   }
 
-  void _returnCardToOriginalPosition(InteractiveCardSprite card) {
+  void _removeDuplicateCardAtCenter(InteractiveCardSprite card) {
     remove(_clonedCard!);
     card.isSelected = false;
   }
