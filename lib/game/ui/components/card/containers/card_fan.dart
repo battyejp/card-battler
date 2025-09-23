@@ -136,7 +136,7 @@ class CardFanDraggableArea extends PositionComponent
     return nearestCard;
   }
 
-  InteractiveCardSprite? findHighestPriorityCardSprite(Vector2 position) {
+  void findHighestPriorityCardSpriteAndSelect(Vector2 position) {
     _game = findGame() as CardBattlerGame;
     final components = _game.componentsAtPoint(
       position,
@@ -146,7 +146,7 @@ class CardFanDraggableArea extends PositionComponent
     final cardSprites = components.whereType<InteractiveCardSprite>().toList();
 
     if (cardSprites.isEmpty) {
-      return null;
+      return;
     }
 
     var highestPriority = -1;
@@ -158,16 +158,17 @@ class CardFanDraggableArea extends PositionComponent
     }
 
     // Return the topmost card (last in the list)
-    return cardSprites.lastWhere((card) => card.priority == highestPriority);
+    final card = cardSprites.lastWhere(
+      (card) => card.priority == highestPriority,
+    );
+    _selectCard(card);
   }
 
   @override
   void onTapDown(TapDownEvent event) {
     super.onTapDown(event);
     _game = findGame() as CardBattlerGame;
-
-    final card = findHighestPriorityCardSprite(event.canvasPosition);
-    _selectCard(card);
+    findHighestPriorityCardSpriteAndSelect(event.canvasPosition);
   }
 
   var _dragStartPosition = Vector2.zero();
@@ -183,7 +184,6 @@ class CardFanDraggableArea extends PositionComponent
   Vector2 _originalPositionBeforeDrag = Vector2.zero();
   double _originalAngleBeforeDrag = 0.0;
 
-  //TODO tidy up as probably repeated code
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
@@ -195,16 +195,19 @@ class CardFanDraggableArea extends PositionComponent
       _selectedCard?.position += event.canvasDelta;
     } else if (deltaX.abs() > 15) {
       _dragStartPosition = event.canvasStartPosition;
-      final card = findHighestPriorityCardSprite(event.canvasStartPosition);
-      _selectCard(card);
+      findHighestPriorityCardSpriteAndSelect(event.canvasStartPosition);
     } else if (deltaY > 30 && !_isBeingDragged && _selectedCard != null) {
-      _originalPositionBeforeDrag = _selectedCard!.position.clone();
-      _originalAngleBeforeDrag = _selectedCard!.angle;
-      _selectedCard?.angle = 0;
-      _isBeingDragged = true;
-      remove(_clonedCard!);
-      _selectedCard?.position += event.canvasDelta;
+      _setupForDraggings(event);
     }
+  }
+
+  void _setupForDraggings(DragUpdateEvent event) {
+    _originalPositionBeforeDrag = _selectedCard!.position.clone();
+    _originalAngleBeforeDrag = _selectedCard!.angle;
+    _selectedCard?.angle = 0;
+    _isBeingDragged = true;
+    remove(_clonedCard!);
+    _selectedCard?.position += event.canvasDelta;
   }
 
   @override
@@ -213,14 +216,18 @@ class CardFanDraggableArea extends PositionComponent
     _dragStartPosition = Vector2.zero();
 
     if (_isBeingDragged) {
-      _isBeingDragged = false;
-      _selectedCard?.position = _originalPositionBeforeDrag;
-      _selectedCard?.angle = _originalAngleBeforeDrag;
-      _selectedCard?.isSelected = false;
-      _selectedCard = null;
+      _returnDragedCardToOriginalPosition();
     } else {
       _deselectCard();
     }
+  }
+
+  void _returnDragedCardToOriginalPosition() {
+    _isBeingDragged = false;
+    _selectedCard?.position = _originalPositionBeforeDrag;
+    _selectedCard?.angle = _originalAngleBeforeDrag;
+    _selectedCard?.isSelected = false;
+    _selectedCard = null;
   }
 
   @override
