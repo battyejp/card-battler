@@ -1,9 +1,9 @@
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/ui/components/card/selectable_card.dart';
-import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
+import 'package:card_battler/game/ui/components/common/reactive_position_component_old.dart';
 import 'package:flame/components.dart';
 
-class CardHand extends ReactivePositionComponent<CardListCoordinator> {
+class CardHand extends ReactivePositionComponentOld<CardListCoordinator> {
   CardHand(super.coordinator);
 
   @override

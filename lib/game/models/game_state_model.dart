@@ -22,7 +22,7 @@ class GameStateModel {
     List<CardModel> enemyCards,
     List<BaseModel> bases,
   ) {
-    final players = List<PlayerModel>.generate(2, (index) {
+    final players = List<PlayerModel>.generate(5, (index) {
       final isActive = index == 0; // Only the first player is active
       final playerDeckCopy = List<CardModel>.from(
         playerDeckCards.map((card) => card.copy()),

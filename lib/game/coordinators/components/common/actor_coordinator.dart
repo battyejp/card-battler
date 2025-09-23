@@ -3,7 +3,7 @@ import 'package:card_battler/game/models/common/actor_model.dart';
 
 class ActorCoordinator<T extends ActorCoordinator<T>>
     with ReactiveCoordinator<T> {
-  ActorCoordinator({required ActorModel model}) : _model = model;
+  ActorCoordinator(ActorModel model) : _model = model;
 
   final ActorModel _model;
   ActorModel get model => _model;
@@ -13,7 +13,10 @@ class ActorCoordinator<T extends ActorCoordinator<T>>
 
   void adjustHealth(int amount) {
     final newHealth = _model.healthModel.currentHealth + amount;
-    _model.healthModel.currentHealth = newHealth.clamp(0, _model.healthModel.maxHealth);
+    _model.healthModel.currentHealth = newHealth.clamp(
+      0,
+      _model.healthModel.maxHealth,
+    );
     notifyChange();
   }
 }

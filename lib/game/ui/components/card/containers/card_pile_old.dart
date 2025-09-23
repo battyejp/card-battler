@@ -1,10 +1,10 @@
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/ui/components/card/card.dart';
-import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
+import 'package:card_battler/game/ui/components/common/reactive_position_component_old.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart' hide Card;
 
-class CardPileOld extends ReactivePositionComponent<CardListCoordinator> {
+class CardPileOld extends ReactivePositionComponentOld<CardListCoordinator> {
   CardPileOld(super.coordinator, {required this.showNext});
 
   final bool showNext;

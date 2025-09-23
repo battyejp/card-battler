@@ -1,11 +1,12 @@
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
-import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
+import 'package:card_battler/game/ui/components/common/reactive_position_component_old.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 enum PlayerInfoViewMode { summary, detailed }
 
-class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
+//TODO can be deleted
+class PlayerInfo extends ReactivePositionComponentOld<PlayerInfoCoordinator> {
   PlayerInfo(super.coordinator, {required PlayerInfoViewMode viewMode})
     : _viewMode = viewMode;
 

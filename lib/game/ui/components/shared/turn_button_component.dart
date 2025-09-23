@@ -1,11 +1,11 @@
 import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/ui/components/common/flat_button.dart';
-import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
+import 'package:card_battler/game/ui/components/common/reactive_position_component_old.dart';
 import 'package:flame/components.dart';
 
 class TurnButtonComponent
-    extends ReactivePositionComponent<TurnButtonComponentCoordinator> {
+    extends ReactivePositionComponentOld<TurnButtonComponentCoordinator> {
   TurnButtonComponent(
     super.coordinator, {
     required CardsSelectionManagerService cardsSelectionManagerService,

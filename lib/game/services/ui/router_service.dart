@@ -3,12 +3,14 @@ import 'package:card_battler/game/coordinators/components/scenes/player_turn_sce
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/scenes/enemy_turn_scene.dart';
 import 'package:card_battler/game/ui/components/scenes/player_turn_scene.dart';
+import 'package:card_battler/game/ui/components/scenes/shop_scene.dart';
 import 'package:flame/game.dart';
 
 class RouterService {
   RouterComponent? _router;
   PlayerTurnScene? _playerTurnScene;
   EnemyTurnScene? _enemyTurnScene;
+  ShopScene? _shopScene;
   GamePhaseManager? _gamePhaseManager;
 
   /// Create and configure the router component with scene routes
@@ -21,19 +23,20 @@ class RouterService {
   }) {
     _gamePhaseManager = gamePhaseManager;
 
-    _playerTurnScene = PlayerTurnScene(
-      playerTurnSceneCoordinator,
-      size: gameSize,
-    );
+    _playerTurnScene = PlayerTurnScene(playerTurnSceneCoordinator)
+      ..size = gameSize;
 
     _enemyTurnScene = EnemyTurnScene(
       coordinator: enemyTurnSceneCoordinator,
       size: gameSize,
     );
 
+    _shopScene = ShopScene()..size = gameSize;
+
     final routes = {
       'playerTurn': Route(() => _playerTurnScene!),
       'enemyTurn': Route(() => _enemyTurnScene!),
+      'shop': Route(() => _shopScene!),
     };
 
     // Add additional routes if provided
@@ -74,6 +77,11 @@ class RouterService {
   /// Transition to enemy turn scene
   void goToEnemyTurn() {
     _router?.pushNamed('enemyTurn');
+  }
+
+  /// Transition to shop scene
+  void goToShop() {
+    _router?.pushNamed('shop');
   }
 
   /// Pop current route (generic navigation)

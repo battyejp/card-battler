@@ -6,6 +6,7 @@ import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dar
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
+//TODO so indication of no cards
 class CardFan extends PositionComponent {
   CardFan({
     int initialCardCount = 0,
@@ -138,9 +139,7 @@ class CardFanDraggableArea extends PositionComponent
 
   void findHighestPriorityCardSpriteAndSelect(Vector2 position) {
     _game = findGame() as CardBattlerGame;
-    final components = _game.componentsAtPoint(
-      position,
-    );
+    final components = _game.componentsAtPoint(position);
 
     // Filter to only InteractiveCardSprite components
     final cardSprites = components.whereType<InteractiveCardSprite>().toList();

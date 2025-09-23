@@ -1,10 +1,12 @@
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
-import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
+import 'package:card_battler/game/ui/components/common/reactive_position_component_old.dart';
 import 'package:card_battler/game/ui/components/shop/shop_card.dart';
 import 'package:flame/components.dart';
 
-class ShopDisplay extends ReactivePositionComponent<CardListCoordinator<ShopCardCoordinator>> {
+class ShopDisplay
+    extends
+        ReactivePositionComponentOld<CardListCoordinator<ShopCardCoordinator>> {
   ShopDisplay(super.coordinator);
 
   final double _cardHeightFactor = 0.38;
@@ -21,9 +23,7 @@ class ShopDisplay extends ReactivePositionComponent<CardListCoordinator<ShopCard
 
   void _addCards() {
     final cardWidth =
-        size.x /
-        (itemsPerRow +
-            (itemsPerRow + 1) * _hSpacingFactor);
+        size.x / (itemsPerRow + (itemsPerRow + 1) * _hSpacingFactor);
     final cardHeight = size.y * _cardHeightFactor;
     final totalWidth =
         itemsPerRow * cardWidth +

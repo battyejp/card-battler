@@ -37,7 +37,7 @@ class _GameOverlayState extends State<GameOverlay> {
     });
 
     if (_isInShop) {
-      widget.game.router.pushNamed('enemyTurn');
+      widget.game.router.pushNamed('shop');
     } else {
       widget.game.router.pop();
     }

@@ -2,7 +2,7 @@ import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scen
 import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile_old.dart';
 import 'package:card_battler/game/ui/components/player/player_info.dart';
-import 'package:card_battler/game/ui/components/team/players.dart';
+import 'package:card_battler/game/ui/components/team/players_old.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 

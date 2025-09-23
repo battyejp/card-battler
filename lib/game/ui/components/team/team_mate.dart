@@ -1,16 +1,20 @@
+import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
+import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-class TeamMate extends PositionComponent {
+class TeamMate extends ReactivePositionComponent<PlayerInfoCoordinator> {
+  TeamMate(super.coordinator);
+
   final double margin = 5.0;
 
   @override
-  void onLoad() {
-    super.onLoad();
+  void updateDisplay() {
+    super.updateDisplay();
 
     final playerName = TextComponent(
-      text: "Player Name",
+      text: coordinator.name,
       anchor: Anchor.topCenter,
       position: Vector2(size.x / 2, 10),
       textRenderer: TextPaint(
@@ -20,7 +24,7 @@ class TeamMate extends PositionComponent {
     add(playerName);
 
     final cardFan = CardFan(
-      initialCardCount: 5,
+      initialCardCount: coordinator.handCardsCoordinator.length,
       cardScale: 1.0,
       mini: true,
       fanRadius: 50.0,
@@ -29,7 +33,7 @@ class TeamMate extends PositionComponent {
     add(cardFan);
 
     final healthTextComponent = TextComponent(
-      text: "HP: 10/10",
+      text: coordinator.healthDisplay,
       anchor: Anchor.center,
       position: Vector2(size.x / 2, cardFan.position.y + margin),
       textRenderer: TextPaint(
@@ -39,7 +43,7 @@ class TeamMate extends PositionComponent {
     add(healthTextComponent);
 
     final creditsTextComponent = TextComponent(
-      text: "Credits: 0",
+      text: "Credits: ${coordinator.credits}",
       anchor: Anchor.center,
       position: Vector2(
         size.x / 2,
@@ -52,7 +56,7 @@ class TeamMate extends PositionComponent {
     add(creditsTextComponent);
 
     final attackTextComponent = TextComponent(
-      text: "Attack: 5",
+      text: "Attack: ${coordinator.attack}",
       anchor: Anchor.center,
       position: Vector2(
         size.x / 2,

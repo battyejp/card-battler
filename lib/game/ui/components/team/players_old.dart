@@ -19,8 +19,7 @@ class Players extends PositionComponent {
   void onLoad() {
     super.onLoad();
 
-    late final playersCoordinatorsToShow = _coordinator
-        .players
+    late final playersCoordinatorsToShow = _coordinator.players
         .where((player) => !player.isActive || _showActivePlayer)
         .toList();
 

@@ -1,8 +1,18 @@
+import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/common/actor_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 
 class PlayerInfoCoordinator extends ActorCoordinator<PlayerInfoCoordinator> {
-  PlayerInfoCoordinator({required PlayerModel model}) : super(model: model);
+  PlayerInfoCoordinator(
+    super.model,
+    CardListCoordinator<CardCoordinator> handCardsCoordinator,
+  ) : _handCardsCoordinator = handCardsCoordinator;
+
+  final CardListCoordinator<CardCoordinator> _handCardsCoordinator;
+  List<CardCoordinator> get handCardsCoordinator =>
+      _handCardsCoordinator.cardCoordinators;
+
   PlayerModel get _playerModel => model as PlayerModel;
 
   int get attack => _playerModel.attack;
