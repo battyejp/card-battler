@@ -4,8 +4,8 @@ import 'package:card_battler/game/ui/components/common/reactive_position_compone
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart' hide Card;
 
-class CardPile extends ReactivePositionComponent<CardListCoordinator> {
-  CardPile(super.coordinator, {required this.showNext});
+class CardPileOld extends ReactivePositionComponent<CardListCoordinator> {
+  CardPileOld(super.coordinator, {required this.showNext});
 
   final bool showNext;
 

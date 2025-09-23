@@ -26,7 +26,7 @@ class Enemy extends PositionComponent {
   void render(Canvas canvas) {
     super.render(canvas);
     final paint = Paint()
-      ..color = const Color.fromARGB(77, 89, 2, 124); // Purple with 0.3 opacity
+      ..color = const Color.fromARGB(255, 5, 49, 19); // Purple with 0.3 opacity
     canvas.drawRect(size.toRect(), paint);
   }
 }

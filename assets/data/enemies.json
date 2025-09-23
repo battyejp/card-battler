@@ -1,0 +1,186 @@
+[
+    {
+        "name": "Active Attacker",
+        "ability": {
+            "trigger": "EnemyTurn",
+            "type": "Attack",
+            "effects": [
+                {
+                    "type": "Attack",
+                    "value": 1,
+                    "target": "ActivePlayer"
+                }
+            ]
+        },
+        "reward": {
+            "effects": [
+                {
+                    "type": "Credits",
+                    "value": 1,
+                    "target": "AllPlayers"
+                },
+                {
+                    "type": "Heal",
+                    "value": 1,
+                    "target": "AllPlayers"
+                }
+            ]
+        }
+    },
+    {
+        "name": "Active Attacker 2",
+        "ability": {
+            "trigger": "EnemyTurn",
+            "type": "Attack",
+            "effects": [
+                {
+                    "type": "Attack",
+                    "value": 2,
+                    "target": "ActivePlayer"
+                }
+            ]
+        },
+        "reward": {
+            "effects": [
+                {
+                    "type": "Heal",
+                    "value": 1,
+                    "target": "Base"
+                },
+                {
+                    "type": "Heal",
+                    "value": 2,
+                    "target": "AllPlayers"
+                }
+            ]
+        }
+    },
+    {
+        "name": "Heal Blocker",
+        "ability": {
+            "trigger": "None",
+            "type": "Block",
+            "effects": [
+                {
+                    "type": "Heal",
+                    "target": "AllPlayers"
+                }
+            ]
+        },
+        "reward": {
+            "effects": [
+                {
+                    "type": "Heal",
+                    "value": 2,
+                    "target": "Base"
+                },
+                {
+                    "type": "Heal",
+                    "value": 2,
+                    "target": "AllPlayers"
+                }
+            ]
+        }
+    },
+    {
+        "name": "Repair Base Blocker",
+        "ability": {
+            "trigger": "None",
+            "type": "Block",
+            "effects": [
+                {
+                    "type": "Heal",
+                    "target": "Base"
+                }
+            ]
+        },
+        "reward": {
+            "effects": [
+                {
+                    "type": "Heal",
+                    "value": 2,
+                    "target": "Base"
+                }
+            ]
+        }
+    },
+    {
+        "name": "Card Draw Blocker",
+        "ability": {
+            "trigger": "None",
+            "type": "Block",
+            "effects": [
+                {
+                    "type": "DrawCard",
+                    "target": "AllPlayers"
+                }
+            ]
+        },
+        "reward": {
+            "effects": [
+                {
+                    "type": "Heal",
+                    "value": 1,
+                    "target": "Base"
+                },
+                {
+                    "type": "DrawCard",
+                    "value": 1,
+                    "target": "AllPlayers"
+                }
+            ]
+        }
+    },
+    {
+        "name": "Draw Extra Card Attacker",
+        "ability": {
+            "trigger": "EnemyTurn",
+            "type": "Attack",
+            "effects": [
+                {
+                    "type": "DrawCard",
+                    "value": 1
+                }
+            ]
+        },
+        "reward": {
+            "effects": [
+                {
+                    "type": "Heal",
+                    "value": 2,
+                    "target": "Base"
+                }
+            ]
+        }
+    },
+    {
+        "name": "Player Turn Attacker",
+        "ability": {
+            "trigger": {
+                "phase": "Player", //Enemy, Anytime
+                "Cause": "Effect", //CardBought, CardDiscarded, CardInHand, NewVillian, None
+                "Condition": {
+                    "type": "HasCardValue", //IsCardType (i.e. Ally), Always, IsEffectType (HealBase)
+                    "value": 4 //Ally or HealBase or Cost 4
+                }
+            },
+            "type": "Attack",
+            "effects": [
+                {
+                    "type": "Attack",
+                    "value": 2,
+                    "target": "ActivePlayer"
+                }
+            ]
+        },
+        "reward": {
+            "effects": [
+                {
+                    "type": "Heal",
+                    "value": 2,
+                    "target": "AllPlayers"
+                }
+            ]
+        }
+    }
+]

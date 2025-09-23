@@ -2,48 +2,44 @@ import 'package:card_battler/game/coordinators/components/player/player_info_coo
 import 'package:card_battler/game/models/shared/effect_model.dart';
 
 class EffectHandlerService {
-  void handleAttackEffect(PlayerInfoCoordinator target, EffectModel effect) {
-    target.adjustHealth(effect.value * -1);
+  void _handleAttackEffect(PlayerInfoCoordinator target, EffectModel effect) {
+    target.adjustAttack(effect.value);
   }
 
-  void handleHealEffect(PlayerInfoCoordinator target, EffectModel effect) {
-    // Implementation for heal effect
+  void _handleHealEffect(PlayerInfoCoordinator target, EffectModel effect) {
+    target.adjustHealth(effect.value);
   }
 
-  void handleCreditsEffect(PlayerInfoCoordinator target, EffectModel effect) {
+  void _handleCreditsEffect(PlayerInfoCoordinator target, EffectModel effect) {
     target.adjustCredits(effect.value);
   }
 
-  void handleDamageLimitEffect(
-    PlayerInfoCoordinator target,
-    EffectModel effect,
-  ) {
-    // Implementation for damage limit effect
+  void _handleDamageEffect(PlayerInfoCoordinator target, EffectModel effect) {
+    target.adjustHealth(-effect.value);
   }
 
-  void handleDrawCardEffect(
-    PlayerInfoCoordinator target,
-    EffectModel effect,
-  ) {
+  void _handleDrawCardEffect(PlayerInfoCoordinator target, EffectModel effect) {
     // Implementation for draw card effect
   }
 
   void applyEffect(PlayerInfoCoordinator target, EffectModel effect) {
     switch (effect.type) {
       case EffectType.attack:
-        handleAttackEffect(target, effect);
+        _handleAttackEffect(target, effect);
         break;
       case EffectType.heal:
-        handleHealEffect(target, effect);
+        _handleHealEffect(target, effect);
         break;
       case EffectType.credits:
-        handleCreditsEffect(target, effect);
-        break;
-      case EffectType.damageLimit:
-        handleDamageLimitEffect(target, effect);
+        _handleCreditsEffect(target, effect);
         break;
       case EffectType.drawCard:
-        handleDrawCardEffect(target, effect);
+        _handleDrawCardEffect(target, effect);
+        break;
+      case EffectType.damage:
+        _handleDamageEffect(target, effect);
+        break;
+      case EffectType.protection:
         break;
     }
   }

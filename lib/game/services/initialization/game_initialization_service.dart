@@ -31,10 +31,11 @@ class GameInitializationService {
       ShopCardModel.fromJson,
     );
 
-    final playerDeckCards = await CardLoaderService.loadCardsFromJson<CardModel>(
-      'assets/data/hero_starting_cards.json',
-      CardModel.fromJson,
-    );
+    final playerDeckCards =
+        await CardLoaderService.loadCardsFromJson<CardModel>(
+          'assets/data/hero_starting_cards.json',
+          CardModel.fromJson,
+        );
 
     final enemyCards = await CardLoaderService.loadCardsFromJson<CardModel>(
       'assets/data/enemy_cards.json',

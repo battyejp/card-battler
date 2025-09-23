@@ -18,9 +18,10 @@ class CardBattlerGame extends FlameGame {
       onGameResize(_testSize!);
     }
 
+    await images.loadAllImages();
     final gameState = await GameInitializationService.initializeGameState();
     final services = GameInitializationService.createServices(gameState);
-    final router = GameComponentBuilder.buildGameComponents(
+    router = GameComponentBuilder.buildGameComponents(
       gameSize: size,
       services: services,
     );

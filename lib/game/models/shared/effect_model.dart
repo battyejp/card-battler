@@ -1,9 +1,10 @@
 enum EffectType {
-  attack,
-  heal,
-  credits,
-  drawCard, //discard
-  damageLimit;
+  attack, // gets attack points
+  damage, // takes damage
+  heal, // is healed
+  credits, //gets credits
+  drawCard, // draws cards
+  protection; // gets a protection
   // placeNewCardOnDeck
   // random skill
   // Search pile
@@ -12,16 +13,14 @@ enum EffectType {
   static EffectType fromString(String value) => EffectType.values.firstWhere(
     (e) => e.name.toLowerCase() == value.toLowerCase(),
     orElse: () => throw ArgumentError('Unknown effect type: $value'),
-  );
+  );  
 }
 
 enum EffectTarget {
   activePlayer,
   nonActivePlayers,
   allPlayers,
-  base,
-  chosenPlayer,
-  self;
+  base;
 
   static EffectTarget fromString(String value) =>
       EffectTarget.values.firstWhere(

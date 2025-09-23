@@ -11,7 +11,6 @@ class EffectTargetResolver {
 
   List<PlayerInfoCoordinator> resolveTargets(EffectModel effect) {
     switch (effect.target) {
-      case EffectTarget.self:
       case EffectTarget.activePlayer:
         return [_playersInfoCoordinator.activePlayer];
       case EffectTarget.allPlayers:

@@ -10,11 +10,15 @@ import 'package:mocktail/mocktail.dart';
 
 // Mock classes
 class MockCardModel extends Mock implements CardModel {}
-class MockCardsSelectionManagerService extends Mock implements CardsSelectionManagerService {}
-class MockGamePhaseManager extends Mock implements GamePhaseManager {}
-class MockActivePlayerManager extends Mock implements ActivePlayerManager {}
-class MockPlayerInfoCoordinator extends Mock implements PlayerInfoCoordinator {}
 
+class MockCardsSelectionManagerService extends Mock
+    implements CardsSelectionManagerService {}
+
+class MockGamePhaseManager extends Mock implements GamePhaseManager {}
+
+class MockActivePlayerManager extends Mock implements ActivePlayerManager {}
+
+class MockPlayerInfoCoordinator extends Mock implements PlayerInfoCoordinator {}
 
 void main() {
   group('CardCoordinator', () {
@@ -92,7 +96,7 @@ void main() {
           ),
           EffectModel(
             type: EffectType.heal,
-            target: EffectTarget.self,
+            target: EffectTarget.activePlayer,
             value: 3,
           ),
         ];
@@ -177,12 +181,12 @@ void main() {
           ),
           EffectModel(
             type: EffectType.heal,
-            target: EffectTarget.self,
+            target: EffectTarget.activePlayer,
             value: 5,
           ),
           EffectModel(
             type: EffectType.credits,
-            target: EffectTarget.self,
+            target: EffectTarget.activePlayer,
             value: 3,
           ),
         ];

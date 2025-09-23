@@ -1,7 +1,7 @@
-import 'package:card_battler/game/ui/components/card/card_pile.dart';
+import 'package:card_battler/game/ui/components/card/containers/card_pile_old.dart';
 import 'package:flame/events.dart';
 
-class CardDeck extends CardPile with TapCallbacks {
+class CardDeck extends CardPileOld with TapCallbacks {
   CardDeck({required this.onTap, required coordinator})
     : super(coordinator, showNext: false);
 

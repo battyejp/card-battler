@@ -1,6 +1,6 @@
 import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
-import 'package:card_battler/game/ui/components/card/card_deck.dart';
-import 'package:card_battler/game/ui/components/card/card_pile.dart';
+import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
+import 'package:card_battler/game/ui/components/card/containers/card_pile_old.dart';
 import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:card_battler/game/ui/components/team/players.dart';
 import 'package:flame/components.dart';
@@ -45,7 +45,7 @@ class EnemyTurnScene extends Component {
     playArea.add(deck);
 
     final playedCards =
-        CardPile(_coordinator.playedCardsCoordinator, showNext: false)
+        CardPileOld(_coordinator.playedCardsCoordinator, showNext: false)
           ..anchor = Anchor.topRight
           ..position = Vector2(_size.x, 0)
           ..size = Vector2(_size.x * 0.25, _size.y / 2);
@@ -56,7 +56,7 @@ class EnemyTurnScene extends Component {
         Players(
             coordinator: _coordinator.playersCoordinator,
             showActivePlayer: true,
-            viewMode: PlayerInfoViewMode.detailed
+            viewMode: PlayerInfoViewMode.detailed,
           )
           ..size = Vector2(_size.x, _size.y / 2)
           ..position = Vector2(0, _size.y / 2);

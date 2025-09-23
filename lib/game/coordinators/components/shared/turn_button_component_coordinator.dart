@@ -38,6 +38,14 @@ class TurnButtonComponentCoordinator
         onConfirm: _gamePhaseManager.nextPhase,
         onCancel: () {},
       );
+    } else if (_gamePhaseManager.currentPhase ==
+        GamePhase.playerCardsDrawnWaitingForPlayerSwitch) {
+      _dialogService.showCustomConfirmation(
+        title: 'Confirm Player Switch',
+        message: 'Pass device to next player.',
+        onConfirm: _gamePhaseManager.nextPhase,
+        onCancel: () {},
+      );
     } else {
       _gamePhaseManager.nextPhase();
     }
