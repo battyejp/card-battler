@@ -31,6 +31,7 @@ class Player extends PositionComponent {
     final cardFan =
         CardFan(
             _coordinator.handCardsCoordinator,
+            gamePhaseManager: _coordinator.gamePhaseManager,
             fanRadius: 150.0,
             cardScale: 0.35,
           )

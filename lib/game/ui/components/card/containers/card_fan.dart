@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui';
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
@@ -12,6 +13,7 @@ import 'package:flame/events.dart';
 class CardFan extends ReactivePositionComponent<CardListCoordinator> {
   CardFan(
     super.coordinator, {
+    GamePhaseManager? gamePhaseManager,
     double fanAngle = math.pi / 2, // pi is 180 degrees so pi/2 is 90 degrees
     double fanRadius = 200.0,
     bool mini = false,
@@ -21,8 +23,10 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
     _fanRadius = fanRadius;
     _mini = mini;
     _cardScale = cardScale;
+    _gamePhaseManager = gamePhaseManager;
   }
 
+  late final GamePhaseManager? _gamePhaseManager;
   late double _fanAngle;
   late double _fanRadius;
   late bool _mini;
@@ -35,12 +39,12 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
     _createCardFan();
 
     if (!_mini) {
-      final draggableArea = CardFanDraggableArea()
+      final draggableArea = CardFanDraggableArea(_gamePhaseManager)
         ..size = Vector2(size.x, size.y)
         ..position = Vector2(
           0,
           -320,
-        ); //TODO needs to be dynamic based on fanRadius and size could be smaller
+        ); //TODO needs to be dynamic based on fanRadius and size could be smaller, can it mirror the size of the fan?
 
       add(draggableArea);
     }
@@ -83,9 +87,14 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
   }
 }
 
+//TODO this probably needs to be extracted to services
 class CardFanDraggableArea extends PositionComponent
     with DragCallbacks, TapCallbacks {
-  CardFanDraggableArea();
+  CardFanDraggableArea(GamePhaseManager? gamePhaseManager) {
+    _gamePhaseManager = gamePhaseManager;
+  }
+
+  late GamePhaseManager? _gamePhaseManager;
 
   late CardBattlerGame _game;
   InteractiveCardSprite? _selectedCard;
@@ -179,7 +188,10 @@ class CardFanDraggableArea extends PositionComponent
     } else if (deltaX.abs() > 15) {
       _dragStartPosition = event.canvasStartPosition;
       findHighestPriorityCardSpriteAndSelect(event.canvasStartPosition);
-    } else if (deltaY > 30 && !_isBeingDragged && _selectedCard != null) {
+    } else if (deltaY.abs() > 30 &&
+        !_isBeingDragged &&
+        _selectedCard != null &&
+        _gamePhaseManager?.currentPhase == GamePhase.playerTakeActionsTurn) {
       _setupForDraggings(event);
     }
   }
