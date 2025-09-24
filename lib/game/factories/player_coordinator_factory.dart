@@ -16,36 +16,36 @@ class PlayerCoordinatorFactory {
     required ActivePlayerManager activePlayerManager,
     required CardsSelectionManagerService cardsSelectionManagerService,
     required EffectProcessor effectProcessor,
-  }) => players
-      .map(
-        (player) => PlayerCoordinator(
-          handCardsCoordinator: CardListCoordinator<CardCoordinator>(
-            cardCoordinators: [],
-          ),
-          deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
-            cardCoordinators: player.deckCards.allCards
-                .map(
-                  (card) => CardCoordinator(
-                    cardModel: card.copy(),
-                    cardsSelectionManagerService: cardsSelectionManagerService,
-                    gamePhaseManager: gamePhaseManager,
-                    activePlayerManager: activePlayerManager,
-                  ),
-                )
-                .toList(),
-          ),
-          discardCardsCoordinator: CardListCoordinator<CardCoordinator>(
-            cardCoordinators: [],
-          ),
-          playerInfoCoordinator: PlayerInfoCoordinator(
-            player,
-            CardListCoordinator<CardCoordinator>(cardCoordinators: []),
-          ),
-          gamePhaseManager: gamePhaseManager,
-          effectProcessor: effectProcessor,
-        ),
-      )
-      .toList();
+  }) => players.map((player) {
+    final handCardsCoordinator = CardListCoordinator<CardCoordinator>(
+      cardCoordinators: [],
+    );
+
+    return PlayerCoordinator(
+      handCardsCoordinator: handCardsCoordinator,
+      deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
+        cardCoordinators: player.deckCards.allCards
+            .map(
+              (card) => CardCoordinator(
+                cardModel: card.copy(),
+                cardsSelectionManagerService: cardsSelectionManagerService,
+                gamePhaseManager: gamePhaseManager,
+                activePlayerManager: activePlayerManager,
+              ),
+            )
+            .toList(),
+      ),
+      discardCardsCoordinator: CardListCoordinator<CardCoordinator>(
+        cardCoordinators: [],
+      ),
+      playerInfoCoordinator: PlayerInfoCoordinator(
+        player,
+        handCardsCoordinator,
+      ),
+      gamePhaseManager: gamePhaseManager,
+      effectProcessor: effectProcessor,
+    );
+  }).toList();
 
   static PlayersInfoCoordinator createPlayersInfoCoordinator({
     required List<PlayerCoordinator> playerCoordinators,
