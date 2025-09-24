@@ -146,14 +146,6 @@ void main() {
       });
     });
 
-    group('Action Disabled Check', () {
-      test('isActionDisabled returns false by default', () {
-        final playerInfo = MockPlayerInfoCoordinator();
-
-        expect(cardCoordinator.isActionDisabled(playerInfo), isFalse);
-      });
-    });
-
     group('Service Integration', () {
       test('coordinator provides access to all required services', () {
         expect(cardCoordinator.selectionManagerService, isNotNull);

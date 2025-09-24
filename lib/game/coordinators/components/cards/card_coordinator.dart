@@ -41,6 +41,4 @@ class CardCoordinator {
   void handleCardPlayed() {
     onCardPlayed?.call(this);
   }
-
-  bool isActionDisabled(PlayerInfoCoordinator playerInfoCoordinator) => false;
 }

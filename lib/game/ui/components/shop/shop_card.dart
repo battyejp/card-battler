@@ -1,5 +1,6 @@
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
+import 'package:card_battler/game/ui/components/common/flat_button.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,20 @@ class ShopCard extends CardSprite {
       );
 
       add(costText);
+
+      // TODO look at hardcoded sizes
+      final button = FlatButton(
+        'Buy',
+        size: Vector2(sprite!.srcSize.x, 40),
+        position: Vector2(sprite!.srcSize.x / 2, sprite!.srcSize.y + 30),
+        onReleased: () {
+          if (!_coordinator.isActionDisabled()) {
+            coordinator.handleCardPlayed();
+          }
+        },
+        disabled: _coordinator.isActionDisabled(),
+      );
+      add(button);
     }
   }
 }

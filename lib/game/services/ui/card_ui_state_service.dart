@@ -20,9 +20,9 @@ class CardUIStateService {
     _card.isActionButtonVisible =
         _gamePhaseManager.currentPhase == GamePhase.playerTakeActionsTurn;
 
-    _card.actionButtonDisabled = _card.coordinator.isActionDisabled(
-      _activePlayerManager.activePlayer!.playerInfoCoordinator,
-    );
+    // _card.actionButtonDisabled = _card.coordinator.isActionDisabled(
+    //   _activePlayerManager.activePlayer!.playerInfoCoordinator,
+    // );
   }
 
   void updateDeselectionUIState() {
