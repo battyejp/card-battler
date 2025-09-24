@@ -48,22 +48,27 @@ class Player extends PositionComponent {
     final deckWidth = size.x / 2 * 0.45; //TODO perhaps use image size
 
     final deck =
-        CardDeck(() {
-            if (_coordinator.gamePhaseManager.currentPhase ==
-                GamePhase.waitingToDrawPlayerCards) {
-              _coordinator.drawCardsFromDeck(
-                GameVariables.numberOfCardsDrawnByPlayer,
-              );
-            }
-          }, _coordinator.deckCardsCoordinator)
+        CardDeck(
+            () {
+              if (_coordinator.gamePhaseManager.currentPhase ==
+                  GamePhase.waitingToDrawPlayerCards) {
+                _coordinator.drawCardsFromDeck(
+                  GameVariables.numberOfCardsDrawnByPlayer,
+                );
+              }
+            },
+            _coordinator.deckCardsCoordinator,
+            isMini: true,
+          )
           ..size = Vector2(deckWidth, deckHeight)
           ..position = Vector2(0, size.y - deckHeight);
 
     add(deck);
 
-    final discardPile = CardPile(_coordinator.discardCardsCoordinator)
-      ..size = Vector2(size.x / 2 * 0.45, deckHeight)
-      ..position = Vector2(size.x - deckWidth, size.y - deckHeight);
+    final discardPile =
+        CardPile(_coordinator.discardCardsCoordinator, isMini: true)
+          ..size = Vector2(size.x / 2 * 0.45, deckHeight)
+          ..position = Vector2(size.x - deckWidth, size.y - deckHeight);
 
     add(discardPile);
 

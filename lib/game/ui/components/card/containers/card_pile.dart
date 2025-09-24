@@ -7,17 +7,15 @@ import 'package:flame/components.dart';
 class CardPile extends ReactivePositionComponent<CardListCoordinator> {
   CardPile(
     super.coordinator, {
-    bool showCard = false,
-    String backImageFilename = 'card_face_down_0.08.png',
+    required bool isMini, bool showTopCard = false,
     double scale = 1.0,
-  }) : _showCard = showCard,
-       _backImageFilename = backImageFilename,
-       _scale = scale;
+  }) : _showTopCard = showTopCard,
+       _scale = scale,
+       _isMini = isMini;
 
-  final bool _showCard;
-  final String _backImageFilename;
+  final bool _showTopCard;
   final double _scale;
-
+  final bool _isMini;
 
   @override
   void updateDisplay() async {
@@ -26,10 +24,11 @@ class CardPile extends ReactivePositionComponent<CardListCoordinator> {
     for (var i = 0; i < coordinator.cardCoordinators.length; i++) {
       final cardCoordinator = coordinator.cardCoordinators[i];
       final cardSprite =
-          CardSprite(_showCard ? cardCoordinator.filename : _backImageFilename)
+          CardSprite(cardCoordinator, _isMini)
             ..position = Vector2(-i * 1.0 + size.x / 2, -i * 1.0 + size.y / 2)
             ..anchor = Anchor.center
             ..scale = Vector2.all(_scale);
+      cardSprite.coordinator.isFaceUp = _showTopCard;
       add(cardSprite);
     }
   }

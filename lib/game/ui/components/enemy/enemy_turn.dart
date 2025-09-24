@@ -28,7 +28,7 @@ class EnemyTurn extends PositionComponent with HasVisibility {
             _coordinator.drawCardsFromDeck,
             _coordinator.deckCardsCoordinator,
             scale: scale,
-            backImageFilename: 'enemy_card_back_560.png',
+            isMini: false
           )
           ..position = Vector2(
             size.x / 4 - deckSize.x / 2,
@@ -41,8 +41,9 @@ class EnemyTurn extends PositionComponent with HasVisibility {
     final playedCardsPile =
         CardPile(
             _coordinator.playedCardsCoordinator,
-            showCard: true,
+            showTopCard: true,
             scale: scale,
+            isMini: true
           )
           ..position = Vector2(
             (3 * size.x / 4) - deckSize.x / 2,

@@ -26,7 +26,7 @@ class CardModel {
   }
 
   final String name;
-  final String type;
+  final String type; //TODO enum?
   final String filename;
   final List<EffectModel> effects;
   bool isFaceUp;

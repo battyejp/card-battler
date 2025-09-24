@@ -25,6 +25,7 @@ class CardCoordinator {
 
   String get name => _cardModel.name;
   String get filename => _cardModel.filename;
+  String get type => _cardModel.type;
 
   bool get isFaceUp => _cardModel.isFaceUp;
   set isFaceUp(bool value) => _cardModel.isFaceUp = value;

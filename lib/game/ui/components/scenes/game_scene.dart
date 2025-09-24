@@ -1,6 +1,5 @@
 import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
-import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:card_battler/game/ui/components/enemy/enemies.dart';
 import 'package:card_battler/game/ui/components/enemy/enemy_turn.dart';
@@ -8,7 +7,6 @@ import 'package:card_battler/game/ui/components/player/player.dart';
 import 'package:card_battler/game/ui/components/team/team.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
@@ -52,7 +50,7 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
       )
       ..position = Vector2(
         0 - GameVariables.defaultCardSizeWidth / 2 * 0.3 * 2,
-        0 - GameVariables.defaultCardSizeHeight / 2 * 0.3 * 2,
+        team.position.y,
       );
 
     area.isVisible = false;
@@ -65,6 +63,7 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
   }
 }
 
+//TODO move to own file
 class CardDragDropArea extends PositionComponent
     with DragCallbacks, HasVisibility {
   CardDragDropArea();

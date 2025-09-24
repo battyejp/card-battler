@@ -4,9 +4,9 @@ import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:flutter/material.dart';
 
 class InteractiveCardSprite extends CardSprite {
-  InteractiveCardSprite(super.fileName);
+  InteractiveCardSprite(super.fileName, super.isMini);
 
-  bool isSelected = false;
+  bool isSelected = false; 
   bool isDraggable = false;
 
   @override

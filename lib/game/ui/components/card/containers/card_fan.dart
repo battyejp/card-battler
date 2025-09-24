@@ -35,11 +35,11 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
   late double _cardScale;
   final List<CardSprite> _cards = [];
 
-  @override
-  void render(Canvas canvas) {
-    final paint = Paint()..color = const Color.fromARGB(255, 52, 4, 195);
-    canvas.drawRect(size.toRect(), paint);
-  }
+  // @override
+  // void render(Canvas canvas) {
+  //   final paint = Paint()..color = const Color.fromARGB(255, 52, 4, 195);
+  //   canvas.drawRect(size.toRect(), paint);
+  // }
 
   @override
   void updateDisplay() {
@@ -55,6 +55,10 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
           -320,
         ); //TODO needs to be dynamic based on fanRadius and size could be smaller, can it mirror the size of the fan?
       add(draggableArea);
+
+      draggableArea.onCardDropped = (card) {
+        card.coordinator.handleCardPlayed();
+      };
     }
   }
 
@@ -66,20 +70,15 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
         : 0; // Angle between cards
 
     for (var i = 0; i < cardCount; i++) {
-      var cardCoordinator = coordinator.cardCoordinators[i];
+      final cardCoordinator = coordinator.cardCoordinators[i];
       final angle = cardCount == 1 ? 0 : startAngle + (i * angleStep);
 
       final cardX = _fanRadius * math.sin(angle) + size.x / 2;
       final cardY = -_fanRadius * math.cos(angle);
 
-      final cardImagePath = cardCoordinator.filename.replaceAll(
-        'size',
-        _mini ? '60' : '560',
-      );
-
       final card = _mini
-          ? CardSprite(cardImagePath)
-          : InteractiveCardSprite(cardImagePath);
+          ? CardSprite(cardCoordinator, _mini)
+          : InteractiveCardSprite(cardCoordinator, false);
 
       card
         ..position = Vector2(cardX, cardY)
@@ -103,6 +102,7 @@ class CardFanDraggableArea extends PositionComponent
   }
 
   late GamePhaseManager? _gamePhaseManager;
+  Function(InteractiveCardSprite)? onCardDropped;
 
   //TODO set these just once
   late CardBattlerGame _game;
@@ -230,6 +230,13 @@ class CardFanDraggableArea extends PositionComponent
     _dragStartPosition = Vector2.zero();
 
     if (_isBeingDragged) {
+      if (_dropArea.isHighlighted) {
+        _dropArea.isHighlighted = false;
+        onCardDropped?.call(_selectedCard!);
+      } else {
+        // Card was not dropped in the drop area, return to original position
+        _returnDragedCardToOriginalPosition();
+      }
       _returnDragedCardToOriginalPosition();
     } else {
       _deselectCard();
@@ -345,10 +352,10 @@ class CardFanDraggableArea extends PositionComponent
     return cardRect.overlaps(dropRect);
   }
 
-  @override
-  void render(Canvas canvas) {
-    final paint = Paint()
-      ..color = const Color.fromARGB(77, 195, 4, 4); // Red with 0.3 opacity
-    canvas.drawRect(size.toRect(), paint);
-  }
+  // @override
+  // void render(Canvas canvas) {
+  //   final paint = Paint()
+  //     ..color = const Color.fromARGB(77, 195, 4, 4); // Red with 0.3 opacity
+  //   canvas.drawRect(size.toRect(), paint);
+  // }
 }

@@ -5,9 +5,8 @@ class CardDeck extends CardPile with TapCallbacks {
   CardDeck(
     this.onTap,
     coordinator, {
-    double scale = 1.0,
-    String backImageFilename = 'card_face_down_0.08.png',
-  }) : super(coordinator, scale: scale, backImageFilename: backImageFilename);
+    required bool isMini, double scale = 1.0,
+  }) : super(coordinator, scale: scale, isMini: isMini);
 
   final void Function() onTap;
 
