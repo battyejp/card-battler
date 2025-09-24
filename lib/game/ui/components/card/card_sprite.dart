@@ -1,6 +1,8 @@
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
+import 'package:flutter/material.dart';
 
 class CardSprite extends SpriteComponent {
   CardSprite(CardCoordinator cardCoordinator, bool isMini)
@@ -31,5 +33,18 @@ class CardSprite extends SpriteComponent {
     final game = findGame() as CardBattlerGame;
     final image = game.images.fromCache(getFileName);
     sprite = Sprite(image);
+
+    if (!_isMini && _cardCoordinator.isFaceUp) {
+      final textComponent = TextComponent(
+        text: _cardCoordinator.name,
+        position: Vector2(image.size.x / 2, image.size.y - image.size.y * 0.2),
+        anchor: Anchor.center,
+        textRenderer: TextPaint(
+          style: const TextStyle(fontSize: 40, color: Color(0xFFFFFFFF)),
+        ),
+      );
+
+      add(textComponent);
+    }
   }
 }
