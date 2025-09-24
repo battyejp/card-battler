@@ -35,16 +35,56 @@ class CardSprite extends SpriteComponent {
     sprite = Sprite(image);
 
     if (!_isMini && _cardCoordinator.isFaceUp) {
-      final textComponent = TextComponent(
-        text: _cardCoordinator.name,
-        position: Vector2(image.size.x / 2, image.size.y - image.size.y * 0.2),
-        anchor: Anchor.center,
-        textRenderer: TextPaint(
-          style: const TextStyle(fontSize: 40, color: Color(0xFFFFFFFF)),
-        ),
-      );
+      final name = _cardCoordinator.name;
+      final spaceCount = name.split(' ').length - 1;
 
-      add(textComponent);
+      if (spaceCount > 1) {
+        final words = name.split(' ');
+        final midpoint = (words.length / 2).ceil();
+        final firstLine = words.take(midpoint).join(' ');
+        final secondLine = words.skip(midpoint).join(' ');
+
+        final firstTextComponent = TextComponent(
+          text: firstLine,
+          position: Vector2(
+            image.size.x / 2,
+            image.size.y - image.size.y * 0.25,
+          ),
+          anchor: Anchor.center,
+          textRenderer: TextPaint(
+            style: const TextStyle(fontSize: 32, color: Color(0xFFFFFFFF)),
+          ),
+        );
+
+        final secondTextComponent = TextComponent(
+          text: secondLine,
+          position: Vector2(
+            image.size.x / 2,
+            image.size.y - image.size.y * 0.15,
+          ),
+          anchor: Anchor.center,
+          textRenderer: TextPaint(
+            style: const TextStyle(fontSize: 32, color: Color(0xFFFFFFFF)),
+          ),
+        );
+
+        add(firstTextComponent);
+        add(secondTextComponent);
+      } else {
+        final textComponent = TextComponent(
+          text: name,
+          position: Vector2(
+            image.size.x / 2,
+            image.size.y - image.size.y * 0.2,
+          ),
+          anchor: Anchor.center,
+          textRenderer: TextPaint(
+            style: const TextStyle(fontSize: 40, color: Color(0xFFFFFFFF)),
+          ),
+        );
+
+        add(textComponent);
+      }
     }
   }
 }
