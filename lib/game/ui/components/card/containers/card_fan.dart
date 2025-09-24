@@ -2,10 +2,12 @@ import 'dart:math' as math;
 import 'dart:ui';
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
+import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
+import 'package:card_battler/game/ui/components/scenes/game_scene.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
@@ -34,6 +36,12 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
   final List<CardSprite> _cards = [];
 
   @override
+  void render(Canvas canvas) {
+    final paint = Paint()..color = const Color.fromARGB(255, 52, 4, 195);
+    canvas.drawRect(size.toRect(), paint);
+  }
+
+  @override
   void updateDisplay() {
     super.updateDisplay();
     _createCardFan();
@@ -41,11 +49,11 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
     if (!_mini) {
       final draggableArea = CardFanDraggableArea(_gamePhaseManager)
         ..size = Vector2(size.x, size.y)
+        ..priority = 1000
         ..position = Vector2(
           0,
           -320,
         ); //TODO needs to be dynamic based on fanRadius and size could be smaller, can it mirror the size of the fan?
-
       add(draggableArea);
     }
   }
@@ -185,6 +193,12 @@ class CardFanDraggableArea extends PositionComponent
 
     if (_isBeingDragged) {
       _selectedCard?.position += event.canvasDelta;
+
+      final dropArea = _findCardDragDropArea();
+      if (dropArea != null &&
+          _isCardIntersectingDropArea(_selectedCard!, dropArea)) {
+        print('Card is over drop area!');
+      }
     } else if (deltaX.abs() > 15) {
       _dragStartPosition = event.canvasStartPosition;
       findHighestPriorityCardSpriteAndSelect(event.canvasStartPosition);
@@ -273,6 +287,53 @@ class CardFanDraggableArea extends PositionComponent
   void _removeDuplicateCardAtCenter(InteractiveCardSprite card) {
     remove(_duplicateCard!);
     card.isSelected = false;
+  }
+
+  CardDragDropArea? _findCardDragDropArea() {
+    // Find the CardDragDropArea component in the parent CardFan
+    final cardFan = parent;
+    if (cardFan != null) {
+      final player = cardFan.parent;
+      if (player != null) {
+        final gameScene = player.parent;
+        if (gameScene != null) {
+          return gameScene.children.whereType<CardDragDropArea>().firstOrNull;
+        }
+      }
+    }
+    return null;
+  }
+
+  bool _isCardIntersectingDropArea(
+    InteractiveCardSprite card,
+    CardDragDropArea dropArea,
+  ) {
+    // Calculate card's absolute position and bounds
+    final cardRect = Rect.fromLTWH(
+      card.absolutePosition.x -
+          (GameVariables.defaultCardSizeWidth * card.scale.x) / 2,
+      card.absolutePosition.y -
+          (GameVariables.defaultCardSizeHeight * card.scale.y) / 2,
+      GameVariables.defaultCardSizeWidth * card.scale.x,
+      GameVariables.defaultCardSizeHeight * card.scale.y,
+    );
+
+    // Calculate drop area's absolute position and bounds
+    final dropRect = Rect.fromLTWH(
+      dropArea.absolutePosition.x,
+      dropArea.absolutePosition.y, // TODO why is it -151.5, y is messed up
+      dropArea.size.x,
+      dropArea.size.y,
+    );
+
+    // print(
+    //   'Card Rect: ${cardRect.left}, ${cardRect.top}, ${cardRect.width}, ${cardRect.height}',
+    // );
+    // print(
+    //   'Drop Rect: ${dropRect.left}, ${dropRect.top}, ${dropRect.width}, ${dropRect.height}',
+    // );
+
+    return cardRect.overlaps(dropRect);
   }
 
   @override
