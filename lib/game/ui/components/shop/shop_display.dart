@@ -1,18 +1,18 @@
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
+import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component_old.dart';
 import 'package:card_battler/game/ui/components/shop/shop_card.dart';
 import 'package:flame/components.dart';
+import 'package:flame/game.dart';
 
 class ShopDisplay
     extends
         ReactivePositionComponentOld<CardListCoordinator<ShopCardCoordinator>> {
   ShopDisplay(super.coordinator);
 
-  final double _cardHeightFactor = 0.38;
-  final double _hSpacingFactor = 0.2;
-  final int itemsPerRow = 3;
-  final int numberOfRows = 2;
+  final int itemsPerRow = 2;
+  final int numberOfRows = 3;
 
   @override
   void updateDisplay() {
@@ -22,29 +22,25 @@ class ShopDisplay
   }
 
   void _addCards() {
-    final cardWidth =
-        size.x / (itemsPerRow + (itemsPerRow + 1) * _hSpacingFactor);
-    final cardHeight = size.y * _cardHeightFactor;
-    final totalWidth =
-        itemsPerRow * cardWidth +
-        (itemsPerRow - 1) * cardWidth * _hSpacingFactor;
-    final totalHeight = numberOfRows * cardHeight;
-    final hSpacing = cardWidth * _hSpacingFactor;
-    final vSpacing = (size.y - totalHeight) / (numberOfRows + 1);
-    final startX = (size.x - totalWidth) / 2;
+    const cardWidth = GameVariables.defaultCardSizeWidth * 0.5;
+    const cardHeight = GameVariables.defaultCardSizeHeight * 0.5;
 
     for (var row = 0; row < numberOfRows; row++) {
       for (var col = 0; col < itemsPerRow; col++) {
-        final x = startX + col * (cardWidth + hSpacing);
-        final y = vSpacing + row * (cardHeight + vSpacing);
         final cardIndex = row * itemsPerRow + col;
 
         // Check if we have enough cards to display
         if (cardIndex < coordinator.cardCoordinators.length) {
           final cardCoordinator = coordinator.cardCoordinators[cardIndex];
-          final card = ShopCard(cardCoordinator)
-            ..size = Vector2(cardWidth, cardHeight)
-            ..position = Vector2(x, y);
+          final x = col * cardWidth;
+          final y = row * cardHeight;
+
+          final card = ShopCard(cardCoordinator, false)
+            ..position = Vector2(
+              x - size.x / 2 + cardWidth / 2,
+              y - size.y / 2 + cardHeight / 2,
+            )
+            ..scale = Vector2.all(0.5);
 
           add(card);
         }

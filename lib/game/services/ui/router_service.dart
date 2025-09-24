@@ -29,7 +29,10 @@ class RouterService {
     //   size: gameSize,
     // );
 
-    _shopScene = ShopScene()..size = gameSize;
+    //TODO shopCoordinator should not come from playerTurnSceneCoordinator
+    _shopScene = ShopScene(
+      playerTurnSceneCoordinator.shopCoordinator.displayCoordinator,
+    )..size = gameSize;
 
     final routes = {
       'playerTurn': Route(() => _playerTurnScene!),
