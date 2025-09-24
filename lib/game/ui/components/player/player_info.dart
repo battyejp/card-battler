@@ -21,7 +21,7 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
     }
 
     final statKeys = ['name', 'health', 'attack', 'credits'];
-    var padding = 10.0;
+    final padding = 10.0;
 
     //final statWidth = size.x / statKeys.length;
 

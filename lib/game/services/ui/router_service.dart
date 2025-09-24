@@ -1,13 +1,13 @@
 import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/ui/components/scenes/player_turn_scene.dart';
+import 'package:card_battler/game/ui/components/scenes/game_scene.dart';
 import 'package:card_battler/game/ui/components/scenes/shop_scene.dart';
 import 'package:flame/game.dart';
 
 class RouterService {
   RouterComponent? _router;
-  PlayerTurnScene? _playerTurnScene;
+  GameScene? _playerTurnScene;
   //EnemyTurnScene? _enemyTurnScene;
   ShopScene? _shopScene;
   //GamePhaseManager? _gamePhaseManager;
@@ -15,15 +15,14 @@ class RouterService {
   /// Create and configure the router component with scene routes
   RouterComponent createRouter(
     Vector2 gameSize,
-    PlayerTurnSceneCoordinator playerTurnSceneCoordinator,
+    GameSceneCoordinator playerTurnSceneCoordinator,
     EnemyTurnSceneCoordinator enemyTurnSceneCoordinator,
     GamePhaseManager gamePhaseManager, {
     Map<String, Route>? additionalRoutes,
   }) {
     //_gamePhaseManager = gamePhaseManager;
 
-    _playerTurnScene = PlayerTurnScene(playerTurnSceneCoordinator)
-      ..size = gameSize;
+    _playerTurnScene = GameScene(playerTurnSceneCoordinator)..size = gameSize;
 
     // _enemyTurnScene = EnemyTurnScene(
     //   coordinator: enemyTurnSceneCoordinator,

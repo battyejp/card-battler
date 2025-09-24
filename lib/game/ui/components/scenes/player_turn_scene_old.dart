@@ -1,4 +1,4 @@
-import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component_old.dart';
 import 'package:card_battler/game/ui/components/enemy/enemies.dart';
 import 'package:card_battler/game/ui/components/player/player_old.dart';
@@ -7,7 +7,7 @@ import 'package:card_battler/game/ui/components/team/team_old.dart';
 import 'package:flame/components.dart';
 
 class PlayerTurnSceneOld
-    extends ReactivePositionComponentOld<PlayerTurnSceneCoordinator> {
+    extends ReactivePositionComponentOld<GameSceneCoordinator> {
   PlayerTurnSceneOld(super.coordinator, {required Vector2 size}) : _size = size;
 
   final Vector2 _size;

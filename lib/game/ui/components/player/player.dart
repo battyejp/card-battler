@@ -43,8 +43,8 @@ class Player extends PositionComponent {
           );
     add(cardFan);
 
-    final deckHeight = size.y * 0.3;
-    final deckWidth = size.x / 2 * 0.45;
+    final deckHeight = size.y * 0.3; //TODO perhaps use image size
+    final deckWidth = size.x / 2 * 0.45; //TODO perhaps use image size
 
     final deck =
         CardDeck(() {

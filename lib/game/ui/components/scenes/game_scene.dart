@@ -1,18 +1,15 @@
-import 'package:card_battler/game/coordinators/components/scenes/player_turn_scene_coordinator.dart';
-import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:card_battler/game/ui/components/enemy/enemies.dart';
+import 'package:card_battler/game/ui/components/enemy/enemy_turn.dart';
 import 'package:card_battler/game/ui/components/player/player.dart';
 import 'package:card_battler/game/ui/components/team/team.dart';
 import 'package:flame/components.dart';
 
-class PlayerTurnScene
-    extends ReactivePositionComponent<PlayerTurnSceneCoordinator> {
-  PlayerTurnScene(super.coordinator) {
-    coordinator.gamePhaseManager.addPhaseChangeListener(_onGamePhaseChanged);
-  }
+class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
+  GameScene(super.coordinator);
 
-  //TODO could we just update the player component
+  //TODO could we just update the player component and enemy visibility instead of rebuilding everything?
   @override
   void updateDisplay() {
     super.updateDisplay();
@@ -28,6 +25,15 @@ class PlayerTurnScene
       ..position = Vector2(startX, startY);
     add(enemies);
 
+    final enemyTurn = EnemyTurn(coordinator.enemyTurnSceneCoordinator)
+      ..size = Vector2(size.x, enemiesAvailableHeight)
+      ..position = Vector2(startX, startY);
+
+    add(enemyTurn);
+
+    enemyTurn.isVisible = coordinator.isEnemyTurnSceneVisible;
+    enemies.isVisible = !coordinator.isEnemyTurnSceneVisible;
+
     final team = Team(coordinator.teamCoordinator)
       ..size = Vector2(size.x, availableHeightForTeam)
       ..position = Vector2(startX, enemies.position.y + enemies.size.y);
@@ -38,17 +44,4 @@ class PlayerTurnScene
       ..position = Vector2(startX, team.position.y + team.size.y);
     add(player);
   }
-
-  void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
-    if (newPhase == GamePhase.enemyTurnWaitingToDrawCards) {
-      goToEnemyTurn();
-    } else if (previousPhase == GamePhase.enemyTurnWaitingToDrawCards &&
-        newPhase == GamePhase.playerTakeActionsTurn) {
-      _handleEnemyTurnToPlayerTurn();
-    }
-  }
-  
-  void goToEnemyTurn() {}
-  
-  void _handleEnemyTurnToPlayerTurn() {}
 }

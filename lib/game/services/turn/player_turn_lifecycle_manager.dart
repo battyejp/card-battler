@@ -42,4 +42,8 @@ class PlayerTurnLifecycleManager {
   bool isTurnOver(GamePhase previousPhase, GamePhase newPhase) =>
       previousPhase == GamePhase.playerTakeActionsTurn &&
       newPhase == GamePhase.waitingToDrawPlayerCards;
+
+  bool hasSwitchedBetweenPlayerAndEnemyTurn(GamePhase newPhase) =>
+      newPhase == GamePhase.enemyTurnWaitingToDrawCards ||
+      newPhase == GamePhase.playerTakeActionsTurn;
 }

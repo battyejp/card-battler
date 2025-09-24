@@ -5,6 +5,7 @@ import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/turn/enemy_turn_manager.dart';
 
+//TODO might be able to trim this down now
 class EnemyTurnSceneCoordinator {
   EnemyTurnSceneCoordinator({
     required CardListCoordinator<CardCoordinator> playedCardsCoordinator,
