@@ -44,36 +44,60 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
       ..position = Vector2(startX, enemies.position.y + enemies.size.y);
     add(team);
 
+    //TODO get the scale factor from card fan or hardcode it somewhere else
+    final area = CardDragDropArea()
+      ..size = Vector2(
+        GameVariables.defaultCardSizeWidth * 0.3 * 2,
+        GameVariables.defaultCardSizeHeight * 0.3 * 2,
+      )
+      ..position = Vector2(
+        0 - GameVariables.defaultCardSizeWidth / 2 * 0.3 * 2,
+        0 - GameVariables.defaultCardSizeHeight / 2 * 0.3 * 2,
+      );
+
+    area.isVisible = false;
+    add(area);
+
     final player = Player(coordinator.playerCoordinator)
       ..size = Vector2(size.x, availableHeightForPlayer)
       ..position = Vector2(startX, team.position.y + team.size.y);
     add(player);
-
-    final area = CardDragDropArea()
-      ..size = Vector2(
-        GameVariables.defaultCardSizeWidth * 0.3,
-        GameVariables.defaultCardSizeHeight * 0.3,
-      )
-      ..position = Vector2(
-        0 - GameVariables.defaultCardSizeWidth / 2 * 0.3,
-        0 - GameVariables.defaultCardSizeHeight / 2 * 0.3,
-      )
-      ..priority = 1000;
-
-    add(area);
   }
 }
 
-class CardDragDropArea extends PositionComponent with DragCallbacks {
+class CardDragDropArea extends PositionComponent
+    with DragCallbacks, HasVisibility {
   CardDragDropArea();
 
+  bool isHighlighted = false;
+
   @override
-  // TODO: implement debugMode
-  bool get debugMode => true;
+  void onMount() {
+    super.onMount();
+
+    final textComponent = TextComponent(
+      text: 'Play Card Here',
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          color: Color.fromARGB(255, 255, 255, 255),
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+
+    textComponent.position = Vector2(size.x / 2, size.y / 2);
+    textComponent.anchor = Anchor.center;
+
+    add(textComponent);
+  }
 
   @override
   void render(Canvas canvas) {
-    final paint = Paint()..color = const Color.fromARGB(255, 195, 4, 109);
+    final paint = Paint()
+      ..color = isHighlighted
+          ? const Color.fromARGB(255, 195, 4, 109)
+          : const Color.fromARGB(255, 3, 190, 47);
     canvas.drawRect(size.toRect(), paint);
   }
 }

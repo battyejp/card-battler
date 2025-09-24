@@ -104,13 +104,17 @@ class CardFanDraggableArea extends PositionComponent
 
   late GamePhaseManager? _gamePhaseManager;
 
+  //TODO set these just once
   late CardBattlerGame _game;
+  late CardDragDropArea _dropArea;
+
   InteractiveCardSprite? _selectedCard;
 
   /// Finds the nearest CardSprite to the given position
   InteractiveCardSprite? findNearestCardSprite(Vector2 position) {
     _game = findGame() as CardBattlerGame;
     final components = _game.componentsAtPoint(position);
+    _dropArea = _findCardDragDropArea()!;
 
     // Filter to only CardSprite components
     final cardSprites = components.whereType<InteractiveCardSprite>().toList();
@@ -141,6 +145,7 @@ class CardFanDraggableArea extends PositionComponent
   void findHighestPriorityCardSpriteAndSelect(Vector2 position) {
     _game = findGame() as CardBattlerGame;
     final components = _game.componentsAtPoint(position);
+    _dropArea = _findCardDragDropArea()!;
 
     // Filter to only InteractiveCardSprite components
     final cardSprites = components.whereType<InteractiveCardSprite>().toList();
@@ -193,12 +198,11 @@ class CardFanDraggableArea extends PositionComponent
 
     if (_isBeingDragged) {
       _selectedCard?.position += event.canvasDelta;
-
-      final dropArea = _findCardDragDropArea();
-      if (dropArea != null &&
-          _isCardIntersectingDropArea(_selectedCard!, dropArea)) {
-        print('Card is over drop area!');
-      }
+      final canBeDropped = _isCardIntersectingDropArea(
+        _selectedCard!,
+        _dropArea,
+      );
+      _dropArea.isHighlighted = canBeDropped;
     } else if (deltaX.abs() > 15) {
       _dragStartPosition = event.canvasStartPosition;
       findHighestPriorityCardSpriteAndSelect(event.canvasStartPosition);
@@ -217,6 +221,7 @@ class CardFanDraggableArea extends PositionComponent
     _selectedCard?.angle = 0;
     _isBeingDragged = true;
     _selectedCard?.position += event.canvasDelta;
+    _dropArea.isVisible = true;
   }
 
   @override
@@ -237,6 +242,7 @@ class CardFanDraggableArea extends PositionComponent
     _selectedCard?.angle = _originalAngleBeforeDrag;
     _selectedCard?.isSelected = false;
     _selectedCard = null;
+    _dropArea.isVisible = false;
   }
 
   @override
@@ -289,15 +295,18 @@ class CardFanDraggableArea extends PositionComponent
     card.isSelected = false;
   }
 
+  //TODO probably delete as could just pass in the drop area from game scene
   CardDragDropArea? _findCardDragDropArea() {
-    // Find the CardDragDropArea component in the parent CardFan
     final cardFan = parent;
     if (cardFan != null) {
       final player = cardFan.parent;
       if (player != null) {
         final gameScene = player.parent;
         if (gameScene != null) {
-          return gameScene.children.whereType<CardDragDropArea>().firstOrNull;
+          final dropArea = gameScene.children
+              .whereType<CardDragDropArea>()
+              .firstOrNull;
+          return dropArea;
         }
       }
     }
