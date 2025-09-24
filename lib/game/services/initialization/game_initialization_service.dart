@@ -26,21 +26,25 @@ class ServiceContainer {
 
 class GameInitializationService {
   static Future<GameStateModel> initializeGameState() async {
-    final shopCards = await CardLoaderService.loadCardsFromJson<ShopCardModel>(
-      'assets/data/shop_cards.json',
-      ShopCardModel.fromJson,
-    );
-
+    print('Loading player deck cards...');
     final playerDeckCards =
         await CardLoaderService.loadCardsFromJson<CardModel>(
           'assets/data/hero_starting_cards.json',
           CardModel.fromJson,
         );
+    print('player deck cards loaded: ${playerDeckCards.length}');
 
     final enemyCards = await CardLoaderService.loadCardsFromJson<CardModel>(
       'assets/data/enemy_cards.json',
       CardModel.fromJson,
     );
+    print('enemy cards loaded: ${enemyCards.length}');
+
+    final shopCards = await CardLoaderService.loadCardsFromJson<ShopCardModel>(
+      'assets/data/shop_cards.json',
+      ShopCardModel.fromJson,
+    );
+    print('shop cards loaded: ${shopCards.length}');
 
     return GameStateModel.initialize(
       shopCards,

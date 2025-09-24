@@ -53,23 +53,14 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
         ? _fanAngle / (cardCount - 1)
         : 0; // Angle between cards
 
-    final arrayOfImages = [
-      'card_alien_size.png',
-      'card_alien2_size.png',
-      'card_human_f_size.png',
-      'card_human_m_size.png',
-      'card_robot_size.png',
-      'card_robot2_size.png',
-      'card_human_f2_size.png',
-    ];
-
     for (var i = 0; i < cardCount; i++) {
+      var cardCoordinator = coordinator.cardCoordinators[i];
       final angle = cardCount == 1 ? 0 : startAngle + (i * angleStep);
 
       final cardX = _fanRadius * math.sin(angle) + size.x / 2;
       final cardY = -_fanRadius * math.cos(angle);
 
-      final cardImagePath = arrayOfImages[i % cardCount].replaceAll(
+      final cardImagePath = cardCoordinator.filename.replaceAll(
         'size',
         _mini ? '60' : '560',
       );

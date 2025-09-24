@@ -16,6 +16,7 @@ class CardSprite extends SpriteComponent {
 
     final game = findGame() as CardBattlerGame;
     final image = game.images.fromCache(_fileName);
+    print('Loaded image $_fileName with size ${image.width}x${image.height}');
     sprite = Sprite(image);
   }
 }

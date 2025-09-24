@@ -6,7 +6,6 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 
 class CardCoordinator {
-
   CardCoordinator({
     required CardModel cardModel,
     required CardsSelectionManagerService cardsSelectionManagerService,
@@ -25,6 +24,7 @@ class CardCoordinator {
   Function(CardCoordinator)? onCardPlayed;
 
   String get name => _cardModel.name;
+  String get filename => _cardModel.filename;
 
   bool get isFaceUp => _cardModel.isFaceUp;
   set isFaceUp(bool value) => _cardModel.isFaceUp = value;

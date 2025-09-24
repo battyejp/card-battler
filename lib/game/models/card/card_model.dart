@@ -6,6 +6,7 @@ class CardModel {
   CardModel({
     required this.name,
     required this.type,
+    required this.filename,
     List<EffectModel>? effects,
     this.isFaceUp = false,
   }) : effects = effects ?? [];
@@ -19,12 +20,14 @@ class CardModel {
     return CardModel(
       name: json['name'],
       type: json['type'],
+      filename: json['filename'],
       effects: effects,
     );
   }
 
   final String name;
   final String type;
+  final String filename;
   final List<EffectModel> effects;
   bool isFaceUp;
 
@@ -33,6 +36,7 @@ class CardModel {
     type: type,
     effects: effects.map((e) => e.copy()).toList(),
     isFaceUp: isFaceUp,
+    filename: filename,
   );
 
   Map<String, dynamic> toJson() => {
@@ -40,6 +44,7 @@ class CardModel {
     'type': type,
     'effects': effects.map((effect) => effect.toJson()).toList(),
     'faceUp': isFaceUp,
+    'filename': filename,
   };
 }
 

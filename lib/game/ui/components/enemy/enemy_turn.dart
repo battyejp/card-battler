@@ -1,4 +1,5 @@
 import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
+import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
 import 'package:flame/components.dart';
@@ -16,19 +17,38 @@ class EnemyTurn extends PositionComponent with HasVisibility {
   }
 
   void _loadGameComponents() {
-    final deckHeight = size.y * 0.3; //TODO perhaps use image size
-    final deckWidth = size.x / 2 * 0.45; //TODO perhaps use image size
+    const scale = 0.3;
+    final deckSize = Vector2(
+      GameVariables.defaultCardSizeWidth * scale,
+      GameVariables.defaultCardSizeHeight * scale,
+    );
 
     final deck =
-        CardDeck(_coordinator.drawCardsFromDeck, _coordinator.deckCardsCoordinator)
-          ..size = Vector2(deckWidth, deckHeight)
-          ..position = Vector2(0, size.y - deckHeight);
+        CardDeck(
+            _coordinator.drawCardsFromDeck,
+            _coordinator.deckCardsCoordinator,
+            scale: scale,
+            backImageFilename: 'enemy_card_back_560.png',
+          )
+          ..position = Vector2(
+            size.x / 4 - deckSize.x / 2,
+            size.y / 2 - deckSize.y / 2,
+          )
+          ..size = deckSize * 1.1;
 
     add(deck);
 
-    final playedCardsPile = CardPile(_coordinator.playedCardsCoordinator)
-      ..size = Vector2(size.x / 2 * 0.45, deckHeight)
-      ..position = Vector2(size.x - deckWidth, size.y - deckHeight);
+    final playedCardsPile =
+        CardPile(
+            _coordinator.playedCardsCoordinator,
+            showCard: true,
+            scale: scale,
+          )
+          ..position = Vector2(
+            (3 * size.x / 4) - deckSize.x / 2,
+            size.y / 2 - deckSize.y / 2,
+          )
+          ..size = deckSize * 1.1;
 
     add(playedCardsPile);
   }
