@@ -10,6 +10,8 @@ class ShopScene
         ReactivePositionComponent<CardListCoordinator<ShopCardCoordinator>> {
   ShopScene(super.coordinator);
 
+  final double _titleHeight = 80;
+
   @override
   void updateDisplay() {
     super.updateDisplay();
@@ -24,12 +26,12 @@ class ShopScene
             ),
           )
           ..anchor = Anchor.topCenter
-          ..position = Vector2(0, 0 - size.y / 2 + 20);
+          ..position = Vector2(0, 0 - size.y / 2 + _titleHeight / 2);
     add(creditsText);
 
     // Add the shop display component
     final shopDisplay = ShopDisplay(coordinator)
-      ..size = Vector2(size.x, size.y - creditsText.size.y - 20);
+      ..size = Vector2(size.x, size.y - creditsText.size.y - _titleHeight);
     add(shopDisplay);
   }
 }

@@ -9,6 +9,7 @@ class ShopCard extends CardSprite {
     : _coordinator = coordinator;
 
   final ShopCardCoordinator _coordinator;
+  final double _buttonHeight = 60;
 
   @override
   void onLoad() {
@@ -29,8 +30,8 @@ class ShopCard extends CardSprite {
       // TODO look at hardcoded sizes
       final button = FlatButton(
         'Buy',
-        size: Vector2(sprite!.srcSize.x, 40),
-        position: Vector2(sprite!.srcSize.x / 2, sprite!.srcSize.y + 30),
+        size: Vector2(sprite!.srcSize.x, _buttonHeight),
+        position: Vector2(sprite!.srcSize.x / 2, sprite!.srcSize.y + _buttonHeight / 2 + 10),
         onReleased: () {
           if (!_coordinator.isActionDisabled()) {
             coordinator.handleCardPlayed();

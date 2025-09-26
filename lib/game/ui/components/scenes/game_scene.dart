@@ -45,11 +45,11 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
     //TODO get the scale factor from card fan or hardcode it somewhere else
     final area = CardDragDropArea()
       ..size = Vector2(
-        GameVariables.defaultCardSizeWidth * 0.3 * 2,
-        GameVariables.defaultCardSizeHeight * 0.3 * 2,
+        GameVariables.defaultCardSizeWidth * 0.3 * 1.8,
+        GameVariables.defaultCardSizeHeight * 0.3 * 1.8,
       )
       ..position = Vector2(
-        0 - GameVariables.defaultCardSizeWidth / 2 * 0.3 * 2,
+        0 - GameVariables.defaultCardSizeWidth / 2 * 0.3 * 1.8,
         team.position.y,
       );
 

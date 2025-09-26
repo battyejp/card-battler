@@ -46,27 +46,32 @@ class _GameOverlayState extends State<GameOverlay> {
   @override
   Widget build(BuildContext context) => SafeArea(
     child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      padding: const EdgeInsets.all(0.0),
+      child: Column(
         children: [
-          IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.arrow_back, size: 20),
-            style: IconButton.styleFrom(
-              backgroundColor: Colors.black.withAlpha(179),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.all(1),
-            ),
-          ),
-          IconButton(
-            onPressed: _toggleView,
-            icon: Icon(_isInShop ? Icons.gamepad : Icons.shop_2, size: 20),
-            style: IconButton.styleFrom(
-              backgroundColor: Colors.black.withAlpha(179),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.all(1),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: const Icon(Icons.arrow_back, size: 20),
+                style: IconButton.styleFrom(
+                  backgroundColor: Colors.black.withAlpha(179),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.all(0),
+                ),
+              ),
+              IconButton(
+                onPressed: _toggleView,
+                icon: Icon(_isInShop ? Icons.gamepad : Icons.shop_2, size: 20),
+                style: IconButton.styleFrom(
+                  backgroundColor: Colors.black.withAlpha(179),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.all(0),
+                ),
+              ),
+            ],
           ),
         ],
       ),

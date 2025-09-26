@@ -13,6 +13,7 @@ class ShopDisplay
 
   final int itemsPerRow = 2;
   final int numberOfRows = 3;
+  final double _spacing = 0.4;
 
   @override
   void updateDisplay() {
@@ -22,8 +23,8 @@ class ShopDisplay
   }
 
   void _addCards() {
-    const cardWidth = GameVariables.defaultCardSizeWidth * 0.5;
-    const cardHeight = GameVariables.defaultCardSizeHeight * 0.5;
+    final cardWidth = GameVariables.defaultCardSizeWidth * _spacing;
+    final cardHeight = GameVariables.defaultCardSizeHeight * _spacing;
     final totalWidth = itemsPerRow * cardWidth;
     final totalHeight = numberOfRows * cardHeight;
     final hSpacing = (size.x - totalWidth) / (itemsPerRow + 1);
@@ -44,7 +45,7 @@ class ShopDisplay
               x - size.x / 2 + cardWidth / 2 + hSpacing * (col + 1),
               y - size.y / 2 + cardHeight / 2 + vSpacing * (row + 1),
             )
-            ..scale = Vector2.all(0.5);
+            ..scale = Vector2.all(_spacing);
 
           add(card);
         }

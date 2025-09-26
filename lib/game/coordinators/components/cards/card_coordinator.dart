@@ -1,4 +1,3 @@
-import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';

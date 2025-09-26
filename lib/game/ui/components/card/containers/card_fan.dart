@@ -288,11 +288,14 @@ class CardFanDraggableArea extends PositionComponent
     card.isSelected = true;
 
     final image = _game.images.fromCache(card.getFileName);
-    _duplicateCard = SpriteComponent(sprite: Sprite(image));
+    const scale = 0.75;
+
+    _duplicateCard = SpriteComponent(sprite: Sprite(image))
+      ..scale = Vector2.all(scale);
 
     _duplicateCard!.position = Vector2(
-      size.x / 2 - _duplicateCard!.size.x / 2,
-      -_duplicateCard!.size.y,
+      size.x / 2 - _duplicateCard!.size.x * scale / 2,
+      -_duplicateCard!.size.y * scale,
     );
     add(_duplicateCard!);
   }
