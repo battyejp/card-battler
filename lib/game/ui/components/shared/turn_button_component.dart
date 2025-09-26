@@ -7,13 +7,13 @@ import 'package:flame/components.dart';
 class TurnButtonComponent
     extends ReactivePositionComponentOld<TurnButtonComponentCoordinator> {
   TurnButtonComponent(
-    super.coordinator, {
-    required CardsSelectionManagerService cardsSelectionManagerService,
-  }) : _cardsSelectionManagerService = cardsSelectionManagerService;
+    super.coordinator, //{
+    // required CardsSelectionManagerService cardsSelectionManagerService,}
+    );// : _cardsSelectionManagerService = cardsSelectionManagerService;
 
   bool loadingComplete = false;
   late FlatButton _turnButton;
-  final CardsSelectionManagerService _cardsSelectionManagerService;
+  // final CardsSelectionManagerService _cardsSelectionManagerService;
 
   @override
   void updateDisplay() {
@@ -35,9 +35,9 @@ class TurnButtonComponent
       size: Vector2(size.x, size.y),
       position: Vector2(0, 0),
       onReleased: () {
-        if (_cardsSelectionManagerService.hasSelection) {
-          _cardsSelectionManagerService.selectionService?.onDeselect();
-        }
+        // if (_cardsSelectionManagerService.hasSelection) {
+        //   _cardsSelectionManagerService.selectionService?.onDeselect();
+        // }
 
         coordinator.handleTurnButtonPressed();
       },

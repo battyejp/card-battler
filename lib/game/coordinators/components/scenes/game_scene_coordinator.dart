@@ -2,6 +2,7 @@ import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart'
 import 'package:card_battler/game/coordinators/components/enemy/enemies_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
@@ -20,6 +21,7 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
     required EffectProcessor effectProcessor,
     required ActivePlayerManager activePlayerManager,
     required EnemyTurnSceneCoordinator enemyTurnSceneCoordinator,
+    required TurnButtonComponentCoordinator turnButtonComponentCoordinator,
   }) : _playerCoordinator = playerCoordinator,
        _shopCoordinator = shopCoordinator,
        _teamCoordinator = teamCoordinator,
@@ -28,6 +30,7 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
        _activePlayerManager = activePlayerManager,
        _enemyTurnSceneCoordinator = enemyTurnSceneCoordinator,
        _effectProcessor = effectProcessor,
+        _turnButtonComponentCoordinator = turnButtonComponentCoordinator,
        _turnLifecycleManager = PlayerTurnLifecycleManager(
          playerCoordinator: playerCoordinator,
          shopCoordinator: shopCoordinator,
@@ -47,6 +50,7 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
   final ActivePlayerManager _activePlayerManager;
   final PlayerTurnLifecycleManager _turnLifecycleManager;
   final EnemyTurnSceneCoordinator _enemyTurnSceneCoordinator;
+  final TurnButtonComponentCoordinator _turnButtonComponentCoordinator;
 
   PlayerCoordinator get playerCoordinator => _playerCoordinator;
   ShopCoordinator get shopCoordinator => _shopCoordinator;
@@ -54,6 +58,8 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
   EnemiesCoordinator get enemiesCoordinator => _enemiesCoordinator;
   EffectProcessor get effectProcessor => _effectProcessor;
   GamePhaseManager get gamePhaseManager => _gamePhaseManager;
+  TurnButtonComponentCoordinator get turnButtonComponentCoordinator =>
+      _turnButtonComponentCoordinator;
   EnemyTurnSceneCoordinator get enemyTurnSceneCoordinator =>
       _enemyTurnSceneCoordinator;
 

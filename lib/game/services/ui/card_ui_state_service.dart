@@ -1,5 +1,4 @@
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/ui/components/card/actionable_card.dart';
 import 'package:card_battler/game/ui/components/card/selectable_card.dart';
 
@@ -7,14 +6,14 @@ class CardUIStateService {
   CardUIStateService({
     required ActionableCard card,
     required GamePhaseManager gamePhaseManager,
-    required ActivePlayerManager activePlayerManager,
+    // required ActivePlayerManager activePlayerManager,
   }) : _card = card,
-       _gamePhaseManager = gamePhaseManager,
-       _activePlayerManager = activePlayerManager;
+       _gamePhaseManager = gamePhaseManager;
+      //  _activePlayerManager = activePlayerManager;
 
   final ActionableCard _card;
   final GamePhaseManager _gamePhaseManager;
-  final ActivePlayerManager _activePlayerManager;
+  // final ActivePlayerManager _activePlayerManager;
 
   void updateSelectionUIState() {
     _card.isActionButtonVisible =

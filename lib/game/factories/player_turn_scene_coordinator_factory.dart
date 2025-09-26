@@ -3,6 +3,7 @@ import 'package:card_battler/game/coordinators/components/enemy/enemies_coordina
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/base_coordinator.dart';
@@ -14,6 +15,7 @@ import 'package:card_battler/game/services/card/cards_selection_manager_service.
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
+import 'package:card_battler/game/services/ui/dialog_service.dart';
 
 class PlayerTurnSceneCoordinatorFactory {
   static ShopCoordinator createShopCoordinator({
@@ -51,6 +53,18 @@ class PlayerTurnSceneCoordinatorFactory {
     ),
   );
 
+  static TurnButtonComponentCoordinator createTurnButtonComponentCoordinator({
+    required GamePhaseManager gamePhaseManager,
+    required ActivePlayerManager activePlayerManager,
+    required CardsSelectionManagerService cardsSelectionManagerService,
+    required DialogService dialogService,
+  }) => TurnButtonComponentCoordinator(
+    gamePhaseManager: gamePhaseManager,
+    dialogService: dialogService,
+    activePlayerManager: activePlayerManager,
+    cardsSelectionManagerService: cardsSelectionManagerService,
+  );
+
   static GameSceneCoordinator createPlayerTurnSceneCoordinator({
     required List<PlayerCoordinator> playerCoordinators,
     required GameStateModel state,
@@ -61,6 +75,7 @@ class PlayerTurnSceneCoordinatorFactory {
     required ActivePlayerManager activePlayerManager,
     required CardsSelectionManagerService cardsSelectionManagerService,
     required EnemyTurnSceneCoordinator enemyTurnSceneCoordinator,
+    required DialogService dialogService,
   }) => GameSceneCoordinator(
     playerCoordinator: playerCoordinators.firstWhere(
       (pc) => pc.playerInfoCoordinator.isActive,
@@ -80,5 +95,11 @@ class PlayerTurnSceneCoordinatorFactory {
     effectProcessor: effectProcessor,
     activePlayerManager: activePlayerManager,
     enemyTurnSceneCoordinator: enemyTurnSceneCoordinator,
+    turnButtonComponentCoordinator: createTurnButtonComponentCoordinator(
+      gamePhaseManager: gamePhaseManager,
+      activePlayerManager: activePlayerManager,
+      cardsSelectionManagerService: cardsSelectionManagerService,
+      dialogService: dialogService,
+    ),
   );
 }

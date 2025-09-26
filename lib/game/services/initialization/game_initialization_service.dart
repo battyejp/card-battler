@@ -71,6 +71,7 @@ class GameInitializationService {
       state,
       activePlayerManager,
       cardsSelectionManagerService,
+      dialogService,
     );
 
     return ServiceContainer(

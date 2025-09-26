@@ -10,6 +10,7 @@ import 'package:card_battler/game/services/card/cards_selection_manager_service.
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
+import 'package:card_battler/game/services/ui/dialog_service.dart';
 
 class CoordinatorsManager {
   CoordinatorsManager(
@@ -17,6 +18,7 @@ class CoordinatorsManager {
     GameStateModel state,
     ActivePlayerManager activePlayerManager,
     CardsSelectionManagerService cardsSelectionManagerService,
+    DialogService dialogService,
   ) {
     final effectProcessor = EffectProcessor();
 
@@ -56,6 +58,7 @@ class CoordinatorsManager {
           playerCoordinators: _playerCoordinators,
           state: state,
           playersInfoCoordinator: _playersInfoCoordinator,
+          dialogService: dialogService,
           enemiesCoordinator: EnemyCoordinatorFactory.createEnemiesCoordinator(
             enemyCoordinators: enemyCoordinators,
             enemiesModel: state.enemiesModel,

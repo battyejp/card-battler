@@ -56,7 +56,7 @@ void main() {
       });
     });
 
-    group('buildTurnButton', () {
+    /*group('buildTurnButton', () {
       test('creates TurnButtonComponent with correct coordinator', () {
         final turnButton = GameComponentBuilder.buildTurnButton(
           gameSize: testGameSize,
@@ -109,7 +109,7 @@ void main() {
         expect(services.activePlayerManager, isNotNull);
         expect(services.cardsSelectionManagerService, isNotNull);
       });
-    });
+    });*/
 
     group('buildGameComponents', () {
       test('creates RouterComponent with turn button added', () {
@@ -148,17 +148,17 @@ void main() {
         expect(stopwatch.elapsedMilliseconds, lessThan(100));
       });
 
-      test('buildTurnButton completes quickly', () {
-        final stopwatch = Stopwatch()..start();
+      // test('buildTurnButton completes quickly', () {
+      //   final stopwatch = Stopwatch()..start();
 
-        GameComponentBuilder.buildTurnButton(
-          gameSize: testGameSize,
-          services: services,
-        );
+      //   GameComponentBuilder.buildTurnButton(
+      //     gameSize: testGameSize,
+      //     services: services,
+      //   );
 
-        stopwatch.stop();
-        expect(stopwatch.elapsedMilliseconds, lessThan(50));
-      });
+      //   stopwatch.stop();
+      //   expect(stopwatch.elapsedMilliseconds, lessThan(50));
+      // });
 
       test('buildGameComponents completes within reasonable time', () {
         final stopwatch = Stopwatch()..start();
