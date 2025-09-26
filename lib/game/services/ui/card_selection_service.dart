@@ -4,8 +4,6 @@ import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/services/ui/card_animation_service.dart';
 import 'package:card_battler/game/services/ui/card_ui_state_service.dart';
 import 'package:card_battler/game/ui/components/card/actionable_card.dart';
-import 'package:flame/components.dart';
-import 'package:flame/events.dart';
 
 class CardSelectionService {
   CardSelectionService({
@@ -29,26 +27,8 @@ class CardSelectionService {
 
   bool get isAnyCardSelected => _cardsSelectionManagerService.hasSelection;
 
-  bool onSelected(TapUpEvent event) {
-    if (_animationService.isAnimating || isAnyCardSelected) {
-      return false;
-    }
-
-    _selectAtPosition(event.localPosition);
-    return true;
-  }
-
   void onDeselect() {
     _deselect();
-  }
-
-  void _selectAtPosition(Vector2 pressPosition) {
-    _cardsSelectionManagerService.selectCard(_card.coordinator, this);
-
-    _animationService.animateToSelection(
-      pressPosition,
-      _uiStateService.updateSelectionUIState,
-    );
   }
 
   void _deselect() {

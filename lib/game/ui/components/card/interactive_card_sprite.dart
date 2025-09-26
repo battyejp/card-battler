@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class InteractiveCardSprite extends CardSprite {
   InteractiveCardSprite(super.fileName, super.isMini);
 
-  bool isSelected = false; 
+  bool isSelected = false;
   bool isDraggable = false;
 
   @override

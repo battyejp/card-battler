@@ -1,6 +1,5 @@
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/actionable_card.dart';
-import 'package:card_battler/game/ui/components/card/selectable_card.dart';
 
 class CardUIStateService {
   CardUIStateService({
@@ -25,10 +24,10 @@ class CardUIStateService {
   }
 
   void updateDeselectionUIState() {
-    _card.isActionButtonVisible = false;
+    // _card.isActionButtonVisible = false;
 
-    if (_card is SelectableCard) {
-      _card.isCloseButtonVisible = false;
-    }
+    // if (_card is SelectableCard) {
+    //   _card.isCloseButtonVisible = false;
+    // }
   }
 }

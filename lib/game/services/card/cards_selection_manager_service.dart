@@ -5,18 +5,7 @@ class CardsSelectionManagerService {
   CardCoordinator? _selectedCard;
   CardSelectionService? _selectionService;
 
-  CardCoordinator? get selectedCard => _selectedCard;
-  CardSelectionService? get selectionService => _selectionService;
-
-  bool isCardSelected(CardCoordinator card) => _selectedCard == card;
   bool get hasSelection => _selectedCard != null;
-
-  void selectCard(CardCoordinator card, CardSelectionService service) {
-    if (_selectedCard != card) {
-      _selectedCard = card;
-      _selectionService = service;
-    }
-  }
 
   void deselectCard() {
     if (_selectedCard != null) {

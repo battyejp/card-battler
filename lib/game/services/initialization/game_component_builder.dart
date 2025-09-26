@@ -19,43 +19,8 @@ class GameComponentBuilder {
     return router;
   }
 
-  // static TurnButtonComponent buildTurnButton({
-  //   required Vector2 gameSize,
-  //   required ServiceContainer services,
-  // }) {
-  //   final turnButtonComponent = TurnButtonComponent(
-  //     TurnButtonComponentCoordinator(
-  //       gamePhaseManager: services.gamePhaseManager,
-  //       dialogService: services.dialogService,
-  //       activePlayerManager: services.activePlayerManager,
-  //       cardsSelectionManagerService: services.cardsSelectionManagerService,
-  //     ),
-  //     cardsSelectionManagerService: services.cardsSelectionManagerService,
-  //   );
-
-  //   turnButtonComponent
-  //     ..priority = 10
-  //     ..size = Vector2(200, 50)
-  //     ..position = Vector2(0, ((gameSize.y / 2) * -1) + (gameSize.y * 0.05));
-
-  //   return turnButtonComponent;
-  // }
-
   static RouterComponent buildGameComponents({
     required Vector2 gameSize,
     required ServiceContainer services,
-  }) {
-    final router = buildGameRouter(
-      gameSize: gameSize,
-      services: services,
-    );
-
-    // final turnButton = buildTurnButton(
-    //   gameSize: gameSize,
-    //   services: services,
-    // );
-
-    //router.add(turnButton);
-    return router;
-  }
+  }) => buildGameRouter(gameSize: gameSize, services: services);
 }
