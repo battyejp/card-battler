@@ -13,14 +13,12 @@ void main() {
 
         final container = ServiceContainer(
           dialogService: services.dialogService,
-          cardsSelectionManagerService: services.cardsSelectionManagerService,
           gamePhaseManager: services.gamePhaseManager,
           activePlayerManager: services.activePlayerManager,
           coordinatorsManager: services.coordinatorsManager,
         );
 
         expect(container.dialogService, isNotNull);
-        expect(container.cardsSelectionManagerService, isNotNull);
         expect(container.gamePhaseManager, isNotNull);
         expect(container.activePlayerManager, isNotNull);
         expect(container.coordinatorsManager, isNotNull);
@@ -32,7 +30,6 @@ void main() {
 
         final container = ServiceContainer(
           dialogService: services.dialogService,
-          cardsSelectionManagerService: services.cardsSelectionManagerService,
           gamePhaseManager: services.gamePhaseManager,
           activePlayerManager: services.activePlayerManager,
           coordinatorsManager: services.coordinatorsManager,
@@ -40,13 +37,6 @@ void main() {
 
         expect(
           identical(container.dialogService, services.dialogService),
-          isTrue,
-        );
-        expect(
-          identical(
-            container.cardsSelectionManagerService,
-            services.cardsSelectionManagerService,
-          ),
           isTrue,
         );
         expect(
@@ -136,10 +126,6 @@ void main() {
           contains('DialogService'),
         );
         expect(
-          services.cardsSelectionManagerService.runtimeType.toString(),
-          contains('CardsSelectionManagerService'),
-        );
-        expect(
           services.gamePhaseManager.runtimeType.toString(),
           contains('GamePhaseManager'),
         );
@@ -174,7 +160,6 @@ void main() {
         expect(gameState, isNotNull);
         expect(services, isNotNull);
         expect(services.dialogService, isNotNull);
-        expect(services.cardsSelectionManagerService, isNotNull);
         expect(services.gamePhaseManager, isNotNull);
         expect(services.activePlayerManager, isNotNull);
         expect(services.coordinatorsManager, isNotNull);

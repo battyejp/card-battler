@@ -1,7 +1,6 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
-import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,7 +8,6 @@ import 'package:mocktail/mocktail.dart';
 
 // Mock classes
 class MockCardModel extends Mock implements CardModel {}
-class MockCardsSelectionManagerService extends Mock implements CardsSelectionManagerService {}
 class MockGamePhaseManager extends Mock implements GamePhaseManager {}
 class MockActivePlayerManager extends Mock implements ActivePlayerManager {}
 
@@ -18,7 +16,6 @@ class MockCardCoordinator extends CardCoordinator {
   MockCardCoordinator({String name = 'Test Card'})
     : super(
         cardModel: _createMockCardModel(name),
-        cardsSelectionManagerService: MockCardsSelectionManagerService(),
         gamePhaseManager: MockGamePhaseManager(),
         activePlayerManager: MockActivePlayerManager(),
       );

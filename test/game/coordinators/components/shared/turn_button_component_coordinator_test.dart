@@ -2,7 +2,6 @@ import 'package:card_battler/game/coordinators/components/cards/card_coordinator
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
-import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/services/ui/dialog_service.dart';
@@ -15,9 +14,6 @@ class MockDialogService extends Mock implements DialogService {}
 
 class MockActivePlayerManager extends Mock implements ActivePlayerManager {}
 
-class MockCardsSelectionManagerService extends Mock
-    implements CardsSelectionManagerService {}
-
 class MockPlayerCoordinator extends Mock implements PlayerCoordinator {}
 
 class MockCardListCoordinator extends Mock
@@ -28,14 +24,12 @@ void main() {
     late GamePhaseManager mockGamePhaseManager;
     late DialogService mockDialogService;
     late ActivePlayerManager mockActivePlayerManager;
-    late CardsSelectionManagerService mockCardsSelectionManagerService;
     late TurnButtonComponentCoordinator coordinator;
 
     setUp(() {
       mockGamePhaseManager = MockGamePhaseManager();
       mockDialogService = MockDialogService();
       mockActivePlayerManager = MockActivePlayerManager();
-      mockCardsSelectionManagerService = MockCardsSelectionManagerService();
 
       when(
         () => mockGamePhaseManager.nextPhase(),
@@ -45,7 +39,6 @@ void main() {
         gamePhaseManager: mockGamePhaseManager,
         dialogService: mockDialogService,
         activePlayerManager: mockActivePlayerManager,
-        cardsSelectionManagerService: mockCardsSelectionManagerService,
       );
     });
 

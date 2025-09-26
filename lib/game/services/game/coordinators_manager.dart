@@ -6,7 +6,6 @@ import 'package:card_battler/game/factories/enemy_coordinator_factory.dart';
 import 'package:card_battler/game/factories/player_coordinator_factory.dart';
 import 'package:card_battler/game/factories/player_turn_scene_coordinator_factory.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/services/card/cards_selection_manager_service.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
@@ -17,7 +16,6 @@ class CoordinatorsManager {
     GamePhaseManager gamePhaseManager,
     GameStateModel state,
     ActivePlayerManager activePlayerManager,
-    CardsSelectionManagerService cardsSelectionManagerService,
     DialogService dialogService,
   ) {
     final effectProcessor = EffectProcessor();
@@ -26,7 +24,6 @@ class CoordinatorsManager {
       players: state.players,
       gamePhaseManager: gamePhaseManager,
       activePlayerManager: activePlayerManager,
-      cardsSelectionManagerService: cardsSelectionManagerService,
       effectProcessor: effectProcessor,
     );
 
@@ -49,7 +46,6 @@ class CoordinatorsManager {
           playersInfoCoordinator: _playersInfoCoordinator,
           effectProcessor: effectProcessor,
           gamePhaseManager: gamePhaseManager,
-          cardsSelectionManagerService: cardsSelectionManagerService,
           activePlayerManager: activePlayerManager,
         );
 
@@ -62,14 +58,13 @@ class CoordinatorsManager {
           enemiesCoordinator: EnemyCoordinatorFactory.createEnemiesCoordinator(
             enemyCoordinators: enemyCoordinators,
             enemiesModel: state.enemiesModel,
-            cardsSelectionManagerService: cardsSelectionManagerService,
+
             gamePhaseManager: gamePhaseManager,
             activePlayerManager: activePlayerManager,
           ),
           gamePhaseManager: gamePhaseManager,
           effectProcessor: effectProcessor,
           activePlayerManager: activePlayerManager,
-          cardsSelectionManagerService: cardsSelectionManagerService,
           enemyTurnSceneCoordinator: _enemyTurnSceneCoordinator,
         );
   }
