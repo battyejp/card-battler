@@ -29,7 +29,7 @@ class ShopScene extends PositionComponent {
     add(creditsText);
 
     // Add the shop display component
-    final shopDisplay = ShopDisplay(_coordinator.displayCoordinator)
+    final shopDisplay = ShopDisplay(_coordinator.shopDisplayCoordinator)
       ..size = Vector2(size.x, size.y - creditsText.size.y - _titleHeight);
     add(shopDisplay);
   }

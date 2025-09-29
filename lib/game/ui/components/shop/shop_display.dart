@@ -1,18 +1,13 @@
-import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/shop/shop_display_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:card_battler/game/ui/components/shop/shop_card.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 
-class ShopDisplay
-    extends
-        ReactivePositionComponent<CardListCoordinator<ShopCardCoordinator>> {
+class ShopDisplay extends ReactivePositionComponent<ShopDisplayCoordinator> {
   ShopDisplay(super.coordinator);
 
-  final int itemsPerRow = 2;
-  final int numberOfRows = 3;
   final double _spacing = 0.4;
 
   @override
@@ -25,6 +20,8 @@ class ShopDisplay
   void _addCards() {
     final cardWidth = GameVariables.defaultCardSizeWidth * _spacing;
     final cardHeight = GameVariables.defaultCardSizeHeight * _spacing;
+    final itemsPerRow = coordinator.itemsPerRow;
+    final numberOfRows = coordinator.numberOfRows;
     final totalWidth = itemsPerRow * cardWidth;
     final totalHeight = numberOfRows * cardHeight;
     final hSpacing = (size.x - totalWidth) / (itemsPerRow + 1);

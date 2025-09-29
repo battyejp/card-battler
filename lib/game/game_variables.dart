@@ -9,4 +9,7 @@ class GameVariables {
 
   static const int defaultCardBackSizeWidth = 51;
   static const int defaultCardBackSizeHeight = 74;
+
+  static const int shopDisplayNumberOfColumns = 2;
+  static const int shopDisplayNumberOfRows = 3;
 }
