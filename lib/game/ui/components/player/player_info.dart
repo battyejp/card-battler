@@ -4,9 +4,17 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
-  PlayerInfo(super.coordinator);
+  PlayerInfo(
+    super.coordinator, {
+    bool isActivePlayer = true,
+    double gapBetweenNameAndFirstLabel = 0.0,
+  }) : _isActivePlayer = isActivePlayer,
+       _gapBetweenNameAndFirstLabel = gapBetweenNameAndFirstLabel;
 
   final Map<String, TextComponent> _labels = {};
+  final bool _isActivePlayer;
+  final double _gapBetweenNameAndFirstLabel;
+  late TextComponent lastLabel;
 
   @override
   void updateDisplay() {
@@ -23,8 +31,6 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
     final statKeys = ['name', 'health', 'attack', 'credits'];
     const padding = 10.0;
 
-    //final statWidth = size.x / statKeys.length;
-
     for (var i = 0; i < statKeys.length; i++) {
       final key = statKeys[i];
       String text;
@@ -37,39 +43,55 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
           break;
         case 'health':
           text = coordinator.healthDisplay;
-          position = Vector2(size.x / 2, size.y - padding);
-          anchor = Anchor.bottomCenter;
+          position = _isActivePlayer
+              ? Vector2(size.x / 2, size.y - padding)
+              : Vector2(
+                  size.x / 2,
+                  lastLabel.position.y +
+                      lastLabel.size.y +
+                      _gapBetweenNameAndFirstLabel,
+                );
+          anchor = _isActivePlayer ? Anchor.bottomCenter : Anchor.center;
           break;
         case 'attack':
           text = 'Attack: ${coordinator.attack}';
-          position = Vector2(padding, padding);
-          anchor = Anchor.topLeft;
+          position = _isActivePlayer
+              ? Vector2(padding, padding)
+              : Vector2(
+                  size.x / 2,
+                  lastLabel.position.y + lastLabel.size.y + 5.0,
+                );
+          anchor = _isActivePlayer ? Anchor.topLeft : Anchor.center;
           break;
         case 'credits':
           text = 'Credits: ${coordinator.credits}';
-          position = Vector2(size.x - padding, padding);
-          anchor = Anchor.topRight;
+          position = _isActivePlayer
+              ? Vector2(size.x - padding, padding)
+              : Vector2(
+                  size.x / 2,
+                  lastLabel.position.y + lastLabel.size.y + 5.0,
+                );
+          anchor = _isActivePlayer ? Anchor.topRight : Anchor.center;
           break;
         default:
           text = '';
       }
-
-      // final comp = PositionComponent()
-      //   ..size = Vector2(size.x, size.y)
-      //   ..position = position!;
 
       final label = TextComponent(
         text: text,
         position: position,
         anchor: anchor,
         textRenderer: TextPaint(
-          style: const TextStyle(fontSize: 20, color: Colors.white),
+          style: TextStyle(
+            fontSize: _isActivePlayer ? 20 : 14,
+            color: Colors.white,
+          ),
         ),
       );
 
       _labels[key] = label;
-      //comp.add(label);
       add(label);
+      lastLabel = label;
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 
+//TODO delete
 class PlayersInfoCoordinator {
   PlayersInfoCoordinator({required List<PlayerInfoCoordinator> players})
     : _players = players;

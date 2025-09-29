@@ -1,21 +1,22 @@
-import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/team_mate_coordinator.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
-import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
+import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-class TeamMate extends ReactivePositionComponent<PlayerInfoCoordinator> {
-  TeamMate(super.coordinator);
+class TeamMate extends PositionComponent {
+  TeamMate(TeamMateCoordinator coordinator) : _coordinator = coordinator;
 
+  final TeamMateCoordinator _coordinator;
   final double margin = 5.0;
 
-  //TODO look at PlayerInfo on how to update labels rather than recreating every time
   @override
-  void updateDisplay() {
-    super.updateDisplay();
+  void onMount() {
+    super.onMount();
+    removeWhere((component) => true);
 
     final playerName = TextComponent(
-      text: coordinator.name,
+      text: _coordinator.playerInfoCoordinator.name,
       anchor: Anchor.topCenter,
       position: Vector2(size.x / 2, 10),
       textRenderer: TextPaint(
@@ -25,7 +26,7 @@ class TeamMate extends ReactivePositionComponent<PlayerInfoCoordinator> {
     add(playerName);
 
     final cardFan = CardFan(
-      coordinator.handCardsCoordinator,
+      _coordinator.handCardsCoordinator,
       cardScale: 1.0,
       mini: true,
       fanRadius: 50.0,
@@ -33,40 +34,15 @@ class TeamMate extends ReactivePositionComponent<PlayerInfoCoordinator> {
 
     add(cardFan);
 
-    final healthTextComponent = TextComponent(
-      text: coordinator.healthDisplay,
-      anchor: Anchor.center,
-      position: Vector2(size.x / 2, cardFan.position.y + margin),
-      textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 14, color: Colors.white),
-      ),
-    );
-    add(healthTextComponent);
+    final playerInfo =
+        PlayerInfo(
+            _coordinator.playerInfoCoordinator,
+            isActivePlayer: false,
+            gapBetweenNameAndFirstLabel: cardFan.position.y * 0.9,
+          )
+          ..size = Vector2(size.x, size.y)
+          ..position = Vector2(0, 0);
 
-    final creditsTextComponent = TextComponent(
-      text: "Credits: ${coordinator.credits}",
-      anchor: Anchor.center,
-      position: Vector2(
-        size.x / 2,
-        healthTextComponent.position.y + healthTextComponent.size.y + margin,
-      ),
-      textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 14, color: Colors.white),
-      ),
-    );
-    add(creditsTextComponent);
-
-    final attackTextComponent = TextComponent(
-      text: "Attack: ${coordinator.attack}",
-      anchor: Anchor.center,
-      position: Vector2(
-        size.x / 2,
-        creditsTextComponent.position.y + creditsTextComponent.size.y + margin,
-      ),
-      textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 14, color: Colors.white),
-      ),
-    );
-    add(attackTextComponent);
+    add(playerInfo);
   }
 }

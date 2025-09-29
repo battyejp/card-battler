@@ -27,29 +27,29 @@ class Team extends PositionComponent {
     );
     add(border);
 
+    var inactivePlayers = _coordinator.teamMatesCoordinators
+        .where((tm) => !tm.playerInfoCoordinator.isActive)
+        .toList();
+
     //TODO different layouts based on number of team members
-    final teamMate1 =
-        TeamMate(_coordinator.playersInfoCoordinator.inactivePlayers[0])
-          ..size = Vector2(halfWidth, halfHeight)
-          ..position = Vector2.zero();
+    final teamMate1 = TeamMate(inactivePlayers[0])
+      ..size = Vector2(halfWidth, halfHeight)
+      ..position = Vector2.zero();
     add(teamMate1);
 
-    final teamMate2 =
-        TeamMate(_coordinator.playersInfoCoordinator.inactivePlayers[1])
-          ..size = Vector2(halfWidth, halfHeight)
-          ..position = Vector2(size.x - halfWidth, 0);
+    final teamMate2 = TeamMate(inactivePlayers[1])
+      ..size = Vector2(halfWidth, halfHeight)
+      ..position = Vector2(size.x - halfWidth, 0);
     add(teamMate2);
 
-    final teamMate3 =
-        TeamMate(_coordinator.playersInfoCoordinator.inactivePlayers[2])
-          ..size = Vector2(halfWidth, halfHeight)
-          ..position = Vector2(0, halfHeight);
+    final teamMate3 = TeamMate(inactivePlayers[2])
+      ..size = Vector2(halfWidth, halfHeight)
+      ..position = Vector2(0, halfHeight);
     add(teamMate3);
 
-    final teamMate4 =
-        TeamMate(_coordinator.playersInfoCoordinator.inactivePlayers[3])
-          ..size = Vector2(halfWidth, halfHeight)
-          ..position = Vector2(size.x - halfWidth, halfHeight);
+    final teamMate4 = TeamMate(inactivePlayers[3])
+      ..size = Vector2(halfWidth, halfHeight)
+      ..position = Vector2(size.x - halfWidth, halfHeight);
     add(teamMate4);
 
     final baseSize = size.x / 3;

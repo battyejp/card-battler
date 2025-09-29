@@ -8,6 +8,7 @@ import 'package:card_battler/game/coordinators/components/team/base_coordinator.
 import 'package:card_battler/game/coordinators/components/team/bases_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/team_mate_coordinator.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
@@ -16,10 +17,10 @@ import 'package:card_battler/game/services/ui/dialog_service.dart';
 
 class PlayerTurnSceneCoordinatorFactory {
   static TeamCoordinator createTeamCoordinator({
-    required PlayersInfoCoordinator playersInfoCoordinator,
+    required List<TeamMateCoordinator> teamMatesCoordinators,
     required GameStateModel state,
   }) => TeamCoordinator(
-    playersInfoCoordinator: playersInfoCoordinator,
+    teamMatesCoordinators: teamMatesCoordinators,
     basesCoordinator: BasesCoordinator(
       baseCoordinators: state.bases
           .map((base) => BaseCoordinator(model: base))
@@ -54,7 +55,9 @@ class PlayerTurnSceneCoordinatorFactory {
     ),
     shopCoordinator: shopCoordinator,
     teamCoordinator: createTeamCoordinator(
-      playersInfoCoordinator: playersInfoCoordinator,
+      teamMatesCoordinators: playerCoordinators
+          .map((pc) => TeamMateCoordinator(pc.playerInfoCoordinator, pc.handCardsCoordinator))
+          .toList(),
       state: state,
     ),
     enemiesCoordinator: enemiesCoordinator,
