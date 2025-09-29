@@ -1,26 +1,25 @@
-import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
-import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
+import 'package:card_battler/game/coordinators/components/scenes/shop_scene_coordinator.dart';
 import 'package:card_battler/game/ui/components/shop/shop_display.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-class ShopScene
-    extends
-        ReactivePositionComponent<CardListCoordinator<ShopCardCoordinator>> {
-  ShopScene(super.coordinator);
+class ShopScene extends PositionComponent {
+  ShopScene(ShopSceneCoordinator coordinator) : _coordinator = coordinator;
+
+  final ShopSceneCoordinator _coordinator;
 
   final double _titleHeight = 80;
 
   @override
-  void updateDisplay() {
-    super.updateDisplay();
+  void onMount() {
+    super.onMount();
+    removeWhere((component) => true);
 
     // Add text component with available credits
     final creditsText =
         TextComponent(
             text:
-                'Credits: ${coordinator.cardCoordinators.isNotEmpty ? coordinator.cardCoordinators.first.creditsAvailable : 0}',
+                'Credits: ${_coordinator.playerCoordinator.playerInfoCoordinator.credits}',
             textRenderer: TextPaint(
               style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 24),
             ),
@@ -30,7 +29,7 @@ class ShopScene
     add(creditsText);
 
     // Add the shop display component
-    final shopDisplay = ShopDisplay(coordinator)
+    final shopDisplay = ShopDisplay(_coordinator.displayCoordinator)
       ..size = Vector2(size.x, size.y - creditsText.size.y - _titleHeight);
     add(shopDisplay);
   }

@@ -1,6 +1,6 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
@@ -23,7 +23,7 @@ void main() {
     late CardListCoordinator<CardCoordinator> mockDeckCardsCoordinator;
     late EffectProcessor mockEffectProcessor;
     late GamePhaseManager mockGamePhaseManager;
-    late EnemyTurnSceneCoordinator coordinator;
+    late EnemyTurnCoordinator coordinator;
 
     setUp(() {
       mockPlayedCardsCoordinator = MockCardListCoordinator();
@@ -38,7 +38,7 @@ void main() {
         () => mockGamePhaseManager.nextPhase(),
       ).thenReturn(GamePhase.waitingToDrawPlayerCards);
 
-      coordinator = EnemyTurnSceneCoordinator(
+      coordinator = EnemyTurnCoordinator(
         playedCardsCoordinator: mockPlayedCardsCoordinator,
         deckCardsCoordinator: mockDeckCardsCoordinator,
         effectProcessor: mockEffectProcessor,
@@ -101,7 +101,7 @@ void main() {
       test('deck is shuffled exactly once during construction', () {
         reset(mockDeckCardsCoordinator);
 
-        EnemyTurnSceneCoordinator(
+        EnemyTurnCoordinator(
           playedCardsCoordinator: mockPlayedCardsCoordinator,
           deckCardsCoordinator: mockDeckCardsCoordinator,
           effectProcessor: mockEffectProcessor,

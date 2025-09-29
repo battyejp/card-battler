@@ -1,10 +1,12 @@
+import 'package:card_battler/game/coordinators/components/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/scenes/shop_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/factories/enemy_coordinator_factory.dart';
 import 'package:card_battler/game/factories/player_coordinator_factory.dart';
 import 'package:card_battler/game/factories/player_turn_scene_coordinator_factory.dart';
+import 'package:card_battler/game/factories/shop_scene_coordinator_factory.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
@@ -48,6 +50,12 @@ class CoordinatorsManager {
           activePlayerManager: activePlayerManager,
         );
 
+    _shopCoordinator = ShopSceneCoordinatorFactory.createShopCoordinator(
+      state: state,
+      gamePhaseManager: gamePhaseManager,
+      activePlayerManager: activePlayerManager,
+    );
+
     _playerTurnSceneCoordinator =
         PlayerTurnSceneCoordinatorFactory.createPlayerTurnSceneCoordinator(
           playerCoordinators: _playerCoordinators,
@@ -65,16 +73,19 @@ class CoordinatorsManager {
           effectProcessor: effectProcessor,
           activePlayerManager: activePlayerManager,
           enemyTurnSceneCoordinator: _enemyTurnSceneCoordinator,
+          shopCoordinator: _shopCoordinator,
         );
   }
 
   late GameSceneCoordinator _playerTurnSceneCoordinator;
-  late EnemyTurnSceneCoordinator _enemyTurnSceneCoordinator;
+  late EnemyTurnCoordinator _enemyTurnSceneCoordinator;
   late PlayersInfoCoordinator _playersInfoCoordinator;
+  late ShopSceneCoordinator _shopCoordinator;
   late List<PlayerCoordinator> _playerCoordinators;
 
   GameSceneCoordinator get playerTurnSceneCoordinator =>
       _playerTurnSceneCoordinator;
-  EnemyTurnSceneCoordinator get enemyTurnSceneCoordinator =>
+  EnemyTurnCoordinator get enemyTurnSceneCoordinator =>
       _enemyTurnSceneCoordinator;
+  ShopSceneCoordinator get shopSceneCoordinator => _shopCoordinator;
 }

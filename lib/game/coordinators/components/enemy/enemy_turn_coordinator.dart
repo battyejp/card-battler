@@ -4,8 +4,8 @@ import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/turn/enemy_turn_manager.dart';
 
-class EnemyTurnSceneCoordinator {
-  EnemyTurnSceneCoordinator({
+class EnemyTurnCoordinator {
+  EnemyTurnCoordinator({
     required CardListCoordinator<CardCoordinator> playedCardsCoordinator,
     required CardListCoordinator<CardCoordinator> deckCardsCoordinator,
     required EffectProcessor effectProcessor,

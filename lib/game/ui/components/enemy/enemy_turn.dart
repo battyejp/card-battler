@@ -1,13 +1,13 @@
-import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
 import 'package:flame/components.dart';
 
 class EnemyTurn extends PositionComponent with HasVisibility {
-  EnemyTurn(EnemyTurnSceneCoordinator coordinator) : _coordinator = coordinator;
+  EnemyTurn(EnemyTurnCoordinator coordinator) : _coordinator = coordinator;
 
-  final EnemyTurnSceneCoordinator _coordinator;
+  final EnemyTurnCoordinator _coordinator;
 
   @override
   void onMount() {

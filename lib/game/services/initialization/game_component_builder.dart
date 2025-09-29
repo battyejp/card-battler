@@ -12,6 +12,7 @@ class GameComponentBuilder {
       services.coordinatorsManager.playerTurnSceneCoordinator,
       services.coordinatorsManager.enemyTurnSceneCoordinator,
       services.gamePhaseManager,
+      services.coordinatorsManager.shopSceneCoordinator,
       additionalRoutes: services.dialogService.getDialogRoutes(),
     );
 
