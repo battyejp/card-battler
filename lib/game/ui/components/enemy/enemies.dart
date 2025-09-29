@@ -12,7 +12,10 @@ class Enemies extends PositionComponent with HasVisibility {
   final double _enemyWidthFactor = 0.2;
 
   @override
-  void onLoad() {
+  void onMount() {
+    super.onMount();
+    removeWhere((component) => true);
+
     final cardWidth = size.x * _enemyWidthFactor;
     final cardHeight = size.y * _enemyHeightFactor;
     final totalCardsWidth = _coordinator.maxNumberOfEnemiesInPlay * cardWidth;

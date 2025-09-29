@@ -11,8 +11,10 @@ class Card extends PositionComponent {
   late TextComponent nameTextComponent;
 
   @override
-  void onLoad() {
-    super.onLoad();
+  void onMount() {
+    super.onMount();
+    removeWhere((component) => true);
+
     addTextComponent();
   }
 

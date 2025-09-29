@@ -8,10 +8,11 @@ class Enemy extends PositionComponent {
   final EnemyCoordinator _coordinator;
   late TextComponent _healthTextComponent;
 
-  //TODO should we be using onMount here instead of onLoad?
   @override
-  void onLoad() {
-    super.onLoad();
+  void onMount() {
+    super.onMount();
+    removeWhere((component) => true);
+
     _healthTextComponent = TextComponent(
       text: _coordinator.healthDisplay,
       anchor: Anchor.center,

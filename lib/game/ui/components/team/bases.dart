@@ -9,7 +9,10 @@ class Bases extends PositionComponent {
   final BasesCoordinator _coordinator;
 
   @override
-  void onLoad() {
+  void onMount() {
+    super.onMount();
+    removeWhere((component) => true);
+
     // Calculate space below text for base components
     const textHeight = 40.0; // Reserve space for text
     final baseHeight = size.y - textHeight;
