@@ -8,7 +8,9 @@ import 'package:mocktail/mocktail.dart';
 
 // Mock classes
 class MockCardModel extends Mock implements CardModel {}
+
 class MockGamePhaseManager extends Mock implements GamePhaseManager {}
+
 class MockActivePlayerManager extends Mock implements ActivePlayerManager {}
 
 // Mock CardCoordinator for testing
@@ -23,13 +25,12 @@ class MockCardCoordinator extends CardCoordinator {
   static MockCardModel _createMockCardModel(String name) {
     final mock = MockCardModel();
     when(() => mock.name).thenReturn(name);
-    when(() => mock.type).thenReturn('action');
+    when(() => mock.type).thenReturn(CardType.unknown);
     when(() => mock.isFaceUp).thenReturn(true);
     when(() => mock.effects).thenReturn([]);
     return mock;
   }
 }
-
 
 void main() {
   group('CardListCoordinator', () {

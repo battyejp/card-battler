@@ -26,7 +26,7 @@ void main() {
     setUp(() {
       mockCardModel = MockCardModel();
       when(() => mockCardModel.name).thenReturn('Test Card');
-      when(() => mockCardModel.type).thenReturn('action');
+      when(() => mockCardModel.type).thenReturn(CardType.unknown);
       when(() => mockCardModel.isFaceUp).thenReturn(true);
       when(() => mockCardModel.effects).thenReturn([]);
 
@@ -84,7 +84,7 @@ void main() {
 
         final cardWithEffects = MockCardModel();
         when(() => cardWithEffects.name).thenReturn('Test Card');
-        when(() => cardWithEffects.type).thenReturn('action');
+        when(() => cardWithEffects.type).thenReturn(CardType.unknown);
         when(() => cardWithEffects.isFaceUp).thenReturn(true);
         when(() => cardWithEffects.effects).thenReturn(testEffects);
         final coordinatorWithEffects = CardCoordinator(
@@ -160,7 +160,7 @@ void main() {
 
         final cardWithEffects = MockCardModel();
         when(() => cardWithEffects.name).thenReturn('Test Card');
-        when(() => cardWithEffects.type).thenReturn('action');
+        when(() => cardWithEffects.type).thenReturn(CardType.unknown);
         when(() => cardWithEffects.isFaceUp).thenReturn(true);
         when(() => cardWithEffects.effects).thenReturn(effects);
         final coordinatorWithEffects = CardCoordinator(

@@ -1,5 +1,6 @@
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class CardSprite extends SpriteComponent {
 
   String get getFileName {
     if (!_cardCoordinator.isFaceUp) {
-      return _cardCoordinator.type == 'Enemy'
+      return _cardCoordinator.type == CardType.enemy
           ? 'enemy_card_back_560.png'
           : 'card_face_down_0.08.png';
     }

@@ -6,13 +6,13 @@ class ShopCardModel extends CardModel {
     required super.filename,
     required this.cost,
     super.isFaceUp = true,
-  }) : super(type: 'Shop');
+  }) : super(type: CardType.shop);
 
   factory ShopCardModel.fromJson(Map<String, dynamic> json) => ShopCardModel(
-    name: json['name'],
-    cost: json['cost'],
-    filename: json['filename'],
-    isFaceUp: json['faceUp'] ?? true,
+    name: json['name'] as String,
+    cost: json['cost'] as int,
+    filename: json['filename'] as String,
+    isFaceUp: json['faceUp'] as bool? ?? true,
   );
 
   final int cost;
