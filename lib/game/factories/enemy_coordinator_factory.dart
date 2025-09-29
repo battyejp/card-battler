@@ -3,7 +3,6 @@ import 'package:card_battler/game/coordinators/components/cards/card_list_coordi
 import 'package:card_battler/game/coordinators/components/enemy/enemies_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/enemy/enemy_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
@@ -18,7 +17,6 @@ class EnemyCoordinatorFactory {
 
   static EnemyTurnSceneCoordinator createEnemyTurnSceneCoordinator({
     required EnemiesModel enemiesModel,
-    required PlayersInfoCoordinator playersInfoCoordinator,
     required EffectProcessor effectProcessor,
     required GamePhaseManager gamePhaseManager,
     required ActivePlayerManager activePlayerManager,
@@ -38,7 +36,6 @@ class EnemyCoordinatorFactory {
             )
             .toList(),
       ),
-      playersInfoCoordinator: playersInfoCoordinator,
       effectProcessor: effectProcessor,
       gamePhaseManager: gamePhaseManager,
       numberOfCardsToDrawPerEnemyTurn: numberOfCardsToDrawPerEnemyTurn,

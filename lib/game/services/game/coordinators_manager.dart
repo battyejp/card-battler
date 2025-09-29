@@ -43,7 +43,6 @@ class CoordinatorsManager {
     _enemyTurnSceneCoordinator =
         EnemyCoordinatorFactory.createEnemyTurnSceneCoordinator(
           enemiesModel: state.enemiesModel,
-          playersInfoCoordinator: _playersInfoCoordinator,
           effectProcessor: effectProcessor,
           gamePhaseManager: gamePhaseManager,
           activePlayerManager: activePlayerManager,
