@@ -12,8 +12,8 @@ class ShopCard extends CardSprite {
   final double _buttonHeight = 60;
 
   @override
-  void onLoad() {
-    super.onLoad();
+  void onMount() {
+    super.onMount();
 
     if (_coordinator.isFaceUp) {
       final costText = TextComponent(
@@ -31,7 +31,10 @@ class ShopCard extends CardSprite {
       final button = FlatButton(
         'Buy',
         size: Vector2(sprite!.srcSize.x, _buttonHeight),
-        position: Vector2(sprite!.srcSize.x / 2, sprite!.srcSize.y + _buttonHeight / 2 + 10),
+        position: Vector2(
+          sprite!.srcSize.x / 2,
+          sprite!.srcSize.y + _buttonHeight / 2 + 10,
+        ),
         onReleased: () {
           if (!_coordinator.isActionDisabled()) {
             coordinator.handleCardPlayed();

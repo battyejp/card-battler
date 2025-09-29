@@ -32,20 +32,20 @@ class CardModel {
   bool isFaceUp;
 
   CardModel copy() => CardModel(
-      name: name,
-      type: type,
-      effects: effects.map((e) => e.copy()).toList(),
-      isFaceUp: isFaceUp,
-      filename: filename,
-    );
+    name: name,
+    type: type,
+    effects: effects.map((e) => e.copy()).toList(),
+    isFaceUp: isFaceUp,
+    filename: filename,
+  );
 
   Map<String, dynamic> toJson() => {
-      'name': name,
-      'type': CardTypeHelper.toJsonString(type),
-      'effects': effects.map((effect) => effect.toJson()).toList(),
-      'faceUp': isFaceUp,
-      'filename': filename,
-    };
+    'name': name,
+    'type': CardTypeHelper.toJsonString(type),
+    'effects': effects.map((effect) => effect.toJson()).toList(),
+    'faceUp': isFaceUp,
+    'filename': filename,
+  };
 }
 
 // CardType enum and helper for JSON conversion
@@ -53,7 +53,10 @@ enum CardType { hero, enemy, shop, unknown }
 
 class CardTypeHelper {
   static CardType fromString(String? value) {
-    if (value == null) return CardType.unknown;
+    if (value == null) {
+      return CardType.unknown;
+    }
+
     switch (value.toLowerCase()) {
       case 'hero':
         return CardType.hero;

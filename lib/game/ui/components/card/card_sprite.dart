@@ -1,8 +1,8 @@
-import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
+import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 
 class CardSprite extends SpriteComponent {
@@ -27,13 +27,20 @@ class CardSprite extends SpriteComponent {
   CardCoordinator get coordinator => _cardCoordinator;
 
   @override
-  void onLoad() {
+  Future<void> onLoad() async {
     super.onLoad();
 
-    //TODO should we pass this in the constructor?
-    final game = findGame() as CardBattlerGame;
-    final image = game.images.fromCache(getFileName);
+    final image = Flame.images.containsKey(getFileName)
+        ? Flame.images.fromCache(getFileName)
+        : await Flame.images.load(getFileName);
+
     sprite = Sprite(image);
+  }
+
+  @override
+  void onMount() {
+    super.onMount();
+    final imageSize = sprite!.image.size;
 
     if (!_isMini && _cardCoordinator.isFaceUp) {
       final name = _cardCoordinator.name;
@@ -47,10 +54,7 @@ class CardSprite extends SpriteComponent {
 
         final firstTextComponent = TextComponent(
           text: firstLine,
-          position: Vector2(
-            image.size.x / 2,
-            image.size.y - image.size.y * 0.25,
-          ),
+          position: Vector2(imageSize.x / 2, imageSize.y - imageSize.y * 0.25),
           anchor: Anchor.center,
           textRenderer: TextPaint(
             style: const TextStyle(fontSize: 32, color: Color(0xFFFFFFFF)),
@@ -59,10 +63,7 @@ class CardSprite extends SpriteComponent {
 
         final secondTextComponent = TextComponent(
           text: secondLine,
-          position: Vector2(
-            image.size.x / 2,
-            image.size.y - image.size.y * 0.15,
-          ),
+          position: Vector2(imageSize.x / 2, imageSize.y - imageSize.y * 0.15),
           anchor: Anchor.center,
           textRenderer: TextPaint(
             style: const TextStyle(fontSize: 32, color: Color(0xFFFFFFFF)),
@@ -74,10 +75,7 @@ class CardSprite extends SpriteComponent {
       } else {
         final textComponent = TextComponent(
           text: name,
-          position: Vector2(
-            image.size.x / 2,
-            image.size.y - image.size.y * 0.2,
-          ),
+          position: Vector2(imageSize.x / 2, imageSize.y - imageSize.y * 0.2),
           anchor: Anchor.center,
           textRenderer: TextPaint(
             style: const TextStyle(fontSize: 40, color: Color(0xFFFFFFFF)),
