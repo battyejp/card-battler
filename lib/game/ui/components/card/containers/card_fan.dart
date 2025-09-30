@@ -340,7 +340,7 @@ class CardFanDraggableArea extends PositionComponent
     // Calculate drop area's absolute position and bounds
     final dropRect = Rect.fromLTWH(
       dropArea.absolutePosition.x,
-      dropArea.absolutePosition.y, // TODO why is it -151.5, y is messed up
+      dropArea.absolutePosition.y,
       dropArea.size.x,
       dropArea.size.y,
     );
