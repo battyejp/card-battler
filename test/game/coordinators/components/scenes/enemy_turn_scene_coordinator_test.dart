@@ -1,7 +1,6 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/enemy/enemy_turn_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,9 +8,6 @@ import 'package:mocktail/mocktail.dart';
 
 class MockCardListCoordinator extends Mock
     implements CardListCoordinator<CardCoordinator> {}
-
-class MockPlayersInfoCoordinator extends Mock
-    implements PlayersInfoCoordinator {}
 
 class MockEffectProcessor extends Mock implements EffectProcessor {}
 

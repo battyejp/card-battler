@@ -13,4 +13,10 @@ class TeamCoordinator {
 
   List<TeamMateCoordinator> get teamMatesCoordinators => _teamMatesCoordinators;
   BasesCoordinator get basesCoordinator => _basesCoordinator;
+
+  List<TeamMateCoordinator> get activePlayers =>
+      _teamMatesCoordinators.where((tm) => tm.playerInfoCoordinator.isActive).toList();
+
+  List<TeamMateCoordinator> get inactivePlayers =>
+      _teamMatesCoordinators.where((tm) => !tm.playerInfoCoordinator.isActive).toList();
 }

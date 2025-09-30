@@ -2,7 +2,6 @@ import 'package:card_battler/game/coordinators/components/cards/card_coordinator
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
@@ -43,10 +42,4 @@ class PlayerCoordinatorFactory {
       effectProcessor: effectProcessor,
     );
   }).toList();
-
-  static PlayersInfoCoordinator createPlayersInfoCoordinator({
-    required List<PlayerCoordinator> playerCoordinators,
-  }) => PlayersInfoCoordinator(
-    players: playerCoordinators.map((pc) => pc.playerInfoCoordinator).toList(),
-  );
 }

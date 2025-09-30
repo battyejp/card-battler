@@ -45,10 +45,7 @@ void main() {
         );
 
         expect(router, isNotNull);
-        expect(
-          services.coordinatorsManager.playerTurnSceneCoordinator,
-          isNotNull,
-        );
+        expect(services.coordinatorsManager.gameSceneCoordinator, isNotNull);
         expect(
           services.coordinatorsManager.enemyTurnSceneCoordinator,
           isNotNull,

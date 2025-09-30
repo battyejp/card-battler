@@ -1,5 +1,5 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 import 'package:card_battler/game/services/card/effects/effect_handler_service.dart';
 import 'package:card_battler/game/services/card/effects/effect_target_resolver.dart';
 
@@ -9,8 +9,8 @@ class EffectProcessor {
   late EffectTargetResolver _targetResolver;
   final EffectHandlerService _effectHandler = EffectHandlerService();
 
-  set playersInfoCoordinator(PlayersInfoCoordinator value) {
-    _targetResolver = EffectTargetResolver(playersInfoCoordinator: value);
+  set teamCoordinator(TeamCoordinator value) {
+    _targetResolver = EffectTargetResolver(value);
   }
 
   void applyCardEffects(List<CardCoordinator> cardCoordinators) {
@@ -19,7 +19,7 @@ class EffectProcessor {
         final targets = _targetResolver.resolveTargets(effect);
 
         for (final target in targets) {
-          _effectHandler.applyEffect(target, effect);
+          _effectHandler.applyEffect(target.playerInfoCoordinator, effect);
         }
       }
     }

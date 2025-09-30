@@ -38,7 +38,7 @@ class TeamMate extends PositionComponent {
         PlayerInfo(
             _coordinator.playerInfoCoordinator,
             isActivePlayer: false,
-            gapBetweenNameAndFirstLabel: cardFan.position.y * 0.9,
+            gapBetweenNameAndFirstLabel: cardFan.position.y * 0.8,
           )
           ..size = Vector2(size.x, size.y)
           ..position = Vector2(0, 0);

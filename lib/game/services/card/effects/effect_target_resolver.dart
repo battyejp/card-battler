@@ -1,22 +1,20 @@
-import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/team_mate_coordinator.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
 
 class EffectTargetResolver {
-  EffectTargetResolver({
-    required PlayersInfoCoordinator playersInfoCoordinator,
-  }) : _playersInfoCoordinator = playersInfoCoordinator;
+  EffectTargetResolver(TeamCoordinator teamCoordinator) : _teamCoordinator = teamCoordinator;
 
-  final PlayersInfoCoordinator _playersInfoCoordinator;
+  final TeamCoordinator _teamCoordinator;
 
-  List<PlayerInfoCoordinator> resolveTargets(EffectModel effect) {
+  List<TeamMateCoordinator> resolveTargets(EffectModel effect) {
     switch (effect.target) {
       case EffectTarget.activePlayer:
-        return [_playersInfoCoordinator.activePlayer];
+        return _teamCoordinator.activePlayers;
       case EffectTarget.allPlayers:
-        return _playersInfoCoordinator.players;
+        return _teamCoordinator.teamMatesCoordinators;
       case EffectTarget.nonActivePlayers:
-        return _playersInfoCoordinator.inactivePlayers;
+        return _teamCoordinator.inactivePlayers;
       default:
         return [];
     }

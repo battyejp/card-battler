@@ -9,7 +9,7 @@ class GameComponentBuilder {
   }) {
     final router = RouterService().createRouter(
       gameSize,
-      services.coordinatorsManager.playerTurnSceneCoordinator,
+      services.coordinatorsManager.gameSceneCoordinator,
       services.coordinatorsManager.enemyTurnSceneCoordinator,
       services.gamePhaseManager,
       services.coordinatorsManager.shopSceneCoordinator,

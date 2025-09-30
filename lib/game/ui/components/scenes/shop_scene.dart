@@ -19,7 +19,7 @@ class ShopScene extends PositionComponent {
     final creditsText =
         TextComponent(
             text:
-                'Credits: ${_coordinator.playerCoordinator.playerInfoCoordinator.credits}',
+                'Credits: ${_coordinator.playerCoordinator.playerInfoCoordinator.credits}', //TODO needs to update when a card is bought
             textRenderer: TextPaint(
               style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 24),
             ),

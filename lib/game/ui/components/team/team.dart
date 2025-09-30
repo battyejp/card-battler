@@ -27,9 +27,7 @@ class Team extends PositionComponent {
     );
     add(border);
 
-    var inactivePlayers = _coordinator.teamMatesCoordinators
-        .where((tm) => !tm.playerInfoCoordinator.isActive)
-        .toList();
+    final inactivePlayers = _coordinator.inactivePlayers;
 
     //TODO different layouts based on number of team members
     final teamMate1 = TeamMate(inactivePlayers[0])

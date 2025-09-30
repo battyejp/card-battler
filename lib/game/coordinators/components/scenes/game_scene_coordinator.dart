@@ -22,7 +22,6 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
     required EnemyTurnCoordinator enemyTurnSceneCoordinator,
     required TurnButtonComponentCoordinator turnButtonComponentCoordinator,
   }) : _playerCoordinator = playerCoordinator,
-      //  _shopCoordinator = shopCoordinator,
        _teamCoordinator = teamCoordinator,
        _enemiesCoordinator = enemiesCoordinator,
        _gamePhaseManager = gamePhaseManager,
@@ -39,7 +38,6 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
   }
 
   late PlayerCoordinator _playerCoordinator;
-  //final ShopSceneCoordinator _shopCoordinator;
   final TeamCoordinator _teamCoordinator;
   final EnemiesCoordinator _enemiesCoordinator;
   final EffectProcessor _effectProcessor;
@@ -50,7 +48,6 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
   final TurnButtonComponentCoordinator _turnButtonComponentCoordinator;
 
   PlayerCoordinator get playerCoordinator => _playerCoordinator;
-  //ShopSceneCoordinator get shopCoordinator => _shopCoordinator;
   TeamCoordinator get teamCoordinator => _teamCoordinator;
   EnemiesCoordinator get enemiesCoordinator => _enemiesCoordinator;
   EffectProcessor get effectProcessor => _effectProcessor;

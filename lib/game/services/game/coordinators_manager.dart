@@ -2,7 +2,7 @@ import 'package:card_battler/game/coordinators/components/enemy/enemy_turn_coord
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/shop_scene_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/team_mate_coordinator.dart';
 import 'package:card_battler/game/factories/enemy_coordinator_factory.dart';
 import 'package:card_battler/game/factories/player_coordinator_factory.dart';
 import 'package:card_battler/game/factories/player_turn_scene_coordinator_factory.dart';
@@ -29,12 +29,21 @@ class CoordinatorsManager {
       effectProcessor: effectProcessor,
     );
 
-    _playersInfoCoordinator =
-        PlayerCoordinatorFactory.createPlayersInfoCoordinator(
-          playerCoordinators: _playerCoordinators,
+    final teamCoordinator =
+        PlayerTurnSceneCoordinatorFactory.createTeamCoordinator(
+          teamMatesCoordinators: _playerCoordinators
+              .map(
+                (pc) => TeamMateCoordinator(
+                  pc.playerInfoCoordinator,
+                  pc.handCardsCoordinator,
+                ),
+              )
+              .toList(),
+          state: state,
         );
 
-    effectProcessor.playersInfoCoordinator = _playersInfoCoordinator;
+    effectProcessor.teamCoordinator = teamCoordinator;
+
     activePlayerManager.players = _playerCoordinators;
     activePlayerManager.setNextPlayerToActive();
 
@@ -50,17 +59,16 @@ class CoordinatorsManager {
           activePlayerManager: activePlayerManager,
         );
 
-    _shopCoordinator = ShopSceneCoordinatorFactory.createShopCoordinator(
+    _shopSceneCoordinator = ShopSceneCoordinatorFactory.createShopCoordinator(
       state: state,
       gamePhaseManager: gamePhaseManager,
       activePlayerManager: activePlayerManager,
     );
 
-    _playerTurnSceneCoordinator =
+    _gameSceneCoordinator =
         PlayerTurnSceneCoordinatorFactory.createPlayerTurnSceneCoordinator(
           playerCoordinators: _playerCoordinators,
           state: state,
-          playersInfoCoordinator: _playersInfoCoordinator,
           dialogService: dialogService,
           enemiesCoordinator: EnemyCoordinatorFactory.createEnemiesCoordinator(
             enemyCoordinators: enemyCoordinators,
@@ -73,19 +81,18 @@ class CoordinatorsManager {
           effectProcessor: effectProcessor,
           activePlayerManager: activePlayerManager,
           enemyTurnSceneCoordinator: _enemyTurnSceneCoordinator,
-          shopCoordinator: _shopCoordinator,
+          shopCoordinator: _shopSceneCoordinator,
+          teamCoordinator: teamCoordinator,
         );
   }
 
-  late GameSceneCoordinator _playerTurnSceneCoordinator;
+  late GameSceneCoordinator _gameSceneCoordinator;
   late EnemyTurnCoordinator _enemyTurnSceneCoordinator;
-  late PlayersInfoCoordinator _playersInfoCoordinator;
-  late ShopSceneCoordinator _shopCoordinator;
+  late ShopSceneCoordinator _shopSceneCoordinator;
   late List<PlayerCoordinator> _playerCoordinators;
 
-  GameSceneCoordinator get playerTurnSceneCoordinator =>
-      _playerTurnSceneCoordinator;
+  GameSceneCoordinator get gameSceneCoordinator => _gameSceneCoordinator;
   EnemyTurnCoordinator get enemyTurnSceneCoordinator =>
       _enemyTurnSceneCoordinator;
-  ShopSceneCoordinator get shopSceneCoordinator => _shopCoordinator;
+  ShopSceneCoordinator get shopSceneCoordinator => _shopSceneCoordinator;
 }
