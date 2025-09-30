@@ -2,6 +2,7 @@ import 'package:card_battler/game/coordinators/components/cards/card_list_coordi
 import 'package:card_battler/game/coordinators/components/scenes/shop_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_display_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
@@ -11,6 +12,7 @@ class ShopSceneCoordinatorFactory {
     required GameStateModel state,
     required GamePhaseManager gamePhaseManager,
     required ActivePlayerManager activePlayerManager,
+    required TeamCoordinator teamCoordinator,
   }) => ShopSceneCoordinator(
     shopDisplayCoordinator: ShopDisplayCoordinator(
       cardCoordinators: CardListCoordinator<ShopCardCoordinator>(
@@ -28,6 +30,6 @@ class ShopSceneCoordinatorFactory {
           )
           .toList(),
     ),
-    playerCoordinator: activePlayerManager.activePlayer!,
+    teamCoordinator: teamCoordinator,
   );
 }

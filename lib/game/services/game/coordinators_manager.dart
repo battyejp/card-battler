@@ -63,6 +63,7 @@ class CoordinatorsManager {
       state: state,
       gamePhaseManager: gamePhaseManager,
       activePlayerManager: activePlayerManager,
+      teamCoordinator: teamCoordinator,
     );
 
     _gameSceneCoordinator =

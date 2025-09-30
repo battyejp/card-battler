@@ -14,8 +14,8 @@ class TeamCoordinator {
   List<TeamMateCoordinator> get teamMatesCoordinators => _teamMatesCoordinators;
   BasesCoordinator get basesCoordinator => _basesCoordinator;
 
-  List<TeamMateCoordinator> get activePlayers =>
-      _teamMatesCoordinators.where((tm) => tm.playerInfoCoordinator.isActive).toList();
+  TeamMateCoordinator get activePlayer =>
+      _teamMatesCoordinators.firstWhere((tm) => tm.playerInfoCoordinator.isActive);
 
   List<TeamMateCoordinator> get inactivePlayers =>
       _teamMatesCoordinators.where((tm) => !tm.playerInfoCoordinator.isActive).toList();

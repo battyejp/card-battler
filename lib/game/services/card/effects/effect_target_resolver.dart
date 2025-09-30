@@ -10,7 +10,7 @@ class EffectTargetResolver {
   List<TeamMateCoordinator> resolveTargets(EffectModel effect) {
     switch (effect.target) {
       case EffectTarget.activePlayer:
-        return _teamCoordinator.activePlayers;
+        return [_teamCoordinator.activePlayer];
       case EffectTarget.allPlayers:
         return _teamCoordinator.teamMatesCoordinators;
       case EffectTarget.nonActivePlayers:

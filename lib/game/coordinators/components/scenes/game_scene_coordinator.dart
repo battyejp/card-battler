@@ -35,6 +35,9 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
        ) {
     gamePhaseManager.addPhaseChangeListener(_onGamePhaseChanged);
     _activePlayerManager.addActivePlayerChangeListener(_onActivePlayerChanged);
+    shopCoordinator.onCardBought = (card) {
+      playerCoordinator.discardCardsCoordinator.addCard(card);
+    };
   }
 
   late PlayerCoordinator _playerCoordinator;

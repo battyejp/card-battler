@@ -1,35 +1,39 @@
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shop/shop_display_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
 
 class ShopSceneCoordinator {
   ShopSceneCoordinator({
     required ShopDisplayCoordinator shopDisplayCoordinator,
     required CardListCoordinator<ShopCardCoordinator> inventoryCoordinators,
-    required PlayerCoordinator playerCoordinator,
+    required TeamCoordinator teamCoordinator,
   }) : _inventoryCoordinators = inventoryCoordinators,
        _shopDisplayCoordinator = shopDisplayCoordinator,
-       _playerCoordinator = playerCoordinator {
+       _teamCoordinator = teamCoordinator {
     _inventoryCoordinators.shuffle();
     refillShop();
   }
 
   final ShopDisplayCoordinator _shopDisplayCoordinator;
   final CardListCoordinator<ShopCardCoordinator> _inventoryCoordinators;
-  final PlayerCoordinator _playerCoordinator;
+  final TeamCoordinator _teamCoordinator;
+
+  Function(ShopCardCoordinator)? onCardBought;
 
   ShopDisplayCoordinator get shopDisplayCoordinator =>
       _shopDisplayCoordinator;
 
-  PlayerCoordinator get playerCoordinator => _playerCoordinator;
+  TeamCoordinator get teamCoordinator => _teamCoordinator;
 
   void _onCardBought(ShopCardCoordinator cardCoordinator) {
-    _playerCoordinator.playerInfoCoordinator.adjustCredits(
+    final playerCoordinator = _teamCoordinator.activePlayer;
+    _teamCoordinator.activePlayer.playerInfoCoordinator.adjustCredits(
       -cardCoordinator.cost,
     );
-    _playerCoordinator.discardCardsCoordinator.addCard(cardCoordinator);
-    _playerCoordinator.playerInfoCoordinator.adjustCredits(
+
+    onCardBought?.call(cardCoordinator);
+    playerCoordinator.playerInfoCoordinator.adjustCredits(
       -cardCoordinator.cost,
     );
   }
