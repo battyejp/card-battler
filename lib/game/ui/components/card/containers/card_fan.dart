@@ -4,10 +4,10 @@ import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
-import 'package:card_battler/game/ui/components/scenes/game_scene.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
@@ -19,7 +19,7 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
     double fanAngle = math.pi / 2, // pi is 180 degrees so pi/2 is 90 degrees
     double fanRadius = 200.0,
     bool mini = false,
-    double cardScale = 0.4,
+    double cardScale = 1.0,
   }) {
     _fanAngle = fanAngle;
     _fanRadius = fanRadius;

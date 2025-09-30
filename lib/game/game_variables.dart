@@ -12,4 +12,8 @@ class GameVariables {
 
   static const int shopDisplayNumberOfColumns = 2;
   static const int shopDisplayNumberOfRows = 3;
+
+  static const double activePlayerCardFanScale = 0.3;
+
+  static const double margin = 10.0;
 }

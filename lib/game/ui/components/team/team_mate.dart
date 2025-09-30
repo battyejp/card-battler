@@ -27,7 +27,6 @@ class TeamMate extends PositionComponent {
 
     final cardFan = CardFan(
       _coordinator.handCardsCoordinator,
-      cardScale: 1.0,
       mini: true,
       fanRadius: 50.0,
     )..position = Vector2(size.x / 2, 110);

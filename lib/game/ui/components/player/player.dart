@@ -8,6 +8,7 @@ import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
 import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:flame/components.dart';
+import 'package:flame/game.dart';
 
 class Player extends PositionComponent {
   Player(PlayerCoordinator coordinator) : _coordinator = coordinator;
@@ -33,7 +34,7 @@ class Player extends PositionComponent {
             _coordinator.handCardsCoordinator,
             gamePhaseManager: _coordinator.gamePhaseManager,
             fanRadius: 150.0,
-            cardScale: 0.3,
+            cardScale: GameVariables.activePlayerCardFanScale,
           )
           ..size = Vector2(size.x, size.y)
           ..position = Vector2(
@@ -44,8 +45,9 @@ class Player extends PositionComponent {
           );
     add(cardFan);
 
-    final deckHeight = size.y * 0.3; //TODO perhaps use image size
-    final deckWidth = size.x / 2 * 0.45; //TODO perhaps use image size
+    final deckHeight = GameVariables.defaultCardBackSizeHeight as double;
+    final deckWidth = GameVariables.defaultCardBackSizeWidth as double;
+    final cardDeckYPosition = size.y - deckHeight - GameVariables.margin;
 
     final deck =
         CardDeck(
@@ -61,14 +63,20 @@ class Player extends PositionComponent {
             isMini: true,
           )
           ..size = Vector2(deckWidth, deckHeight)
-          ..position = Vector2(0, size.y - deckHeight);
+          ..position = Vector2(
+            GameVariables.margin + 10,
+            cardDeckYPosition,
+          ); //10 is to allow for card offsets in deck
 
     add(deck);
 
     final discardPile =
         CardPile(_coordinator.discardCardsCoordinator, isMini: true)
-          ..size = Vector2(size.x / 2 * 0.45, deckHeight)
-          ..position = Vector2(size.x - deckWidth, size.y - deckHeight);
+          ..size = Vector2(deckWidth, deckHeight)
+          ..position = Vector2(
+            size.x - deckWidth - GameVariables.margin,
+            cardDeckYPosition,
+          );
 
     add(discardPile);
 
