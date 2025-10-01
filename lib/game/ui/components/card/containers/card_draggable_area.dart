@@ -1,7 +1,8 @@
 import 'package:card_battler/game/card_battler_game.dart';
-import 'package:card_battler/game/game_variables.dart';
+import 'package:card_battler/game/services/card/card_fan_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
+import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -9,65 +10,32 @@ import 'package:flutter/material.dart';
 
 class CardFanDraggableArea extends PositionComponent
     with DragCallbacks, TapCallbacks {
-  CardFanDraggableArea(GamePhaseManager? gamePhaseManager) {
+  CardFanDraggableArea(
+    GamePhaseManager? gamePhaseManager,
+    CardFan parent,
+    Function(InteractiveCardSprite) onCardPlayed,
+  ) : _cardFan = parent {
     _gamePhaseManager = gamePhaseManager;
+    _cardFanService = CardFanService(
+      _cardFan.size,
+      _gamePhaseManager!,
+      onCardPlayed,
+      add,
+      remove,
+    );
   }
 
+  late CardFanService _cardFanService;
+  final CardFan _cardFan;
+
   late GamePhaseManager? _gamePhaseManager;
-  Function(InteractiveCardSprite)? onCardDropped;
-  late CardBattlerGame _game;
-  late CardDragDropArea _dropArea;
-  InteractiveCardSprite? _selectedCard;
-  bool _isBeingDragged = false;
-  Vector2 _originalPositionBeforeDrag = Vector2.zero();
-  double _originalAngleBeforeDrag = 0.0;
-  var _dragStartPosition = Vector2.zero();
 
   @override
   void onMount() {
     super.onMount();
 
-    _game = findGame() as CardBattlerGame;
-    _dropArea = _findCardDragDropArea()!;
-  }
-
-  void findHighestPriorityCardSpriteAndSelect(Vector2 position) {
-    final components = _game.componentsAtPoint(position);
-
-    // Filter to only InteractiveCardSprite components
-    final cardSprites = components.whereType<InteractiveCardSprite>().toList();
-
-    if (cardSprites.isEmpty) {
-      return;
-    }
-
-    var highestPriority = -1;
-    final comps = cardSprites.whereType<PositionComponent>();
-    for (final comp in comps) {
-      if (comp.priority > highestPriority) {
-        highestPriority = comp.priority;
-      }
-    }
-
-    // Return the topmost card (last in the list)
-    final card = cardSprites.lastWhere(
-      (card) => card.priority == highestPriority,
-    );
-    _selectCard(card);
-  }
-
-  @override
-  void onTapDown(TapDownEvent event) {
-    super.onTapDown(event);
-    _game = findGame() as CardBattlerGame;
-    findHighestPriorityCardSpriteAndSelect(event.canvasPosition);
-  }
-
-  @override
-  void onDragStart(DragStartEvent event) {
-    super.onDragStart(event);
-
-    _dragStartPosition = event.canvasPosition;
+    _cardFanService.game = findGame() as CardBattlerGame;
+    _cardFanService.dropArea = _findCardDragDropArea()!;
   }
 
   CardDragDropArea? _findCardDragDropArea() {
@@ -88,151 +56,33 @@ class CardFanDraggableArea extends PositionComponent
   }
 
   @override
-  void onDragUpdate(DragUpdateEvent event) {
-    super.onDragUpdate(event);
-
-    final deltaY = _dragStartPosition.y - event.canvasStartPosition.y;
-    final deltaX = _dragStartPosition.x - event.canvasStartPosition.x;
-
-    if (_isBeingDragged) {
-      _selectedCard?.position += event.canvasDelta;
-      final canBeDropped = _isCardIntersectingDropArea(
-        _selectedCard!,
-        _dropArea,
-      );
-      _dropArea.isHighlighted = canBeDropped;
-    } else if (deltaX.abs() > 15) {
-      _dragStartPosition = event.canvasStartPosition;
-      findHighestPriorityCardSpriteAndSelect(event.canvasStartPosition);
-    } else if (deltaY.abs() > 30 &&
-        !_isBeingDragged &&
-        _selectedCard != null &&
-        _gamePhaseManager?.currentPhase == GamePhase.playerTakeActionsTurn) {
-      _setupForDraggings(event);
-    }
+  void onTapDown(TapDownEvent event) {
+    super.onTapDown(event);
+    _cardFanService.onTapDown(event.canvasPosition);
   }
 
-  void _setupForDraggings(DragUpdateEvent event) {
-    remove(_duplicateCard!);
-    _originalPositionBeforeDrag = _selectedCard!.position.clone();
-    _originalAngleBeforeDrag = _selectedCard!.angle;
-    _selectedCard?.angle = 0;
-    _isBeingDragged = true;
-    _selectedCard?.position += event.canvasDelta;
-    _dropArea.isVisible = true;
+  @override
+  void onDragStart(DragStartEvent event) {
+    super.onDragStart(event);
+    _cardFanService.onDragStart(event.canvasPosition);
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    super.onDragUpdate(event);
+    _cardFanService.onDragUpdate(event);
   }
 
   @override
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
-    _dragStartPosition = Vector2.zero();
-
-    if (_isBeingDragged) {
-      if (_dropArea.isHighlighted) {
-        _dropArea.isHighlighted = false;
-        onCardDropped?.call(_selectedCard!);
-      } else {
-        // Card was not dropped in the drop area, return to original position
-        _returnDragedCardToOriginalPosition();
-      }
-      _returnDragedCardToOriginalPosition();
-    } else {
-      _deselectCard();
-    }
-  }
-
-  void _returnDragedCardToOriginalPosition() {
-    _isBeingDragged = false;
-    _selectedCard?.position = _originalPositionBeforeDrag;
-    _selectedCard?.angle = _originalAngleBeforeDrag;
-    _selectedCard?.isSelected = false;
-    _selectedCard = null;
-    _dropArea.isVisible = false;
+    _cardFanService.onDragEnd();
   }
 
   @override
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
-    _deselectCard();
-  }
-
-  void _selectCard(InteractiveCardSprite? card) {
-    if (card == null || card == _selectedCard) {
-      return;
-    }
-
-    if (_selectedCard != null) {
-      _removeDuplicateCardAtCenter(_selectedCard!);
-      _selectedCard?.isSelected = false;
-    }
-
-    _showDuplicateCardAtCenter(card);
-    _selectedCard = card;
-    _selectedCard?.isSelected = true;
-  }
-
-  void _deselectCard() {
-    if (_selectedCard == null) {
-      return;
-    }
-
-    _removeDuplicateCardAtCenter(_selectedCard!);
-    _selectedCard?.isSelected = false;
-    _selectedCard = null;
-  }
-
-  SpriteComponent? _duplicateCard;
-  void _showDuplicateCardAtCenter(InteractiveCardSprite card) {
-    card.isSelected = true;
-
-    final image = _game.images.fromCache(card.getFileName);
-    const scale = 0.75;
-
-    _duplicateCard = SpriteComponent(sprite: Sprite(image))
-      ..scale = Vector2.all(scale);
-
-    _duplicateCard!.position = Vector2(
-      size.x / 2 - _duplicateCard!.size.x * scale / 2,
-      -_duplicateCard!.size.y * scale,
-    );
-    add(_duplicateCard!);
-  }
-
-  void _removeDuplicateCardAtCenter(InteractiveCardSprite card) {
-    remove(_duplicateCard!);
-    card.isSelected = false;
-  }
-
-  bool _isCardIntersectingDropArea(
-    InteractiveCardSprite card,
-    CardDragDropArea dropArea,
-  ) {
-    // Calculate card's absolute position and bounds
-    final cardRect = Rect.fromLTWH(
-      card.absolutePosition.x -
-          (GameVariables.defaultCardSizeWidth * card.scale.x) / 2,
-      card.absolutePosition.y -
-          (GameVariables.defaultCardSizeHeight * card.scale.y) / 2,
-      GameVariables.defaultCardSizeWidth * card.scale.x,
-      GameVariables.defaultCardSizeHeight * card.scale.y,
-    );
-
-    // Calculate drop area's absolute position and bounds
-    final dropRect = Rect.fromLTWH(
-      dropArea.absolutePosition.x,
-      dropArea.absolutePosition.y,
-      dropArea.size.x,
-      dropArea.size.y,
-    );
-
-    // print(
-    //   'Card Rect: ${cardRect.left}, ${cardRect.top}, ${cardRect.width}, ${cardRect.height}',
-    // );
-    // print(
-    //   'Drop Rect: ${dropRect.left}, ${dropRect.top}, ${dropRect.width}, ${dropRect.height}',
-    // );
-
-    return cardRect.overlaps(dropRect);
+    _cardFanService.onTapUp();
   }
 
   @override
