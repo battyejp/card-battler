@@ -1,9 +1,8 @@
-import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
-import 'package:card_battler/game/models/shop/shop_card_model.dart';
-import 'package:card_battler/game/services/card/card_loader_service.dart';
 import 'package:card_battler/game/services/game/coordinators_manager.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:card_battler/game/services/initialization/game_state_factory.dart';
+import 'package:card_battler/game/services/initialization/service_container_factory.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/services/ui/dialog_service.dart';
 
@@ -22,58 +21,13 @@ class ServiceContainer {
 }
 
 class GameInitializationService {
-  static Future<GameStateModel> initializeGameState() async {
-    // print('Loading player deck cards...');
-    final playerDeckCards =
-        await CardLoaderService.loadCardsFromJson<CardModel>(
-          'assets/data/hero_starting_cards.json',
-          CardModel.fromJson,
-        );
-    // print('player deck cards loaded: ${playerDeckCards.length}');
+  /// Initializes game state by delegating to GameStateFactory
+  /// @deprecated Use GameStateFactory.create() directly for better separation of concerns
+  static Future<GameStateModel> initializeGameState() =>
+      GameStateFactory.create();
 
-    final enemyCards = await CardLoaderService.loadCardsFromJson<CardModel>(
-      'assets/data/enemy_cards.json',
-      CardModel.fromJson,
-    );
-    // print('enemy cards loaded: ${enemyCards.length}');
-
-    final shopCards = await CardLoaderService.loadCardsFromJson<ShopCardModel>(
-      'assets/data/shop_cards.json',
-      ShopCardModel.fromJson,
-    );
-    // print('shop cards loaded: ${shopCards.length}');
-
-    return GameStateModel.initialize(
-      shopCards,
-      playerDeckCards,
-      enemyCards,
-      [],
-    );
-  }
-
-  static ServiceContainer createServices(GameStateModel state) {
-    final dialogService = DialogService();
-
-    final gamePhaseManager = GamePhaseManager(
-      numberOfPlayers: state.players.length,
-    );
-
-    final activePlayerManager = ActivePlayerManager(
-      gamePhaseManager: gamePhaseManager,
-    );
-
-    final coordinatorsManager = CoordinatorsManager(
-      gamePhaseManager,
-      state,
-      activePlayerManager,
-      dialogService,
-    );
-
-    return ServiceContainer(
-      dialogService: dialogService,
-      gamePhaseManager: gamePhaseManager,
-      activePlayerManager: activePlayerManager,
-      coordinatorsManager: coordinatorsManager,
-    );
-  }
+  /// Creates service container by delegating to ServiceContainerFactory
+  /// @deprecated Use ServiceContainerFactory.create(state) directly for better separation of concerns
+  static ServiceContainer createServices(GameStateModel state) =>
+      ServiceContainerFactory.create(state);
 }
