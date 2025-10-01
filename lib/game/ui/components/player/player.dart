@@ -36,12 +36,7 @@ class Player extends PositionComponent {
             cardScale: GameVariables.activePlayerCardFanScale,
           )
           ..size = Vector2(size.x, size.y)
-          ..position = Vector2(
-            0,
-            0 +
-                size.y -
-                60, //TODO Need to figure out this for all screen sizes, probably based on fan radius
-          );
+          ..position = Vector2(0, size.y);
     add(cardFan);
 
     final deckHeight = GameVariables.defaultCardBackSizeHeight as double;
@@ -63,9 +58,9 @@ class Player extends PositionComponent {
           )
           ..size = Vector2(deckWidth, deckHeight)
           ..position = Vector2(
-            GameVariables.margin + 10,
+            GameVariables.margin + 10, //10 is to allow for card offsets in deck
             cardDeckYPosition,
-          ); //10 is to allow for card offsets in deck
+          );
 
     add(deck);
 

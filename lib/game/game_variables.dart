@@ -16,4 +16,7 @@ class GameVariables {
   static const double activePlayerCardFanScale = 0.3;
 
   static const double margin = 10.0;
+
+  static const fractionOfScreenForTeamComponent =
+      0.375; // 3/8 of the screen height
 }

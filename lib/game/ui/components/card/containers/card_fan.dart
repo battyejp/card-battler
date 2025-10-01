@@ -35,11 +35,11 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
   late double _cardScale;
   final List<CardSprite> _cards = [];
 
-  // @override
-  // void render(Canvas canvas) {
-  //   final paint = Paint()..color = const Color.fromARGB(255, 52, 4, 195);
-  //   canvas.drawRect(size.toRect(), paint);
-  // }
+  @override
+  void render(Canvas canvas) {
+    final paint = Paint()..color = const Color.fromARGB(255, 52, 4, 195);
+    canvas.drawRect(size.toRect(), paint);
+  }
 
   @override
   void updateDisplay() {
