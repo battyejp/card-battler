@@ -77,7 +77,7 @@ void main() {
       });
 
       test('creates base with health from custom config', () {
-        final customConfig = const GameConfiguration(defaultHealth: 50);
+        const customConfig = GameConfiguration(defaultHealth: 50);
         final base = BaseFactory.createBase(
           index: 0,
           config: customConfig,

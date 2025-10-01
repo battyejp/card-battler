@@ -12,16 +12,12 @@ void main() {
       testCards = [
         CardModel(
           name: 'Test Card 1',
-          description: 'Test Description 1',
-          cost: 1,
           type: CardType.hero,
           filename: 'test_card_1.png',
           effects: [],
         ),
         CardModel(
           name: 'Test Card 2',
-          description: 'Test Description 2',
-          cost: 2,
           type: CardType.hero,
           filename: 'test_card_2.png',
           effects: [],
