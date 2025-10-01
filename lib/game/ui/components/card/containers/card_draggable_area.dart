@@ -34,7 +34,9 @@ class CardFanDraggableArea extends PositionComponent
   void onMount() {
     super.onMount();
 
-    _cardFanService.game = findGame() as CardBattlerGame;
+    final game = findGame() as CardBattlerGame;
+    _cardFanService.game = game;
+    _cardFanService.cardSelectionService.game = game;
     _cardFanService.dropArea = _findCardDragDropArea()!;
   }
 
