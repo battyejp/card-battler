@@ -21,26 +21,23 @@ class ShopSceneCoordinator {
 
   Function(ShopCardCoordinator)? onCardBought;
 
-  ShopDisplayCoordinator get shopDisplayCoordinator =>
-      _shopDisplayCoordinator;
+  ShopDisplayCoordinator get shopDisplayCoordinator => _shopDisplayCoordinator;
 
   TeamCoordinator get teamCoordinator => _teamCoordinator;
 
   void _onCardBought(ShopCardCoordinator cardCoordinator) {
-    final playerCoordinator = _teamCoordinator.activePlayer;
     _teamCoordinator.activePlayer.playerInfoCoordinator.adjustCredits(
       -cardCoordinator.cost,
     );
 
     onCardBought?.call(cardCoordinator);
-    playerCoordinator.playerInfoCoordinator.adjustCredits(
-      -cardCoordinator.cost,
-    );
   }
 
   void refillShop() {
     if (_shopDisplayCoordinator.missingCards > 0) {
-      final drawnCards = _inventoryCoordinators.drawCards(_shopDisplayCoordinator.missingCards);
+      final drawnCards = _inventoryCoordinators.drawCards(
+        _shopDisplayCoordinator.missingCards,
+      );
       _shopDisplayCoordinator.addCards(drawnCards);
       _shopDisplayCoordinator.onCardBought = _onCardBought;
     }
