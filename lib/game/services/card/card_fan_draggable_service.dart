@@ -103,19 +103,19 @@ class CardFanDraggableService {
     // Calculate card's absolute position and bounds
     final cardRect = Rect.fromLTWH(
       card.absolutePosition.x -
-          (GameVariables.defaultCardSizeWidth * card.scale.x) / 2,
+          (GameVariables.defaultCardSizeWidth * card.scale.x).toDouble() / 2,
       card.absolutePosition.y -
-          (GameVariables.defaultCardSizeHeight * card.scale.y) / 2,
-      GameVariables.defaultCardSizeWidth * card.scale.x,
-      GameVariables.defaultCardSizeHeight * card.scale.y,
+          (GameVariables.defaultCardSizeHeight * card.scale.y).toDouble() / 2,
+      (GameVariables.defaultCardSizeWidth * card.scale.x).toDouble(),
+      (GameVariables.defaultCardSizeHeight * card.scale.y).toDouble(),
     );
 
     // Calculate drop area's absolute position and bounds
     final dropRect = Rect.fromLTWH(
       dropArea.absolutePosition.x,
       dropArea.absolutePosition.y,
-      dropArea.size.x,
-      dropArea.size.y,
+      dropArea.width,
+      dropArea.height,
     );
 
     // print(
