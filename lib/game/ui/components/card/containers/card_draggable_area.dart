@@ -36,7 +36,6 @@ class CardFanDraggableArea extends PositionComponent
 
     final game = findGame() as CardBattlerGame;
     _cardFanService.game = game;
-    _cardFanService.cardSelectionService.game = game;
     _cardFanService.dropArea = _findCardDragDropArea()!;
   }
 
