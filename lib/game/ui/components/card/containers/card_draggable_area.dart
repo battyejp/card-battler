@@ -1,13 +1,29 @@
+import 'dart:ui';
+
 import 'package:card_battler/game/card_battler_game.dart';
+import 'package:card_battler/game/services/card/card_fan_input_handler.dart';
 import 'package:card_battler/game/services/card/card_fan_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
+import 'package:card_battler/game/ui/rendering/card_fan_visualization_renderer.dart';
+import 'package:card_battler/game/utils/drop_area_finder.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flutter/material.dart';
 
+/// Coordinates input handling for the card fan draggable area.
+/// 
+/// This class acts as a thin coordinator that:
+/// - Receives input events from Flame's event system
+/// - Delegates input handling to CardFanInputHandler
+/// - Delegates rendering to CardFanVisualizationRenderer
+/// - Uses DropAreaFinder to locate the drop area in the component tree
+/// 
+/// Responsibilities are now separated:
+/// - Input handling -> CardFanInputHandler
+/// - Drop area finding -> DropAreaFinder
+/// - Visualization rendering -> CardFanVisualizationRenderer
+/// - Card selection/dragging logic -> CardFanService (and its sub-services)
 class CardFanDraggableArea extends PositionComponent
     with DragCallbacks, TapCallbacks {
   CardFanDraggableArea(
@@ -23,9 +39,13 @@ class CardFanDraggableArea extends PositionComponent
       add,
       remove,
     );
+    _inputHandler = CardFanInputHandler(_cardFanService);
+    _visualizationRenderer = CardFanVisualizationRenderer();
   }
 
   late CardFanService _cardFanService;
+  late CardFanInputHandler _inputHandler;
+  late CardFanVisualizationRenderer _visualizationRenderer;
   final CardFan _cardFan;
 
   late GamePhaseManager? _gamePhaseManager;
@@ -36,60 +56,46 @@ class CardFanDraggableArea extends PositionComponent
 
     final game = findGame() as CardBattlerGame;
     _cardFanService.game = game;
-    _cardFanService.dropArea = _findCardDragDropArea()!;
-  }
-
-  CardDragDropArea? _findCardDragDropArea() {
-    final cardFan = parent;
-    if (cardFan != null) {
-      final player = cardFan.parent;
-      if (player != null) {
-        final gameScene = player.parent;
-        if (gameScene != null) {
-          final dropArea = gameScene.children
-              .whereType<CardDragDropArea>()
-              .firstOrNull;
-          return dropArea;
-        }
-      }
+    
+    // Use DropAreaFinder utility to locate the drop area
+    final dropArea = DropAreaFinder.findDropArea(this);
+    if (dropArea != null) {
+      _cardFanService.dropArea = dropArea;
     }
-    return null;
   }
 
   @override
   void onTapDown(TapDownEvent event) {
     super.onTapDown(event);
-    _cardFanService.onTapDown(event.canvasPosition);
+    _inputHandler.onTapDown(event.canvasPosition);
   }
 
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
-    _cardFanService.onDragStart(event.canvasPosition);
+    _inputHandler.onDragStart(event.canvasPosition);
   }
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
-    _cardFanService.onDragUpdate(event);
+    _inputHandler.onDragUpdate(event);
   }
 
   @override
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
-    _cardFanService.onDragEnd();
+    _inputHandler.onDragEnd();
   }
 
   @override
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
-    _cardFanService.onTapUp();
+    _inputHandler.onTapUp();
   }
 
   @override
   void render(Canvas canvas) {
-    final paint = Paint()
-      ..color = const Color.fromARGB(77, 195, 4, 4); // Red with 0.3 opacity
-    canvas.drawRect(size.toRect(), paint);
+    _visualizationRenderer.render(canvas, size.toRect());
   }
 }
