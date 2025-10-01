@@ -11,7 +11,6 @@ import 'package:card_battler/game/ui/components/common/reactive_position_compone
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
-//TODO so indication of no cards
 class CardFan extends ReactivePositionComponent<CardListCoordinator> {
   CardFan(
     super.coordinator, {
@@ -48,12 +47,9 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
 
     if (!_mini) {
       final draggableArea = CardFanDraggableArea(_gamePhaseManager)
-        ..size = Vector2(size.x, size.y)
+        ..size = Vector2(size.x, _fanRadius * 2)
         ..priority = 1000
-        ..position = Vector2(
-          0,
-          -320,
-        ); //TODO needs to be dynamic based on fanRadius and size could be smaller, can it mirror the size of the fan?
+        ..position = Vector2(0, -_fanRadius * 2);
       add(draggableArea);
 
       draggableArea.onCardDropped = (card) {
@@ -103,49 +99,24 @@ class CardFanDraggableArea extends PositionComponent
 
   late GamePhaseManager? _gamePhaseManager;
   Function(InteractiveCardSprite)? onCardDropped;
-
-  //TODO set these just once
   late CardBattlerGame _game;
   late CardDragDropArea _dropArea;
-
   InteractiveCardSprite? _selectedCard;
+  bool _isBeingDragged = false;
+  Vector2 _originalPositionBeforeDrag = Vector2.zero();
+  double _originalAngleBeforeDrag = 0.0;
+  var _dragStartPosition = Vector2.zero();
 
-  /// Finds the nearest CardSprite to the given position
-  InteractiveCardSprite? findNearestCardSprite(Vector2 position) {
+  @override
+  void onMount() {
+    super.onMount();
+
     _game = findGame() as CardBattlerGame;
-    final components = _game.componentsAtPoint(position);
     _dropArea = _findCardDragDropArea()!;
-
-    // Filter to only CardSprite components
-    final cardSprites = components.whereType<InteractiveCardSprite>().toList();
-
-    if (cardSprites.isEmpty) {
-      return null;
-    }
-
-    if (cardSprites.length == 1) {
-      return cardSprites.first;
-    }
-
-    // Find the nearest card by calculating distance
-    InteractiveCardSprite? nearestCard;
-    var nearestDistance = double.infinity;
-
-    for (final card in cardSprites) {
-      final distance = (card.position - position).length;
-      if (distance < nearestDistance) {
-        nearestDistance = distance;
-        nearestCard = card;
-      }
-    }
-
-    return nearestCard;
   }
 
   void findHighestPriorityCardSpriteAndSelect(Vector2 position) {
-    _game = findGame() as CardBattlerGame;
     final components = _game.componentsAtPoint(position);
-    _dropArea = _findCardDragDropArea()!;
 
     // Filter to only InteractiveCardSprite components
     final cardSprites = components.whereType<InteractiveCardSprite>().toList();
@@ -176,8 +147,6 @@ class CardFanDraggableArea extends PositionComponent
     findHighestPriorityCardSpriteAndSelect(event.canvasPosition);
   }
 
-  var _dragStartPosition = Vector2.zero();
-
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
@@ -185,9 +154,22 @@ class CardFanDraggableArea extends PositionComponent
     _dragStartPosition = event.canvasPosition;
   }
 
-  bool _isBeingDragged = false;
-  Vector2 _originalPositionBeforeDrag = Vector2.zero();
-  double _originalAngleBeforeDrag = 0.0;
+  CardDragDropArea? _findCardDragDropArea() {
+    final cardFan = parent;
+    if (cardFan != null) {
+      final player = cardFan.parent;
+      if (player != null) {
+        final gameScene = player.parent;
+        if (gameScene != null) {
+          final dropArea = gameScene.children
+              .whereType<CardDragDropArea>()
+              .firstOrNull;
+          return dropArea;
+        }
+      }
+    }
+    return null;
+  }
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
@@ -305,24 +287,6 @@ class CardFanDraggableArea extends PositionComponent
     card.isSelected = false;
   }
 
-  //TODO probably delete as could just pass in the drop area from game scene
-  CardDragDropArea? _findCardDragDropArea() {
-    final cardFan = parent;
-    if (cardFan != null) {
-      final player = cardFan.parent;
-      if (player != null) {
-        final gameScene = player.parent;
-        if (gameScene != null) {
-          final dropArea = gameScene.children
-              .whereType<CardDragDropArea>()
-              .firstOrNull;
-          return dropArea;
-        }
-      }
-    }
-    return null;
-  }
-
   bool _isCardIntersectingDropArea(
     InteractiveCardSprite card,
     CardDragDropArea dropArea,
@@ -355,10 +319,10 @@ class CardFanDraggableArea extends PositionComponent
     return cardRect.overlaps(dropRect);
   }
 
-  // @override
-  // void render(Canvas canvas) {
-  //   final paint = Paint()
-  //     ..color = const Color.fromARGB(77, 195, 4, 4); // Red with 0.3 opacity
-  //   canvas.drawRect(size.toRect(), paint);
-  // }
+  @override
+  void render(Canvas canvas) {
+    final paint = Paint()
+      ..color = const Color.fromARGB(77, 195, 4, 4); // Red with 0.3 opacity
+    canvas.drawRect(size.toRect(), paint);
+  }
 }
