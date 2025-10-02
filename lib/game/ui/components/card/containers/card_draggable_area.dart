@@ -1,5 +1,6 @@
 import 'package:card_battler/game/card_battler_game.dart';
-import 'package:card_battler/game/services/card/card_fan_service.dart';
+import 'package:card_battler/game/services/card/card_fan_draggable_service.dart';
+import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
@@ -14,29 +15,37 @@ class CardFanDraggableArea extends PositionComponent
     GamePhaseManager? gamePhaseManager,
     CardFan parent,
     Function(InteractiveCardSprite) onCardPlayed,
-  ) : _cardFan = parent {
-    _gamePhaseManager = gamePhaseManager;
-    _cardFanService = CardFanService(
+  ) : _cardFan = parent,
+      _gamePhaseManager = gamePhaseManager,
+      _onCardPlayed = onCardPlayed {
+    // Initialize services directly
+    _cardSelectionService = CardFanSelectionService(
       _cardFan.size,
-      _gamePhaseManager!,
-      onCardPlayed,
       add,
+      remove,
+    );
+    _cardDraggableService = CardFanDraggableService(
+      _cardSelectionService,
+      _gamePhaseManager!,
+      _onCardPlayed,
       remove,
     );
   }
 
-  late CardFanService _cardFanService;
+  late CardFanSelectionService _cardSelectionService;
+  late CardFanDraggableService _cardDraggableService;
   final CardFan _cardFan;
 
   late GamePhaseManager? _gamePhaseManager;
+  final Function(InteractiveCardSprite) _onCardPlayed;
 
   @override
   void onMount() {
     super.onMount();
 
     final game = findGame() as CardBattlerGame;
-    _cardFanService.game = game;
-    _cardFanService.dropArea = _findCardDragDropArea()!;
+    _cardSelectionService.game = game;
+    _cardDraggableService.dropArea = _findCardDragDropArea()!;
   }
 
   CardDragDropArea? _findCardDragDropArea() {
@@ -59,31 +68,33 @@ class CardFanDraggableArea extends PositionComponent
   @override
   void onTapDown(TapDownEvent event) {
     super.onTapDown(event);
-    _cardFanService.onTapDown(event.canvasPosition);
+    _cardSelectionService.findHighestPriorityCardSpriteAndSelect(
+      event.canvasPosition,
+    );
   }
 
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
-    _cardFanService.onDragStart(event.canvasPosition);
+    _cardDraggableService.onDragStart(event.canvasPosition);
   }
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
-    _cardFanService.onDragUpdate(event);
+    _cardDraggableService.onDragUpdate(event);
   }
 
   @override
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
-    _cardFanService.onDragEnd();
+    _cardDraggableService.onDragEnd();
   }
 
   @override
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
-    _cardFanService.onTapUp();
+    _cardSelectionService.deselectCard();
   }
 
   @override

@@ -4,29 +4,13 @@ import 'package:card_battler/game/coordinators/components/player/player_coordina
 import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/shop_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/base_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/bases_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/team_mate_coordinator.dart';
-import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/services/ui/dialog_service.dart';
 
-class PlayerTurnSceneCoordinatorFactory {
-  static TeamCoordinator createTeamCoordinator({
-    required List<TeamMateCoordinator> teamMatesCoordinators,
-    required GameStateModel state,
-  }) => TeamCoordinator(
-    teamMatesCoordinators: teamMatesCoordinators,
-    basesCoordinator: BasesCoordinator(
-      baseCoordinators: state.bases
-          .map((base) => BaseCoordinator(model: base))
-          .toList(),
-    ),
-  );
-
+class GameSceneCoordinatorFactory {
   static TurnButtonComponentCoordinator createTurnButtonComponentCoordinator({
     required GamePhaseManager gamePhaseManager,
     required ActivePlayerManager activePlayerManager,
@@ -37,9 +21,8 @@ class PlayerTurnSceneCoordinatorFactory {
     activePlayerManager: activePlayerManager,
   );
 
-  static GameSceneCoordinator createPlayerTurnSceneCoordinator({
+  static GameSceneCoordinator createGameSceneCoordinator({
     required List<PlayerCoordinator> playerCoordinators,
-    required GameStateModel state,
     required EnemiesCoordinator enemiesCoordinator,
     required GamePhaseManager gamePhaseManager,
     required EffectProcessor effectProcessor,
@@ -54,12 +37,6 @@ class PlayerTurnSceneCoordinatorFactory {
     ),
     shopCoordinator: shopCoordinator,
     teamCoordinator: teamCoordinator,
-    // teamCoordinator: createTeamCoordinator(
-    //   teamMatesCoordinators: playerCoordinators
-    //       .map((pc) => TeamMateCoordinator(pc.playerInfoCoordinator, pc.handCardsCoordinator))
-    //       .toList(),
-    //   state: state,
-    // ),
     enemiesCoordinator: enemiesCoordinator,
     gamePhaseManager: gamePhaseManager,
     effectProcessor: effectProcessor,
