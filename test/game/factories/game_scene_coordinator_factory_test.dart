@@ -1,5 +1,4 @@
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/factories/enemy_coordinator_factory.dart';
 import 'package:card_battler/game/factories/game_scene_coordinator_factory.dart';

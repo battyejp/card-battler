@@ -36,7 +36,7 @@ class CardFanDraggableArea extends PositionComponent
   late CardFanDraggableService _cardDraggableService;
   final CardFan _cardFan;
 
-  late GamePhaseManager? _gamePhaseManager;
+  final GamePhaseManager? _gamePhaseManager;
   final Function(InteractiveCardSprite) _onCardPlayed;
 
   @override

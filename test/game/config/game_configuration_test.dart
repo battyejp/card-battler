@@ -35,7 +35,6 @@ void main() {
 
       test('allows partial custom values with defaults for others', () {
         const config = GameConfiguration(
-          numberOfPlayers: 5,
           defaultHealth: 20,
         );
 
