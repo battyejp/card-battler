@@ -2,7 +2,7 @@
 /// This externalizes hardcoded values from GameStateModel.initialize()
 class GameConfiguration {
   const GameConfiguration({
-    this.numberOfPlayers = 2,
+    this.numberOfPlayers = 5,
     this.numberOfEnemies = 4,
     this.numberOfBases = 3,
     this.defaultHealth = 10,
