@@ -21,13 +21,9 @@ class ServiceContainer {
 }
 
 class GameInitializationService {
-  /// Initializes game state by delegating to GameStateFactory
-  /// @deprecated Use GameStateFactory.create() directly for better separation of concerns
   static Future<GameStateModel> initializeGameState() =>
       GameStateFactory.create();
 
-  /// Creates service container by delegating to ServiceContainerFactory
-  /// @deprecated Use ServiceContainerFactory.create(state) directly for better separation of concerns
   static ServiceContainer createServices(GameStateModel state) =>
       ServiceContainerFactory.create(state);
 }
