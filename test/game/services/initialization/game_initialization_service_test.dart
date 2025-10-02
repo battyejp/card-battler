@@ -11,6 +11,7 @@ void main() {
         final gameState = _createMockGameState();
         final services = GameInitializationService.createServices(gameState);
 
+        // Add cardsSelectionManagerService argument
         final container = ServiceContainer(
           dialogService: services.dialogService,
           gamePhaseManager: services.gamePhaseManager,
@@ -28,6 +29,7 @@ void main() {
         final gameState = _createMockGameState();
         final services = GameInitializationService.createServices(gameState);
 
+        // Add cardsSelectionManagerService argument
         final container = ServiceContainer(
           dialogService: services.dialogService,
           gamePhaseManager: services.gamePhaseManager,

@@ -47,8 +47,11 @@ void main() {
           config: testConfig,
         );
 
-        expect(enemiesModel.deckCards.allCards.length, equals(testCards.length));
-        expect(identical(enemiesModel.deckCards.allCards, testCards), isTrue);
+        expect(
+          enemiesModel.deckCards.allCards.length,
+          equals(testCards.length),
+        );
+        expect(enemiesModel.deckCards.allCards, equals(testCards));
       });
 
       test('creates EnemiesModel with empty played cards', () {
@@ -69,7 +72,10 @@ void main() {
         );
 
         for (final enemy in enemiesModel.enemies) {
-          expect(enemy.healthModel.currentHealth, equals(testConfig.defaultHealth));
+          expect(
+            enemy.healthModel.currentHealth,
+            equals(testConfig.defaultHealth),
+          );
           expect(enemy.healthModel.maxHealth, equals(testConfig.defaultHealth));
         }
       });
@@ -103,7 +109,10 @@ void main() {
         );
 
         for (final enemy in enemies) {
-          expect(enemy.healthModel.currentHealth, equals(testConfig.defaultHealth));
+          expect(
+            enemy.healthModel.currentHealth,
+            equals(testConfig.defaultHealth),
+          );
           expect(enemy.healthModel.maxHealth, equals(testConfig.defaultHealth));
         }
       });
@@ -111,21 +120,18 @@ void main() {
 
     group('createEnemy', () {
       test('creates enemy with correct index-based name', () {
-        final enemy = EnemyFactory.createEnemy(
-          index: 3,
-          config: testConfig,
-        );
+        final enemy = EnemyFactory.createEnemy(index: 3, config: testConfig);
 
         expect(enemy.name, equals('Enemy 4'));
       });
 
       test('creates enemy with correct health', () {
-        final enemy = EnemyFactory.createEnemy(
-          index: 0,
-          config: testConfig,
-        );
+        final enemy = EnemyFactory.createEnemy(index: 0, config: testConfig);
 
-        expect(enemy.healthModel.currentHealth, equals(testConfig.defaultHealth));
+        expect(
+          enemy.healthModel.currentHealth,
+          equals(testConfig.defaultHealth),
+        );
         expect(enemy.healthModel.maxHealth, equals(testConfig.defaultHealth));
       });
     });
