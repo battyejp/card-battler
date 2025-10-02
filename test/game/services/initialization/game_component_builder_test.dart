@@ -1,6 +1,5 @@
 import 'package:card_battler/game/services/initialization/game_component_builder.dart';
 import 'package:card_battler/game/services/initialization/game_initialization_service.dart';
-import 'package:card_battler/game/ui/components/shared/turn_button_component.dart';
 import 'package:flame/game.dart';
 import 'package:flutter_test/flutter_test.dart';
 
