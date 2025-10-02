@@ -1,6 +1,7 @@
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:flame/components.dart';
+import 'package:flame/flame.dart';
 
 class CardFanSelectionService {
   CardFanSelectionService(
@@ -75,7 +76,7 @@ class CardFanSelectionService {
   void _showDuplicateCardAtCenter(InteractiveCardSprite card) {
     card.isSelected = true;
 
-    final image = game.images.fromCache(card.getFileName);
+    final image = Flame.images.fromCache(card.getFileName);
     const scale = 0.75;
 
     duplicateCard = SpriteComponent(sprite: Sprite(image))
