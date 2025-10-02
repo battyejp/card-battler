@@ -39,8 +39,8 @@ class Player extends PositionComponent {
           ..position = Vector2(0, size.y);
     add(cardFan);
 
-    final deckHeight = GameVariables.defaultCardBackSizeHeight as double;
-    final deckWidth = GameVariables.defaultCardBackSizeWidth as double;
+    final deckHeight = GameVariables.defaultCardBackSizeHeight.toDouble();
+    final deckWidth = GameVariables.defaultCardBackSizeWidth.toDouble();
     final cardDeckYPosition = size.y - deckHeight - GameVariables.margin;
 
     final deck =
