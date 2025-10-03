@@ -1,28 +1,27 @@
 import 'dart:ui' show VoidCallback;
 import 'package:card_battler/game/ui/components/common/confirm_dialog.dart';
 import 'package:flame/game.dart';
+import 'dialog_state.dart';
 
 class DialogService {
   RouterComponent? _router;
+  DialogState _currentState = DialogState();
 
   void initialize({required RouterComponent router}) {
     _router = router;
   }
 
-  VoidCallback? _currentOnConfirm;
-  VoidCallback? _currentOnCancel;
-  String _currentTitle = 'Confirm Action';
-  String _currentMessage = 'Are you sure you want to continue?';
-
   /// Get confirmation dialog route for router setup
   Map<String, Route> getDialogRoutes() => {
-      'confirm': OverlayRoute((context, game) => ConfirmDialog(
-          title: _currentTitle,
-          message: _currentMessage,
-          onCancel: _handleConfirmCancel,
-          onConfirm: _handleConfirmAccept,
-        )),
-    };
+    'confirm': OverlayRoute(
+      (context, game) => ConfirmDialog(
+        title: _currentState.title,
+        message: _currentState.message,
+        onCancel: _handleConfirmCancel,
+        onConfirm: _handleConfirmAccept,
+      ),
+    ),
+  };
 
   /// Show custom confirmation dialog with specified callbacks and messages
   void showCustomConfirmation({
@@ -35,10 +34,12 @@ class DialogService {
       return;
     }
 
-    _currentTitle = title;
-    _currentMessage = message;
-    _currentOnConfirm = onConfirm;
-    _currentOnCancel = onCancel;
+    _currentState = DialogState(
+      title: title,
+      message: message,
+      onConfirm: onConfirm,
+      onCancel: onCancel,
+    );
 
     try {
       _router!.pushNamed('confirm');
@@ -49,11 +50,11 @@ class DialogService {
 
   void _handleConfirmCancel() {
     _router?.pop();
-    _currentOnCancel?.call();
+    _currentState.onCancel?.call();
   }
 
   void _handleConfirmAccept() {
     _router?.pop();
-    _currentOnConfirm?.call();
+    _currentState.onConfirm?.call();
   }
 }
