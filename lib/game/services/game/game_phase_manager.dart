@@ -1,3 +1,5 @@
+import 'package:card_battler/game/services/common/phase_change_notifier.dart';
+
 enum GamePhase {
   /// Initial phase when waiting for player to draw cards
   waitingToDrawPlayerCards,
@@ -18,39 +20,17 @@ enum GamePhase {
   playerCardsDrawnWaitingForPlayerSwitch,
 }
 
-class GamePhaseManager {
+class GamePhaseManager with PhaseChangeNotifier {
   GamePhaseManager({required int numberOfPlayers})
-    : _numberOfPlayers = numberOfPlayers;
+      : _numberOfPlayers = numberOfPlayers;
 
   GamePhase _currentPhase = GamePhase.waitingToDrawPlayerCards;
   GamePhase _previousPhase = GamePhase.waitingToDrawPlayerCards;
   int _round = 0;
   int _playerTurn = 0;
   final int _numberOfPlayers;
-  final List<Function(GamePhase, GamePhase)> _phaseChangeListeners = [];
 
   GamePhase get currentPhase => _currentPhase;
-
-  void addPhaseChangeListener(Function(GamePhase, GamePhase) listener) {
-    _phaseChangeListeners.add(listener);
-  }
-
-  void removePhaseChangeListener(Function(GamePhase, GamePhase) listener) {
-    _phaseChangeListeners.remove(listener);
-  }
-
-  /// Notify all listeners of phase change
-  void _notifyPhaseChange(GamePhase previousPhase, GamePhase newPhase) {
-    for (final listener in _phaseChangeListeners) {
-      try {
-        listener(previousPhase, newPhase);
-      } catch (e) {
-        // Continue notifying other listeners even if one fails
-        // Log error - in production, this should use proper logging
-        // print('Error in phase change listener: $e');
-      }
-    }
-  }
 
   GamePhase nextPhase() {
     switch (_currentPhase) {
@@ -97,8 +77,7 @@ class GamePhaseManager {
     if (_currentPhase != newPhase) {
       _previousPhase = _currentPhase;
       _currentPhase = newPhase;
-
-      _notifyPhaseChange(_previousPhase, newPhase);
+      notifyPhaseChange(_previousPhase, newPhase);
     }
   }
 }
