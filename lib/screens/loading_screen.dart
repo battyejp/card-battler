@@ -1,4 +1,4 @@
-import 'package:card_battler/services/loading_service.dart';
+import 'package:card_battler/screens/services/loading_service.dart';
 import 'package:flutter/material.dart';
 import 'menu_screen.dart';
 
