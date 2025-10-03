@@ -22,7 +22,7 @@ enum GamePhase {
 
 class GamePhaseManager with PhaseChangeNotifier {
   GamePhaseManager({required int numberOfPlayers})
-      : _numberOfPlayers = numberOfPlayers;
+    : _numberOfPlayers = numberOfPlayers;
 
   GamePhase _currentPhase = GamePhase.waitingToDrawPlayerCards;
   GamePhase _previousPhase = GamePhase.waitingToDrawPlayerCards;

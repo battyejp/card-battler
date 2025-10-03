@@ -1,5 +1,5 @@
-import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/coordinators/coordinators_manager.dart';
+import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/initialization/game_initialization_service.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
