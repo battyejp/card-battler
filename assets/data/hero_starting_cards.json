@@ -2,6 +2,7 @@
   {
     "name": "Credits",
     "type": "Hero",
+    "filename": "card_alien_size.png",
     "effectOperator": "And",
     "effects": [
       {
@@ -14,6 +15,7 @@
   {
     "name": "Credits",
     "type": "Hero",
+    "filename": "card_alien2_size.png",
     "effectOperator": "And",
     "effects": [
       {
@@ -26,6 +28,7 @@
   {
     "name": "Credits",
     "type": "Hero",
+    "filename": "card_human_f_size.png",
     "effectOperator": "And",
     "effects": [
       {
@@ -38,6 +41,7 @@
   {
     "name": "Credits",
     "type": "Hero",
+    "filename": "card_human_m_size.png",
     "effectOperator": "And",
     "effects": [
       {
@@ -50,6 +54,7 @@
   {
     "name": "Credits",
     "type": "Hero",
+    "filename": "card_robot_size.png",
     "effectOperator": "And",
     "effects": [
       {
@@ -62,6 +67,7 @@
   {
     "name": "Credits",
     "type": "Hero",
+    "filename": "card_robot2_size.png",
     "effectOperator": "And",
     "effects": [
       {
@@ -74,6 +80,7 @@
   {
     "name": "Credits",
     "type": "Hero",
+    "filename": "card_human_f2_size.png",
     "effectOperator": "And",
     "effects": [
       {
@@ -86,6 +93,7 @@
   {
     "name": "Attack/Heal",
     "type": "Hero",
+    "filename": "card_alien2_size.png",
     "effectOperator": "Or",
     "effects": [
       {
@@ -103,6 +111,7 @@
   {
     "name": "Attack",
     "type": "Hero",
+    "filename": "card_alien_size.png",
     "effectOperator": "And",
     "effects": [
       {
@@ -115,6 +124,7 @@
   {
     "name": "Shield",
     "type": "Hero",
+    "filename": "card_human_f2_size.png",
     "effectOperator": "And",
     "effects": [
       {

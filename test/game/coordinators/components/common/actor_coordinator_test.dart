@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Test implementation of ActorCoordinator
 class TestActorCoordinator extends ActorCoordinator<TestActorCoordinator> {
-  TestActorCoordinator({required super.model});
+  TestActorCoordinator(super.model);
 }
 
 // Mock ActorModel for testing
@@ -22,7 +22,7 @@ void main() {
     setUp(() {
       healthModel = HealthModel(100, 150); // current: 100, max: 150
       mockActorModel = MockActorModel(healthModel: healthModel);
-      actorCoordinator = TestActorCoordinator(model: mockActorModel);
+      actorCoordinator = TestActorCoordinator(mockActorModel);
     });
 
     tearDown(() {

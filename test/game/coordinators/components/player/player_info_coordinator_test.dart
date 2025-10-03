@@ -1,3 +1,5 @@
+import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/models/card/card_list_model.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
@@ -21,7 +23,7 @@ void main() {
         credits: 50,
         attack: 10,
       );
-      playerInfoCoordinator = PlayerInfoCoordinator(model: playerModel);
+      playerInfoCoordinator = PlayerInfoCoordinator(playerModel, CardListCoordinator<CardCoordinator>(cardCoordinators: []));
     });
 
     group('Basic Properties', () {

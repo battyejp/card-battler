@@ -6,6 +6,7 @@ class CardModel {
   CardModel({
     required this.name,
     required this.type,
+    required this.filename,
     List<EffectModel>? effects,
     this.isFaceUp = false,
   }) : effects = effects ?? [];
@@ -18,13 +19,15 @@ class CardModel {
 
     return CardModel(
       name: json['name'],
-      type: json['type'],
+      type: CardTypeHelper.fromString(json['type'] as String?),
+      filename: json['filename'],
       effects: effects,
     );
   }
 
   final String name;
-  final String type;
+  final CardType type;
+  final String filename;
   final List<EffectModel> effects;
   bool isFaceUp;
 
@@ -33,14 +36,51 @@ class CardModel {
     type: type,
     effects: effects.map((e) => e.copy()).toList(),
     isFaceUp: isFaceUp,
+    filename: filename,
   );
 
   Map<String, dynamic> toJson() => {
     'name': name,
-    'type': type,
+    'type': CardTypeHelper.toJsonString(type),
     'effects': effects.map((effect) => effect.toJson()).toList(),
     'faceUp': isFaceUp,
+    'filename': filename,
   };
+}
+
+// CardType enum and helper for JSON conversion
+enum CardType { hero, enemy, shop, unknown }
+
+class CardTypeHelper {
+  static CardType fromString(String? value) {
+    if (value == null) {
+      return CardType.unknown;
+    }
+
+    switch (value.toLowerCase()) {
+      case 'hero':
+        return CardType.hero;
+      case 'enemy':
+        return CardType.enemy;
+      case 'shop':
+        return CardType.shop;
+      default:
+        return CardType.unknown;
+    }
+  }
+
+  static String toJsonString(CardType type) {
+    switch (type) {
+      case CardType.hero:
+        return 'Hero';
+      case CardType.enemy:
+        return 'Enemy';
+      case CardType.shop:
+        return 'Shop';
+      case CardType.unknown:
+        return 'Unknown';
+    }
+  }
 }
 
 /// Loads cards from JSON string

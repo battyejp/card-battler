@@ -1,17 +1,17 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/shop/shop_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/scenes/shop_scene_coordinator.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
 class PlayerTurnLifecycleManager {
   PlayerTurnLifecycleManager({
     required PlayerCoordinator playerCoordinator,
-    required ShopCoordinator shopCoordinator,
+    required ShopSceneCoordinator shopCoordinator,
   }) : _playerCoordinator = playerCoordinator,
        _shopCoordinator = shopCoordinator;
 
   PlayerCoordinator _playerCoordinator;
-  final ShopCoordinator _shopCoordinator;
+  final ShopSceneCoordinator _shopCoordinator;
 
   void updatePlayerCoordinator(PlayerCoordinator newPlayerCoordinator) {
     _playerCoordinator = newPlayerCoordinator;
@@ -42,4 +42,8 @@ class PlayerTurnLifecycleManager {
   bool isTurnOver(GamePhase previousPhase, GamePhase newPhase) =>
       previousPhase == GamePhase.playerTakeActionsTurn &&
       newPhase == GamePhase.waitingToDrawPlayerCards;
+
+  bool hasSwitchedBetweenPlayerAndEnemyTurn(GamePhase newPhase) =>
+      newPhase == GamePhase.enemyTurnWaitingToDrawCards ||
+      newPhase == GamePhase.playerTakeActionsTurn;
 }

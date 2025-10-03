@@ -1,10 +1,12 @@
+import 'package:card_battler/game/config/game_configuration.dart';
+import 'package:card_battler/game/factories/game_state/base_factory.dart';
+import 'package:card_battler/game/factories/game_state/enemy_factory.dart';
+import 'package:card_battler/game/factories/game_state/player_factory.dart';
 import 'package:card_battler/game/models/base/base_model.dart';
 import 'package:card_battler/game/models/card/card_list_model.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/enemy/enemies_model.dart';
-import 'package:card_battler/game/models/enemy/enemy_model.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
-import 'package:card_battler/game/models/shared/health_model.dart';
 import 'package:card_battler/game/models/shop/shop_card_model.dart';
 import 'package:card_battler/game/models/shop/shop_model.dart';
 
@@ -20,45 +22,24 @@ class GameStateModel {
     List<ShopCardModel> shopCards,
     List<CardModel> playerDeckCards,
     List<CardModel> enemyCards,
-    List<BaseModel> bases,
-  ) {
-    final players = List<PlayerModel>.generate(2, (index) {
-      final isActive = index == 0; // Only the first player is active
-      final playerDeckCopy = List<CardModel>.from(
-        playerDeckCards.map((card) => card.copy()),
-      );
-      return PlayerModel(
-        name: 'Player ${index + 1}',
-        healthModel: HealthModel(10, 10),
-        handCards: CardListModel<CardModel>.empty(),
-        deckCards: CardListModel<CardModel>(cards: playerDeckCopy),
-        discardCards: CardListModel<CardModel>.empty(),
-        isActive: isActive,
-        credits: 0,
-        attack: 0,
-      );
-    });
-
-    final enemies = List<EnemyModel>.generate(
-      4,
-      (index) => EnemyModel(
-        name: 'Player ${index + 1}',
-        healthModel: HealthModel(10, 10),
-      ),
+    List<BaseModel> bases, {
+    GameConfiguration config = GameConfiguration.defaultConfig,
+  }) {
+    final players = PlayerFactory.createPlayers(
+      count: config.numberOfPlayers,
+      playerDeckCards: playerDeckCards,
+      config: config,
     );
 
-    final enemiesModel = EnemiesModel(
-      enemies: enemies,
-      deckCards: CardListModel<CardModel>(cards: enemyCards),
-      playedCards: CardListModel<CardModel>.empty(),
+    final enemiesModel = EnemyFactory.createEnemiesModel(
+      count: config.numberOfEnemies,
+      enemyCards: enemyCards,
+      config: config,
     );
 
-    final basesModel = List.generate(
-      3,
-      (index) => BaseModel(
-        name: 'Base ${index + 1}',
-        healthModel: HealthModel(10, 10),
-      ),
+    final basesModel = BaseFactory.createBases(
+      count: config.numberOfBases,
+      config: config,
     );
 
     return GameStateModel(

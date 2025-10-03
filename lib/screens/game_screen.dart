@@ -1,4 +1,5 @@
 import 'package:card_battler/game/card_battler_game.dart';
+import 'package:card_battler/screens/services/game_navigation_service.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
@@ -8,12 +9,13 @@ class GameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final game = CardBattlerGame();
+    final navigationService = GameNavigationService(game);
 
     return Scaffold(
       body: Stack(
         children: [
           GameWidget(game: game),
-          GameOverlay(game: game),
+          GameOverlay(navigationService: navigationService),
         ],
       ),
     );
@@ -21,8 +23,8 @@ class GameScreen extends StatelessWidget {
 }
 
 class GameOverlay extends StatefulWidget {
-  const GameOverlay({required this.game, super.key});
-  final CardBattlerGame game;
+  const GameOverlay({required this.navigationService, super.key});
+  final GameNavigationService navigationService;
 
   @override
   State<GameOverlay> createState() => _GameOverlayState();
@@ -37,36 +39,41 @@ class _GameOverlayState extends State<GameOverlay> {
     });
 
     if (_isInShop) {
-      widget.game.router.pushNamed('enemyTurn');
+      widget.navigationService.navigateToShop();
     } else {
-      widget.game.router.pop();
+      widget.navigationService.navigateBackFromShop();
     }
   }
 
   @override
   Widget build(BuildContext context) => SafeArea(
     child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      padding: const EdgeInsets.all(0.0),
+      child: Column(
         children: [
-          IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.arrow_back, size: 20),
-            style: IconButton.styleFrom(
-              backgroundColor: Colors.black.withAlpha(179),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.all(1),
-            ),
-          ),
-          IconButton(
-            onPressed: _toggleView,
-            icon: Icon(_isInShop ? Icons.gamepad : Icons.shop_2, size: 20),
-            style: IconButton.styleFrom(
-              backgroundColor: Colors.black.withAlpha(179),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.all(1),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: const Icon(Icons.arrow_back, size: 20),
+                style: IconButton.styleFrom(
+                  backgroundColor: Colors.black.withAlpha(179),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.all(0),
+                ),
+              ),
+              IconButton(
+                onPressed: _toggleView,
+                icon: Icon(_isInShop ? Icons.gamepad : Icons.shop_2, size: 20),
+                style: IconButton.styleFrom(
+                  backgroundColor: Colors.black.withAlpha(179),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.all(0),
+                ),
+              ),
+            ],
           ),
         ],
       ),

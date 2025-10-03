@@ -24,17 +24,12 @@ abstract class ReactivePositionComponent<T extends ReactiveCoordinator<T>>
     super.onMount();
     // Listen to model changes and update display automatically
     _modelSubscription = coordinator.changes.listen((_) => updateDisplay());
+    updateDisplay();
   }
 
   @override
   void onRemove() {
     _modelSubscription.cancel();
     super.onRemove();
-  }
-
-  @override
-  void onLoad() {
-    super.onLoad();
-    updateDisplay(); //TODO Should this be in onMount?
   }
 }

@@ -3,7 +3,7 @@ import 'package:card_battler/game/ui/components/enemy/enemy.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-class Enemies extends PositionComponent {
+class Enemies extends PositionComponent with HasVisibility {
   Enemies({required EnemiesCoordinator coordinator})
     : _coordinator = coordinator;
 
@@ -12,7 +12,10 @@ class Enemies extends PositionComponent {
   final double _enemyWidthFactor = 0.2;
 
   @override
-  void onLoad() {
+  void onMount() {
+    super.onMount();
+    removeWhere((component) => true);
+
     final cardWidth = size.x * _enemyWidthFactor;
     final cardHeight = size.y * _enemyHeightFactor;
     final totalCardsWidth = _coordinator.maxNumberOfEnemiesInPlay * cardWidth;

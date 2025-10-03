@@ -2,6 +2,7 @@
   {
     "name": "Health Potion",
     "type": "Shop",
+    "filename": "card_alien2_size.png",
     "cost": 2,
     "effectOperator": "And",
     "effects": [
@@ -15,6 +16,7 @@
   {
     "name": "Health Potion",
     "type": "Shop",
+    "filename": "card_alien_size.png",
     "cost": 2,
     "effectOperator": "And",
     "effects": [
@@ -28,6 +30,7 @@
   {
     "name": "Sword",
     "type": "Shop",
+    "filename": "card_human_f_size.png",
     "cost": 2,
     "effectOperator": "And",
     "effects": [
@@ -41,6 +44,7 @@
   {
     "name": "Cards",
     "type": "Shop",
+    "filename": "card_human_m_size.png",
     "cost": 4,
     "effectOperator": "And",
     "effects": [
@@ -54,6 +58,7 @@
   {
     "name": "Health Potion and Cards",
     "type": "Shop",
+    "filename": "card_robot_size.png",
     "cost": 6,
     "effectOperator": "And",
     "effects": [
@@ -72,6 +77,7 @@
   {
     "name": "Health Potion Base",
     "type": "Shop",
+    "filename": "card_robot2_size.png",
     "cost": 4,
     "effectOperator": "And",
     "effects": [
@@ -85,6 +91,7 @@
   {
     "name": "Mega Health Potion",
     "type": "Shop",
+    "filename": "card_human_f2_size.png",
     "cost": 6,
     "effectOperator": "And",
     "effects": [
@@ -98,6 +105,7 @@
   {
     "name": "Health Potion",
     "type": "Shop",
+    "filename": "card_alien2_size.png",
     "cost": 2,
     "effectOperator": "And",
     "effects": [
@@ -111,6 +119,7 @@
   {
     "name": "Health Potion",
     "type": "Shop",
+    "filename": "card_alien_size.png",
     "cost": 2,
     "effectOperator": "And",
     "effects": [
@@ -124,6 +133,7 @@
   {
     "name": "Sword",
     "type": "Shop",
+    "filename": "card_human_f_size.png",
     "cost": 2,
     "effectOperator": "And",
     "effects": [
@@ -137,6 +147,7 @@
   {
     "name": "Cards",
     "type": "Shop",
+    "filename": "card_human_m_size.png",
     "cost": 4,
     "effectOperator": "And",
     "effects": [
@@ -150,6 +161,7 @@
   {
     "name": "Health Potion and Cards",
     "type": "Shop",
+    "filename": "card_robot_size.png",
     "cost": 6,
     "effectOperator": "And",
     "effects": [
@@ -168,6 +180,7 @@
   {
     "name": "Health Potion Base",
     "type": "Shop",
+    "filename": "card_alien_size.png",
     "cost": 4,
     "effectOperator": "And",
     "effects": [
@@ -181,6 +194,7 @@
   {
     "name": "Mega Health Potion",
     "type": "Shop",
+    "filename": "card_alien2_size.png",
     "cost": 6,
     "effectOperator": "And",
     "effects": [
@@ -194,6 +208,7 @@
   {
     "name": "Health Potion",
     "type": "Shop",
+    "filename": "card_human_f2_size.png",
     "cost": 2,
     "effectOperator": "And",
     "effects": [
@@ -207,6 +222,7 @@
   {
     "name": "Health Potion",
     "type": "Shop",
+    "filename": "card_robot2_size.png",
     "cost": 2,
     "effectOperator": "And",
     "effects": [
@@ -220,6 +236,7 @@
   {
     "name": "Sword",
     "type": "Shop",
+    "filename": "card_robot_size.png",
     "cost": 2,
     "effectOperator": "And",
     "effects": [
@@ -233,6 +250,7 @@
   {
     "name": "Cards",
     "type": "Shop",
+    "filename": "card_human_m_size.png",
     "cost": 4,
     "effectOperator": "And",
     "effects": [
@@ -246,6 +264,7 @@
   {
     "name": "Health Potion and Cards",
     "type": "Shop",
+    "filename": "card_human_f_size.png",
     "cost": 6,
     "effectOperator": "And",
     "effects": [
@@ -264,6 +283,7 @@
   {
     "name": "Health Potion Base",
     "type": "Shop",
+    "filename": "card_alien2_size.png",
     "cost": 4,
     "effectOperator": "And",
     "effects": [
@@ -277,6 +297,7 @@
   {
     "name": "Mega Health Potion",
     "type": "Shop",
+    "filename": "card_alien2_size.png",
     "cost": 6,
     "effectOperator": "And",
     "effects": [

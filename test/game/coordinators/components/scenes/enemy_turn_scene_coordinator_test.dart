@@ -1,7 +1,6 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/scenes/enemy_turn_scene_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/team/players_info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,9 +8,6 @@ import 'package:mocktail/mocktail.dart';
 
 class MockCardListCoordinator extends Mock
     implements CardListCoordinator<CardCoordinator> {}
-
-class MockPlayersInfoCoordinator extends Mock
-    implements PlayersInfoCoordinator {}
 
 class MockEffectProcessor extends Mock implements EffectProcessor {}
 
@@ -21,15 +17,13 @@ void main() {
   group('EnemyTurnSceneCoordinator', () {
     late CardListCoordinator<CardCoordinator> mockPlayedCardsCoordinator;
     late CardListCoordinator<CardCoordinator> mockDeckCardsCoordinator;
-    late PlayersInfoCoordinator mockPlayersInfoCoordinator;
     late EffectProcessor mockEffectProcessor;
     late GamePhaseManager mockGamePhaseManager;
-    late EnemyTurnSceneCoordinator coordinator;
+    late EnemyTurnCoordinator coordinator;
 
     setUp(() {
       mockPlayedCardsCoordinator = MockCardListCoordinator();
       mockDeckCardsCoordinator = MockCardListCoordinator();
-      mockPlayersInfoCoordinator = MockPlayersInfoCoordinator();
       mockEffectProcessor = MockEffectProcessor();
       mockGamePhaseManager = MockGamePhaseManager();
 
@@ -40,10 +34,9 @@ void main() {
         () => mockGamePhaseManager.nextPhase(),
       ).thenReturn(GamePhase.waitingToDrawPlayerCards);
 
-      coordinator = EnemyTurnSceneCoordinator(
+      coordinator = EnemyTurnCoordinator(
         playedCardsCoordinator: mockPlayedCardsCoordinator,
         deckCardsCoordinator: mockDeckCardsCoordinator,
-        playersInfoCoordinator: mockPlayersInfoCoordinator,
         effectProcessor: mockEffectProcessor,
         gamePhaseManager: mockGamePhaseManager,
         numberOfCardsToDrawPerEnemyTurn: 3,
@@ -78,14 +71,6 @@ void main() {
           equals(mockDeckCardsCoordinator),
         );
       });
-
-      test('playersCoordinator getter returns correct instance', () {
-        expect(coordinator.playersCoordinator, isA<PlayersInfoCoordinator>());
-        expect(
-          coordinator.playersCoordinator,
-          equals(mockPlayersInfoCoordinator),
-        );
-      });
     });
 
     group('Card Drawing', () {
@@ -108,37 +93,13 @@ void main() {
       });
     });
 
-    group('Configuration', () {
-      test('numberOfCardsToDrawPerEnemyTurn setter updates turn manager', () {
-        expect(
-          () => coordinator.numberOfCardsToDrawPerEnemyTurn = 5,
-          returnsNormally,
-        );
-      });
-
-      test('numberOfCardsToDrawPerEnemyTurn can be set to zero', () {
-        expect(
-          () => coordinator.numberOfCardsToDrawPerEnemyTurn = 0,
-          returnsNormally,
-        );
-      });
-
-      test('numberOfCardsToDrawPerEnemyTurn can be set to large values', () {
-        expect(
-          () => coordinator.numberOfCardsToDrawPerEnemyTurn = 100,
-          returnsNormally,
-        );
-      });
-    });
-
     group('Initialization', () {
       test('deck is shuffled exactly once during construction', () {
         reset(mockDeckCardsCoordinator);
 
-        EnemyTurnSceneCoordinator(
+        EnemyTurnCoordinator(
           playedCardsCoordinator: mockPlayedCardsCoordinator,
           deckCardsCoordinator: mockDeckCardsCoordinator,
-          playersInfoCoordinator: mockPlayersInfoCoordinator,
           effectProcessor: mockEffectProcessor,
           gamePhaseManager: mockGamePhaseManager,
           numberOfCardsToDrawPerEnemyTurn: 2,

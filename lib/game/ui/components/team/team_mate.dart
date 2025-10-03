@@ -1,16 +1,22 @@
+import 'package:card_battler/game/coordinators/components/team/team_mate_coordinator.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
+import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class TeamMate extends PositionComponent {
+  TeamMate(TeamMateCoordinator coordinator) : _coordinator = coordinator;
+
+  final TeamMateCoordinator _coordinator;
   final double margin = 5.0;
 
   @override
-  void onLoad() {
-    super.onLoad();
+  void onMount() {
+    super.onMount();
+    removeWhere((component) => true);
 
     final playerName = TextComponent(
-      text: "Player Name",
+      text: _coordinator.playerInfoCoordinator.name,
       anchor: Anchor.topCenter,
       position: Vector2(size.x / 2, 10),
       textRenderer: TextPaint(
@@ -20,48 +26,22 @@ class TeamMate extends PositionComponent {
     add(playerName);
 
     final cardFan = CardFan(
-      initialCardCount: 5,
-      cardScale: 1.0,
+      _coordinator.handCardsCoordinator,
       mini: true,
       fanRadius: 50.0,
     )..position = Vector2(size.x / 2, 110);
 
     add(cardFan);
 
-    final healthTextComponent = TextComponent(
-      text: "HP: 10/10",
-      anchor: Anchor.center,
-      position: Vector2(size.x / 2, cardFan.position.y + margin),
-      textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 14, color: Colors.white),
-      ),
-    );
-    add(healthTextComponent);
+    final playerInfo =
+        PlayerInfo(
+            _coordinator.playerInfoCoordinator,
+            isActivePlayer: false,
+            gapBetweenNameAndFirstLabel: cardFan.position.y * 0.8,
+          )
+          ..size = Vector2(size.x, size.y)
+          ..position = Vector2(0, 0);
 
-    final creditsTextComponent = TextComponent(
-      text: "Credits: 0",
-      anchor: Anchor.center,
-      position: Vector2(
-        size.x / 2,
-        healthTextComponent.position.y + healthTextComponent.size.y + margin,
-      ),
-      textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 14, color: Colors.white),
-      ),
-    );
-    add(creditsTextComponent);
-
-    final attackTextComponent = TextComponent(
-      text: "Attack: 5",
-      anchor: Anchor.center,
-      position: Vector2(
-        size.x / 2,
-        creditsTextComponent.position.y + creditsTextComponent.size.y + margin,
-      ),
-      textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 14, color: Colors.white),
-      ),
-    );
-    add(attackTextComponent);
+    add(playerInfo);
   }
 }

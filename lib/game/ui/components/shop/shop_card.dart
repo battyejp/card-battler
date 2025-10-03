@@ -1,36 +1,47 @@
 import 'package:card_battler/game/coordinators/components/shop/shop_card_coordinator.dart';
-import 'package:card_battler/game/ui/components/card/selectable_card.dart';
+import 'package:card_battler/game/ui/components/card/card_sprite.dart';
+import 'package:card_battler/game/ui/components/common/flat_button.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart' hide Card;
+import 'package:flutter/material.dart';
 
-class ShopCard extends SelectableCard {
-  ShopCard(ShopCardCoordinator super.coordinator) : _coordinator = coordinator;
+class ShopCard extends CardSprite {
+  ShopCard(ShopCardCoordinator super.coordinator, super.isMini)
+    : _coordinator = coordinator;
 
   final ShopCardCoordinator _coordinator;
 
   @override
-  String get buttonLabel => "Buy";
+  void onMount() {
+    super.onMount();
 
-  @override
-  void addTextComponent() {
     if (_coordinator.isFaceUp) {
-      // Create name text component positioned higher to make room for cost
-      createNameTextComponent(Vector2(size.x / 2, size.y / 2 - 15));
-      add(nameTextComponent);
-
-      // Add the cost text component
-      final costTextComponent = TextComponent(
-        text: "Cost: ${_coordinator.cost}",
+      final costText = TextComponent(
+        text: '\$${_coordinator.cost}',
+        position: Vector2(sprite!.srcSize.x / 2, 20),
         anchor: Anchor.center,
-        position: Vector2(size.x / 2, size.y / 2 + 15),
         textRenderer: TextPaint(
-          style: const TextStyle(fontSize: 16, color: Colors.white),
+          style: const TextStyle(fontSize: 36, color: Color(0xFFFFD700)),
         ),
       );
-      add(costTextComponent);
-    } else {
-      // Call parent implementation for face-down cards
-      super.addTextComponent();
+
+      add(costText);
+
+      final buttonHeight = sprite!.srcSize.y / 10;
+      final button = FlatButton(
+        'Buy',
+        size: Vector2(sprite!.srcSize.x, buttonHeight),
+        position: Vector2(
+          sprite!.srcSize.x / 2,
+          sprite!.srcSize.y + buttonHeight / 2 + 10,
+        ),
+        onReleased: () {
+          if (!_coordinator.isActionDisabled()) {
+            coordinator.handleCardPlayed();
+          }
+        },
+        disabled: _coordinator.isActionDisabled(),
+      );
+      add(button);
     }
   }
 }

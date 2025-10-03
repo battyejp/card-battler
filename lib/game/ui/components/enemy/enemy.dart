@@ -9,8 +9,10 @@ class Enemy extends PositionComponent {
   late TextComponent _healthTextComponent;
 
   @override
-  void onLoad() {
-    super.onLoad();
+  void onMount() {
+    super.onMount();
+    removeWhere((component) => true);
+
     _healthTextComponent = TextComponent(
       text: _coordinator.healthDisplay,
       anchor: Anchor.center,
