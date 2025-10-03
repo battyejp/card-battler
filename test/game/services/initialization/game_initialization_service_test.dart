@@ -1,5 +1,6 @@
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/initialization/game_initialization_service.dart';
+import 'package:card_battler/game/services/initialization/game_state_factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -196,4 +197,4 @@ void main() {
 
 // Helper function to create a mock game state for testing
 GameStateModel _createMockGameState() =>
-    GameStateModel.initialize([], [], [], []);
+    GameStateFactory.createWithData([], [], [], []);

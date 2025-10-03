@@ -2,6 +2,7 @@ import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/screens/services/game_navigation_service.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'game_screen_overlay_controller.dart';
 
 class GameScreen extends StatelessWidget {
   const GameScreen({super.key});
@@ -31,18 +32,18 @@ class GameOverlay extends StatefulWidget {
 }
 
 class _GameOverlayState extends State<GameOverlay> {
-  bool _isInShop = false;
+  late final GameScreenOverlayController _controller;
 
-  void _toggleView() {
+  @override
+  void initState() {
+    super.initState();
+    _controller = GameScreenOverlayController(widget.navigationService);
+  }
+
+  void _handleToggle() {
     setState(() {
-      _isInShop = !_isInShop;
+      _controller.toggleView();
     });
-
-    if (_isInShop) {
-      widget.navigationService.navigateToShop();
-    } else {
-      widget.navigationService.navigateBackFromShop();
-    }
   }
 
   @override
@@ -65,8 +66,11 @@ class _GameOverlayState extends State<GameOverlay> {
                 ),
               ),
               IconButton(
-                onPressed: _toggleView,
-                icon: Icon(_isInShop ? Icons.gamepad : Icons.shop_2, size: 20),
+                onPressed: _handleToggle,
+                icon: Icon(
+                  _controller.isInShop ? Icons.gamepad : Icons.shop_2,
+                  size: 20,
+                ),
                 style: IconButton.styleFrom(
                   backgroundColor: Colors.black.withAlpha(179),
                   foregroundColor: Colors.white,

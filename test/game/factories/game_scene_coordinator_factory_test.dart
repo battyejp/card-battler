@@ -7,6 +7,7 @@ import 'package:card_battler/game/factories/team_coordinator_factory.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import "package:card_battler/game/services/initialization/game_state_factory.dart";
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/services/ui/dialog_service.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,7 +23,7 @@ void main() {
     late EffectProcessor effectProcessor;
 
     setUp(() {
-      gameState = GameStateModel.initialize([], [], [], []);
+      gameState = GameStateFactory.createWithData([], [], [], []);
       gamePhaseManager = GamePhaseManager(numberOfPlayers: 1);
       activePlayerManager = ActivePlayerManager(
         gamePhaseManager: gamePhaseManager,
@@ -33,23 +34,23 @@ void main() {
 
     group('createTurnButtonComponentCoordinator', () {
       test('creates TurnButtonComponentCoordinator with required services', () {
-        final coordinator = GameSceneCoordinatorFactory
-            .createTurnButtonComponentCoordinator(
-          gamePhaseManager: gamePhaseManager,
-          activePlayerManager: activePlayerManager,
-          dialogService: dialogService,
-        );
+        final coordinator =
+            GameSceneCoordinatorFactory.createTurnButtonComponentCoordinator(
+              gamePhaseManager: gamePhaseManager,
+              activePlayerManager: activePlayerManager,
+              dialogService: dialogService,
+            );
 
         expect(coordinator, isA<TurnButtonComponentCoordinator>());
       });
 
       test('returns non-null coordinator', () {
-        final coordinator = GameSceneCoordinatorFactory
-            .createTurnButtonComponentCoordinator(
-          gamePhaseManager: gamePhaseManager,
-          activePlayerManager: activePlayerManager,
-          dialogService: dialogService,
-        );
+        final coordinator =
+            GameSceneCoordinatorFactory.createTurnButtonComponentCoordinator(
+              gamePhaseManager: gamePhaseManager,
+              activePlayerManager: activePlayerManager,
+              dialogService: dialogService,
+            );
 
         expect(coordinator, isNotNull);
       });
@@ -64,28 +65,31 @@ void main() {
         );
         effectProcessor.teamCoordinator = teamCoordinator;
 
-        final enemyCoordinators = EnemyCoordinatorFactory.createEnemyCoordinators(
-          enemiesModel: gameState.enemiesModel,
-        );
-        final enemiesCoordinator = EnemyCoordinatorFactory.createEnemiesCoordinator(
-          enemyCoordinators: enemyCoordinators,
-          enemiesModel: gameState.enemiesModel,
-          gamePhaseManager: gamePhaseManager,
-          activePlayerManager: activePlayerManager,
-        );
+        final enemyCoordinators =
+            EnemyCoordinatorFactory.createEnemyCoordinators(
+              enemiesModel: gameState.enemiesModel,
+            );
+        final enemiesCoordinator =
+            EnemyCoordinatorFactory.createEnemiesCoordinator(
+              enemyCoordinators: enemyCoordinators,
+              enemiesModel: gameState.enemiesModel,
+              gamePhaseManager: gamePhaseManager,
+              activePlayerManager: activePlayerManager,
+            );
         final enemyTurnSceneCoordinator =
             EnemyCoordinatorFactory.createEnemyTurnSceneCoordinator(
-          enemiesModel: gameState.enemiesModel,
-          effectProcessor: effectProcessor,
-          gamePhaseManager: gamePhaseManager,
-          activePlayerManager: activePlayerManager,
-        );
-        final shopCoordinator = ShopSceneCoordinatorFactory.createShopCoordinator(
-          state: gameState,
-          gamePhaseManager: gamePhaseManager,
-          activePlayerManager: activePlayerManager,
-          teamCoordinator: teamCoordinator,
-        );
+              enemiesModel: gameState.enemiesModel,
+              effectProcessor: effectProcessor,
+              gamePhaseManager: gamePhaseManager,
+              activePlayerManager: activePlayerManager,
+            );
+        final shopCoordinator =
+            ShopSceneCoordinatorFactory.createShopCoordinator(
+              state: gameState,
+              gamePhaseManager: gamePhaseManager,
+              activePlayerManager: activePlayerManager,
+              teamCoordinator: teamCoordinator,
+            );
 
         expect(
           () => GameSceneCoordinatorFactory.createGameSceneCoordinator(

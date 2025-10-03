@@ -1,3 +1,4 @@
+import 'package:card_battler/screens/services/loading_service.dart';
 import 'package:flutter/material.dart';
 import 'menu_screen.dart';
 
@@ -9,38 +10,34 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  bool _isLoaded = false;
+  final _loadingService = LoadingService();
 
   @override
   void initState() {
     super.initState();
-    _simulateLoading();
+    _initializeAndNavigate();
   }
 
-  Future<void> _simulateLoading() async {
-    await Future.delayed(const Duration(seconds: 2));
-    setState(() {
-      _isLoaded = true;
-    });
+  Future<void> _initializeAndNavigate() async {
+    final success = await _loadingService.performInitialization();
+    if (success && mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MenuScreen()),
+      );
+    }
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (!_isLoaded) {
-      return const Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 20),
-              Text('Loading...', style: TextStyle(fontSize: 24)),
-            ],
-          ),
-        ),
-      );
-    } else {
-      return const MenuScreen();
-    }
-  }
+  Widget build(BuildContext context) => const Scaffold(
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(height: 20),
+          Text('Loading...', style: TextStyle(fontSize: 24)),
+        ],
+      ),
+    ),
+  );
 }

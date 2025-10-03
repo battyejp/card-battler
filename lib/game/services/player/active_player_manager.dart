@@ -1,7 +1,8 @@
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'active_player_change_notifier.dart';
 
-class ActivePlayerManager {
+class ActivePlayerManager with ActivePlayerChangeNotifier {
   ActivePlayerManager({required GamePhaseManager gamePhaseManager})
     : _gamePhaseManager = gamePhaseManager {
     _gamePhaseManager.addPhaseChangeListener((previousPhase, newPhase) {
@@ -12,8 +13,6 @@ class ActivePlayerManager {
   }
 
   final GamePhaseManager _gamePhaseManager;
-  final List<Function(PlayerCoordinator newActivePlayer)>
-  _activePlayerChangeListeners = [];
   late List<PlayerCoordinator> _players;
 
   set players(List<PlayerCoordinator> value) => _players = value;
@@ -38,29 +37,7 @@ class ActivePlayerManager {
     }
 
     if (!initActive) {
-      _notifyActivePlayerChange(_activePlayer!);
-    }
-  }
-
-  /// Add a listener for active player changes
-  void addActivePlayerChangeListener(Function(PlayerCoordinator) listener) {
-    _activePlayerChangeListeners.add(listener);
-  }
-
-  /// Remove a active player change listener
-  void removeActivePlayerChangeListener(Function(PlayerCoordinator) listener) {
-    _activePlayerChangeListeners.remove(listener);
-  }
-
-  void _notifyActivePlayerChange(PlayerCoordinator newActivePlayer) {
-    for (final listener in _activePlayerChangeListeners) {
-      try {
-        listener(newActivePlayer);
-      } catch (e) {
-        // Continue notifying other listeners even if one fails
-        // Log error - in production, this should use proper logging
-        // print('Error in phase change listener: $e');
-      }
+      notifyActivePlayerChange(_activePlayer!);
     }
   }
 

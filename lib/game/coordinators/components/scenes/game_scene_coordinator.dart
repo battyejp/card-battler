@@ -10,6 +10,9 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:card_battler/game/services/turn/player_turn_lifecycle_manager.dart';
 
+import 'handlers/game_scene_phase_handler.dart';
+import 'handlers/game_scene_player_handler.dart';
+
 class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
   GameSceneCoordinator({
     required PlayerCoordinator playerCoordinator,
@@ -33,8 +36,18 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
          playerCoordinator: playerCoordinator,
          shopCoordinator: shopCoordinator,
        ) {
-    gamePhaseManager.addPhaseChangeListener(_onGamePhaseChanged);
-    _activePlayerManager.addActivePlayerChangeListener(_onActivePlayerChanged);
+    _phaseHandler = GameScenePhaseHandler(
+      turnLifecycleManager: _turnLifecycleManager,
+      onSceneChange: notifyChange,
+    );
+    _playerHandler = GameScenePlayerHandler(
+      turnLifecycleManager: _turnLifecycleManager,
+      onPlayerChange: _handlePlayerChange,
+    );
+    gamePhaseManager.addPhaseChangeListener(_phaseHandler.handlePhaseChange);
+    _activePlayerManager.addActivePlayerChangeListener(
+      _playerHandler.handleActivePlayerChange,
+    );
     shopCoordinator.onCardBought = (card) {
       playerCoordinator.discardCardsCoordinator.addCard(card);
     };
@@ -60,20 +73,12 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
   EnemyTurnCoordinator get enemyTurnSceneCoordinator =>
       _enemyTurnSceneCoordinator;
 
-  void _onActivePlayerChanged(PlayerCoordinator newActivePlayer) {
-    _playerCoordinator = newActivePlayer;
-    _turnLifecycleManager.updatePlayerCoordinator(newActivePlayer);
-    notifyChange();
-  }
+  late final GameScenePhaseHandler _phaseHandler;
+  late final GameScenePlayerHandler _playerHandler;
 
-  void _onGamePhaseChanged(GamePhase previousPhase, GamePhase newPhase) {
-    if (_turnLifecycleManager.isTurnOver(previousPhase, newPhase)) {
-      _turnLifecycleManager.handleTurnEnd();
-    } else if (_turnLifecycleManager.hasSwitchedBetweenPlayerAndEnemyTurn(
-      newPhase,
-    )) {
-      notifyChange();
-    }
+  void _handlePlayerChange(PlayerCoordinator newActivePlayer) {
+    _playerCoordinator = newActivePlayer;
+    notifyChange();
   }
 
   bool get isEnemyTurnSceneVisible =>
@@ -84,10 +89,11 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
   @override
   void dispose() {
     super.dispose();
-
-    _gamePhaseManager.removePhaseChangeListener(_onGamePhaseChanged);
+    _gamePhaseManager.removePhaseChangeListener(
+      _phaseHandler.handlePhaseChange,
+    );
     _activePlayerManager.removeActivePlayerChangeListener(
-      _onActivePlayerChanged,
+      _playerHandler.handleActivePlayerChange,
     );
   }
 }
