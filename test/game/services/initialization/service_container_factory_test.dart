@@ -1,4 +1,5 @@
 import 'package:card_battler/game/models/game_state_model.dart';
+import 'package:card_battler/game/services/initialization/game_state_factory.dart';
 import 'package:card_battler/game/services/initialization/service_container_factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -11,7 +12,7 @@ void main() {
 
       setUp(() {
         // Create a minimal game state for testing
-        gameState = GameStateModel.initialize([], [], [], []);
+        gameState = GameStateFactory.createWithData([], [], [], []);
       });
 
       test('creates service container with all required services', () {
@@ -70,13 +71,19 @@ void main() {
 
         // Each call should create new service instances
         expect(identical(services1, services2), isFalse);
-        expect(identical(services1.dialogService, services2.dialogService), isFalse);
-        expect(identical(services1.gamePhaseManager, services2.gamePhaseManager), isFalse);
+        expect(
+          identical(services1.dialogService, services2.dialogService),
+          isFalse,
+        );
+        expect(
+          identical(services1.gamePhaseManager, services2.gamePhaseManager),
+          isFalse,
+        );
       });
 
       test('configures game phase manager with correct number of players', () {
         // GameStateModel.initialize always creates 5 players regardless of input
-        final gameStateWithPlayers = GameStateModel.initialize(
+        final gameStateWithPlayers = GameStateFactory.createWithData(
           [], // shop cards
           [], // player deck cards
           [], // enemy cards
@@ -93,7 +100,7 @@ void main() {
 
     group('Error Handling', () {
       test('handles game state with no players gracefully', () {
-        final emptyGameState = GameStateModel.initialize([], [], [], []);
+        final emptyGameState = GameStateFactory.createWithData([], [], [], []);
 
         expect(
           () => ServiceContainerFactory.create(emptyGameState),
