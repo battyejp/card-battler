@@ -47,9 +47,9 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
           CardFanDraggableArea(_gamePhaseManager, this, (card) {
               card.coordinator.handleCardPlayed();
             })
-            ..size = Vector2(size.x, _fanRadius * 2)
+            ..size = Vector2(size.x, size.y)
             ..priority = 1000
-            ..position = Vector2(0, -_fanRadius * 2);
+            ..position = Vector2(0, -size.y);
       add(draggableArea);
     }
   }
