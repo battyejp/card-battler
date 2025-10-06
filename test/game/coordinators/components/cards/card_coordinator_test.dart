@@ -189,7 +189,10 @@ void main() {
           equals(EffectType.attack),
         );
         expect(coordinatorWithEffects.playEffects.effects[0].value, equals(10));
-        expect(coordinatorWithEffects.playEffects.effects[1].type, equals(EffectType.heal));
+        expect(
+          coordinatorWithEffects.playEffects.effects[1].type,
+          equals(EffectType.heal),
+        );
         expect(coordinatorWithEffects.playEffects.effects[1].value, equals(5));
         expect(
           coordinatorWithEffects.playEffects.effects[2].type,

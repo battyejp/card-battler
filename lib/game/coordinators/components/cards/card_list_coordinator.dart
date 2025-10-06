@@ -16,7 +16,8 @@ class CardListCoordinator<T extends CardCoordinator>
 
   bool get isEmpty => _collectionService.isEmpty;
 
-  T drawCard({bool refreshUi = true}) => drawCards(1, refreshUi: refreshUi).first;
+  T drawCard({bool refreshUi = true}) =>
+      drawCards(1, refreshUi: refreshUi).first;
 
   List<T> drawCards(int count, {bool refreshUi = true}) {
     final drawnCards = _collectionService.drawCards(count);
@@ -37,7 +38,7 @@ class CardListCoordinator<T extends CardCoordinator>
   }
 
   void addCard(T card, {bool refreshUi = true}) {
-    addCard(card, refreshUi: refreshUi);
+    addCards([card], refreshUi: refreshUi);
   }
 
   void removeCard(T card, {bool refreshUi = true}) {

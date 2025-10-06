@@ -42,7 +42,7 @@
         {
           "type": "Attack",
           "value": 1,
-          "target": "Enemy"
+          "target": "ActivePlayer"
         }
       ]
     }
@@ -157,7 +157,7 @@
         {
           "type": "Attack",
           "value": 1,
-          "target": "Enemy"
+          "target": "ActivePlayer"
         }
       ]
     }
@@ -274,7 +274,7 @@
         {
           "type": "Attack",
           "value": 1,
-          "target": "Enemy"
+          "target": "ActivePlayer"
         }
       ]
     }
