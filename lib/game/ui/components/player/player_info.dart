@@ -100,7 +100,7 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
   }
 
   void addCardHandAbilities(TextComponent label, String key) {
-    if (key == 'name' && coordinator.hasAProtectionCard()) {
+    if (key == 'name' && coordinator.hasAMaxDamageCard()) {
       add(
         SvgComponent(svg: IconManager.shield())
           ..position =

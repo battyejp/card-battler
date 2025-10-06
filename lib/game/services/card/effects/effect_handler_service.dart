@@ -37,15 +37,13 @@ class EffectHandlerService {
         _handleDrawCardEffect(target, effect);
         break;
       case EffectType.damage:
-        final maxProtectionCardValue = target
-            .getProtectionCardValueWithHighestValue();
-        final damageValue = maxProtectionCardValue != null
-            ? effect.value - maxProtectionCardValue
-            : effect.value;
-
-        _handleDamageEffect(target, damageValue);
+        final minMaxDamageCardValue = target.getMinCardValue(
+          EffectType.maxDamage,
+        );
+        _handleDamageEffect(target, minMaxDamageCardValue ?? effect.value);
         break;
-      case EffectType.protection:
+      // This is a passive effect
+      case EffectType.maxDamage:
         break;
     }
   }

@@ -4,7 +4,7 @@ enum EffectType {
   heal, // is healed
   credits, //gets credits
   drawCard, // draws cards
-  protection; // gets a protection
+  maxDamage; // negates damage up to value
   // placeNewCardOnDeck
   // random skill
   // Search pile

@@ -172,7 +172,7 @@
       "operator": "And",
       "effects": [
         {
-          "type": "Protection",
+          "type": "MaxDamage",
           "value": 1,
           "target": "ActivePlayer"
         }
