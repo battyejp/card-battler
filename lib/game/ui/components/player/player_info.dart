@@ -95,7 +95,7 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
       _labels[key] = label;
       add(label);
 
-      if (key == 'name') {
+      if (key == 'name' && coordinator.hasAProtectionCard()) {
         add(
           SvgComponent(svg: IconManager.shield())
             ..position =

@@ -7,6 +7,7 @@ class ShopCardModel extends CardModel {
     required super.type,
     required super.filename,
     required super.playEffects,
+    required super.handEffects,
     required this.cost,
     super.isFaceUp = true,
   });
@@ -16,8 +17,11 @@ class ShopCardModel extends CardModel {
     type: CardTypeHelper.fromString(json['type'] as String?),
     filename: json['filename'] as String,
     playEffects: json['playEffects'] != null
-        ? PlayEffectsModel.fromJson(json['playEffects'] as Map<String, dynamic>)
-        : PlayEffectsModel.empty(),
+        ? EffectsModel.fromJson(json['playEffects'] as Map<String, dynamic>)
+        : EffectsModel.empty(),
+    handEffects: json['handEffects'] != null
+        ? EffectsModel.fromJson(json['handEffects'] as Map<String, dynamic>)
+        : EffectsModel.empty(),
     cost: json['cost'] as int,
     isFaceUp: json['faceUp'] as bool? ?? true,
   );

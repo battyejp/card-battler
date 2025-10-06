@@ -28,7 +28,7 @@ class MockCardCoordinator extends CardCoordinator {
     when(() => mock.name).thenReturn(name);
     when(() => mock.type).thenReturn(CardType.unknown);
     when(() => mock.isFaceUp).thenReturn(true);
-    when(() => mock.playEffects).thenReturn(PlayEffectsModel.empty());
+    when(() => mock.playEffects).thenReturn(EffectsModel.empty());
     return mock;
   }
 }

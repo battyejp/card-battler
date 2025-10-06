@@ -29,7 +29,7 @@ void main() {
       when(() => mockCardModel.name).thenReturn('Test Card');
       when(() => mockCardModel.type).thenReturn(CardType.unknown);
       when(() => mockCardModel.isFaceUp).thenReturn(true);
-      final mockPlayEffects = PlayEffectsModel.empty();
+      final mockPlayEffects = EffectsModel.empty();
       when(() => mockCardModel.playEffects).thenReturn(mockPlayEffects);
 
       mockGamePhaseManager = MockGamePhaseManager();
@@ -85,8 +85,8 @@ void main() {
         ];
 
         final cardWithEffects = MockCardModel();
-        final playEffectsWithTestEffects = PlayEffectsModel(
-          operator: PlayEffectsOperator.and,
+        final playEffectsWithTestEffects = EffectsModel(
+          operator: EffectsOperator.and,
           effects: testEffects,
         );
         when(() => cardWithEffects.name).thenReturn('Test Card');
@@ -167,8 +167,8 @@ void main() {
         ];
 
         final cardWithEffects = MockCardModel();
-        final playEffectsWithEffects = PlayEffectsModel(
-          operator: PlayEffectsOperator.and,
+        final playEffectsWithEffects = EffectsModel(
+          operator: EffectsOperator.and,
           effects: effects,
         );
         when(() => cardWithEffects.name).thenReturn('Test Card');

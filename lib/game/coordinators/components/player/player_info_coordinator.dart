@@ -2,6 +2,7 @@ import 'package:card_battler/game/coordinators/components/cards/card_coordinator
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/common/actor_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
+import 'package:card_battler/game/models/shared/effect_model.dart';
 
 class PlayerInfoCoordinator extends ActorCoordinator<PlayerInfoCoordinator> {
   PlayerInfoCoordinator(
@@ -20,6 +21,12 @@ class PlayerInfoCoordinator extends ActorCoordinator<PlayerInfoCoordinator> {
 
   bool get isActive => _playerModel.isActive;
   set isActive(bool value) => _playerModel.isActive = value;
+
+  bool hasAProtectionCard() => _handCardsCoordinator.cardCoordinators.any(
+      (cardCoordinator) => cardCoordinator.handEffects.effects.any(
+        (effect) => effect.type == EffectType.protection,
+      ),
+    );
 
   void adjustCredits(int amount) {
     if (_playerModel.credits + amount < 0) {

@@ -167,6 +167,16 @@
           "target": "ActivePlayer"
         }
       ]
+    },
+    "handEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Protection",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
     }
   }
 ]

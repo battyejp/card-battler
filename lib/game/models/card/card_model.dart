@@ -8,33 +8,41 @@ class CardModel {
     required this.type,
     required this.filename,
     required this.playEffects,
+    required this.handEffects,
     this.isFaceUp = false,
   });
 
   factory CardModel.fromJson(Map<String, dynamic> json) {
     final playEffectsJson = json['playEffects'] as Map<String, dynamic>?;
     final playEffects = playEffectsJson != null
-        ? PlayEffectsModel.fromJson(playEffectsJson)
-        : PlayEffectsModel.empty();
+        ? EffectsModel.fromJson(playEffectsJson)
+        : EffectsModel.empty();
+    final handEffectsJson = json['handEffects'] as Map<String, dynamic>?;
+    final handEffects = handEffectsJson != null
+        ? EffectsModel.fromJson(handEffectsJson)
+        : EffectsModel.empty();
 
     return CardModel(
       name: json['name'],
       type: CardTypeHelper.fromString(json['type'] as String?),
       filename: json['filename'],
       playEffects: playEffects,
+      handEffects: handEffects,
     );
   }
 
   final String name;
   final CardType type;
   final String filename;
-  final PlayEffectsModel playEffects;
+  final EffectsModel playEffects;
+  final EffectsModel handEffects;
   bool isFaceUp;
 
   CardModel copy() => CardModel(
     name: name,
     type: type,
     playEffects: playEffects.copy(),
+    handEffects: handEffects.copy(),
     isFaceUp: isFaceUp,
     filename: filename,
   );
@@ -43,6 +51,7 @@ class CardModel {
     'name': name,
     'type': CardTypeHelper.toJsonString(type),
     'playEffects': playEffects.toJson(),
+    'handEffects': handEffects.toJson(),
     'faceUp': isFaceUp,
     'filename': filename,
   };

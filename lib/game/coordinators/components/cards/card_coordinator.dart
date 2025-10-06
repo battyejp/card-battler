@@ -24,7 +24,8 @@ class CardCoordinator {
 
   bool get isFaceUp => _cardModel.isFaceUp;
   set isFaceUp(bool value) => _cardModel.isFaceUp = value;
-  PlayEffectsModel get playEffects => _cardModel.playEffects;
+  EffectsModel get playEffects => _cardModel.playEffects;
+  EffectsModel get handEffects => _cardModel.handEffects;
 
   GamePhaseManager get gamePhaseManager => _gamePhaseManager;
 
