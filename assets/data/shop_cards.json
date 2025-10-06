@@ -4,117 +4,133 @@
     "type": "Item",
     "filename": "card_alien2_size.png",
     "cost": 2,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Heal",
-        "value": 2,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Heal",
+          "value": 2,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Health Potion",
     "type": "Item",
     "filename": "card_alien_size.png",
     "cost": 2,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Heal",
-        "value": 2,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Heal",
+          "value": 2,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Sword",
     "type": "Item",
     "filename": "card_human_f_size.png",
     "cost": 2,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Attack",
-        "value": 1,
-        "target": "Enemy"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 1,
+          "target": "Enemy"
+        }
+      ]
+    }
   },
   {
     "name": "Cards",
     "type": "Item",
     "filename": "card_human_m_size.png",
     "cost": 4,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "DrawCard",
-        "value": 2,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "DrawCard",
+          "value": 2,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Health Potion and Cards",
     "type": "Item",
     "filename": "card_robot_size.png",
     "cost": 6,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Heal",
-        "value": 2,
-        "target": "ActivePlayer"
-      },
-      {
-        "type": "DrawCard",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Heal",
+          "value": 2,
+          "target": "ActivePlayer"
+        },
+        {
+          "type": "DrawCard",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Health Potion Base",
     "type": "Item",
     "filename": "card_robot2_size.png",
     "cost": 4,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Heal",
-        "value": 1,
-        "target": "Base"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Heal",
+          "value": 1,
+          "target": "Base"
+        }
+      ]
+    }
   },
   {
     "name": "Mega Health Potion",
     "type": "Item",
     "filename": "card_human_f2_size.png",
     "cost": 6,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "AllPlayers"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "AllPlayers"
+        }
+      ]
+    }
   },
   {
     "name": "Health Potion",
     "type": "Item",
     "filename": "card_alien2_size.png",
     "cost": 2,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Heal",
-        "value": 2,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Heal",
+          "value": 2,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Health Potion",
@@ -135,177 +151,201 @@
     "type": "Item",
     "filename": "card_human_f_size.png",
     "cost": 2,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Attack",
-        "value": 1,
-        "target": "Enemy"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 1,
+          "target": "Enemy"
+        }
+      ]
+    }
   },
   {
     "name": "Cards",
     "type": "Item",
     "filename": "card_human_m_size.png",
     "cost": 4,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "DrawCard",
-        "value": 2,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "DrawCard",
+          "value": 2,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Health Potion and Cards",
     "type": "Item",
     "filename": "card_robot_size.png",
     "cost": 6,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Heal",
-        "value": 2,
-        "target": "ActivePlayer"
-      },
-      {
-        "type": "DrawCard",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Heal",
+          "value": 2,
+          "target": "ActivePlayer"
+        },
+        {
+          "type": "DrawCard",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Health Potion Base",
     "type": "Item",
     "filename": "card_alien_size.png",
     "cost": 4,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Heal",
-        "value": 1,
-        "target": "Base"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Heal",
+          "value": 1,
+          "target": "Base"
+        }
+      ]
+    }
   },
   {
     "name": "Mega Health Potion",
     "type": "Item",
     "filename": "card_alien2_size.png",
     "cost": 6,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "AllPlayers"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "AllPlayers"
+        }
+      ]
+    }
   },
   {
     "name": "Health Potion",
     "type": "Item",
     "filename": "card_human_f2_size.png",
     "cost": 2,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Heal",
-        "value": 2,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Heal",
+          "value": 2,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Health Potion",
     "type": "Item",
     "filename": "card_robot2_size.png",
     "cost": 2,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Heal",
-        "value": 2,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Heal",
+          "value": 2,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Sword",
     "type": "Item",
     "filename": "card_robot_size.png",
     "cost": 2,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Attack",
-        "value": 1,
-        "target": "Enemy"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 1,
+          "target": "Enemy"
+        }
+      ]
+    }
   },
   {
     "name": "Cards",
     "type": "Item",
     "filename": "card_human_m_size.png",
     "cost": 4,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "DrawCard",
-        "value": 2,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "DrawCard",
+          "value": 2,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Health Potion and Cards",
     "type": "Item",
     "filename": "card_human_f_size.png",
     "cost": 6,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Heal",
-        "value": 2,
-        "target": "ActivePlayer"
-      },
-      {
-        "type": "DrawCard",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Heal",
+          "value": 2,
+          "target": "ActivePlayer"
+        },
+        {
+          "type": "DrawCard",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Health Potion Base",
     "type": "Item",
     "filename": "card_alien2_size.png",
     "cost": 4,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Heal",
-        "value": 1,
-        "target": "Base"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Heal",
+          "value": 1,
+          "target": "Base"
+        }
+      ]
+    }
   },
   {
     "name": "Mega Health Potion",
     "type": "Item",
     "filename": "card_alien2_size.png",
     "cost": 6,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "AllPlayers"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "AllPlayers"
+        }
+      ]
+    }
   }
 ]

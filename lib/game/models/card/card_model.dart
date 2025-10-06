@@ -1,40 +1,40 @@
 import 'dart:convert';
 
-import 'package:card_battler/game/models/shared/effect_model.dart';
+import 'package:card_battler/game/models/shared/play_effects_model.dart';
 
 class CardModel {
   CardModel({
     required this.name,
     required this.type,
     required this.filename,
-    List<EffectModel>? effects,
+    required this.playEffects,
     this.isFaceUp = false,
-  }) : effects = effects ?? [];
+  });
 
   factory CardModel.fromJson(Map<String, dynamic> json) {
-    final effectsJson = json['effects'] as List<dynamic>?;
-    final effects = effectsJson
-        ?.map((effectJson) => EffectModel.fromJson(effectJson))
-        .toList();
+    final playEffectsJson = json['playEffects'] as Map<String, dynamic>?;
+    final playEffects = playEffectsJson != null
+        ? PlayEffectsModel.fromJson(playEffectsJson)
+        : PlayEffectsModel.empty();
 
     return CardModel(
       name: json['name'],
       type: CardTypeHelper.fromString(json['type'] as String?),
       filename: json['filename'],
-      effects: effects,
+      playEffects: playEffects,
     );
   }
 
   final String name;
   final CardType type;
   final String filename;
-  final List<EffectModel> effects;
+  final PlayEffectsModel playEffects;
   bool isFaceUp;
 
   CardModel copy() => CardModel(
     name: name,
     type: type,
-    effects: effects.map((e) => e.copy()).toList(),
+    playEffects: playEffects.copy(),
     isFaceUp: isFaceUp,
     filename: filename,
   );
@@ -42,7 +42,7 @@ class CardModel {
   Map<String, dynamic> toJson() => {
     'name': name,
     'type': CardTypeHelper.toJsonString(type),
-    'effects': effects.map((effect) => effect.toJson()).toList(),
+    'playEffects': playEffects.toJson(),
     'faceUp': isFaceUp,
     'filename': filename,
   };

@@ -2,6 +2,7 @@ import 'package:card_battler/game/coordinators/components/cards/card_coordinator
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
+import 'package:card_battler/game/models/shared/play_effects_model.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,7 +29,8 @@ void main() {
       when(() => mockCardModel.name).thenReturn('Test Card');
       when(() => mockCardModel.type).thenReturn(CardType.unknown);
       when(() => mockCardModel.isFaceUp).thenReturn(true);
-      when(() => mockCardModel.effects).thenReturn([]);
+      final mockPlayEffects = PlayEffectsModel.empty();
+      when(() => mockCardModel.playEffects).thenReturn(mockPlayEffects);
 
       mockGamePhaseManager = MockGamePhaseManager();
       mockActivePlayerManager = MockActivePlayerManager();
@@ -83,18 +85,24 @@ void main() {
         ];
 
         final cardWithEffects = MockCardModel();
+        final playEffectsWithTestEffects = PlayEffectsModel(
+          operator: PlayEffectsOperator.and,
+          effects: testEffects,
+        );
         when(() => cardWithEffects.name).thenReturn('Test Card');
         when(() => cardWithEffects.type).thenReturn(CardType.unknown);
         when(() => cardWithEffects.isFaceUp).thenReturn(true);
-        when(() => cardWithEffects.effects).thenReturn(testEffects);
+        when(
+          () => cardWithEffects.playEffects,
+        ).thenReturn(playEffectsWithTestEffects);
         final coordinatorWithEffects = CardCoordinator(
           cardModel: cardWithEffects,
           gamePhaseManager: mockGamePhaseManager,
           activePlayerManager: mockActivePlayerManager,
         );
 
-        expect(coordinatorWithEffects.effects, equals(testEffects));
-        expect(coordinatorWithEffects.effects.length, equals(2));
+        expect(coordinatorWithEffects.playEffects.effects, equals(testEffects));
+        expect(coordinatorWithEffects.playEffects.effects.length, equals(2));
       });
 
       test('service getters return correct instances', () {
@@ -131,12 +139,12 @@ void main() {
 
     group('Effects Handling', () {
       test('effects list reflects card model effects', () {
-        final effectList = cardCoordinator.effects;
-        expect(effectList, equals(mockCardModel.effects));
+        final effectList = cardCoordinator.playEffects.effects;
+        expect(effectList, equals(mockCardModel.playEffects.effects));
       });
 
       test('empty effects list is handled correctly', () {
-        expect(cardCoordinator.effects, isEmpty);
+        expect(cardCoordinator.playEffects.effects, isEmpty);
       });
 
       test('multiple effects are handled correctly', () {
@@ -159,29 +167,35 @@ void main() {
         ];
 
         final cardWithEffects = MockCardModel();
+        final playEffectsWithEffects = PlayEffectsModel(
+          operator: PlayEffectsOperator.and,
+          effects: effects,
+        );
         when(() => cardWithEffects.name).thenReturn('Test Card');
         when(() => cardWithEffects.type).thenReturn(CardType.unknown);
         when(() => cardWithEffects.isFaceUp).thenReturn(true);
-        when(() => cardWithEffects.effects).thenReturn(effects);
+        when(
+          () => cardWithEffects.playEffects,
+        ).thenReturn(playEffectsWithEffects);
         final coordinatorWithEffects = CardCoordinator(
           cardModel: cardWithEffects,
           gamePhaseManager: mockGamePhaseManager,
           activePlayerManager: mockActivePlayerManager,
         );
 
-        expect(coordinatorWithEffects.effects.length, equals(3));
+        expect(coordinatorWithEffects.playEffects.effects.length, equals(3));
         expect(
-          coordinatorWithEffects.effects[0].type,
+          coordinatorWithEffects.playEffects.effects[0].type,
           equals(EffectType.attack),
         );
-        expect(coordinatorWithEffects.effects[0].value, equals(10));
-        expect(coordinatorWithEffects.effects[1].type, equals(EffectType.heal));
-        expect(coordinatorWithEffects.effects[1].value, equals(5));
+        expect(coordinatorWithEffects.playEffects.effects[0].value, equals(10));
+        expect(coordinatorWithEffects.playEffects.effects[1].type, equals(EffectType.heal));
+        expect(coordinatorWithEffects.playEffects.effects[1].value, equals(5));
         expect(
-          coordinatorWithEffects.effects[2].type,
+          coordinatorWithEffects.playEffects.effects[2].type,
           equals(EffectType.credits),
         );
-        expect(coordinatorWithEffects.effects[2].value, equals(3));
+        expect(coordinatorWithEffects.playEffects.effects[2].value, equals(3));
       });
     });
 

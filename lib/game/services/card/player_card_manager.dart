@@ -63,7 +63,7 @@ class PlayerCardManager {
     cardCoordinator.isFaceUp = false;
     _handCardsCoordinator.removeCard(cardCoordinator);
     _discardCardsCoordinator.addCard(cardCoordinator);
-    _effectProcessor.applyCardEffects([cardCoordinator]);
+    _effectProcessor.applyCardEffects(cardCoordinator);
   }
 
   bool _isDrawingCardsPrevented() => _handCardsCoordinator.hasCards;

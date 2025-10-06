@@ -1,5 +1,5 @@
 import 'package:card_battler/game/models/card/card_model.dart';
-import 'package:card_battler/game/models/shared/effect_model.dart';
+import 'package:card_battler/game/models/shared/play_effects_model.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 
@@ -24,7 +24,7 @@ class CardCoordinator {
 
   bool get isFaceUp => _cardModel.isFaceUp;
   set isFaceUp(bool value) => _cardModel.isFaceUp = value;
-  List<EffectModel> get effects => _cardModel.effects;
+  PlayEffectsModel get playEffects => _cardModel.playEffects;
 
   GamePhaseManager get gamePhaseManager => _gamePhaseManager;
 

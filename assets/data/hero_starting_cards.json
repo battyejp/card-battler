@@ -3,153 +3,170 @@
     "name": "Credits",
     "type": "Item",
     "filename": "cards/light/item/size/credits2.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
     "type": "Item",
     "filename": "cards/light/item/size/credits2.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
     "type": "Item",
     "filename": "cards/light/item/size/credits2.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
     "type": "Item",
     "filename": "/cards/light/item/size/credits2.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
     "type": "Item",
     "filename": "cards/light/item/size/credits2.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
     "type": "Item",
     "filename": "cards/light/item/size/credits2.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
     "type": "Item",
     "filename": "cards/light/item/size/credits2.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
     "type": "Item",
     "filename": "cards/light/item/size/credits2.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Attack/Heal",
     "type": "Item",
     "filename": "cards/light/item/size/med-kit.png",
-    "effectOperator": "Or",
-    "effects": [
-      {
-        "type": "Attack",
-        "value": 1,
-        "target": "ActivePlayer"
-      },
-      {
-        "type": "Heal",
-        "value": 2,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "Or",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 1,
+          "target": "ActivePlayer"
+        },
+        {
+          "type": "Heal",
+          "value": 2,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Attack",
     "type": "Item",
     "filename": "cards/light/item/size/pistol.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Attack",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Shield",
     "type": "Item",
     "filename": "cards/light/item/size/armour.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      },
-      {
-        "type": "Protection",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   }
 ]

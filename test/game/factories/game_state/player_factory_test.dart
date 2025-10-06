@@ -1,6 +1,7 @@
 import 'package:card_battler/game/config/game_configuration.dart';
 import 'package:card_battler/game/factories/game_state/player_factory.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
+import 'package:card_battler/game/models/shared/play_effects_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -14,13 +15,13 @@ void main() {
           name: 'Test Card 1',
           type: CardType.item,
           filename: 'test_card_1.png',
-          effects: [],
+          playEffects: PlayEffectsModel.empty(),
         ),
         CardModel(
           name: 'Test Card 2',
           type: CardType.item,
           filename: 'test_card_2.png',
-          effects: [],
+          playEffects: PlayEffectsModel.empty(),
         ),
       ];
       testConfig = const GameConfiguration(
@@ -52,8 +53,14 @@ void main() {
         for (var i = 0; i < players.length; i++) {
           final player = players[i];
           expect(player.name, equals('Player ${i + 1}'));
-          expect(player.healthModel.currentHealth, equals(testConfig.defaultHealth));
-          expect(player.healthModel.maxHealth, equals(testConfig.defaultHealth));
+          expect(
+            player.healthModel.currentHealth,
+            equals(testConfig.defaultHealth),
+          );
+          expect(
+            player.healthModel.maxHealth,
+            equals(testConfig.defaultHealth),
+          );
           expect(player.credits, equals(testConfig.playerStartingCredits));
           expect(player.attack, equals(testConfig.playerStartingAttack));
           expect(player.deckCards.allCards.length, equals(testCards.length));

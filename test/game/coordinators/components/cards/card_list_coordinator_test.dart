@@ -1,6 +1,7 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
+import 'package:card_battler/game/models/shared/play_effects_model.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,7 +28,7 @@ class MockCardCoordinator extends CardCoordinator {
     when(() => mock.name).thenReturn(name);
     when(() => mock.type).thenReturn(CardType.unknown);
     when(() => mock.isFaceUp).thenReturn(true);
-    when(() => mock.effects).thenReturn([]);
+    when(() => mock.playEffects).thenReturn(PlayEffectsModel.empty());
     return mock;
   }
 }
