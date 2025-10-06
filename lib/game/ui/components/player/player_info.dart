@@ -21,15 +21,15 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
 
   @override
   void updateDisplay() {
-    //Don't call super which clears children
+    super.updateDisplay();
 
-    if (hasChildren) {
-      _labels['health']?.text = coordinator.healthDisplay;
-      _labels['attack']?.text = 'Attack: ${coordinator.attack}';
-      _labels['credits']?.text = 'Credits: ${coordinator.credits}';
-      _labels['name']?.text = coordinator.name;
-      return;
-    }
+    // if (hasChildren) {
+    //   _labels['health']?.text = coordinator.healthDisplay;
+    //   _labels['attack']?.text = 'Attack: ${coordinator.attack}';
+    //   _labels['credits']?.text = 'Credits: ${coordinator.credits}';
+    //   _labels['name']?.text = coordinator.name;
+    //   return;
+    // }
 
     final statKeys = ['name', 'health', 'attack', 'credits'];
     const padding = 10.0;
@@ -94,20 +94,22 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
 
       _labels[key] = label;
       add(label);
-
-      if (key == 'name' && coordinator.hasAProtectionCard()) {
-        add(
-          SvgComponent(svg: IconManager.shield())
-            ..position =
-                Vector2(
-                  label.position.x + label.size.x / 2 + 10,
-                  label.position.y - (_isActivePlayer ? 0 : 3),
-                ) // Adjust Y position as needed
-            ..size = Vector2.all(20),
-        );
-      }
-
+      addCardHandAbilities(label, key);
       lastLabel = label;
+    }
+  }
+
+  void addCardHandAbilities(TextComponent label, String key) {
+    if (key == 'name' && coordinator.hasAProtectionCard()) {
+      add(
+        SvgComponent(svg: IconManager.shield())
+          ..position =
+              Vector2(
+                label.position.x + label.size.x / 2 + 10,
+                label.position.y - (_isActivePlayer ? 0 : 3),
+              ) // Adjust Y position as needed
+          ..size = Vector2.all(20),
+      );
     }
   }
 }

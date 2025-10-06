@@ -1,5 +1,6 @@
 import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/services/card/card_collection_service.dart';
 
 class CardListCoordinator<T extends CardCoordinator>
@@ -62,4 +63,8 @@ class CardListCoordinator<T extends CardCoordinator>
   void shuffle() {
     _collectionService.shuffle();
   }
+
+  bool containsCardOfType(EffectType type) => _collectionService.cardCoordinators.any((card) =>
+        card.playEffects.effects.any((effect) => effect.type == type) ||
+        card.handEffects.effects.any((effect) => effect.type == type));
 }

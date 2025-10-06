@@ -22,11 +22,7 @@ class PlayerInfoCoordinator extends ActorCoordinator<PlayerInfoCoordinator> {
   bool get isActive => _playerModel.isActive;
   set isActive(bool value) => _playerModel.isActive = value;
 
-  bool hasAProtectionCard() => _handCardsCoordinator.cardCoordinators.any(
-      (cardCoordinator) => cardCoordinator.handEffects.effects.any(
-        (effect) => effect.type == EffectType.protection,
-      ),
-    );
+  bool hasAProtectionCard() => _handCardsCoordinator.containsCardOfType(EffectType.protection);
 
   void adjustCredits(int amount) {
     if (_playerModel.credits + amount < 0) {
@@ -45,10 +41,14 @@ class PlayerInfoCoordinator extends ActorCoordinator<PlayerInfoCoordinator> {
     _playerModel.attack += amount;
     notifyChange();
   }
-
+  
   void resetCreditsAndAttack() {
     _playerModel.credits = 0;
     _playerModel.attack = 0;
+    notifyChange();
+  }
+
+  void abilitiesCheck() {
     notifyChange();
   }
 }
