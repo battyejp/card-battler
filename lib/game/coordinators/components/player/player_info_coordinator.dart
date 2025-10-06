@@ -22,7 +22,11 @@ class PlayerInfoCoordinator extends ActorCoordinator<PlayerInfoCoordinator> {
   bool get isActive => _playerModel.isActive;
   set isActive(bool value) => _playerModel.isActive = value;
 
-  bool hasAProtectionCard() => _handCardsCoordinator.containsCardOfType(EffectType.protection);
+  bool hasAProtectionCard() => getProtectionCards().isNotEmpty;
+
+  List<CardCoordinator> getProtectionCards() => _handCardsCoordinator.getCardsOfType(EffectType.protection);
+
+  int? getProtectionCardValueWithHighestValue() => handCardsCoordinator.getEffectMaxValueOfType(EffectType.protection);
 
   void adjustCredits(int amount) {
     if (_playerModel.credits + amount < 0) {

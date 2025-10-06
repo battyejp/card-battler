@@ -14,8 +14,8 @@ class EffectHandlerService {
     target.adjustCredits(effect.value);
   }
 
-  void _handleDamageEffect(PlayerInfoCoordinator target, EffectModel effect) {
-    target.adjustHealth(-effect.value);
+  void _handleDamageEffect(PlayerInfoCoordinator target, int value) {
+    target.adjustHealth(-value);
   }
 
   void _handleDrawCardEffect(PlayerInfoCoordinator target, EffectModel effect) {
@@ -37,7 +37,13 @@ class EffectHandlerService {
         _handleDrawCardEffect(target, effect);
         break;
       case EffectType.damage:
-        _handleDamageEffect(target, effect);
+        final maxProtectionCardValue = target
+            .getProtectionCardValueWithHighestValue();
+        final damageValue = maxProtectionCardValue != null
+            ? effect.value - maxProtectionCardValue
+            : effect.value;
+
+        _handleDamageEffect(target, damageValue);
         break;
       case EffectType.protection:
         break;

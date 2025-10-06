@@ -67,4 +67,26 @@ class CardListCoordinator<T extends CardCoordinator>
   bool containsCardOfType(EffectType type) => _collectionService.cardCoordinators.any((card) =>
         card.playEffects.effects.any((effect) => effect.type == type) ||
         card.handEffects.effects.any((effect) => effect.type == type));
+
+  List<T> getCardsOfType(EffectType type) => _collectionService.cardCoordinators.where((card) =>
+        card.playEffects.effects.any((effect) => effect.type == type) ||
+        card.handEffects.effects.any((effect) => effect.type == type)).toList();
+
+   int? getEffectMaxValueOfType(EffectType type) {
+    final cardsOfType = getCardsOfType(type);
+    if (cardsOfType.isEmpty) {
+      return null;
+    }
+
+    return cardsOfType.map((card) {
+      final playEffectValues = card.playEffects.effects
+          .where((effect) => effect.type == type)
+          .map((effect) => effect.value);
+      final handEffectValues = card.handEffects.effects
+          .where((effect) => effect.type == type)
+          .map((effect) => effect.value);
+      return [...playEffectValues, ...handEffectValues].fold<int>(
+          0, (prev, element) => element > prev ? element : prev);
+    }).fold<int>(0, (prev, element) => element > prev ? element : prev);
+  }
 }
