@@ -1,5 +1,6 @@
 import 'package:card_battler/game/services/initialization/game_component_builder.dart';
 import 'package:card_battler/game/services/initialization/game_initialization_service.dart';
+import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/game.dart';
 
 class CardBattlerGame extends FlameGame {
@@ -20,6 +21,8 @@ class CardBattlerGame extends FlameGame {
 
     await images.loadAllImages();
     final gameState = await GameInitializationService.initializeGameState();
+    await IconManager.loadAllImages();
+
     final services = GameInitializationService.createServices(gameState);
     router = GameComponentBuilder.buildGameComponents(
       gameSize: size,

@@ -1,8 +1,11 @@
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
+import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
+import 'package:flame_svg/svg_component.dart';
 import 'package:flutter/material.dart';
 
+//TODO look at hardcode layout parameters in hear and base on screen size
 class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
   PlayerInfo(
     super.coordinator, {
@@ -91,6 +94,19 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
 
       _labels[key] = label;
       add(label);
+
+      if (key == 'name') {
+        add(
+          SvgComponent(svg: IconManager.shield())
+            ..position =
+                Vector2(
+                  label.position.x + label.size.x / 2 + 10,
+                  label.position.y - (_isActivePlayer ? 0 : 3),
+                ) // Adjust Y position as needed
+            ..size = Vector2.all(20),
+        );
+      }
+
       lastLabel = label;
     }
   }
