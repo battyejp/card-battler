@@ -12,13 +12,13 @@ void main() {
       testCards = [
         CardModel(
           name: 'Test Card 1',
-          type: CardType.hero,
+          type: CardType.item,
           filename: 'test_card_1.png',
           effects: [],
         ),
         CardModel(
           name: 'Test Card 2',
-          type: CardType.hero,
+          type: CardType.item,
           filename: 'test_card_2.png',
           effects: [],
         ),

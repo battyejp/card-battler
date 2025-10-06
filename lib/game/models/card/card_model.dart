@@ -49,7 +49,7 @@ class CardModel {
 }
 
 // CardType enum and helper for JSON conversion
-enum CardType { hero, enemy, shop, unknown }
+enum CardType { item, enemy, ally, unknown }
 
 class CardTypeHelper {
   static CardType fromString(String? value) {
@@ -58,12 +58,12 @@ class CardTypeHelper {
     }
 
     switch (value.toLowerCase()) {
-      case 'hero':
-        return CardType.hero;
+      case 'item':
+        return CardType.item;
       case 'enemy':
         return CardType.enemy;
-      case 'shop':
-        return CardType.shop;
+      case 'ally':
+        return CardType.ally;
       default:
         return CardType.unknown;
     }
@@ -71,12 +71,12 @@ class CardTypeHelper {
 
   static String toJsonString(CardType type) {
     switch (type) {
-      case CardType.hero:
-        return 'Hero';
+      case CardType.item:
+        return 'Item';
       case CardType.enemy:
         return 'Enemy';
-      case CardType.shop:
-        return 'Shop';
+      case CardType.ally:
+        return 'Ally';
       case CardType.unknown:
         return 'Unknown';
     }
