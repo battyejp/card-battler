@@ -120,9 +120,9 @@
     }
   },
   {
-    "name": "Attack/Heal",
+    "name": "Orb of Life and Death",
     "type": "Item",
-    "filename": "cards/light/item/size/med-kit.png",
+    "filename": "cards/light/item/size/orb.png",
     "playEffects": {
       "operator": "Or",
       "effects": [
@@ -140,7 +140,7 @@
     }
   },
   {
-    "name": "Attack",
+    "name": "Laser Pistol",
     "type": "Item",
     "filename": "cards/light/item/size/pistol.png",
     "playEffects": {

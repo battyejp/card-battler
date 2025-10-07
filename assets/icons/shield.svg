@@ -1,17 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="shieldGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#4a90e2"/>
-      <stop offset="100%" stop-color="#003f91"/>
-    </linearGradient>
-    <linearGradient id="shieldBorder" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="#cccccc" stop-opacity="0.9"/>
-    </linearGradient>
-  </defs>
-  <path d="M32 2 L58 12 V28 C58 46 46 58 32 62 C18 58 6 46 6 28 V12 L32 2 Z"
-        fill="url(#shieldGradient)"
-        stroke="url(#shieldBorder)"
-        stroke-width="3"
-        stroke-linejoin="round"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 512px; width: 512px;"><g class="" transform="translate(0,0)" style=""><path d="M256 16c25 24 100 72 150 72v96c0 96-75 240-150 312-75-72-150-216-150-312V88c50 0 125-48 150-72z" fill="#48baff" fill-opacity="1" stroke="#ffffff" stroke-opacity="1" stroke-width="8"></path></g></svg>
