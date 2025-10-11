@@ -36,14 +36,15 @@ class CardBattlerGame extends FlameGame {
           targetSize = Vector2(size.y * aspect, size.y);
         }
       } else {
-        // For mobile, scale to fit screen, keep aspect ratio
+        // For mobile, always cover the screen with the background, keep aspect ratio
         final screenAspect = size.x / size.y;
-        if (screenAspect > bgSize.x / bgSize.y) {
-          // Screen is wider than background, fit height
-          targetSize = Vector2(size.y * bgSize.x / bgSize.y, size.y);
+        final bgAspect = bgSize.x / bgSize.y;
+        if (screenAspect > bgAspect) {
+          // Screen is wider, scale by height so background covers width
+          targetSize = Vector2(size.x, size.x / bgAspect);
         } else {
-          // Screen is taller, fit width
-          targetSize = Vector2(size.x, size.x * bgSize.y / bgSize.x);
+          // Screen is taller, scale by width so background covers height
+          targetSize = Vector2(size.y * bgAspect, size.y);
         }
       }
     }
