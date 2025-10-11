@@ -12,8 +12,9 @@ class Team extends PositionComponent {
   void onMount() {
     super.onMount();
 
-    final halfWidth = size.x / 3;
-    final halfHeight = size.y / 2;
+    final teamMateWidth = size.x * 0.25;
+    final teamMateHeight = size.y * 0.4;
+    final margin = 5.0;
 
     // final border = RectangleComponent(
     //   size: size,
@@ -29,23 +30,26 @@ class Team extends PositionComponent {
 
     //TODO different layouts based on number of team members
     final teamMate1 = TeamMate(inactivePlayers[0])
-      ..size = Vector2(halfWidth, halfHeight)
-      ..position = Vector2.zero();
+      ..size = Vector2(teamMateWidth, teamMateHeight)
+      ..position = Vector2(margin, 0);
     add(teamMate1);
 
     final teamMate2 = TeamMate(inactivePlayers[1])
-      ..size = Vector2(halfWidth, halfHeight)
-      ..position = Vector2(size.x - halfWidth, 0);
+      ..size = Vector2(teamMateWidth, teamMateHeight)
+      ..position = Vector2(size.x - teamMateWidth - margin, 0);
     add(teamMate2);
 
     final teamMate3 = TeamMate(inactivePlayers[2])
-      ..size = Vector2(halfWidth, halfHeight)
-      ..position = Vector2(0, halfHeight);
+      ..size = Vector2(teamMateWidth, teamMateHeight)
+      ..position = Vector2(margin, size.y - teamMateHeight);
     add(teamMate3);
 
     final teamMate4 = TeamMate(inactivePlayers[3])
-      ..size = Vector2(halfWidth, halfHeight)
-      ..position = Vector2(size.x - halfWidth, halfHeight);
+      ..size = Vector2(teamMateWidth, teamMateHeight)
+      ..position = Vector2(
+        size.x - teamMateWidth - margin,
+        size.y - teamMateHeight - margin,
+      );
     add(teamMate4);
 
     // final baseSize = size.x / 3;

@@ -45,9 +45,15 @@ class TeamMate extends PositionComponent {
     add(playerInfo);
   }
 
-  // @override
-  // void render(Canvas canvas) {
-  //   final paint = Paint()..color = const Color.fromARGB(138, 0, 0, 0);
-  //   canvas.drawRect(size.toRect(), paint);
-  // }
+  @override
+  void render(Canvas canvas) {
+    final paint = Paint()..color = const Color.fromARGB(143, 0, 0, 0);
+    canvas.drawRect(size.toRect(), paint);
+
+    final borderPaint = Paint()
+      ..color = const Color.fromARGB(255, 255, 255, 255)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+    canvas.drawRect(size.toRect(), borderPaint);
+  }
 }
