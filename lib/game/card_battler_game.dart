@@ -66,7 +66,7 @@ class CardBattlerGame extends FlameGame {
 
     final services = GameInitializationService.createServices(gameState);
     router = GameComponentBuilder.buildGameComponents(
-      gameSize: targetSize,
+      gameSize: kIsWeb ? targetSize : size,
       services: services,
     );
 
