@@ -13,10 +13,11 @@ class GameVariables {
   static const int shopDisplayNumberOfColumns = 2;
   static const int shopDisplayNumberOfRows = 3;
 
-  static const double activePlayerCardFanScale = 0.3;
+  static const double activePlayerCardFanScale = 0.25;
 
   static const double margin = 10.0;
 
-  static const fractionOfScreenForTeamComponent =
-      0.375; // 3/8 of the screen height
+  static const fractionOfScreenForTeamComponent = 0.4;
+  static const fractionOfScreenForEnemyComponent = 0.25;
+  static const fractionOfScreenForPlayerComponent = 0.35;
 }

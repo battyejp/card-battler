@@ -21,9 +21,10 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
     final startX = 0 - size.x / 2;
     final availableHeightForTeam =
         size.y * GameVariables.fractionOfScreenForTeamComponent;
-    final spaceLeft = size.y - availableHeightForTeam;
-    final enemiesAvailableHeight = spaceLeft / 2;
-    final availableHeightForPlayer = spaceLeft / 2;
+    final enemiesAvailableHeight =
+        size.y * GameVariables.fractionOfScreenForEnemyComponent;
+    final availableHeightForPlayer =
+        size.y * GameVariables.fractionOfScreenForPlayerComponent;
 
     final enemies = Enemies(coordinator: coordinator.enemiesCoordinator)
       ..size = Vector2(size.x, enemiesAvailableHeight)

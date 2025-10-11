@@ -30,7 +30,7 @@ class Player extends PositionComponent {
         CardFan(
             _coordinator.handCardsCoordinator,
             gamePhaseManager: _coordinator.gamePhaseManager,
-            fanRadius: 150.0,
+            fanRadius: 125.0,
             cardScale: GameVariables.activePlayerCardFanScale,
           )
           ..size = Vector2(size.x, size.y)

@@ -18,7 +18,7 @@ class CardBattlerGame extends FlameGame {
   @override
   Future<void> onLoad() async {
     // Load background image
-    final bgSprite = await Sprite.load('game_background.png');
+    final bgSprite = await Sprite.load('game_background_with_base.png');
     final bgSize = Vector2(bgSprite.srcSize.x, bgSprite.srcSize.y);
 
     // Restrict game size to background aspect ratio

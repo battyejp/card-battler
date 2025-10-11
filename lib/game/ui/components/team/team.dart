@@ -1,5 +1,5 @@
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
-import 'package:card_battler/game/ui/components/team/base_sprite.dart';
+import 'package:card_battler/game/ui/components/common/base_sprite.dart';
 import 'package:card_battler/game/ui/components/team/team_mate.dart';
 import 'package:flame/components.dart';
 
@@ -24,17 +24,6 @@ class Team extends PositionComponent {
     //     ..strokeWidth = 1.0,
     // );
     // add(border);
-
-    const width = 726.0 * 0.5;
-    const height = 435.0 * 0.5;
-    final baseSprite = BaseSprite();
-    baseSprite
-      ..scale = Vector2.all(0.5)
-      ..position = Vector2(
-        size.x / 2 - width / 2,
-        size.y / 2 - height / 2 + 50,
-      );
-    add(baseSprite);
 
     final inactivePlayers = _coordinator.inactivePlayers;
 
