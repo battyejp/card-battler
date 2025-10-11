@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
@@ -18,15 +16,15 @@ class Player extends PositionComponent {
   void onMount() {
     super.onMount();
 
-    final border = RectangleComponent(
-      size: size,
-      position: Vector2.zero(),
-      paint: Paint()
-        ..color = const Color.fromARGB(255, 255, 255, 255)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.0,
-    );
-    add(border);
+    // final border = RectangleComponent(
+    //   size: size,
+    //   position: Vector2.zero(),
+    //   paint: Paint()
+    //     ..color = const Color.fromARGB(255, 255, 255, 255)
+    //     ..style = PaintingStyle.stroke
+    //     ..strokeWidth = 1.0,
+    // );
+    // add(border);
 
     final cardFan =
         CardFan(
