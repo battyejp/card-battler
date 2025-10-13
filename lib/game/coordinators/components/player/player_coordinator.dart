@@ -1,6 +1,7 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/card/player_card_manager.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
@@ -13,11 +14,13 @@ class PlayerCoordinator {
     required PlayerInfoCoordinator playerInfoCoordinator,
     required GamePhaseManager gamePhaseManager,
     required EffectProcessor effectProcessor,
+    required TurnButtonComponentCoordinator turnButtonComponentCoordinator,
   }) : _handCardsCoordinator = handCardsCoordinator,
        _deckCardsCoordinator = deckCardsCoordinator,
        _playerInfoCoordinator = playerInfoCoordinator,
        _discardCardsCoordinator = discardCardsCoordinator,
        _gamePhaseManager = gamePhaseManager,
+       _turnButtonComponentCoordinator = turnButtonComponentCoordinator,
        _cardManager = PlayerCardManager(
          handCardsCoordinator: handCardsCoordinator,
          deckCardsCoordinator: deckCardsCoordinator,
@@ -35,6 +38,7 @@ class PlayerCoordinator {
   final PlayerInfoCoordinator _playerInfoCoordinator;
   final GamePhaseManager _gamePhaseManager;
   final PlayerCardManager _cardManager;
+  final TurnButtonComponentCoordinator _turnButtonComponentCoordinator;
 
   CardListCoordinator<CardCoordinator> get handCardsCoordinator =>
       _handCardsCoordinator;
@@ -44,6 +48,8 @@ class PlayerCoordinator {
       _discardCardsCoordinator;
   PlayerInfoCoordinator get playerInfoCoordinator => _playerInfoCoordinator;
   GamePhaseManager get gamePhaseManager => _gamePhaseManager;
+  TurnButtonComponentCoordinator get turnButtonComponentCoordinator =>
+      _turnButtonComponentCoordinator;
 
   void drawCardsFromDeck(int numberOfCards) {
     _cardManager.drawCardsFromDeck(numberOfCards);

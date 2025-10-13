@@ -1,5 +1,4 @@
 import 'package:card_battler/game/coordinators/components/team/team_coordinator.dart';
-import 'package:card_battler/game/ui/components/common/base_sprite.dart';
 import 'package:card_battler/game/ui/components/team/team_mate.dart';
 import 'package:flame/components.dart';
 
@@ -14,7 +13,7 @@ class Team extends PositionComponent {
 
     final teamMateWidth = size.x * 0.25;
     final teamMateHeight = size.y * 0.4;
-    final margin = 5.0;
+    const margin = 5.0;
 
     // final border = RectangleComponent(
     //   size: size,

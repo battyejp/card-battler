@@ -5,7 +5,6 @@ import 'package:card_battler/game/ui/components/common/reactive_position_compone
 import 'package:card_battler/game/ui/components/enemy/enemies.dart';
 import 'package:card_battler/game/ui/components/enemy/enemy_turn.dart';
 import 'package:card_battler/game/ui/components/player/player.dart';
-import 'package:card_battler/game/ui/components/shared/turn_button_component.dart';
 import 'package:card_battler/game/ui/components/team/team.dart';
 import 'package:flame/components.dart';
 
@@ -71,12 +70,5 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
       ..size = Vector2(size.x, availableHeightForPlayer)
       ..position = Vector2(startX, team.position.y + team.size.y);
     add(player);
-
-    final turnBtn =
-        TurnButtonComponent(coordinator.turnButtonComponentCoordinator)
-          ..priority = 10
-          ..size = Vector2(200, 50)
-          ..position = Vector2(0, ((size.y / 2) * -1) + (size.y * 0.05));
-    add(turnBtn);
   }
 }

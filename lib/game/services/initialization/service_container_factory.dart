@@ -1,3 +1,4 @@
+import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/coordinators/coordinators_manager.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
@@ -20,11 +21,18 @@ class ServiceContainerFactory {
       gamePhaseManager: gamePhaseManager,
     );
 
+    final turnButtonComponentCoordinator = TurnButtonComponentCoordinator(
+      dialogService: dialogService,
+      gamePhaseManager: gamePhaseManager,
+      activePlayerManager: activePlayerManager,
+    );
+
     final coordinatorsManager = CoordinatorsManager(
       gamePhaseManager,
       state,
       activePlayerManager,
       dialogService,
+      turnButtonComponentCoordinator,
     );
 
     return ServiceContainer(

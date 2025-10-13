@@ -5,6 +5,7 @@ import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
 import 'package:card_battler/game/ui/components/player/player_info.dart';
+import 'package:card_battler/game/ui/components/shared/turn_button_component.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
@@ -74,7 +75,23 @@ class Player extends PositionComponent {
 
     final playerInfo = PlayerInfo(_coordinator.playerInfoCoordinator)
       ..size = Vector2(size.x, size.y)
-      ..position = Vector2(0, 0);
+      ..position = Vector2(
+        0,
+        discardPile.position.y -
+            discardPile.size.y -
+            40.0, //TODO look at this value
+      );
     add(playerInfo);
+
+    final turnBtn =
+        TurnButtonComponent(_coordinator.turnButtonComponentCoordinator)
+          ..size = Vector2(100, 25)
+          ..position = Vector2(
+            size.x - 50 - GameVariables.margin,
+            discardPile.position.y -
+                discardPile.size.y -
+                40.0, //TODO look at this value
+          );
+    add(turnBtn);
   }
 }
