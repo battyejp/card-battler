@@ -54,7 +54,7 @@ class Enemies extends PositionComponent with HasVisibility {
       ),
       anchor: Anchor.center,
     );
-    textComponent.position = Vector2(size.x / 2, size.y - size.y * 0.1);
+    textComponent.position = Vector2(size.x / 2, baseSprite.position.y - 10);
     add(textComponent);
   }
 }
