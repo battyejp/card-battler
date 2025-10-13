@@ -31,7 +31,6 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
        _activePlayerManager = activePlayerManager,
        _enemyTurnSceneCoordinator = enemyTurnSceneCoordinator,
        _effectProcessor = effectProcessor,
-       _turnButtonComponentCoordinator = turnButtonComponentCoordinator,
        _turnLifecycleManager = PlayerTurnLifecycleManager(
          playerCoordinator: playerCoordinator,
          shopCoordinator: shopCoordinator,
@@ -61,15 +60,12 @@ class GameSceneCoordinator with ReactiveCoordinator<GameSceneCoordinator> {
   final ActivePlayerManager _activePlayerManager;
   final PlayerTurnLifecycleManager _turnLifecycleManager;
   final EnemyTurnCoordinator _enemyTurnSceneCoordinator;
-  final TurnButtonComponentCoordinator _turnButtonComponentCoordinator;
 
   PlayerCoordinator get playerCoordinator => _playerCoordinator;
   TeamCoordinator get teamCoordinator => _teamCoordinator;
   EnemiesCoordinator get enemiesCoordinator => _enemiesCoordinator;
   EffectProcessor get effectProcessor => _effectProcessor;
   GamePhaseManager get gamePhaseManager => _gamePhaseManager;
-  TurnButtonComponentCoordinator get turnButtonComponentCoordinator =>
-      _turnButtonComponentCoordinator;
   EnemyTurnCoordinator get enemyTurnSceneCoordinator =>
       _enemyTurnSceneCoordinator;
 

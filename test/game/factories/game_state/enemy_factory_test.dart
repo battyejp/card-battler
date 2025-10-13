@@ -1,6 +1,8 @@
 import 'package:card_battler/game/config/game_configuration.dart';
 import 'package:card_battler/game/factories/game_state/enemy_factory.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
+
+import 'package:card_battler/game/models/shared/play_effects_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -14,13 +16,15 @@ void main() {
           name: 'Test Card 1',
           type: CardType.enemy,
           filename: 'test_card_1.png',
-          effects: [],
+          playEffects: EffectsModel.empty(),
+          handEffects: EffectsModel.empty(),
         ),
         CardModel(
           name: 'Test Card 2',
           type: CardType.enemy,
           filename: 'test_card_2.png',
-          effects: [],
+          playEffects: EffectsModel.empty(),
+          handEffects: EffectsModel.empty(),
         ),
       ];
       testConfig = const GameConfiguration(

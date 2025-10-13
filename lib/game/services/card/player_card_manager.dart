@@ -1,5 +1,6 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
@@ -10,17 +11,20 @@ class PlayerCardManager {
     required CardListCoordinator<CardCoordinator> discardCardsCoordinator,
     required GamePhaseManager gamePhaseManager,
     required EffectProcessor effectProcessor,
+    required PlayerInfoCoordinator playerInfoCoordinator,
   }) : _handCardsCoordinator = handCardsCoordinator,
        _deckCardsCoordinator = deckCardsCoordinator,
        _discardCardsCoordinator = discardCardsCoordinator,
        _gamePhaseManager = gamePhaseManager,
-       _effectProcessor = effectProcessor;
+       _effectProcessor = effectProcessor,
+       _playerInfoCoordinator = playerInfoCoordinator;
 
   final CardListCoordinator<CardCoordinator> _handCardsCoordinator;
   final CardListCoordinator<CardCoordinator> _deckCardsCoordinator;
   final CardListCoordinator<CardCoordinator> _discardCardsCoordinator;
   final GamePhaseManager _gamePhaseManager;
   final EffectProcessor _effectProcessor;
+  final PlayerInfoCoordinator _playerInfoCoordinator;
 
   void drawCardsFromDeck(int numberOfCards) {
     if (_isDrawingCardsPrevented()) {
@@ -38,6 +42,7 @@ class PlayerCardManager {
     }
 
     _handCardsCoordinator.addCards(drawnCards);
+    _playerInfoCoordinator.abilitiesCheck();
     _gamePhaseManager.nextPhase();
   }
 
@@ -63,7 +68,8 @@ class PlayerCardManager {
     cardCoordinator.isFaceUp = false;
     _handCardsCoordinator.removeCard(cardCoordinator);
     _discardCardsCoordinator.addCard(cardCoordinator);
-    _effectProcessor.applyCardEffects([cardCoordinator]);
+    _effectProcessor.applyCardEffects(cardCoordinator);
+    _playerInfoCoordinator.abilitiesCheck();
   }
 
   bool _isDrawingCardsPrevented() => _handCardsCoordinator.hasCards;

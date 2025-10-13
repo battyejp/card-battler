@@ -36,7 +36,7 @@ void main() {
       });
 
       test('healthDisplay getter returns health display', () {
-        expect(playerInfoCoordinator.healthDisplay, equals('HP: 100/100'));
+        expect(playerInfoCoordinator.healthDisplay, equals('100/100'));
       });
 
       test('attack getter returns model attack', () {

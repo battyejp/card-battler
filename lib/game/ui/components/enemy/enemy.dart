@@ -24,11 +24,11 @@ class Enemy extends PositionComponent {
     add(_healthTextComponent);
   }
 
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-    final paint = Paint()
-      ..color = const Color.fromARGB(255, 5, 49, 19); // Purple with 0.3 opacity
-    canvas.drawRect(size.toRect(), paint);
-  }
+  // @override
+  // void render(Canvas canvas) {
+  //   super.render(canvas);
+  //   final paint = Paint()
+  //     ..color = const Color.fromARGB(255, 5, 49, 19); // Purple with 0.3 opacity
+  //   canvas.drawRect(size.toRect(), paint);
+  // }
 }

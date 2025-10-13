@@ -4,6 +4,7 @@ import 'package:card_battler/game/coordinators/builders/scene_coordinators_build
 import 'package:card_battler/game/coordinators/components/enemy/enemy_turn_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/scenes/shop_scene_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
@@ -20,11 +21,13 @@ class CoordinatorsManager {
     GameStateModel state,
     ActivePlayerManager activePlayerManager,
     DialogService dialogService,
+    TurnButtonComponentCoordinator turnButtonComponentCoordinator,
   ) {
     final playerResult = PlayerCoordinatorsBuilder.build(
       state: state,
       gamePhaseManager: gamePhaseManager,
       activePlayerManager: activePlayerManager,
+      turnButtonComponentCoordinator: turnButtonComponentCoordinator,
     );
 
     final enemyResult = EnemyCoordinatorsBuilder.build(

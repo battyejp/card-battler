@@ -13,14 +13,12 @@ class EffectProcessor {
     _targetResolver = EffectTargetResolver(value);
   }
 
-  void applyCardEffects(List<CardCoordinator> cardCoordinators) {
-    for (final card in cardCoordinators) {
-      for (final effect in card.effects) {
-        final targets = _targetResolver.resolveTargets(effect);
+  void applyCardEffects(CardCoordinator cardCoordinator) {
+    for (final effect in cardCoordinator.playEffects.effects) {
+      final targets = _targetResolver.resolveTargets(effect);
 
-        for (final target in targets) {
-          _effectHandler.applyEffect(target.playerInfoCoordinator, effect);
-        }
+      for (final target in targets) {
+        _effectHandler.applyEffect(target.playerInfoCoordinator, effect);
       }
     }
   }

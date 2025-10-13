@@ -13,18 +13,12 @@ class EnemyTurnManager {
   }) : _playedCardsCoordinator = playedCardsCoordinator,
        _deckCardsCoordinator = deckCardsCoordinator,
        _effectProcessor = effectProcessor,
-       _gamePhaseManager = gamePhaseManager,
-       _numberOfCardsToDrawPerEnemyTurn = numberOfCardsToDrawPerEnemyTurn;
+       _gamePhaseManager = gamePhaseManager;
 
   final CardListCoordinator<CardCoordinator> _playedCardsCoordinator;
   final CardListCoordinator<CardCoordinator> _deckCardsCoordinator;
   final EffectProcessor _effectProcessor;
   final GamePhaseManager _gamePhaseManager;
-
-  int _numberOfCardsToDrawPerEnemyTurn;
-
-  set numberOfCardsToDrawPerEnemyTurn(int value) =>
-      _numberOfCardsToDrawPerEnemyTurn = value;
 
   void drawCardsFromDeck() {
     if (_gamePhaseManager.currentPhase ==
@@ -32,15 +26,9 @@ class EnemyTurnManager {
       return;
     }
 
-    final drawnCards = _deckCardsCoordinator.drawCards(
-      _numberOfCardsToDrawPerEnemyTurn,
-    );
-
-    if (drawnCards.isNotEmpty) {
-      _playedCardsCoordinator.addCards(drawnCards);
-      _effectProcessor.applyCardEffects(drawnCards);
-    }
-
+    final drawnCard = _deckCardsCoordinator.drawCard();
+    _playedCardsCoordinator.addCard(drawnCard);
+    _effectProcessor.applyCardEffects(drawnCard);
     _gamePhaseManager.nextPhase();
   }
 }

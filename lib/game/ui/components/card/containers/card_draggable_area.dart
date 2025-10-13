@@ -7,7 +7,6 @@ import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flutter/material.dart';
 
 class CardFanDraggableArea extends PositionComponent
     with DragCallbacks, TapCallbacks {
@@ -19,11 +18,7 @@ class CardFanDraggableArea extends PositionComponent
       _gamePhaseManager = gamePhaseManager,
       _onCardPlayed = onCardPlayed {
     // Initialize services directly
-    _cardSelectionService = CardFanSelectionService(
-      _cardFan.size,
-      add,
-      remove,
-    );
+    _cardSelectionService = CardFanSelectionService(_cardFan.size, add, remove);
     _cardDraggableService = CardFanDraggableService(
       _cardSelectionService,
       _gamePhaseManager!,
@@ -97,10 +92,10 @@ class CardFanDraggableArea extends PositionComponent
     _cardSelectionService.deselectCard();
   }
 
-  @override
-  void render(Canvas canvas) {
-    final paint = Paint()
-      ..color = const Color.fromARGB(77, 195, 4, 4); // Red with 0.3 opacity
-    canvas.drawRect(size.toRect(), paint);
-  }
+  // @override
+  // void render(Canvas canvas) {
+  //   final paint = Paint()
+  //     ..color = const Color.fromARGB(77, 195, 4, 4); // Red with 0.3 opacity
+  //   canvas.drawRect(size.toRect(), paint);
+  // }
 }

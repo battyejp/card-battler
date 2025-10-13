@@ -15,21 +15,11 @@ class TeamMate extends PositionComponent {
     super.onMount();
     removeWhere((component) => true);
 
-    final playerName = TextComponent(
-      text: _coordinator.playerInfoCoordinator.name,
-      anchor: Anchor.topCenter,
-      position: Vector2(size.x / 2, 10),
-      textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 14, color: Colors.white),
-      ),
-    );
-    add(playerName);
-
     final cardFan = CardFan(
       _coordinator.handCardsCoordinator,
       mini: true,
       fanRadius: 50.0,
-    )..position = Vector2(size.x / 2, 110);
+    )..position = Vector2(size.x / 2, 50.0 * 3.2);
 
     add(cardFan);
 
@@ -43,5 +33,17 @@ class TeamMate extends PositionComponent {
           ..position = Vector2(0, 0);
 
     add(playerInfo);
+  }
+
+  @override
+  void render(Canvas canvas) {
+    final paint = Paint()..color = const Color.fromARGB(143, 0, 0, 0);
+    canvas.drawRect(size.toRect(), paint);
+
+    final borderPaint = Paint()
+      ..color = const Color.fromARGB(255, 255, 255, 255)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+    canvas.drawRect(size.toRect(), borderPaint);
   }
 }

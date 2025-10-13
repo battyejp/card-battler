@@ -1,40 +1,48 @@
 import 'dart:convert';
 
-import 'package:card_battler/game/models/shared/effect_model.dart';
+import 'package:card_battler/game/models/shared/play_effects_model.dart';
 
 class CardModel {
   CardModel({
     required this.name,
     required this.type,
     required this.filename,
-    List<EffectModel>? effects,
+    required this.playEffects,
+    required this.handEffects,
     this.isFaceUp = false,
-  }) : effects = effects ?? [];
+  });
 
   factory CardModel.fromJson(Map<String, dynamic> json) {
-    final effectsJson = json['effects'] as List<dynamic>?;
-    final effects = effectsJson
-        ?.map((effectJson) => EffectModel.fromJson(effectJson))
-        .toList();
+    final playEffectsJson = json['playEffects'] as Map<String, dynamic>?;
+    final playEffects = playEffectsJson != null
+        ? EffectsModel.fromJson(playEffectsJson)
+        : EffectsModel.empty();
+    final handEffectsJson = json['handEffects'] as Map<String, dynamic>?;
+    final handEffects = handEffectsJson != null
+        ? EffectsModel.fromJson(handEffectsJson)
+        : EffectsModel.empty();
 
     return CardModel(
       name: json['name'],
       type: CardTypeHelper.fromString(json['type'] as String?),
       filename: json['filename'],
-      effects: effects,
+      playEffects: playEffects,
+      handEffects: handEffects,
     );
   }
 
   final String name;
   final CardType type;
   final String filename;
-  final List<EffectModel> effects;
+  final EffectsModel playEffects;
+  final EffectsModel handEffects;
   bool isFaceUp;
 
   CardModel copy() => CardModel(
     name: name,
     type: type,
-    effects: effects.map((e) => e.copy()).toList(),
+    playEffects: playEffects.copy(),
+    handEffects: handEffects.copy(),
     isFaceUp: isFaceUp,
     filename: filename,
   );
@@ -42,14 +50,15 @@ class CardModel {
   Map<String, dynamic> toJson() => {
     'name': name,
     'type': CardTypeHelper.toJsonString(type),
-    'effects': effects.map((effect) => effect.toJson()).toList(),
+    'playEffects': playEffects.toJson(),
+    'handEffects': handEffects.toJson(),
     'faceUp': isFaceUp,
     'filename': filename,
   };
 }
 
 // CardType enum and helper for JSON conversion
-enum CardType { hero, enemy, shop, unknown }
+enum CardType { item, enemy, ally, unknown }
 
 class CardTypeHelper {
   static CardType fromString(String? value) {
@@ -58,12 +67,12 @@ class CardTypeHelper {
     }
 
     switch (value.toLowerCase()) {
-      case 'hero':
-        return CardType.hero;
+      case 'item':
+        return CardType.item;
       case 'enemy':
         return CardType.enemy;
-      case 'shop':
-        return CardType.shop;
+      case 'ally':
+        return CardType.ally;
       default:
         return CardType.unknown;
     }
@@ -71,12 +80,12 @@ class CardTypeHelper {
 
   static String toJsonString(CardType type) {
     switch (type) {
-      case CardType.hero:
-        return 'Hero';
+      case CardType.item:
+        return 'Item';
       case CardType.enemy:
         return 'Enemy';
-      case CardType.shop:
-        return 'Shop';
+      case CardType.ally:
+        return 'Ally';
       case CardType.unknown:
         return 'Unknown';
     }

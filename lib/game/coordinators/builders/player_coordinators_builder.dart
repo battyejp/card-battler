@@ -1,3 +1,4 @@
+import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/factories/player_coordinator_factory.dart';
 import 'package:card_battler/game/factories/team_coordinator_factory.dart';
 import 'package:card_battler/game/models/game_state_model.dart';
@@ -22,6 +23,7 @@ class PlayerCoordinatorsBuilder {
     required GameStateModel state,
     required GamePhaseManager gamePhaseManager,
     required ActivePlayerManager activePlayerManager,
+    required TurnButtonComponentCoordinator turnButtonComponentCoordinator,
   }) {
     final effectProcessor = EffectProcessor();
     final playerCoordinators =
@@ -30,6 +32,7 @@ class PlayerCoordinatorsBuilder {
           gamePhaseManager: gamePhaseManager,
           activePlayerManager: activePlayerManager,
           effectProcessor: effectProcessor,
+          turnButtonComponentCoordinator: turnButtonComponentCoordinator,
         );
     final teamCoordinator = TeamCoordinatorFactory.createTeamCoordinator(
       playerCoordinators: playerCoordinators,

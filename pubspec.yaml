@@ -8,11 +8,11 @@ environment:
 
 dependencies:
   flame: ^1.30.1
+  flame_svg: ^1.11.16
   flutter:
     sdk: flutter
 
 dev_dependencies:
-  flame_test: ^1.16.0
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
@@ -23,7 +23,12 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/data/enemy_cards.json
-    - assets/data/shop_cards.json
-    - assets/data/hero_starting_cards.json
+    - assets/data/
+    - assets/icons/
     - assets/images/
+    - assets/images/cards/light/
+    - assets/images/cards/light/item/560/
+    - assets/images/cards/light/item/60/
+    - assets/images/cards/light/ally/560/
+    - assets/images/cards/light/ally/60/
+    - assets/images/cards/dark/

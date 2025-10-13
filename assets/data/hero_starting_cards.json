@@ -1,142 +1,182 @@
 [
   {
     "name": "Credits",
-    "type": "Hero",
-    "filename": "card_alien_size.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "type": "Item",
+    "filename": "cards/light/item/size/credits2.png",
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
-    "type": "Hero",
-    "filename": "card_alien2_size.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "type": "Item",
+    "filename": "cards/light/item/size/credits2.png",
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
-    "type": "Hero",
-    "filename": "card_human_f_size.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "type": "Item",
+    "filename": "cards/light/item/size/credits2.png",
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
-    "type": "Hero",
-    "filename": "card_human_m_size.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "type": "Item",
+    "filename": "cards/light/item/size/credits2.png",
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
-    "type": "Hero",
-    "filename": "card_robot_size.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "type": "Item",
+    "filename": "cards/light/item/size/credits2.png",
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
-    "type": "Hero",
-    "filename": "card_robot2_size.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "type": "Item",
+    "filename": "cards/light/item/size/credits2.png",
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Credits",
-    "type": "Hero",
-    "filename": "card_human_f2_size.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "type": "Item",
+    "filename": "cards/light/item/size/credits2.png",
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
-    "name": "Attack/Heal",
-    "type": "Hero",
-    "filename": "card_alien2_size.png",
-    "effectOperator": "Or",
-    "effects": [
-      {
-        "type": "Attack",
-        "value": 1,
-        "target": "ActivePlayer"
-      },
-      {
-        "type": "Heal",
-        "value": 2,
-        "target": "ActivePlayer"
-      }
-    ]
+    "name": "Credits",
+    "type": "Item",
+    "filename": "cards/light/item/size/credits2.png",
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
-    "name": "Attack",
-    "type": "Hero",
-    "filename": "card_alien_size.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Attack",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "name": "Orb of Life and Death",
+    "type": "Item",
+    "filename": "cards/light/item/size/orb.png",
+    "playEffects": {
+      "operator": "Or",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 1,
+          "target": "ActivePlayer"
+        },
+        {
+          "type": "Heal",
+          "value": 2,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Laser Pistol",
+    "type": "Item",
+    "filename": "cards/light/item/size/pistol.png",
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   },
   {
     "name": "Shield",
-    "type": "Hero",
-    "filename": "card_human_f2_size.png",
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Credits",
-        "value": 1,
-        "target": "ActivePlayer"
-      },
-      {
-        "type": "Protection",
-        "value": 1,
-        "target": "ActivePlayer"
-      }
-    ]
+    "type": "Item",
+    "filename": "cards/light/item/size/armour.png",
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Credits",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    },
+    "handEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "MaxDamage",
+          "value": 1,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
   }
 ]

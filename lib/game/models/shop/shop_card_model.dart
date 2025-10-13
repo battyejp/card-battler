@@ -1,17 +1,28 @@
 import 'package:card_battler/game/models/card/card_model.dart';
+import 'package:card_battler/game/models/shared/play_effects_model.dart';
 
 class ShopCardModel extends CardModel {
   ShopCardModel({
     required super.name,
+    required super.type,
     required super.filename,
+    required super.playEffects,
+    required super.handEffects,
     required this.cost,
     super.isFaceUp = true,
-  }) : super(type: CardType.shop);
+  });
 
   factory ShopCardModel.fromJson(Map<String, dynamic> json) => ShopCardModel(
     name: json['name'] as String,
-    cost: json['cost'] as int,
+    type: CardTypeHelper.fromString(json['type'] as String?),
     filename: json['filename'] as String,
+    playEffects: json['playEffects'] != null
+        ? EffectsModel.fromJson(json['playEffects'] as Map<String, dynamic>)
+        : EffectsModel.empty(),
+    handEffects: json['handEffects'] != null
+        ? EffectsModel.fromJson(json['handEffects'] as Map<String, dynamic>)
+        : EffectsModel.empty(),
+    cost: json['cost'] as int,
     isFaceUp: json['faceUp'] as bool? ?? true,
   );
 

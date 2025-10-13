@@ -26,7 +26,7 @@ void main() {
       });
 
       test('healthDisplay getter returns health display', () {
-        expect(enemyCoordinator.healthDisplay, equals('HP: 100/100'));
+        expect(enemyCoordinator.healthDisplay, equals('100/100'));
       });
     });
 
@@ -54,7 +54,7 @@ void main() {
 
       test('adjustHealth updates health display', () {
         enemyCoordinator.adjustHealth(-30);
-        expect(enemyCoordinator.healthDisplay, equals('HP: 70/100'));
+        expect(enemyCoordinator.healthDisplay, equals('70/100'));
       });
     });
 

@@ -1,97 +1,121 @@
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
+import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
+import 'package:flame_svg/svg_component.dart';
 import 'package:flutter/material.dart';
 
+//TODO look at hardcode layout parameters in hear and base on screen size
 class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
   PlayerInfo(
     super.coordinator, {
     bool isActivePlayer = true,
     double gapBetweenNameAndFirstLabel = 0.0,
-  }) : _isActivePlayer = isActivePlayer,
-       _gapBetweenNameAndFirstLabel = gapBetweenNameAndFirstLabel;
+  });
 
   final Map<String, TextComponent> _labels = {};
-  final bool _isActivePlayer;
-  final double _gapBetweenNameAndFirstLabel;
   late TextComponent lastLabel;
 
   @override
   void updateDisplay() {
-    //Don't call super which clears children
+    super.updateDisplay();
 
-    if (hasChildren) {
-      _labels['health']?.text = coordinator.healthDisplay;
-      _labels['attack']?.text = 'Attack: ${coordinator.attack}';
-      _labels['credits']?.text = 'Credits: ${coordinator.credits}';
-      _labels['name']?.text = coordinator.name;
-      return;
-    }
+    // if (hasChildren) {
+    //   _labels['health']?.text = coordinator.healthDisplay;
+    //   _labels['attack']?.text = 'Attack: ${coordinator.attack}';
+    //   _labels['credits']?.text = 'Credits: ${coordinator.credits}';
+    //   _labels['name']?.text = coordinator.name;
+    //   return;
+    // }
 
-    final statKeys = ['name', 'health', 'attack', 'credits'];
     const padding = 10.0;
+    const lineHeight = 25.0;
 
-    for (var i = 0; i < statKeys.length; i++) {
-      final key = statKeys[i];
-      String text;
-      Vector2? position;
-      late var anchor = Anchor.topCenter;
-      switch (key) {
-        case 'name':
-          text = coordinator.name;
-          position = Vector2(size.x / 2, padding);
-          break;
-        case 'health':
-          text = coordinator.healthDisplay;
-          position = _isActivePlayer
-              ? Vector2(size.x / 2, size.y - padding)
-              : Vector2(
-                  size.x / 2,
-                  lastLabel.position.y +
-                      lastLabel.size.y +
-                      _gapBetweenNameAndFirstLabel,
-                );
-          anchor = _isActivePlayer ? Anchor.bottomCenter : Anchor.center;
-          break;
-        case 'attack':
-          text = 'Attack: ${coordinator.attack}';
-          position = _isActivePlayer
-              ? Vector2(padding, padding)
-              : Vector2(
-                  size.x / 2,
-                  lastLabel.position.y + lastLabel.size.y + 5.0,
-                );
-          anchor = _isActivePlayer ? Anchor.topLeft : Anchor.center;
-          break;
-        case 'credits':
-          text = 'Credits: ${coordinator.credits}';
-          position = _isActivePlayer
-              ? Vector2(size.x - padding, padding)
-              : Vector2(
-                  size.x / 2,
-                  lastLabel.position.y + lastLabel.size.y + 5.0,
-                );
-          anchor = _isActivePlayer ? Anchor.topRight : Anchor.center;
-          break;
-        default:
-          text = '';
-      }
+    // Name at top, left-aligned
+    final nameLabel = TextComponent(
+      text: coordinator.name,
+      position: Vector2(padding, padding),
+      anchor: Anchor.topLeft,
+      textRenderer: TextPaint(
+        style: const TextStyle(fontSize: 16, color: Colors.white),
+      ),
+    );
+    _labels['name'] = nameLabel;
+    add(nameLabel);
+    addCardHandAbilities(nameLabel, 'name');
 
-      final label = TextComponent(
-        text: text,
-        position: position,
-        anchor: anchor,
-        textRenderer: TextPaint(
-          style: TextStyle(
-            fontSize: _isActivePlayer ? 20 : 14,
-            color: Colors.white,
-          ),
-        ),
+    // Health on second line, left-aligned with icon
+    const healthY = padding + lineHeight;
+    final healthIcon = SvgComponent(svg: IconManager.heart())
+      ..size = Vector2.all(16)
+      ..position = Vector2(padding, healthY)
+      ..anchor = Anchor.topLeft;
+    add(healthIcon);
+
+    final healthLabel = TextComponent(
+      text: coordinator.healthDisplay,
+      position: Vector2(padding + 16 + 6, healthY),
+      anchor: Anchor.topLeft,
+      textRenderer: TextPaint(
+        style: const TextStyle(fontSize: 16, color: Colors.white),
+      ),
+    );
+    _labels['health'] = healthLabel;
+    add(healthLabel);
+
+    // Attack and Credits on third line, side by side
+    const statsY = padding + (lineHeight * 2);
+
+    // Attack with icon
+    final attackIcon = SvgComponent(svg: IconManager.target())
+      ..size = Vector2.all(16)
+      ..position = Vector2(padding, statsY)
+      ..anchor = Anchor.topLeft;
+    add(attackIcon);
+
+    final attackLabel = TextComponent(
+      text: coordinator.attack.toString(),
+      position: Vector2(padding + 16 + 6, statsY),
+      anchor: Anchor.topLeft,
+      textRenderer: TextPaint(
+        style: const TextStyle(fontSize: 16, color: Colors.white),
+      ),
+    );
+    _labels['attack'] = attackLabel;
+    add(attackLabel);
+
+    // Credits with icon (positioned to the right of attack)
+    const creditsX = padding + 16 + 6 + 15; // Give some space for attack text
+    final creditsIcon = SvgComponent(svg: IconManager.rupee())
+      ..size = Vector2.all(16)
+      ..position = Vector2(creditsX, statsY)
+      ..anchor = Anchor.topLeft;
+    add(creditsIcon);
+
+    final creditsLabel = TextComponent(
+      text: coordinator.credits.toString(),
+      position: Vector2(creditsX + 16 + 6, statsY),
+      anchor: Anchor.topLeft,
+      textRenderer: TextPaint(
+        style: const TextStyle(fontSize: 16, color: Colors.white),
+      ),
+    );
+    _labels['credits'] = creditsLabel;
+    add(creditsLabel);
+
+    lastLabel = creditsLabel;
+  }
+
+  void addCardHandAbilities(TextComponent label, String key) {
+    if (key == 'name' && coordinator.hasAMaxDamageCard()) {
+      add(
+        SvgComponent(svg: IconManager.shield())
+          ..position = Vector2(
+            label.position.x + label.size.x + 10,
+            label.position.y,
+          )
+          ..size = Vector2.all(16),
       );
-
-      _labels[key] = label;
-      add(label);
-      lastLabel = label;
     }
   }
 }

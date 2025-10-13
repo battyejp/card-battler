@@ -61,7 +61,7 @@ void main() {
       });
 
       test('healthDisplay getter returns health display string', () {
-        expect(actorCoordinator.healthDisplay, equals('HP: 100/150'));
+        expect(actorCoordinator.healthDisplay, equals('100/150'));
         expect(
           actorCoordinator.healthDisplay,
           equals(mockActorModel.healthModel.display),
@@ -77,7 +77,7 @@ void main() {
         mockActorModel.healthModel.currentHealth = 75;
 
         expect(actorCoordinator.health, equals(75));
-        expect(actorCoordinator.healthDisplay, equals('HP: 75/150'));
+        expect(actorCoordinator.healthDisplay, equals('75/150'));
       });
     });
 
@@ -135,7 +135,10 @@ void main() {
 
         actorCoordinator.adjustHealth(50);
 
-        expect(actorCoordinator.health, equals(40)); // Clamped to 0 + 50 - 10 = 40
+        expect(
+          actorCoordinator.health,
+          equals(40),
+        ); // Clamped to 0 + 50 - 10 = 40
       });
     });
 
@@ -212,7 +215,10 @@ void main() {
         actorCoordinator.adjustHealth(10);
         await Future.delayed(Duration.zero);
 
-        expect(changes.length, equals(1)); // Health was clamped, so change occurred
+        expect(
+          changes.length,
+          equals(1),
+        ); // Health was clamped, so change occurred
 
         // Reset to valid state and try again
         mockActorModel.healthModel.currentHealth = 100;
