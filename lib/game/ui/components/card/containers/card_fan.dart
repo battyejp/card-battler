@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
@@ -30,12 +29,6 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
   late bool _mini;
   late double _cardScale;
   final List<CardSprite> _cards = [];
-
-  @override
-  void render(Canvas canvas) {
-    final paint = Paint()..color = const Color.fromARGB(255, 52, 4, 195);
-    canvas.drawRect(size.toRect(), paint);
-  }
 
   @override
   void updateDisplay() {

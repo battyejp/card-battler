@@ -15,9 +15,10 @@ class GameVariables {
 
   static const double activePlayerCardFanScale = 0.25;
 
-  static const double margin = 10.0;
+  static const double sideMargin = 10.0;
+  static const double bottomMargin = 30.0;
 
   static const fractionOfScreenForTeamComponent = 0.4;
-  static const fractionOfScreenForEnemyComponent = 0.25;
-  static const fractionOfScreenForPlayerComponent = 0.35;
+  static const fractionOfScreenForEnemyComponent = 0.3;
+  static const fractionOfScreenForPlayerComponent = 0.3;
 }
