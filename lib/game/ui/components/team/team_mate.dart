@@ -15,36 +15,31 @@ class TeamMate extends PositionComponent {
     super.onMount();
     removeWhere((component) => true);
 
+    final playerInfo =
+        PlayerInfo(_coordinator.playerInfoCoordinator, isActivePlayer: false)
+          ..size = Vector2(size.x, size.y)
+          ..position = Vector2(0, 0);
+
+    add(playerInfo);
+
     final cardFan = CardFan(
       _coordinator.handCardsCoordinator,
       mini: true,
       fanRadius: 50.0,
-    )..position = Vector2(size.x / 2, 50.0 * 2);
+    )..position = Vector2(size.x / 2, playerInfo.size.y);
 
     add(cardFan);
-
-    final playerInfo =
-        PlayerInfo(
-            _coordinator.playerInfoCoordinator,
-            isActivePlayer: false,
-            gapBetweenNameAndFirstLabel: cardFan.position.y * 0.8,
-          )
-          ..size = Vector2(size.x, size.y)
-          ..position = Vector2(0, 50.0 * 1.5);
-
-    add(playerInfo);
   }
 
   @override
   void render(Canvas canvas) {
-    const size = 75.0;
     final paint = Paint()..color = const Color.fromARGB(143, 0, 0, 0);
-    canvas.drawCircle(const Offset(size, size), size, paint);
+    canvas.drawRect(size.toRect(), paint);
 
     final borderPaint = Paint()
       ..color = const Color.fromARGB(255, 255, 255, 255)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.0;
-    canvas.drawCircle(const Offset(size, size), size, borderPaint);
+    canvas.drawRect(size.toRect(), borderPaint);
   }
 }
