@@ -2,7 +2,7 @@
   {
     "name": "Active Player Hurt 2 and Others 1",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -22,7 +22,7 @@
   {
     "name": "All Players Hurt",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -37,7 +37,7 @@
   {
     "name": "Active Player Hurt 2 and Others 1",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -57,7 +57,7 @@
   {
     "name": "All Players Hurt",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -72,7 +72,7 @@
   {
     "name": "Active Player Hurt 2 and Others 1",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -92,7 +92,7 @@
   {
     "name": "All Players Hurt",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -107,7 +107,7 @@
   {
     "name": "Active Player Hurt 2 and Others 1",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -127,7 +127,7 @@
   {
     "name": "All Players Hurt",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -142,7 +142,7 @@
   {
     "name": "Active Player Hurt 2 and Others 1",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -162,7 +162,7 @@
   {
     "name": "All Players Hurt",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -177,7 +177,7 @@
   {
     "name": "Active Player Hurt 2 and Others 1",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -197,7 +197,7 @@
   {
     "name": "All Players Hurt",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -212,7 +212,7 @@
   {
     "name": "Damage Base",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -227,7 +227,7 @@
   {
     "name": "Damage Base And Active Player",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -247,7 +247,7 @@
   {
     "name": "Damage Active Player And Another Turn",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -267,7 +267,7 @@
   {
     "name": "Active Player Hurt 2 and Others 1",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -287,7 +287,7 @@
   {
     "name": "All Players Hurt",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -302,7 +302,7 @@
   {
     "name": "Active Player Hurt 2 and Others 1",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -322,7 +322,7 @@
   {
     "name": "All Players Hurt",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -337,7 +337,7 @@
   {
     "name": "Active Player Hurt 2 and Others 1",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -357,7 +357,7 @@
   {
     "name": "All Players Hurt",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -372,7 +372,7 @@
   {
     "name": "Damage Base",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -387,7 +387,7 @@
   {
     "name": "Damage Base And Active Player",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -407,7 +407,7 @@
   {
     "name": "Damage Active Player And Another Turn",
     "type": "Enemy",
-    "filename": "card_enemy_560.png",
+    "filename": "cards/dark/card_enemy_560.png",
     "playEffects": {
       "operator": "And",
       "effects": [
