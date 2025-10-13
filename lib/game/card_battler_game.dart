@@ -60,7 +60,7 @@ class CardBattlerGame extends FlameGame {
     );
     add(bgComponent);
 
-    //TODO might get rid of this eventually
+    //TODO might get rid of this eventually and should we have a loading screen for this in the game
     await images.loadAllImages();
     final gameState = await GameInitializationService.initializeGameState();
     await IconManager.loadAllImages();
