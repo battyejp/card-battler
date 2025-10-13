@@ -29,26 +29,23 @@ class Team extends PositionComponent {
 
     //TODO different layouts based on number of team members
     final teamMate1 = TeamMate(inactivePlayers[0])
-      ..size = Vector2(teamMateWidth, teamMateHeight)
+      //..size = Vector2(teamMateWidth, teamMateHeight)
       ..position = Vector2(margin, 0);
     add(teamMate1);
 
     final teamMate2 = TeamMate(inactivePlayers[1])
-      ..size = Vector2(teamMateWidth, teamMateHeight)
-      ..position = Vector2(size.x - teamMateWidth - margin, 0);
+      //..size = Vector2(teamMateWidth, teamMateHeight)
+      ..position = Vector2(size.x - 150.0 - margin, 0);
     add(teamMate2);
 
     final teamMate3 = TeamMate(inactivePlayers[2])
-      ..size = Vector2(teamMateWidth, teamMateHeight)
+      //..size = Vector2(teamMateWidth, teamMateHeight)
       ..position = Vector2(margin, size.y - teamMateHeight);
     add(teamMate3);
 
     final teamMate4 = TeamMate(inactivePlayers[3])
-      ..size = Vector2(teamMateWidth, teamMateHeight)
-      ..position = Vector2(
-        size.x - teamMateWidth - margin,
-        size.y - teamMateHeight - margin,
-      );
+      //..size = Vector2(teamMateWidth, teamMateHeight)
+      ..position = Vector2(size.x - 150.0 - margin, size.y - teamMateHeight);
     add(teamMate4);
 
     // final baseSize = size.x / 3;

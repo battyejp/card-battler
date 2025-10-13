@@ -30,6 +30,9 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
 
     const padding = 10.0;
     const lineHeight = 25.0;
+    const gapBetweenLabels = 6.0;
+    const gapBetweenIconAndLabel = 0.0;
+    const fontSize = 12.0;
 
     // Name at top, left-aligned
     final nameLabel = TextComponent(
@@ -37,67 +40,68 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
       position: Vector2(padding, padding),
       anchor: Anchor.topLeft,
       textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 16, color: Colors.white),
+        style: const TextStyle(fontSize: fontSize, color: Colors.white),
       ),
     );
     _labels['name'] = nameLabel;
     add(nameLabel);
     addCardHandAbilities(nameLabel, 'name');
 
-    // Health on second line, left-aligned with icon
-    const healthY = padding + lineHeight;
+    // All stats on the same line, spaced horizontally
+    const statsY = lineHeight;
+    var x = padding;
+
+    // Health
     final healthIcon = SvgComponent(svg: IconManager.heart())
-      ..size = Vector2.all(16)
-      ..position = Vector2(padding, healthY)
+      ..size = Vector2.all(fontSize)
+      ..position = Vector2(x, statsY)
       ..anchor = Anchor.topLeft;
     add(healthIcon);
-
+    x += 16 + gapBetweenIconAndLabel;
     final healthLabel = TextComponent(
       text: coordinator.healthDisplay,
-      position: Vector2(padding + 16 + 6, healthY),
+      position: Vector2(x, statsY),
       anchor: Anchor.topLeft,
       textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 16, color: Colors.white),
+        style: const TextStyle(fontSize: fontSize, color: Colors.white),
       ),
     );
     _labels['health'] = healthLabel;
     add(healthLabel);
+    x += healthLabel.size.x + gapBetweenLabels;
 
-    // Attack and Credits on third line, side by side
-    const statsY = padding + (lineHeight * 2);
-
-    // Attack with icon
+    // Attack
     final attackIcon = SvgComponent(svg: IconManager.target())
-      ..size = Vector2.all(16)
-      ..position = Vector2(padding, statsY)
+      ..size = Vector2.all(fontSize)
+      ..position = Vector2(x, statsY)
       ..anchor = Anchor.topLeft;
     add(attackIcon);
-
+    x += 16 + gapBetweenIconAndLabel;
     final attackLabel = TextComponent(
       text: coordinator.attack.toString(),
-      position: Vector2(padding + 16 + 6, statsY),
+      position: Vector2(x, statsY),
       anchor: Anchor.topLeft,
       textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 16, color: Colors.white),
+        style: const TextStyle(fontSize: fontSize, color: Colors.white),
       ),
     );
     _labels['attack'] = attackLabel;
     add(attackLabel);
+    x += attackLabel.size.x + gapBetweenLabels;
 
-    // Credits with icon (positioned to the right of attack)
-    const creditsX = padding + 16 + 6 + 15; // Give some space for attack text
+    // Credits
     final creditsIcon = SvgComponent(svg: IconManager.rupee())
-      ..size = Vector2.all(16)
-      ..position = Vector2(creditsX, statsY)
+      ..size = Vector2.all(fontSize)
+      ..position = Vector2(x, statsY)
       ..anchor = Anchor.topLeft;
     add(creditsIcon);
-
+    x += 16 + gapBetweenIconAndLabel;
     final creditsLabel = TextComponent(
       text: coordinator.credits.toString(),
-      position: Vector2(creditsX + 16 + 6, statsY),
+      position: Vector2(x, statsY),
       anchor: Anchor.topLeft,
       textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 16, color: Colors.white),
+        style: const TextStyle(fontSize: fontSize, color: Colors.white),
       ),
     );
     _labels['credits'] = creditsLabel;
