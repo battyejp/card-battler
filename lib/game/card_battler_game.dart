@@ -55,7 +55,7 @@ class CardBattlerGame extends FlameGame {
       sprite: bgSprite,
       size: targetSize,
       anchor: Anchor.center,
-      position: kIsWeb ? size / 2 : targetSize / 2,
+      position: size / 2,
       priority: -100,
     );
     add(bgComponent);
