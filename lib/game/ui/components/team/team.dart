@@ -11,8 +11,8 @@ class Team extends PositionComponent {
   void onMount() {
     super.onMount();
 
-    final teamMateWidth = size.x * 0.25;
-    final teamMateHeight = size.y * 0.4;
+    final teamMateWidth = size.x * 0.32;
+    final teamMateHeight = size.y * 0.45;
     const margin = 5.0;
 
     // final border = RectangleComponent(
