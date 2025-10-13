@@ -47,7 +47,7 @@
   {
     "name": "Credits",
     "type": "Item",
-    "filename": "/cards/light/item/size/credits2.png",
+    "filename": "cards/light/item/size/credits2.png",
     "playEffects": {
       "operator": "And",
       "effects": [

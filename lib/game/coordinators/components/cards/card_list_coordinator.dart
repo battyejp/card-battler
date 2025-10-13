@@ -64,29 +64,39 @@ class CardListCoordinator<T extends CardCoordinator>
     _collectionService.shuffle();
   }
 
-  bool containsCardOfType(EffectType type) => _collectionService.cardCoordinators.any((card) =>
-        card.playEffects.effects.any((effect) => effect.type == type) ||
-        card.handEffects.effects.any((effect) => effect.type == type));
+  bool containsCardOfType(EffectType type) =>
+      _collectionService.cardCoordinators.any(
+        (card) =>
+            card.playEffects.effects.any((effect) => effect.type == type) ||
+            card.handEffects.effects.any((effect) => effect.type == type),
+      );
 
-  List<T> getCardsOfType(EffectType type) => _collectionService.cardCoordinators.where((card) =>
-        card.playEffects.effects.any((effect) => effect.type == type) ||
-        card.handEffects.effects.any((effect) => effect.type == type)).toList();
+  List<T> getCardsOfType(EffectType type) => _collectionService.cardCoordinators
+      .where(
+        (card) =>
+            card.playEffects.effects.any((effect) => effect.type == type) ||
+            card.handEffects.effects.any((effect) => effect.type == type),
+      )
+      .toList();
 
-   int? getEffectMinValueOfType(EffectType type) {
+  int? getEffectMinValueOfType(EffectType type) {
     final cardsOfType = getCardsOfType(type);
-    if (cardsOfType.isEmpty) {
+    final allValues = <int>[];
+    for (final card in cardsOfType) {
+      allValues.addAll(
+        card.playEffects.effects
+            .where((effect) => effect.type == type)
+            .map((effect) => effect.value),
+      );
+      allValues.addAll(
+        card.handEffects.effects
+            .where((effect) => effect.type == type)
+            .map((effect) => effect.value),
+      );
+    }
+    if (allValues.isEmpty) {
       return null;
     }
-
-    return cardsOfType.map((card) {
-      final playEffectValues = card.playEffects.effects
-          .where((effect) => effect.type == type)
-          .map((effect) => effect.value);
-      final handEffectValues = card.handEffects.effects
-          .where((effect) => effect.type == type)
-          .map((effect) => effect.value);
-      return [...playEffectValues, ...handEffectValues].fold<int>(
-          0, (prev, element) => element < prev ? element : prev);
-    }).fold<int>(0, (prev, element) => element < prev ? element : prev);
+    return allValues.reduce((a, b) => a < b ? a : b);
   }
 }

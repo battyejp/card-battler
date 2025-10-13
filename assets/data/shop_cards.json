@@ -1,349 +1,288 @@
 [
   {
-    "name": "Health Potion",
-    "type": "Item",
-    "filename": "card_alien2_size.png",
-    "cost": 2,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Heal",
-          "value": 2,
-          "target": "ActivePlayer"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Health Potion",
-    "type": "Item",
-    "filename": "card_alien_size.png",
-    "cost": 2,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Heal",
-          "value": 2,
-          "target": "ActivePlayer"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Sword",
-    "type": "Item",
-    "filename": "card_human_f_size.png",
-    "cost": 2,
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
     "playEffects": {
       "operator": "And",
       "effects": [
         {
           "type": "Attack",
-          "value": 1,
+          "value": 4,
           "target": "ActivePlayer"
         }
       ]
     }
   },
   {
-    "name": "Cards",
-    "type": "Item",
-    "filename": "card_human_m_size.png",
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
     "cost": 4,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "DrawCard",
-          "value": 2,
-          "target": "ActivePlayer"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Health Potion and Cards",
-    "type": "Item",
-    "filename": "card_robot_size.png",
-    "cost": 6,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Heal",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "DrawCard",
-          "value": 1,
-          "target": "ActivePlayer"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Health Potion Base",
-    "type": "Item",
-    "filename": "card_robot2_size.png",
-    "cost": 4,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Heal",
-          "value": 1,
-          "target": "Base"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Mega Health Potion",
-    "type": "Item",
-    "filename": "card_human_f2_size.png",
-    "cost": 6,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Credits",
-          "value": 1,
-          "target": "AllPlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Health Potion",
-    "type": "Item",
-    "filename": "card_alien2_size.png",
-    "cost": 2,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Heal",
-          "value": 2,
-          "target": "ActivePlayer"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Health Potion",
-    "type": "Item",
-    "filename": "card_alien_size.png",
-    "cost": 2,
-    "effectOperator": "And",
-    "effects": [
-      {
-        "type": "Heal",
-        "value": 2,
-        "target": "ActivePlayer"
-      }
-    ]
-  },
-  {
-    "name": "Sword",
-    "type": "Item",
-    "filename": "card_human_f_size.png",
-    "cost": 2,
     "playEffects": {
       "operator": "And",
       "effects": [
         {
           "type": "Attack",
-          "value": 1,
+          "value": 4,
           "target": "ActivePlayer"
         }
       ]
     }
   },
   {
-    "name": "Cards",
-    "type": "Item",
-    "filename": "card_human_m_size.png",
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
     "cost": 4,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "DrawCard",
-          "value": 2,
-          "target": "ActivePlayer"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Health Potion and Cards",
-    "type": "Item",
-    "filename": "card_robot_size.png",
-    "cost": 6,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Heal",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "DrawCard",
-          "value": 1,
-          "target": "ActivePlayer"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Health Potion Base",
-    "type": "Item",
-    "filename": "card_alien_size.png",
-    "cost": 4,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Heal",
-          "value": 1,
-          "target": "Base"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Mega Health Potion",
-    "type": "Item",
-    "filename": "card_alien2_size.png",
-    "cost": 6,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Credits",
-          "value": 1,
-          "target": "AllPlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Health Potion",
-    "type": "Item",
-    "filename": "card_human_f2_size.png",
-    "cost": 2,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Heal",
-          "value": 2,
-          "target": "ActivePlayer"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Health Potion",
-    "type": "Item",
-    "filename": "card_robot2_size.png",
-    "cost": 2,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Heal",
-          "value": 2,
-          "target": "ActivePlayer"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Sword",
-    "type": "Item",
-    "filename": "card_robot_size.png",
-    "cost": 2,
     "playEffects": {
       "operator": "And",
       "effects": [
         {
           "type": "Attack",
-          "value": 1,
+          "value": 4,
           "target": "ActivePlayer"
         }
       ]
     }
   },
   {
-    "name": "Cards",
-    "type": "Item",
-    "filename": "card_human_m_size.png",
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
     "cost": 4,
     "playEffects": {
       "operator": "And",
       "effects": [
         {
-          "type": "DrawCard",
-          "value": 2,
+          "type": "Attack",
+          "value": 4,
           "target": "ActivePlayer"
         }
       ]
     }
   },
   {
-    "name": "Health Potion and Cards",
-    "type": "Item",
-    "filename": "card_human_f_size.png",
-    "cost": 6,
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Heal",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "DrawCard",
-          "value": 1,
-          "target": "ActivePlayer"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Health Potion Base",
-    "type": "Item",
-    "filename": "card_alien2_size.png",
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
     "cost": 4,
     "playEffects": {
       "operator": "And",
       "effects": [
         {
-          "type": "Heal",
-          "value": 1,
-          "target": "Base"
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
         }
       ]
     }
   },
   {
-    "name": "Mega Health Potion",
-    "type": "Item",
-    "filename": "card_alien2_size.png",
-    "cost": 6,
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
     "playEffects": {
       "operator": "And",
       "effects": [
         {
-          "type": "Credits",
-          "value": 1,
-          "target": "AllPlayers"
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Example Card 1",
+    "type": "Ally",
+    "filename": "cards/light/ally/size/alien-commander.png",
+    "cost": 4,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Attack",
+          "value": 4,
+          "target": "ActivePlayer"
         }
       ]
     }

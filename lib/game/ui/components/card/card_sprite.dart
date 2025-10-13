@@ -21,12 +21,12 @@ class CardSprite extends SpriteComponent {
           : 'card_face_down_0.08.png';
     }
 
-    // Remove any leading slash to ensure asset path is always relative
     final filename = _cardCoordinator.filename.replaceAll(
       'size',
       _isMini ? '60' : '560',
     );
-    return filename.startsWith('/') ? filename.substring(1) : filename;
+
+    return filename;
   }
 
   CardCoordinator get coordinator => _cardCoordinator;
