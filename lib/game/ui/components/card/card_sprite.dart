@@ -17,8 +17,8 @@ class CardSprite extends SpriteComponent {
   String get getFileName {
     if (!_cardCoordinator.isFaceUp) {
       return _cardCoordinator.type == CardType.enemy
-          ? 'enemy_card_back_560.png'
-          : 'card_face_down_0.08.png';
+          ? 'cards/dark/enemy_card_back_560.png'
+          : 'cards/light/card_face_down_0.08.png';
     }
 
     final filename = _cardCoordinator.filename.replaceAll(

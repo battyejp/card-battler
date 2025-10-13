@@ -26,7 +26,9 @@ flutter:
     - assets/data/
     - assets/icons/
     - assets/images/
+    - assets/images/cards/light/
     - assets/images/cards/light/item/560/
     - assets/images/cards/light/item/60/
     - assets/images/cards/light/ally/560/
     - assets/images/cards/light/ally/60/
+    - assets/images/cards/dark/
