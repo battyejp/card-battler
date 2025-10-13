@@ -1,8 +1,25 @@
 [
   {
+    "name": "Active Player Hurt 2",
+    "type": "Enemy",
+    "filename": "cards/dark/card_enemy_560.png",
+    "quantity": 8,
+    "playEffects": {
+      "operator": "And",
+      "effects": [
+        {
+          "type": "Damage",
+          "value": 2,
+          "target": "ActivePlayer"
+        }
+      ]
+    }
+  },
+  {
     "name": "Active Player Hurt 2 and Others 1",
     "type": "Enemy",
     "filename": "cards/dark/card_enemy_560.png",
+    "quantity": 8,
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -23,181 +40,7 @@
     "name": "All Players Hurt",
     "type": "Enemy",
     "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "AllPlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Active Player Hurt 2 and Others 1",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "NonActivePlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "All Players Hurt",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "AllPlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Active Player Hurt 2 and Others 1",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "NonActivePlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "All Players Hurt",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "AllPlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Active Player Hurt 2 and Others 1",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "NonActivePlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "All Players Hurt",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "AllPlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Active Player Hurt 2 and Others 1",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "NonActivePlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "All Players Hurt",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "AllPlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Active Player Hurt 2 and Others 1",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "NonActivePlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "All Players Hurt",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
+    "quantity": 8,
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -213,6 +56,7 @@
     "name": "Damage Base",
     "type": "Enemy",
     "filename": "cards/dark/card_enemy_560.png",
+    "quantity": 3,
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -228,6 +72,7 @@
     "name": "Damage Base And Active Player",
     "type": "Enemy",
     "filename": "cards/dark/card_enemy_560.png",
+    "quantity": 3,
     "playEffects": {
       "operator": "And",
       "effects": [
@@ -248,166 +93,7 @@
     "name": "Damage Active Player And Another Turn",
     "type": "Enemy",
     "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "DrawCard",
-          "value": 1,
-          "target": "Base"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Active Player Hurt 2 and Others 1",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "NonActivePlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "All Players Hurt",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "AllPlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Active Player Hurt 2 and Others 1",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "NonActivePlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "All Players Hurt",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "AllPlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Active Player Hurt 2 and Others 1",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "NonActivePlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "All Players Hurt",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "AllPlayers"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Damage Base",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "Base"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Damage Base And Active Player",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
-    "playEffects": {
-      "operator": "And",
-      "effects": [
-        {
-          "type": "Damage",
-          "value": 2,
-          "target": "ActivePlayer"
-        },
-        {
-          "type": "Damage",
-          "value": 1,
-          "target": "Base"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Damage Active Player And Another Turn",
-    "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
+    "quantity": 2,
     "playEffects": {
       "operator": "And",
       "effects": [
