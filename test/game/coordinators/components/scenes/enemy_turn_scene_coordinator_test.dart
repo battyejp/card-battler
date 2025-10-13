@@ -1,13 +1,13 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/enemy/enemy_turn_coordinator.dart';
-import 'package:card_battler/game/services/card/effects/effect_processor.dart';
-import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/shared/play_effects_model.dart';
+import 'package:card_battler/game/services/card/effects/effect_processor.dart';
+import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/services/player/active_player_manager.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 class MockCardListCoordinator extends Mock
     implements CardListCoordinator<CardCoordinator> {}
