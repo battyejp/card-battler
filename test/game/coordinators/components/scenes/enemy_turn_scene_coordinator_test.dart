@@ -5,6 +5,9 @@ import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:card_battler/game/models/card/card_model.dart';
+import 'package:card_battler/game/models/shared/play_effects_model.dart';
+import 'package:card_battler/game/services/player/active_player_manager.dart';
 
 class MockCardListCoordinator extends Mock
     implements CardListCoordinator<CardCoordinator> {}
@@ -76,19 +79,44 @@ void main() {
     group('Card Drawing', () {
       test('drawCardsFromDeck calls turn manager', () {
         when(() => mockDeckCardsCoordinator.hasCards).thenReturn(true);
-        when(() => mockDeckCardsCoordinator.drawCards(any())).thenReturn([]);
-
+        when(() => mockDeckCardsCoordinator.drawCard()).thenReturn(
+          CardCoordinator(
+            cardModel: CardModel(
+              name: 'Test',
+              type: CardType.item,
+              filename: 'test.png',
+              playEffects: EffectsModel.empty(),
+              handEffects: EffectsModel.empty(),
+            ),
+            gamePhaseManager: mockGamePhaseManager,
+            activePlayerManager: ActivePlayerManager(
+              gamePhaseManager: mockGamePhaseManager,
+            ),
+          ),
+        );
         coordinator.drawCardsFromDeck();
-
         verify(
-          () => mockDeckCardsCoordinator.drawCards(any()),
+          () => mockDeckCardsCoordinator.drawCard(),
         ).called(greaterThan(0));
       });
 
       test('drawCardsFromDeck handles empty deck gracefully', () {
         when(() => mockDeckCardsCoordinator.hasCards).thenReturn(false);
-        when(() => mockDeckCardsCoordinator.drawCards(any())).thenReturn([]);
-
+        when(() => mockDeckCardsCoordinator.drawCard()).thenReturn(
+          CardCoordinator(
+            cardModel: CardModel(
+              name: 'Dummy',
+              type: CardType.item,
+              filename: 'dummy.png',
+              playEffects: EffectsModel.empty(),
+              handEffects: EffectsModel.empty(),
+            ),
+            gamePhaseManager: mockGamePhaseManager,
+            activePlayerManager: ActivePlayerManager(
+              gamePhaseManager: mockGamePhaseManager,
+            ),
+          ),
+        );
         expect(() => coordinator.drawCardsFromDeck(), returnsNormally);
       });
     });
@@ -112,12 +140,24 @@ void main() {
     group('Turn Manager Integration', () {
       test('delegates card drawing to turn manager', () {
         when(() => mockDeckCardsCoordinator.hasCards).thenReturn(true);
-        when(() => mockDeckCardsCoordinator.drawCards(any())).thenReturn([]);
-
+        when(() => mockDeckCardsCoordinator.drawCard()).thenReturn(
+          CardCoordinator(
+            cardModel: CardModel(
+              name: 'Test',
+              type: CardType.item,
+              filename: 'test.png',
+              playEffects: EffectsModel.empty(),
+              handEffects: EffectsModel.empty(),
+            ),
+            gamePhaseManager: mockGamePhaseManager,
+            activePlayerManager: ActivePlayerManager(
+              gamePhaseManager: mockGamePhaseManager,
+            ),
+          ),
+        );
         coordinator.drawCardsFromDeck();
-
         verify(
-          () => mockDeckCardsCoordinator.drawCards(any()),
+          () => mockDeckCardsCoordinator.drawCard(),
         ).called(greaterThan(0));
       });
     });
