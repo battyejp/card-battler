@@ -6,13 +6,6 @@ import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
-// Stores information about where a card was dropped
-class CardDropInfo {
-  CardDropInfo({required this.zoneIndex});
-
-  final int zoneIndex; // 0 = single zone or left zone, 1 = right zone
-}
-
 class CardFanDraggableService {
   CardFanDraggableService(
     CardFanSelectionService cardSelectionService,
