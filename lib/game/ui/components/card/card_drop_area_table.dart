@@ -1,4 +1,3 @@
-import 'package:card_battler/game/services/card/card_fan_draggable_service.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/painting.dart';
@@ -126,32 +125,20 @@ class CardDropAreaTable extends PositionComponent
 
     // Draw text labels
     if (numberOfZones == 1) {
-      _drawText(
-        canvas,
-        'Play Card Here',
-        size.x / 2,
-        size.y / 2,
-        24,
-      );
+      _drawText(canvas, 'Play Card Here', size.x / 2, size.y / 2, 24);
     } else {
-      _drawText(
-        canvas,
-        'Option 1',
-        size.x / 4,
-        size.y / 2,
-        20,
-      );
-      _drawText(
-        canvas,
-        'Option 2',
-        size.x * 3 / 4,
-        size.y / 2,
-        20,
-      );
+      _drawText(canvas, 'Option 1', size.x / 4, size.y / 2, 20);
+      _drawText(canvas, 'Option 2', size.x * 3 / 4, size.y / 2, 20);
     }
   }
 
-  void _drawText(Canvas canvas, String text, double x, double y, double fontSize) {
+  void _drawText(
+    Canvas canvas,
+    String text,
+    double x,
+    double y,
+    double fontSize,
+  ) {
     final textPainter = TextPainter(
       text: TextSpan(
         text: text,
@@ -169,4 +156,15 @@ class CardDropAreaTable extends PositionComponent
       Offset(x - textPainter.width / 2, y - textPainter.height / 2),
     );
   }
+}
+
+// Base interface for drop areas
+abstract class CardDropArea {
+  bool get isHighlighted;
+  set isHighlighted(bool value);
+  bool get isVisible;
+  set isVisible(bool value);
+  Vector2 get absolutePosition;
+  double get width;
+  double get height;
 }

@@ -8,17 +8,6 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 
-// Base interface for drop areas
-abstract class CardDropArea {
-  bool get isHighlighted;
-  set isHighlighted(bool value);
-  bool get isVisible;
-  set isVisible(bool value);
-  Vector2 get absolutePosition;
-  double get width;
-  double get height;
-}
-
 // Stores information about where a card was dropped
 class CardDropInfo {
   CardDropInfo({required this.zoneIndex});
@@ -211,24 +200,35 @@ class CardFanDraggableService {
       tableArea.isLeftZoneHighlighted = cardRect.overlaps(tableRect);
       tableArea.isRightZoneHighlighted = false;
     } else {
-      // Two zones - check left and right halves
-      final leftRect = Rect.fromLTWH(
+      // Two zones - determine which zone based on card center position
+      // Get card center X position
+      final cardCenterX = card.absolutePosition.x;
+      final tableCenterX = tableArea.absolutePosition.x + tableArea.width / 2;
+
+      // Check if card overlaps the table at all
+      final tableRect = Rect.fromLTWH(
         tableArea.absolutePosition.x,
         tableArea.absolutePosition.y,
-        tableArea.width / 2,
+        tableArea.width,
         tableArea.height,
       );
 
-      final rightRect = Rect.fromLTWH(
-        tableArea.absolutePosition.x + tableArea.width / 2,
-        tableArea.absolutePosition.y,
-        tableArea.width / 2,
-        tableArea.height,
-      );
-
-      // Check intersections
-      tableArea.isLeftZoneHighlighted = cardRect.overlaps(leftRect);
-      tableArea.isRightZoneHighlighted = cardRect.overlaps(rightRect);
+      if (cardRect.overlaps(tableRect)) {
+        // Card is over the table - highlight only the zone where center is
+        if (cardCenterX < tableCenterX) {
+          // Card center is on left side
+          tableArea.isLeftZoneHighlighted = true;
+          tableArea.isRightZoneHighlighted = false;
+        } else {
+          // Card center is on right side
+          tableArea.isLeftZoneHighlighted = false;
+          tableArea.isRightZoneHighlighted = true;
+        }
+      } else {
+        // Card is not over the table
+        tableArea.isLeftZoneHighlighted = false;
+        tableArea.isRightZoneHighlighted = false;
+      }
     }
   }
 }

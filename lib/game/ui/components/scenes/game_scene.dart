@@ -59,7 +59,7 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
     // Create unified drop area table
     final tableWidth = size.x * 0.9; // 80% of screen width
     final tableHeight = size.y * 0.3; // 15% of screen height
-    final dropAreaY = team.position.y + team.size.y * 0.5;
+    final dropAreaY = team.position.y + team.size.y * 0.4;
 
     dropAreaTable = CardDropAreaTable()
       ..size = Vector2(tableWidth, tableHeight)
