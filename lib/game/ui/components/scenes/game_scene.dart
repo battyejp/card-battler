@@ -79,7 +79,8 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
 
     final player = Player(coordinator.playerCoordinator)
       ..size = Vector2(size.x, availableHeightForPlayer)
-      ..position = Vector2(startX, team.position.y + team.size.y);
+      ..position = Vector2(startX, team.position.y + team.size.y)
+      ..priority = 100;
     add(player);
   }
 }
