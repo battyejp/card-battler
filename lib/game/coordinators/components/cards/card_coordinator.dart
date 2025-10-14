@@ -18,6 +18,11 @@ class CardCoordinator {
 
   Function(CardCoordinator)? onCardPlayed;
 
+  /// Index of the selected effect when card has "Or" operator
+  /// 0 = left/first effect, 1 = right/second effect
+  /// For "And" operator, this is always 0 (apply all effects)
+  int selectedEffectIndex = 0;
+
   String get name => _cardModel.name;
   String get filename => _cardModel.filename;
   CardType get type => _cardModel.type;

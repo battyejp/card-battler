@@ -1,8 +1,9 @@
 import 'package:card_battler/game/card_battler_game.dart';
+import 'package:card_battler/game/models/shared/play_effects_model.dart';
 import 'package:card_battler/game/services/card/card_fan_draggable_service.dart';
 import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/ui/components/card/card_drop_area_perspective.dart';
+import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
@@ -41,20 +42,19 @@ class CardFanDraggableArea extends PositionComponent
 
     final game = findGame() as CardBattlerGame;
     _cardSelectionService.game = game;
-    _cardDraggableService.dropArea = _findCardDragDropArea()!;
+    _cardDraggableService.dropArea = _findDropAreaTable()!;
     _cardDraggableService.darkeningOverlay = _findDarkeningOverlay();
   }
 
-  CardDropArea? _findCardDragDropArea() {
+  CardDropAreaTable? _findDropAreaTable() {
     final cardFan = parent;
     if (cardFan != null) {
       final player = cardFan.parent;
       if (player != null) {
         final gameScene = player.parent;
         if (gameScene != null) {
-          // Find any component that implements CardDropArea
           final dropArea = gameScene.children
-              .whereType<CardDragDropAreaPerspective>()
+              .whereType<CardDropAreaTable>()
               .firstOrNull;
           return dropArea;
         }
@@ -91,6 +91,23 @@ class CardFanDraggableArea extends PositionComponent
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
+
+    // Configure the table zones based on the selected card's operator
+    if (_cardSelectionService.selectedCard != null) {
+      final operator =
+          _cardSelectionService.selectedCard!.coordinator.playEffects.operator;
+
+      final table = _findDropAreaTable();
+      if (table != null) {
+        // Set number of zones based on operator
+        if (operator == EffectsOperator.or) {
+          table.setNumberOfZones(2); // Two zones for "Or" operator
+        } else {
+          table.setNumberOfZones(1); // Single zone for "And" operator
+        }
+      }
+    }
+
     _cardDraggableService.onDragStart(event.canvasPosition);
   }
 
