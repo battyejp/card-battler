@@ -1,11 +1,14 @@
+import 'package:card_battler/game/services/card/card_fan_draggable_service.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/painting.dart';
 
 class CardDragDropArea extends PositionComponent
-    with DragCallbacks, HasVisibility {
+    with DragCallbacks, HasVisibility
+    implements CardDropArea {
   CardDragDropArea();
 
+  @override
   bool isHighlighted = false;
 
   @override

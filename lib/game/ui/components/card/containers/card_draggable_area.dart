@@ -2,7 +2,7 @@ import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/services/card/card_fan_draggable_service.dart';
 import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
+import 'package:card_battler/game/ui/components/card/card_drop_area_perspective.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
@@ -45,15 +45,16 @@ class CardFanDraggableArea extends PositionComponent
     _cardDraggableService.darkeningOverlay = _findDarkeningOverlay();
   }
 
-  CardDragDropArea? _findCardDragDropArea() {
+  CardDropArea? _findCardDragDropArea() {
     final cardFan = parent;
     if (cardFan != null) {
       final player = cardFan.parent;
       if (player != null) {
         final gameScene = player.parent;
         if (gameScene != null) {
+          // Find any component that implements CardDropArea
           final dropArea = gameScene.children
-              .whereType<CardDragDropArea>()
+              .whereType<CardDragDropAreaPerspective>()
               .firstOrNull;
           return dropArea;
         }

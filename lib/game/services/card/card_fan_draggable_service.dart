@@ -1,12 +1,22 @@
 import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
+
+// Base interface for drop areas
+abstract class CardDropArea {
+  bool get isHighlighted;
+  set isHighlighted(bool value);
+  bool get isVisible;
+  set isVisible(bool value);
+  Vector2 get absolutePosition;
+  double get width;
+  double get height;
+}
 
 class CardFanDraggableService {
   CardFanDraggableService(
@@ -24,7 +34,7 @@ class CardFanDraggableService {
   final Function(InteractiveCardSprite) _onCardPlayed;
   final Function(SpriteComponent) _onRemoveCardAtCenter;
 
-  late CardDragDropArea dropArea;
+  late CardDropArea dropArea;
   DarkeningOverlay? darkeningOverlay;
 
   Vector2 _dragStartPosition = Vector2.zero();
@@ -84,6 +94,7 @@ class CardFanDraggableService {
         .clone();
     _originalAngleBeforeDrag = _cardSelectionService.selectedCard!.angle;
     _cardSelectionService.selectedCard?.angle = 0;
+    _cardSelectionService.selectedCard?.isPerspectiveMode = true;
     _isBeingDragged = true;
     _cardSelectionService.selectedCard?.position += event.canvasDelta;
     dropArea.isVisible = true;
@@ -94,6 +105,7 @@ class CardFanDraggableService {
     _isBeingDragged = false;
     _cardSelectionService.selectedCard?.position = _originalPositionBeforeDrag;
     _cardSelectionService.selectedCard?.angle = _originalAngleBeforeDrag;
+    _cardSelectionService.selectedCard?.isPerspectiveMode = false;
     _cardSelectionService.selectedCard?.isSelected = false;
     _cardSelectionService.selectedCard = null;
     dropArea.isVisible = false;
@@ -102,7 +114,7 @@ class CardFanDraggableService {
 
   bool _isCardIntersectingDropArea(
     InteractiveCardSprite card,
-    CardDragDropArea dropArea,
+    CardDropArea dropArea,
   ) {
     // Calculate card's absolute position and bounds
     final cardRect = Rect.fromLTWH(

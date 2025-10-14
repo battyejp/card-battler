@@ -1,6 +1,6 @@
 import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
-import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
+import 'package:card_battler/game/ui/components/card/card_drop_area_perspective.dart';
 import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:card_battler/game/ui/components/enemy/enemies.dart';
@@ -47,23 +47,15 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
       ..position = Vector2(startX, enemies.position.y + enemies.size.y);
     add(team);
 
-    const scale = 2.0;
-    final area = CardDragDropArea()
-      ..size = Vector2(
-        GameVariables.defaultCardSizeWidth *
-            GameVariables.activePlayerCardFanScale *
-            scale,
-        GameVariables.defaultCardSizeHeight *
-            GameVariables.activePlayerCardFanScale *
-            scale,
-      )
+    // Create a wider, shorter perspective table zone in the middle of the screen
+    final tableWidth = size.x * 0.6; // 60% of screen width
+    final tableHeight = size.y * 0.15; // 15% of screen height (not too long)
+
+    final area = CardDragDropAreaPerspective()
+      ..size = Vector2(tableWidth, tableHeight)
       ..position = Vector2(
-        0 -
-            GameVariables.defaultCardSizeWidth /
-                2 *
-                GameVariables.activePlayerCardFanScale *
-                scale,
-        team.position.y,
+        (size.x - tableWidth) / 2 + startX, // Center horizontally
+        team.position.y + team.size.y * 0.75, // Position in team area
       );
 
     area.isVisible = false;
