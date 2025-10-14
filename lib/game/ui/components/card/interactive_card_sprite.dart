@@ -43,7 +43,8 @@ class InteractiveCardSprite extends CardSprite {
       super.render(canvas);
     }
 
-    if (isSelected) {
+    // Only show selection border when not in perspective mode (not being dragged)
+    if (isSelected && !isPerspectiveMode) {
       // Draw a glowing border around the selected card
       final paint = Paint()
         ..color = const Color(0xFF00FF00)

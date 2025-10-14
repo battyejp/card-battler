@@ -56,15 +56,16 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
     add(darkeningOverlay);
 
     // Create a wider, shorter perspective table zone in the middle of the screen
-    final tableWidth = size.x * 0.6; // 60% of screen width
+    final tableWidth = size.x * 1; // 100% of screen width (increased from 80%)
     final tableHeight = size.y * 0.15; // 15% of screen height (not too long)
 
     final area = CardDragDropAreaPerspective()
       ..size = Vector2(tableWidth, tableHeight)
       ..position = Vector2(
         (size.x - tableWidth) / 2 + startX, // Center horizontally
-        team.position.y + team.size.y * 0.75, // Position in team area
-      );
+        team.position.y + team.size.y * 0.9, // Position in team area
+      )
+      ..priority = 100; // Same as player to appear above darkening overlay
 
     area.isVisible = false;
     add(area);

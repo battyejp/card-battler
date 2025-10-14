@@ -37,7 +37,7 @@ class CardDragDropAreaPerspective extends PositionComponent
     // Create a perspective trapezoid
     // Front (bottom) is wider than back (top)
     final frontWidth = size.x;
-    final backWidth = size.x * 0.6; // Back is 60% of front width
+    final backWidth = size.x * 0.7; // Back is 60% of front width
     final height = size.y;
 
     // Calculate the offset to center the trapezoid
