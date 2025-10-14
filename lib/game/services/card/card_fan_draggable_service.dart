@@ -3,6 +3,7 @@ import 'package:card_battler/game/services/card/card_fan_selection_service.dart'
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
+import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class CardFanDraggableService {
   final Function(SpriteComponent) _onRemoveCardAtCenter;
 
   late CardDragDropArea dropArea;
+  DarkeningOverlay? darkeningOverlay;
 
   Vector2 _dragStartPosition = Vector2.zero();
   bool _isBeingDragged = false;
@@ -85,6 +87,7 @@ class CardFanDraggableService {
     _isBeingDragged = true;
     _cardSelectionService.selectedCard?.position += event.canvasDelta;
     dropArea.isVisible = true;
+    darkeningOverlay?.isVisible = true;
   }
 
   void _returnDragedCardToOriginalPosition() {
@@ -94,6 +97,7 @@ class CardFanDraggableService {
     _cardSelectionService.selectedCard?.isSelected = false;
     _cardSelectionService.selectedCard = null;
     dropArea.isVisible = false;
+    darkeningOverlay?.isVisible = false;
   }
 
   bool _isCardIntersectingDropArea(

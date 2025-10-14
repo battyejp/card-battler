@@ -1,6 +1,7 @@
 import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
+import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:card_battler/game/ui/components/enemy/enemies.dart';
 import 'package:card_battler/game/ui/components/enemy/enemy_turn.dart';
@@ -10,6 +11,8 @@ import 'package:flame/components.dart';
 
 class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
   GameScene(super.coordinator);
+
+  late DarkeningOverlay darkeningOverlay;
 
   //TODO could we just update the player component and enemy visibility instead of rebuilding everything?
   @override
@@ -65,6 +68,14 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
 
     area.isVisible = false;
     add(area);
+
+    // Add darkening overlay (should be above most components but below dragged card)
+    darkeningOverlay = DarkeningOverlay()
+      ..size = size
+      ..position = Vector2(startX, startY)
+      ..priority = 50;
+    darkeningOverlay.isVisible = false;
+    add(darkeningOverlay);
 
     final player = Player(coordinator.playerCoordinator)
       ..size = Vector2(size.x, availableHeightForPlayer)

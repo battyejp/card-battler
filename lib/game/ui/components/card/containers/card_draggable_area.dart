@@ -5,6 +5,7 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
+import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
@@ -41,6 +42,7 @@ class CardFanDraggableArea extends PositionComponent
     final game = findGame() as CardBattlerGame;
     _cardSelectionService.game = game;
     _cardDraggableService.dropArea = _findCardDragDropArea()!;
+    _cardDraggableService.darkeningOverlay = _findDarkeningOverlay();
   }
 
   CardDragDropArea? _findCardDragDropArea() {
@@ -54,6 +56,23 @@ class CardFanDraggableArea extends PositionComponent
               .whereType<CardDragDropArea>()
               .firstOrNull;
           return dropArea;
+        }
+      }
+    }
+    return null;
+  }
+
+  DarkeningOverlay? _findDarkeningOverlay() {
+    final cardFan = parent;
+    if (cardFan != null) {
+      final player = cardFan.parent;
+      if (player != null) {
+        final gameScene = player.parent;
+        if (gameScene != null) {
+          final overlay = gameScene.children
+              .whereType<DarkeningOverlay>()
+              .firstOrNull;
+          return overlay;
         }
       }
     }
