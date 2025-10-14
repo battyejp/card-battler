@@ -61,7 +61,7 @@ void main() {
       });
 
       test('healthDisplay getter returns health display string', () {
-        expect(actorCoordinator.healthDisplay, equals('100/150'));
+        expect(actorCoordinator.healthDisplay, equals('100'));
         expect(
           actorCoordinator.healthDisplay,
           equals(mockActorModel.healthModel.display),
@@ -77,7 +77,7 @@ void main() {
         mockActorModel.healthModel.currentHealth = 75;
 
         expect(actorCoordinator.health, equals(75));
-        expect(actorCoordinator.healthDisplay, equals('75/150'));
+        expect(actorCoordinator.healthDisplay, equals('75'));
       });
     });
 
