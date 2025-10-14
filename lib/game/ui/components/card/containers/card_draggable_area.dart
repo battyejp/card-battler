@@ -7,6 +7,7 @@ import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
+import 'package:card_battler/game/ui/components/scenes/game_scene.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
@@ -51,33 +52,35 @@ class CardFanDraggableArea extends PositionComponent
   }
 
   CardDropAreaTable? _findDropAreaTable() {
-    final cardFan = parent;
-    if (cardFan != null) {
-      final player = cardFan.parent;
-      if (player != null) {
-        final gameScene = player.parent;
-        if (gameScene != null) {
-          final dropArea = gameScene.children
-              .whereType<CardDropAreaTable>()
-              .firstOrNull;
-          return dropArea;
-        }
-      }
+    final gameScene = _findGameScene();
+    if (gameScene != null) {
+      final dropArea = gameScene.children
+          .whereType<CardDropAreaTable>()
+          .firstOrNull;
+      return dropArea;
     }
     return null;
   }
 
   DarkeningOverlay? _findDarkeningOverlay() {
+    final gameScene = _findGameScene();
+    if (gameScene != null) {
+      final overlay = gameScene.children
+          .whereType<DarkeningOverlay>()
+          .firstOrNull;
+      return overlay;
+    }
+    return null;
+  }
+
+  GameScene? _findGameScene() {
     final cardFan = parent;
     if (cardFan != null) {
       final player = cardFan.parent;
       if (player != null) {
         final gameScene = player.parent;
-        if (gameScene != null) {
-          final overlay = gameScene.children
-              .whereType<DarkeningOverlay>()
-              .firstOrNull;
-          return overlay;
+        if (gameScene != null && gameScene is GameScene) {
+          return gameScene;
         }
       }
     }
