@@ -1,5 +1,6 @@
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
+import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 
@@ -19,6 +20,7 @@ class CardFanSelectionService {
   late CardBattlerGame game;
   InteractiveCardSprite? selectedCard;
   SpriteComponent? duplicateCard;
+  DarkeningOverlay? darkeningOverlay;
 
   void findHighestPriorityCardSpriteAndSelect(Vector2 position) {
     final components = game.componentsAtPoint(position);
@@ -71,6 +73,11 @@ class CardFanSelectionService {
   void _removeDuplicateCardAtCenter(InteractiveCardSprite card) {
     card.isSelected = false;
     _onRemoveCardAtCenter.call(duplicateCard!);
+
+    // Hide darkening overlay when card is removed
+    if (darkeningOverlay != null) {
+      darkeningOverlay!.isVisible = false;
+    }
   }
 
   void _showDuplicateCardAtCenter(InteractiveCardSprite card) {
@@ -80,12 +87,18 @@ class CardFanSelectionService {
     const scale = 0.75;
 
     duplicateCard = SpriteComponent(sprite: Sprite(image))
-      ..scale = Vector2.all(scale);
+      ..scale = Vector2.all(scale)
+      ..priority = 150; // Above the darkening overlay
 
     duplicateCard!.position = Vector2(
       _size.x / 2 - duplicateCard!.size.x * scale / 2,
       -duplicateCard!.size.y * scale,
     );
     _onShowCardAtCenter.call(duplicateCard!);
+
+    // Show darkening overlay when card is shown at center
+    if (darkeningOverlay != null) {
+      darkeningOverlay!.isVisible = true;
+    }
   }
 }

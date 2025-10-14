@@ -43,7 +43,11 @@ class CardFanDraggableArea extends PositionComponent
     final game = findGame() as CardBattlerGame;
     _cardSelectionService.game = game;
     _cardDraggableService.dropArea = _findDropAreaTable()!;
-    _cardDraggableService.darkeningOverlay = _findDarkeningOverlay();
+
+    // Wire darkening overlay to both services
+    final overlay = _findDarkeningOverlay();
+    _cardDraggableService.darkeningOverlay = overlay;
+    _cardSelectionService.darkeningOverlay = overlay;
   }
 
   CardDropAreaTable? _findDropAreaTable() {
