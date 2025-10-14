@@ -30,6 +30,7 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
 
     const padding = 10.0;
     const lineHeight = 25.0;
+    const iconGap = 20.0;
 
     // Name at top, left-aligned
     final nameLabel = TextComponent(
@@ -54,7 +55,7 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
 
     final healthLabel = TextComponent(
       text: coordinator.healthDisplay,
-      position: Vector2(padding + 16 + 6, healthY),
+      position: Vector2(healthIcon.position.x + iconGap, healthY),
       anchor: Anchor.topLeft,
       textRenderer: TextPaint(
         style: const TextStyle(fontSize: 16, color: Colors.white),
@@ -64,18 +65,16 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
     add(healthLabel);
 
     // Attack and Credits on third line, side by side
-    const statsY = padding + (lineHeight * 2);
-
     // Attack with icon
     final attackIcon = SvgComponent(svg: IconManager.target())
       ..size = Vector2.all(16)
-      ..position = Vector2(padding, statsY)
+      ..position = Vector2(healthLabel.position.x + iconGap, healthY)
       ..anchor = Anchor.topLeft;
     add(attackIcon);
 
     final attackLabel = TextComponent(
       text: coordinator.attack.toString(),
-      position: Vector2(padding + 16 + 6, statsY),
+      position: Vector2(attackIcon.position.x + iconGap, healthY),
       anchor: Anchor.topLeft,
       textRenderer: TextPaint(
         style: const TextStyle(fontSize: 16, color: Colors.white),
@@ -85,16 +84,15 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
     add(attackLabel);
 
     // Credits with icon (positioned to the right of attack)
-    const creditsX = padding + 16 + 6 + 15; // Give some space for attack text
     final creditsIcon = SvgComponent(svg: IconManager.rupee())
       ..size = Vector2.all(16)
-      ..position = Vector2(creditsX, statsY)
+      ..position = Vector2(attackLabel.position.x + iconGap, healthY)
       ..anchor = Anchor.topLeft;
     add(creditsIcon);
 
     final creditsLabel = TextComponent(
       text: coordinator.credits.toString(),
-      position: Vector2(creditsX + 16 + 6, statsY),
+      position: Vector2(creditsIcon.position.x + iconGap, healthY),
       anchor: Anchor.topLeft,
       textRenderer: TextPaint(
         style: const TextStyle(fontSize: 16, color: Colors.white),

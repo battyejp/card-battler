@@ -15,24 +15,20 @@ class TeamMate extends PositionComponent {
     super.onMount();
     removeWhere((component) => true);
 
-    final cardFan = CardFan(
-      _coordinator.handCardsCoordinator,
-      mini: true,
-      fanRadius: 50.0,
-    )..position = Vector2(size.x / 2, 50.0 * 3.2);
-
-    add(cardFan);
-
     final playerInfo =
-        PlayerInfo(
-            _coordinator.playerInfoCoordinator,
-            isActivePlayer: false,
-            gapBetweenNameAndFirstLabel: cardFan.position.y * 0.8,
-          )
+        PlayerInfo(_coordinator.playerInfoCoordinator, isActivePlayer: false)
           ..size = Vector2(size.x, size.y)
           ..position = Vector2(0, 0);
 
     add(playerInfo);
+
+    final cardFan = CardFan(
+      _coordinator.handCardsCoordinator,
+      mini: true,
+      fanRadius: 50.0,
+    )..position = Vector2(size.x / 2, playerInfo.size.y);
+
+    add(cardFan);
   }
 
   @override
