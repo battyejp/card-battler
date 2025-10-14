@@ -43,7 +43,7 @@ class CardDropAreaTable extends PositionComponent
   void render(Canvas canvas) {
     // Draw the table (trapezoid for perspective)
     final frontWidth = size.x;
-    final backWidth = size.x * 0.6; // Back is 60% of front width
+    final backWidth = size.x * 0.7; // Back is 70% of front width
     final height = size.y;
     final backOffset = (frontWidth - backWidth) / 2;
 

@@ -65,7 +65,7 @@ class CardDragDropAreaDual extends PositionComponent
   @override
   void render(Canvas canvas) {
     final frontWidth = size.x / 2; // Each zone is half width
-    final backWidth = frontWidth * 0.6; // Back is 60% of front width
+    final backWidth = frontWidth * 0.7; // Back is 70% of front width
     final height = size.y;
     final backOffset = (frontWidth - backWidth) / 2;
 

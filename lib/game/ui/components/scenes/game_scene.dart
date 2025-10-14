@@ -57,8 +57,8 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
     add(darkeningOverlay);
 
     // Create unified drop area table
-    final tableWidth = size.x * 0.8; // 80% of screen width
-    final tableHeight = size.y * 0.15; // 15% of screen height
+    final tableWidth = size.x * 0.9; // 80% of screen width
+    final tableHeight = size.y * 0.3; // 15% of screen height
     final dropAreaY = team.position.y + team.size.y * 0.5;
 
     dropAreaTable = CardDropAreaTable()
