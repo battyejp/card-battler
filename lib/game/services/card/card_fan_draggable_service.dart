@@ -1,4 +1,3 @@
-import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
@@ -6,7 +5,6 @@ import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dar
 import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flutter/material.dart';
 
 // Stores information about where a card was dropped
 class CardDropInfo {
@@ -31,7 +29,7 @@ class CardFanDraggableService {
   final Function(InteractiveCardSprite) _onCardPlayed;
   final Function(SpriteComponent) _onRemoveCardAtCenter;
 
-  late CardDropArea dropArea;
+  late CardDropAreaTable dropArea;
   DarkeningOverlay? darkeningOverlay;
 
   Vector2 _dragStartPosition = Vector2.zero();
@@ -49,21 +47,10 @@ class CardFanDraggableService {
 
     if (_isBeingDragged) {
       _cardSelectionService.selectedCard?.position += event.canvasDelta;
-
-      // Check if it's a table drop area
-      if (dropArea is CardDropAreaTable) {
-        final tableArea = dropArea as CardDropAreaTable;
-        _checkTableZoneIntersection(
-          _cardSelectionService.selectedCard!,
-          tableArea,
-        );
-      } else {
-        final canBeDropped = _isCardIntersectingDropArea(
-          _cardSelectionService.selectedCard!,
-          dropArea,
-        );
-        dropArea.isHighlighted = canBeDropped;
-      }
+      _checkTableZoneIntersection(
+        _cardSelectionService.selectedCard!,
+        dropArea,
+      );
     } else if (deltaX.abs() > 15) {
       _dragStartPosition = event.canvasStartPosition;
       _cardSelectionService.findHighestPriorityCardSpriteAndSelect(
@@ -83,29 +70,15 @@ class CardFanDraggableService {
     if (_isBeingDragged) {
       var wasDropped = false;
 
-      // Check if it's a table drop area
-      if (dropArea is CardDropAreaTable) {
-        final tableArea = dropArea as CardDropAreaTable;
-        if (tableArea.isLeftZoneHighlighted ||
-            tableArea.isRightZoneHighlighted) {
-          wasDropped = true;
-          // Store which zone was selected for effect processing
-          final selectedZone = tableArea.highlightedZone;
-          _cardSelectionService.selectedCard?.coordinator.selectedEffectIndex =
-              selectedZone;
-          tableArea.isLeftZoneHighlighted = false;
-          tableArea.isRightZoneHighlighted = false;
-          _onCardPlayed.call(_cardSelectionService.selectedCard!);
-        }
-      } else {
-        if (dropArea.isHighlighted) {
-          wasDropped = true;
-          dropArea.isHighlighted = false;
-          // For single zone, always use index 0 (apply all effects)
-          _cardSelectionService.selectedCard?.coordinator.selectedEffectIndex =
-              0;
-          _onCardPlayed.call(_cardSelectionService.selectedCard!);
-        }
+      if (dropArea.isLeftZoneHighlighted || dropArea.isRightZoneHighlighted) {
+        wasDropped = true;
+        // Store which zone was selected for effect processing
+        final selectedZone = dropArea.highlightedZone;
+        _cardSelectionService.selectedCard?.coordinator.selectedEffectIndex =
+            selectedZone;
+        dropArea.isLeftZoneHighlighted = false;
+        dropArea.isRightZoneHighlighted = false;
+        _onCardPlayed.call(_cardSelectionService.selectedCard!);
       }
 
       if (!wasDropped) {
@@ -143,91 +116,87 @@ class CardFanDraggableService {
     darkeningOverlay?.isVisible = false;
   }
 
-  bool _isCardIntersectingDropArea(
-    InteractiveCardSprite card,
+  /// Checks if a point is within the perspective-adjusted drop area
+  /// The front (bottom) has a smaller hit area than the back (top)
+  bool _isPointInPerspectiveDropArea(
+    double pointX,
+    double pointY,
     CardDropArea dropArea,
   ) {
-    // Calculate card's absolute position and bounds
-    final cardRect = Rect.fromLTWH(
-      card.absolutePosition.x -
-          (GameVariables.defaultCardSizeWidth * card.scale.x).toDouble() / 2,
-      card.absolutePosition.y -
-          (GameVariables.defaultCardSizeHeight * card.scale.y).toDouble() / 2,
-      (GameVariables.defaultCardSizeWidth * card.scale.x).toDouble(),
-      (GameVariables.defaultCardSizeHeight * card.scale.y).toDouble(),
-    );
+    final tableLeft = dropArea.absolutePosition.x;
+    final tableTop = dropArea.absolutePosition.y;
+    final tableWidth = dropArea.width;
+    final tableHeight = dropArea.height;
 
-    // Calculate drop area's absolute position and bounds
-    final dropRect = Rect.fromLTWH(
-      dropArea.absolutePosition.x,
-      dropArea.absolutePosition.y,
-      dropArea.width,
-      dropArea.height,
-    );
+    // Table is a trapezoid: back is 70% of front width
+    final frontWidth = tableWidth;
+    final backWidth = tableWidth * 0.7;
 
-    // print(
-    //   'Card Rect: ${cardRect.left}, ${cardRect.top}, ${cardRect.width}, ${cardRect.height}',
-    // );
-    // print(
-    //   'Drop Rect: ${dropRect.left}, ${dropRect.top}, ${dropRect.width}, ${dropRect.height}',
-    // );
+    // Calculate how far down the table the point is (0.0 = back/top, 1.0 = front/bottom)
+    final normalizedY = (pointY - tableTop) / tableHeight;
 
-    return cardRect.overlaps(dropRect);
+    // Point must be within vertical bounds
+    if (normalizedY < 0.0 || normalizedY > 1.0) {
+      return false;
+    }
+
+    // Interpolate width at this Y position (back is narrower, front is wider)
+    final widthAtY = backWidth + (frontWidth - backWidth) * normalizedY;
+    final offsetAtY = (frontWidth - widthAtY) / 2;
+
+    // Calculate left and right bounds at this Y position
+    final leftBoundAtY = tableLeft + offsetAtY;
+    final rightBoundAtY = tableLeft + offsetAtY + widthAtY;
+
+    // Expand the hit area based on depth (perspective compensation)
+    // Front (normalizedY near 1.0) needs less expansion, back needs more
+    final expansionFactor =
+        50.0 * (1.0 - normalizedY * 0.5); // More expansion at back
+    final expandedLeft = leftBoundAtY - expansionFactor;
+    final expandedRight = rightBoundAtY + expansionFactor;
+
+    return pointX >= expandedLeft && pointX <= expandedRight;
   }
 
   void _checkTableZoneIntersection(
     InteractiveCardSprite card,
     CardDropAreaTable tableArea,
   ) {
-    // Calculate card's absolute position and bounds
-    final cardRect = Rect.fromLTWH(
-      card.absolutePosition.x -
-          (GameVariables.defaultCardSizeWidth * card.scale.x).toDouble() / 2,
-      card.absolutePosition.y -
-          (GameVariables.defaultCardSizeHeight * card.scale.y).toDouble() / 2,
-      (GameVariables.defaultCardSizeWidth * card.scale.x).toDouble(),
-      (GameVariables.defaultCardSizeHeight * card.scale.y).toDouble(),
+    // Use card center position (where the mouse/finger is)
+    final cardCenterX = card.absolutePosition.x;
+    final cardCenterY = card.absolutePosition.y;
+
+    // Check if the point is within the perspective-aware drop area
+    final isInTable = _isPointInPerspectiveDropArea(
+      cardCenterX,
+      cardCenterY,
+      tableArea,
     );
 
+    if (!isInTable) {
+      // Not over the table at all
+      tableArea.isLeftZoneHighlighted = false;
+      tableArea.isRightZoneHighlighted = false;
+      return;
+    }
+
     if (tableArea.numberOfZones == 1) {
-      // Single zone - check entire table
-      final tableRect = Rect.fromLTWH(
-        tableArea.absolutePosition.x,
-        tableArea.absolutePosition.y,
-        tableArea.width,
-        tableArea.height,
-      );
-      tableArea.isLeftZoneHighlighted = cardRect.overlaps(tableRect);
+      // Single zone - highlight the entire table
+      tableArea.isLeftZoneHighlighted = true;
       tableArea.isRightZoneHighlighted = false;
     } else {
-      // Two zones - determine which zone based on card center position
-      // Get card center X position
-      final cardCenterX = card.absolutePosition.x;
+      // Two zones - determine which zone based on card center X position
+      // Need to account for perspective: the divider line goes from back-center to front-center
       final tableCenterX = tableArea.absolutePosition.x + tableArea.width / 2;
 
-      // Check if card overlaps the table at all
-      final tableRect = Rect.fromLTWH(
-        tableArea.absolutePosition.x,
-        tableArea.absolutePosition.y,
-        tableArea.width,
-        tableArea.height,
-      );
-
-      if (cardRect.overlaps(tableRect)) {
-        // Card is over the table - highlight only the zone where center is
-        if (cardCenterX < tableCenterX) {
-          // Card center is on left side
-          tableArea.isLeftZoneHighlighted = true;
-          tableArea.isRightZoneHighlighted = false;
-        } else {
-          // Card center is on right side
-          tableArea.isLeftZoneHighlighted = false;
-          tableArea.isRightZoneHighlighted = true;
-        }
-      } else {
-        // Card is not over the table
-        tableArea.isLeftZoneHighlighted = false;
+      if (cardCenterX < tableCenterX) {
+        // Card center is on left side
+        tableArea.isLeftZoneHighlighted = true;
         tableArea.isRightZoneHighlighted = false;
+      } else {
+        // Card center is on right side
+        tableArea.isLeftZoneHighlighted = false;
+        tableArea.isRightZoneHighlighted = true;
       }
     }
   }
