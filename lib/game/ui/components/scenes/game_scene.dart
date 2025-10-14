@@ -47,6 +47,14 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
       ..position = Vector2(startX, enemies.position.y + enemies.size.y);
     add(team);
 
+    // Add darkening overlay (should be above most components but below dragged card)
+    darkeningOverlay = DarkeningOverlay()
+      ..size = size
+      ..position = Vector2(startX, startY)
+      ..priority = 50;
+    darkeningOverlay.isVisible = false;
+    add(darkeningOverlay);
+
     // Create a wider, shorter perspective table zone in the middle of the screen
     final tableWidth = size.x * 0.6; // 60% of screen width
     final tableHeight = size.y * 0.15; // 15% of screen height (not too long)
@@ -60,14 +68,6 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
 
     area.isVisible = false;
     add(area);
-
-    // Add darkening overlay (should be above most components but below dragged card)
-    darkeningOverlay = DarkeningOverlay()
-      ..size = size
-      ..position = Vector2(startX, startY)
-      ..priority = 50;
-    darkeningOverlay.isVisible = false;
-    add(darkeningOverlay);
 
     final player = Player(coordinator.playerCoordinator)
       ..size = Vector2(size.x, availableHeightForPlayer)
