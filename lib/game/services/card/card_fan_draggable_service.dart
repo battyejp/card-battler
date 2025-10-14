@@ -1,7 +1,6 @@
 import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
-import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:card_battler/game/ui/components/overlay/drag_table_overlay.dart';
 import 'package:flame/components.dart';
@@ -25,7 +24,6 @@ class CardFanDraggableService {
   final Function(InteractiveCardSprite) _onCardPlayed;
   final Function(SpriteComponent) _onRemoveCardAtCenter;
 
-  late CardDragDropArea dropArea;
   DragTableOverlay? _dragOverlay;
 
   set dragOverlay(DragTableOverlay overlay) {
@@ -48,10 +46,15 @@ class CardFanDraggableService {
 
     if (_isBeingDragged) {
       _cardSelectionService.selectedCard?.position += event.canvasDelta;
-      final canBeDropped = _isCardIntersectingDropArea(
-        _cardSelectionService.selectedCard!,
-        dropArea,
-      );
+      
+      // Check intersection with the drag overlay's drop area
+      bool canBeDropped = false;
+      if (_dragOverlay != null) {
+        canBeDropped = _isCardIntersectingOverlay(
+          _cardSelectionService.selectedCard!,
+          _dragOverlay!,
+        );
+      }
 
       _dragOverlay?.updateHighlight(canBeDropped);
     } else if (deltaX.abs() > 15) {
@@ -121,9 +124,9 @@ class CardFanDraggableService {
     _dragOverlay?.hide();
   }
 
-  bool _isCardIntersectingDropArea(
+  bool _isCardIntersectingOverlay(
     InteractiveCardSprite card,
-    CardDragDropArea dropArea,
+    DragTableOverlay overlay,
   ) {
     // Calculate card's absolute position and bounds
     final cardRect = Rect.fromLTWH(
@@ -135,20 +138,8 @@ class CardFanDraggableService {
       (GameVariables.defaultCardSizeHeight * card.scale.y).toDouble(),
     );
 
-    // Calculate drop area's absolute position and bounds
-    final dropRect = Rect.fromLTWH(
-      dropArea.absolutePosition.x,
-      dropArea.absolutePosition.y,
-      dropArea.width,
-      dropArea.height,
-    );
-
-    // print(
-    //   'Card Rect: ${cardRect.left}, ${cardRect.top}, ${cardRect.width}, ${cardRect.height}',
-    // );
-    // print(
-    //   'Drop Rect: ${dropRect.left}, ${dropRect.top}, ${dropRect.width}, ${dropRect.height}',
-    // );
+    // Get the drop area rect from the overlay
+    final dropRect = overlay.getDropAreaRect();
 
     return cardRect.overlaps(dropRect);
   }

@@ -88,6 +88,16 @@ class DragTableOverlay extends PositionComponent with HasVisibility {
     }
   }
 
+  /// Returns the table drop area's absolute position and size for intersection checking
+  Rect getDropAreaRect() {
+    return Rect.fromLTWH(
+      absolutePosition.x + _tableAreaPosition.x,
+      absolutePosition.y + _tableAreaPosition.y,
+      _tableAreaSize.x,
+      _tableAreaSize.y,
+    );
+  }
+
   /// Updates the highlight state based on whether the card can be dropped
   void updateHighlight(bool canDrop) {
     isHighlighted = canDrop;
