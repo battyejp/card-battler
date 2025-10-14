@@ -1,0 +1,155 @@
+====================================
+CARD PLAY INTERACTION - VISUAL FLOW
+====================================
+
+BEFORE (Legacy Implementation):
+---------------------------------
+[                                           ]
+[                                           ]
+[          STATIC "PLAY CARD HERE"          ]
+[          (Always visible, green box)      ]
+[                                           ]
+[                                           ]
+[                                           ]
+[    ♠   ♥   ♦   ♣   ♠                     ]
+[    Card Fan (curved arrangement)          ]
+=====================================
+
+
+AFTER (New Dynamic Implementation):
+---------------------------------
+
+STATE 1 - IDLE (No Drag):
+-------------------------
+[                                           ]
+[           Normal Game View                ]
+[                                           ]
+[    No overlay visible                     ]
+[                                           ]
+[                                           ]
+[                                           ]
+[    ♠   ♥   ♦   ♣   ♠                     ]
+[    Card Fan (curved)                      ]
+=====================================
+
+
+STATE 2 - DRAGGING (Invalid Drop):
+----------------------------------
+[█████████████████████████████████████████]
+[█████████ DARKENED BACKGROUND ███████████]
+[█████████████████████████████████████████]
+[██  ┌─────────────────────┐  ███████████]
+[██  │  YELLOW GLOW TABLE  │  ███████████]
+[██  │  - - - - - - - - -  │  ███████████]
+[██  └─────────────────────┘  ███████████]
+[█████████████████████████████████████████]
+[         ╔═══════════╗                    ]
+[         ║   CARD    ║ <- Tilted forward  ]
+[         ║  (GOLD    ║    Scaled 110%     ]
+[         ║   GLOW)   ║                    ]
+[         ╚═══════════╝                    ]
+[    ♠   ♥       ♣   ♠                     ]
+[    Remaining cards in fan                ]
+=====================================
+
+
+STATE 3 - DRAGGING (Valid Drop):
+--------------------------------
+[█████████████████████████████████████████]
+[█████████ DARKENED BACKGROUND ███████████]
+[█████████████████████████████████████████]
+[██  ┌═════════════════════┐  ███████████]
+[██  ║  GREEN GLOW TABLE   ║  ███████████]
+[██  ║  ═ ═ ═ ═ ═ ═ ═ ═ ═  ║  ███████████]
+[██  └═════════════════════┘  ███████████]
+[██      ╔═══════════╗         ███████████]
+[██      ║   CARD    ║         ███████████]
+[██      ║  (GOLD    ║         ███████████]
+[██      ║   GLOW)   ║         ███████████]
+[██      ╚═══════════╝         ███████████]
+[█████████████████████████████████████████]
+[    ♠   ♥       ♣   ♠                     ]
+[    Remaining cards in fan                ]
+=====================================
+
+
+VISUAL EFFECTS DETAIL:
+---------------------
+
+Card Glow (When Selected):
+  ┌─────────────┐
+░░│             │░░  <- Green blur (8px)
+░░│   SELECTED  │░░
+░░│    CARD     │░░
+░░└─────────────┘░░
+
+Card Glow (When Dragging):
+  ┌─────────────┐
+▒▒│             │▒▒  <- Gold blur (10px)
+▒▒│   DRAGGING  │▒▒     + 15° forward tilt
+▒▒│    CARD     │▒▒     + 110% scale
+▒▒└─────────────┘▒▒
+
+Table Area (Invalid):
+┌─────────────────────┐
+│ YELLOW OUTER GLOW   │ <- 15px blur
+│ ┌─────────────────┐ │
+│ │ YELLOW BORDER   │ │ <- 4px stroke
+│ │ - - - - - - - - │ │ <- Dashed pattern
+│ │ YELLOW FILL     │ │ <- 40 alpha
+│ └─────────────────┘ │
+└─────────────────────┘
+
+Table Area (Valid):
+╔═══════════════════════╗
+║ GREEN OUTER GLOW      ║ <- 15px blur
+║ ╔═══════════════════╗ ║
+║ ║ GREEN BORDER      ║ ║ <- 4px stroke
+║ ║ ═ ═ ═ ═ ═ ═ ═ ═ ═ ║ ║ <- Dashed pattern
+║ ║ GREEN FILL        ║ ║ <- 40 alpha
+║ ╚═══════════════════╝ ║
+╚═══════════════════════╝
+
+
+INTERACTION SEQUENCE:
+--------------------
+
+1. USER GRABS CARD (vertical drag > 30px)
+   → Card duplicates to center of fan
+   → Original card removed from position
+   → Duplicate card gets:
+     - Forward tilt (-15°)
+     - Scale increase (110%)
+     - Gold glow effect
+   → Background darkens
+   → Yellow table area appears
+
+2. USER MOVES CARD
+   → Card follows cursor
+   → Continuously checks intersection
+   → Table area color changes:
+     - YELLOW when outside drop zone
+     - GREEN when inside drop zone
+
+3. USER RELEASES CARD
+   Option A - Over valid area (GREEN):
+     → Card is played
+     → Overlay disappears
+     → Game continues
+   
+   Option B - Outside area (YELLOW):
+     → Card returns to original position
+     → Tilt resets to original angle
+     → Scale resets to 100%
+     → Glow removed
+     → Overlay disappears
+     → Card reinserted into fan
+
+
+COLOR REFERENCE:
+--------------
+Background Overlay:  rgba(0, 0, 0, 0.71)       [Dark semi-transparent]
+Yellow Glow:         rgba(255, 193, 7, 0.39)   [Warning/Dragging]
+Green Glow:          rgba(76, 175, 80, 0.39)   [Success/Valid]
+Gold Card Glow:      rgba(255, 215, 0, 0.47)   [Card highlight]
+
