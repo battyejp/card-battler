@@ -4,6 +4,7 @@ import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:card_battler/game/ui/components/enemy/enemies.dart';
 import 'package:card_battler/game/ui/components/enemy/enemy_turn.dart';
+import 'package:card_battler/game/ui/components/overlay/drag_table_overlay.dart';
 import 'package:card_battler/game/ui/components/player/player.dart';
 import 'package:card_battler/game/ui/components/team/team.dart';
 import 'package:flame/components.dart';
@@ -44,6 +45,7 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
       ..position = Vector2(startX, enemies.position.y + enemies.size.y);
     add(team);
 
+    // Keep the old CardDragDropArea for intersection checking (but make it invisible)
     const scale = 2.0;
     final area = CardDragDropArea()
       ..size = Vector2(
@@ -65,6 +67,29 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
 
     area.isVisible = false;
     add(area);
+
+    // Add the new dynamic drag overlay
+    final dragOverlay = DragTableOverlay(
+      tableAreaSize: Vector2(
+        GameVariables.defaultCardSizeWidth *
+            GameVariables.activePlayerCardFanScale *
+            scale,
+        GameVariables.defaultCardSizeHeight *
+            GameVariables.activePlayerCardFanScale *
+            scale,
+      ),
+      tableAreaPosition: Vector2(
+        size.x / 2 - (GameVariables.defaultCardSizeWidth *
+            GameVariables.activePlayerCardFanScale *
+            scale / 2),
+        team.position.y + size.y / 2,
+      ),
+    )
+      ..size = size
+      ..position = Vector2(startX, startY)
+      ..priority = 999; // High priority to render on top
+    
+    add(dragOverlay);
 
     final player = Player(coordinator.playerCoordinator)
       ..size = Vector2(size.x, availableHeightForPlayer)

@@ -3,9 +3,11 @@ import 'package:card_battler/game/services/card/card_fan_selection_service.dart'
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
+import 'package:card_battler/game/ui/components/overlay/drag_table_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 class CardFanDraggableService {
   CardFanDraggableService(
@@ -24,11 +26,17 @@ class CardFanDraggableService {
   final Function(SpriteComponent) _onRemoveCardAtCenter;
 
   late CardDragDropArea dropArea;
+  DragTableOverlay? _dragOverlay;
+
+  set dragOverlay(DragTableOverlay overlay) {
+    _dragOverlay = overlay;
+  }
 
   Vector2 _dragStartPosition = Vector2.zero();
   bool _isBeingDragged = false;
   Vector2 _originalPositionBeforeDrag = Vector2.zero();
   double _originalAngleBeforeDrag = 0.0;
+  double _originalScaleBeforeDrag = 1.0;
 
   void onDragStart(Vector2 position) {
     _dragStartPosition = position;
@@ -45,7 +53,7 @@ class CardFanDraggableService {
         dropArea,
       );
 
-      dropArea.isHighlighted = canBeDropped;
+      _dragOverlay?.updateHighlight(canBeDropped);
     } else if (deltaX.abs() > 15) {
       _dragStartPosition = event.canvasStartPosition;
       _cardSelectionService.findHighestPriorityCardSpriteAndSelect(
@@ -63,8 +71,8 @@ class CardFanDraggableService {
     _dragStartPosition = Vector2.zero();
 
     if (_isBeingDragged) {
-      if (dropArea.isHighlighted) {
-        dropArea.isHighlighted = false;
+      if (_dragOverlay?.isHighlighted ?? false) {
+        _dragOverlay?.hide();
         _onCardPlayed.call(_cardSelectionService.selectedCard!);
       } else {
         // Card was not dropped in the drop area, return to original position
@@ -81,19 +89,36 @@ class CardFanDraggableService {
     _originalPositionBeforeDrag = _cardSelectionService.selectedCard!.position
         .clone();
     _originalAngleBeforeDrag = _cardSelectionService.selectedCard!.angle;
-    _cardSelectionService.selectedCard?.angle = 0;
+    _originalScaleBeforeDrag = _cardSelectionService.selectedCard!.scale.x;
+    
+    // Tilt card forward (negative angle to tilt toward table)
+    _cardSelectionService.selectedCard?.angle = -math.pi / 12; // ~15 degrees forward tilt
+    
+    // Slightly scale up the card to emphasize it
+    final scaleFactor = 1.1;
+    _cardSelectionService.selectedCard?.scale = Vector2.all(_originalScaleBeforeDrag * scaleFactor);
+    
+    // Mark card as being dragged for enhanced visual effect
+    _cardSelectionService.selectedCard?.isBeingDragged = true;
+    
     _isBeingDragged = true;
     _cardSelectionService.selectedCard?.position += event.canvasDelta;
-    dropArea.isVisible = true;
+    
+    // Show the drag overlay instead of the drop area
+    _dragOverlay?.show();
   }
 
   void _returnDragedCardToOriginalPosition() {
     _isBeingDragged = false;
     _cardSelectionService.selectedCard?.position = _originalPositionBeforeDrag;
     _cardSelectionService.selectedCard?.angle = _originalAngleBeforeDrag;
+    _cardSelectionService.selectedCard?.scale = Vector2.all(_originalScaleBeforeDrag);
+    _cardSelectionService.selectedCard?.isBeingDragged = false;
     _cardSelectionService.selectedCard?.isSelected = false;
     _cardSelectionService.selectedCard = null;
-    dropArea.isVisible = false;
+    
+    // Hide the drag overlay
+    _dragOverlay?.hide();
   }
 
   bool _isCardIntersectingDropArea(

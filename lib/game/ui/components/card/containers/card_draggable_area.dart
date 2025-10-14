@@ -5,6 +5,7 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
+import 'package:card_battler/game/ui/components/overlay/drag_table_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
@@ -41,6 +42,12 @@ class CardFanDraggableArea extends PositionComponent
     final game = findGame() as CardBattlerGame;
     _cardSelectionService.game = game;
     _cardDraggableService.dropArea = _findCardDragDropArea()!;
+    
+    // Find and set the drag overlay
+    final dragOverlay = _findDragTableOverlay();
+    if (dragOverlay != null) {
+      _cardDraggableService.dragOverlay = dragOverlay;
+    }
   }
 
   CardDragDropArea? _findCardDragDropArea() {
@@ -54,6 +61,23 @@ class CardFanDraggableArea extends PositionComponent
               .whereType<CardDragDropArea>()
               .firstOrNull;
           return dropArea;
+        }
+      }
+    }
+    return null;
+  }
+
+  DragTableOverlay? _findDragTableOverlay() {
+    final cardFan = parent;
+    if (cardFan != null) {
+      final player = cardFan.parent;
+      if (player != null) {
+        final gameScene = player.parent;
+        if (gameScene != null) {
+          final overlay = gameScene.children
+              .whereType<DragTableOverlay>()
+              .firstOrNull;
+          return overlay;
         }
       }
     }
