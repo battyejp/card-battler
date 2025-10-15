@@ -19,7 +19,7 @@
     "name": "Orb of Life and Death",
     "type": "Item",
     "filename": "cards/light/item/size/orb.png",
-    "quantity": 1,
+    "quantity": 8,
     "playEffects": {
       "operator": "Or",
       "effects": [

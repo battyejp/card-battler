@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -8,12 +6,45 @@ class InteractiveCardSprite extends CardSprite {
 
   bool isSelected = false;
   bool isDraggable = false;
+  bool isPerspectiveMode = false;
 
   @override
   void render(Canvas canvas) {
-    super.render(canvas);
+    if (isPerspectiveMode) {
+      // Apply perspective transform to match the drop zone trapezoid
+      // The drop zone has back width = 70% of front width
+      canvas.save();
 
-    if (isSelected) {
+      // Move to center for proper rotation
+      canvas.translate(size.x / 2, size.y / 2);
+
+      // Create perspective matrix
+      final matrix = Matrix4.identity();
+
+      // Set perspective projection (affects how depth is rendered)
+      matrix.setEntry(3, 2, -0.0008); // Reduced perspective strength
+
+      // Rotate around X-axis to tilt the card forward
+      // Negative = toward viewer (top narrower, bottom wider)
+      matrix.rotateX(0.68); // Moderate tilt
+
+      // Scale down slightly to compensate for perspective growth
+      matrix.scale(0.85, 0.85, 1.0);
+
+      // Apply the transform
+      canvas.transform(matrix.storage);
+
+      // Move back and render
+      canvas.translate(-size.x / 2, -size.y / 2);
+
+      super.render(canvas);
+      canvas.restore();
+    } else {
+      super.render(canvas);
+    }
+
+    // Only show selection border when not in perspective mode (not being dragged)
+    if (isSelected && !isPerspectiveMode) {
       // Draw a glowing border around the selected card
       final paint = Paint()
         ..color = const Color(0xFF00FF00)

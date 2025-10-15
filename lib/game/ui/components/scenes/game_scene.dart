@@ -1,6 +1,7 @@
 import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
-import 'package:card_battler/game/ui/components/card/card_drop_area.dart';
+import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
+import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:card_battler/game/ui/components/enemy/enemies.dart';
 import 'package:card_battler/game/ui/components/enemy/enemy_turn.dart';
@@ -10,6 +11,9 @@ import 'package:flame/components.dart';
 
 class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
   GameScene(super.coordinator);
+
+  late DarkeningOverlay darkeningOverlay;
+  late CardDropAreaTable dropAreaTable;
 
   //TODO could we just update the player component and enemy visibility instead of rebuilding everything?
   @override
@@ -44,31 +48,33 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
       ..position = Vector2(startX, enemies.position.y + enemies.size.y);
     add(team);
 
-    const scale = 2.0;
-    final area = CardDragDropArea()
-      ..size = Vector2(
-        GameVariables.defaultCardSizeWidth *
-            GameVariables.activePlayerCardFanScale *
-            scale,
-        GameVariables.defaultCardSizeHeight *
-            GameVariables.activePlayerCardFanScale *
-            scale,
-      )
-      ..position = Vector2(
-        0 -
-            GameVariables.defaultCardSizeWidth /
-                2 *
-                GameVariables.activePlayerCardFanScale *
-                scale,
-        team.position.y,
-      );
+    // Add darkening overlay (should be above most components but below dragged card)
+    darkeningOverlay = DarkeningOverlay()
+      ..size = size
+      ..position = Vector2(startX, startY)
+      ..priority = 50;
+    darkeningOverlay.isVisible = false;
+    add(darkeningOverlay);
 
-    area.isVisible = false;
-    add(area);
+    // Create unified drop area table
+    final tableWidth = size.x * 0.9; // 80% of screen width
+    final tableHeight = size.y * 0.3; // 15% of screen height
+    final dropAreaY = team.position.y + team.size.y * 0.4;
+
+    dropAreaTable = CardDropAreaTable()
+      ..size = Vector2(tableWidth, tableHeight)
+      ..position = Vector2(
+        (size.x - tableWidth) / 2 + startX, // Center horizontally
+        dropAreaY,
+      )
+      ..priority = 100; // Same as player to appear above darkening overlay
+    dropAreaTable.isVisible = false;
+    add(dropAreaTable);
 
     final player = Player(coordinator.playerCoordinator)
       ..size = Vector2(size.x, availableHeightForPlayer)
-      ..position = Vector2(startX, team.position.y + team.size.y);
+      ..position = Vector2(startX, team.position.y + team.size.y)
+      ..priority = 100;
     add(player);
   }
 }
