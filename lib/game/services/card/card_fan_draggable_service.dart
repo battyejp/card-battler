@@ -61,10 +61,7 @@ class CardFanDraggableService {
     _dragStartPosition = Vector2.zero();
 
     if (_isBeingDragged) {
-      var wasDropped = false;
-
       if (dropArea.isLeftZoneHighlighted || dropArea.isRightZoneHighlighted) {
-        wasDropped = true;
         // Store which zone was selected for effect processing
         final selectedZone = dropArea.highlightedZone;
         _cardSelectionService.selectedCard?.coordinator.selectedEffectIndex =
@@ -72,14 +69,12 @@ class CardFanDraggableService {
         dropArea.isLeftZoneHighlighted = false;
         dropArea.isRightZoneHighlighted = false;
         _onCardPlayed.call(_cardSelectionService.selectedCard!);
-      }
-
-      if (!wasDropped) {
-        // Card was not dropped in any drop area, return to original position
-        _returnDragedCardToOriginalPosition();
       } else {
         _returnDragedCardToOriginalPosition();
       }
+
+      dropArea.isVisible = false;
+      darkeningOverlay?.isVisible = false;
     } else {
       _cardSelectionService.deselectCard();
     }
@@ -105,8 +100,6 @@ class CardFanDraggableService {
     _cardSelectionService.selectedCard?.isPerspectiveMode = false;
     _cardSelectionService.selectedCard?.isSelected = false;
     _cardSelectionService.selectedCard = null;
-    dropArea.isVisible = false;
-    darkeningOverlay?.isVisible = false;
   }
 
   /// Checks if a point is within the perspective-adjusted drop area
