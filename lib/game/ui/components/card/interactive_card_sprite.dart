@@ -12,7 +12,7 @@ class InteractiveCardSprite extends CardSprite {
   void render(Canvas canvas) {
     if (isPerspectiveMode) {
       // Apply perspective transform to match the drop zone trapezoid
-      // The drop zone has back width = 60% of front width
+      // The drop zone has back width = 70% of front width
       canvas.save();
 
       // Move to center for proper rotation

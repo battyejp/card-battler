@@ -14,8 +14,6 @@ class CardDropAreaTable extends PositionComponent
     _heartIcon = IconManager.heart();
   }
 
-  late final rupeeIcon = _rupeeIcon;
-  late final heartIcon = _heartIcon;
   late Svg _rupeeIcon;
   late Svg _heartIcon;
 
@@ -165,7 +163,7 @@ class CardDropAreaTable extends PositionComponent
     matrix.scale(1.0, 0.85, 1.0); // Slightly compress vertically
 
     // Convert Float32List to Float64List
-    final matrix64 = Float64List.fromList(matrix.storage.toList());
+    final matrix64 = Float64List(16)..setAll(0, matrix.storage);
     canvas.transform(matrix64);
 
     // Translate to center the icon (after transform)
