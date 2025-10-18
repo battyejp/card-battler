@@ -2,7 +2,7 @@
   {
     "name": "Credits",
     "type": "Item",
-    "filename": "cards/light/item/size/credits2.png",
+    "filename": "item.png",
     "quantity": 7,
     "playEffects": {
       "operator": "And",
@@ -18,7 +18,7 @@
   {
     "name": "Orb of Life and Death",
     "type": "Item",
-    "filename": "cards/light/item/size/orb.png",
+    "filename": "item.png",
     "quantity": 8,
     "playEffects": {
       "operator": "Or",
@@ -39,7 +39,7 @@
   {
     "name": "Laser Pistol",
     "type": "Item",
-    "filename": "cards/light/item/size/pistol.png",
+    "filename": "item.png",
     "quantity": 1,
     "playEffects": {
       "operator": "And",
@@ -55,7 +55,7 @@
   {
     "name": "Shield",
     "type": "Item",
-    "filename": "cards/light/item/size/armour.png",
+    "filename": "item.png",
     "quantity": 1,
     "playEffects": {
       "operator": "And",

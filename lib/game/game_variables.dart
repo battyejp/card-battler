@@ -1,5 +1,5 @@
 class GameVariables {
-  static const numberOfCardsDrawnByPlayer = 5;
+  static const numberOfCardsDrawnByPlayer = 10;
 
   static const int defaultCardSizeWidth = 329;
   static const int defaultCardSizeHeight = 560;
@@ -18,7 +18,7 @@ class GameVariables {
   static const double sideMargin = 10.0;
   static const double bottomMargin = 30.0;
 
-  static const fractionOfScreenForTeamComponent = 0.4;
+  static const fractionOfScreenForTeamComponent = 0.3;
   static const fractionOfScreenForEnemyComponent = 0.3;
-  static const fractionOfScreenForPlayerComponent = 0.3;
+  static const fractionOfScreenForPlayerComponent = 0.4;
 }

@@ -19,14 +19,15 @@ class TurnButtonComponent
       loadingComplete = true;
     } else {
       _turnButton
-        ..text = coordinator.buttonText
-        ..isVisible = coordinator.buttonVisible;
+              //..text = coordinator.buttonText
+              .isVisible =
+          coordinator.buttonVisible;
     }
   }
 
   void _loadGameComponents() {
     _turnButton = FlatButton(
-      coordinator.buttonText,
+      "End",
       size: Vector2(size.x, size.y),
       position: Vector2(0, 0),
       onReleased: coordinator.handleTurnButtonPressed,

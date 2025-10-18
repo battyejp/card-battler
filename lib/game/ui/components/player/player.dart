@@ -2,17 +2,22 @@ import 'package:card_battler/game/coordinators/components/player/player_coordina
 import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
-import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
+import 'package:card_battler/game/ui/components/card/containers/card_hand.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
 import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:card_battler/game/ui/components/shared/turn_button_component.dart';
+import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
+import 'package:flame/game.dart';
+import 'package:flame_svg/svg_component.dart';
 
 class Player extends PositionComponent {
   Player(PlayerCoordinator coordinator) : _coordinator = coordinator;
 
   final PlayerCoordinator _coordinator;
-  final double topMargin = 10.0;
+  final topMargin = 10.0;
+  final cardOffesetInDeck = 10.0;
+  final minCardTopMargin = 20.0;
 
   @override
   void onMount() {
@@ -28,23 +33,8 @@ class Player extends PositionComponent {
     // );
     // add(border);
 
-    final cardFan =
-        CardFan(
-            _coordinator.handCardsCoordinator,
-            gamePhaseManager: _coordinator.gamePhaseManager,
-            fanRadius: 125.0,
-            cardScale: GameVariables.activePlayerCardFanScale,
-          )
-          ..size = Vector2(size.x, size.y)
-          ..position = Vector2(
-            GameVariables.sideMargin,
-            size.y - GameVariables.bottomMargin,
-          );
-    add(cardFan);
-
     final deckHeight = GameVariables.defaultCardBackSizeHeight.toDouble();
     final deckWidth = GameVariables.defaultCardBackSizeWidth.toDouble();
-    final cardDeckYPosition = size.y - deckHeight - GameVariables.bottomMargin;
 
     final deck =
         CardDeck(
@@ -62,8 +52,9 @@ class Player extends PositionComponent {
           ..size = Vector2(deckWidth, deckHeight)
           ..position = Vector2(
             GameVariables.sideMargin +
-                10, //10 is to allow for card offsets in deck
-            cardDeckYPosition,
+                (cardOffesetInDeck *
+                    2), //10 is to allow for card offsets in deck
+            cardOffesetInDeck + topMargin,
           );
 
     add(deck);
@@ -73,23 +64,63 @@ class Player extends PositionComponent {
           ..size = Vector2(deckWidth, deckHeight)
           ..position = Vector2(
             size.x - deckWidth - GameVariables.sideMargin,
-            cardDeckYPosition,
+            cardOffesetInDeck + topMargin,
           );
 
     add(discardPile);
 
-    final playerInfo = PlayerInfo(_coordinator.playerInfoCoordinator)
-      ..size = Vector2(size.x, size.y)
-      ..position = Vector2(0, topMargin);
-    add(playerInfo);
+    final attackIcon = SvgComponent(svg: IconManager.target())
+      ..size = Vector2.all(64)
+      ..position = Vector2(
+        size.x / 2 + GameVariables.sideMargin,
+        discardPile.position.y,
+      );
+    add(attackIcon);
+
+    final rupeeIcon = SvgComponent(svg: IconManager.rupee())
+      ..size = Vector2.all(64)
+      ..position = Vector2(
+        size.x / 2 - GameVariables.sideMargin - attackIcon.size.x,
+        discardPile.position.y,
+      );
+    add(rupeeIcon);
+
+    final healthIcon = SvgComponent(svg: IconManager.heart())
+      ..size = Vector2.all(64)
+      ..position = Vector2(
+        rupeeIcon.position.x - GameVariables.sideMargin - rupeeIcon.size.x,
+        discardPile.position.y,
+      );
+    add(healthIcon);
+
+    // const playerInfoHeight = 30.0;
+    // final playerInfo = PlayerInfo(_coordinator.playerInfoCoordinator)
+    //   ..size = Vector2(size.x, playerInfoHeight)
+    //   ..position = Vector2(0, topMargin);
+    // add(playerInfo);
 
     final turnBtn =
         TurnButtonComponent(_coordinator.turnButtonComponentCoordinator)
-          ..size = Vector2(100, 25)
+          ..size = Vector2(64, 64)
           ..position = Vector2(
-            size.x - 50 - GameVariables.sideMargin,
-            25 + topMargin,
+            attackIcon.position.x +
+                attackIcon.size.x +
+                32 +
+                GameVariables.sideMargin,
+            discardPile.position.y + 64 / 2,
           );
     add(turnBtn);
+
+    final cardHand =
+        CardHand(
+            _coordinator.handCardsCoordinator,
+            gamePhaseManager: _coordinator.gamePhaseManager,
+          )
+          ..size = Vector2(size.x, size.y)
+          ..position = Vector2(
+            0,
+            deck.position.y + deckHeight + minCardTopMargin,
+          );
+    add(cardHand);
   }
 }
