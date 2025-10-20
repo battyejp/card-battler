@@ -1,40 +1,39 @@
+import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/stat_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
+import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
 import 'package:card_battler/game/services/card/player_card_manager.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
-class PlayerCoordinator {
+class PlayerCoordinator with ReactiveCoordinator<PlayerCoordinator> {
   PlayerCoordinator({
     required CardListCoordinator<CardCoordinator> handCardsCoordinator,
     required CardListCoordinator<CardCoordinator> deckCardsCoordinator,
     required CardListCoordinator<CardCoordinator> discardCardsCoordinator,
-    required PlayerInfoCoordinator playerInfoCoordinator,
     required GamePhaseManager gamePhaseManager,
     required EffectProcessor effectProcessor,
     required TurnButtonComponentCoordinator turnButtonComponentCoordinator,
     required StatCoordinator healthStatCoordinator,
     required StatCoordinator creditsStatCoordinator,
     required StatCoordinator attackStatCoordinator,
+    this.isActive = false,
   }) : _handCardsCoordinator = handCardsCoordinator,
        _deckCardsCoordinator = deckCardsCoordinator,
-       _playerInfoCoordinator = playerInfoCoordinator,
        _discardCardsCoordinator = discardCardsCoordinator,
        _gamePhaseManager = gamePhaseManager,
        _healthStatCoordinator = healthStatCoordinator,
        _creditsStatCoordinator = creditsStatCoordinator,
-        _attackStatCoordinator = attackStatCoordinator,
+       _attackStatCoordinator = attackStatCoordinator,
        _turnButtonComponentCoordinator = turnButtonComponentCoordinator,
        _cardManager = PlayerCardManager(
          handCardsCoordinator: handCardsCoordinator,
          deckCardsCoordinator: deckCardsCoordinator,
          discardCardsCoordinator: discardCardsCoordinator,
          gamePhaseManager: gamePhaseManager,
-         effectProcessor: effectProcessor,
-         playerInfoCoordinator: playerInfoCoordinator,
+         effectProcessor: effectProcessor
        ) {
     _deckCardsCoordinator.shuffle();
   }
@@ -42,7 +41,6 @@ class PlayerCoordinator {
   final CardListCoordinator<CardCoordinator> _handCardsCoordinator;
   final CardListCoordinator<CardCoordinator> _deckCardsCoordinator;
   final CardListCoordinator<CardCoordinator> _discardCardsCoordinator;
-  final PlayerInfoCoordinator _playerInfoCoordinator;
   final GamePhaseManager _gamePhaseManager;
   final PlayerCardManager _cardManager;
   final TurnButtonComponentCoordinator _turnButtonComponentCoordinator;
@@ -56,7 +54,6 @@ class PlayerCoordinator {
       _deckCardsCoordinator;
   CardListCoordinator<CardCoordinator> get discardCardsCoordinator =>
       _discardCardsCoordinator;
-  PlayerInfoCoordinator get playerInfoCoordinator => _playerInfoCoordinator;
   GamePhaseManager get gamePhaseManager => _gamePhaseManager;
   TurnButtonComponentCoordinator get turnButtonComponentCoordinator =>
       _turnButtonComponentCoordinator;
@@ -79,4 +76,21 @@ class PlayerCoordinator {
   void adjustAttack(int amount) {
     _attackStatCoordinator.adjustValue(amount);
   }
+
+  void resetCreditsAndAttack() {
+    _attackStatCoordinator.resetValue();
+    _creditsStatCoordinator.resetValue();
+  }
+
+  bool hasAMaxDamageCard() =>
+      _handCardsCoordinator.getCardsOfType(EffectType.maxDamage).isNotEmpty;
+
+  int? getMinCardValue(EffectType type) =>
+      handCardsCoordinator.getEffectMinValueOfType(type);
+
+  int get attack => _attackStatCoordinator.value;
+  int get credits => _creditsStatCoordinator.value;
+  int get health => _healthStatCoordinator.value;
+
+  bool isActive;
 }

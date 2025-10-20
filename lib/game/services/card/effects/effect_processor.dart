@@ -18,7 +18,7 @@ class EffectProcessor {
       final targets = _targetResolver.resolveTargets(effect);
 
       for (final target in targets) {
-        _effectHandler.applyEffect(target.playerInfoCoordinator, effect);
+        _effectHandler.applyEffect(target, effect);
       }
     }
   }

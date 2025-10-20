@@ -1,28 +1,28 @@
-import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
 
 class EffectHandlerService {
-  void _handleAttackEffect(PlayerInfoCoordinator target, EffectModel effect) {
+  void _handleAttackEffect(PlayerCoordinator target, EffectModel effect) {
     target.adjustAttack(effect.value);
   }
 
-  void _handleHealEffect(PlayerInfoCoordinator target, EffectModel effect) {
+  void _handleHealEffect(PlayerCoordinator target, EffectModel effect) {
     target.adjustHealth(effect.value);
   }
 
-  void _handleCreditsEffect(PlayerInfoCoordinator target, EffectModel effect) {
+  void _handleCreditsEffect(PlayerCoordinator target, EffectModel effect) {
     target.adjustCredits(effect.value);
   }
 
-  void _handleDamageEffect(PlayerInfoCoordinator target, int value) {
+  void _handleDamageEffect(PlayerCoordinator target, int value) {
     target.adjustHealth(-value);
   }
 
-  void _handleDrawCardEffect(PlayerInfoCoordinator target, EffectModel effect) {
+  void _handleDrawCardEffect(PlayerCoordinator target, EffectModel effect) {
     // Implementation for draw card effect
   }
 
-  void applyEffect(PlayerInfoCoordinator target, EffectModel effect) {
+  void applyEffect(PlayerCoordinator target, EffectModel effect) {
     switch (effect.type) {
       case EffectType.attack:
         _handleAttackEffect(target, effect);

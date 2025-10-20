@@ -1,9 +1,9 @@
-import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/painting.dart';
 
-class ShopCredits extends ReactivePositionComponent<PlayerInfoCoordinator> {
+class ShopCredits extends ReactivePositionComponent<PlayerCoordinator> {
   ShopCredits(super.coordinator);
 
   @override

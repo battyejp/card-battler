@@ -33,7 +33,7 @@ class GameSceneCoordinatorFactory {
     required TeamCoordinator teamCoordinator,
   }) => GameSceneCoordinator(
     playerCoordinator: playerCoordinators.firstWhere(
-      (pc) => pc.playerInfoCoordinator.isActive,
+      (pc) => pc.isActive,
     ),
     shopCoordinator: shopCoordinator,
     teamCoordinator: teamCoordinator,

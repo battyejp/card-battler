@@ -33,7 +33,7 @@ class ActivePlayerManager with ActivePlayerChangeNotifier {
     }
 
     for (final player in _players) {
-      player.playerInfoCoordinator.isActive = player == _activePlayer;
+      player.isActive = player == _activePlayer;
     }
 
     if (!initActive) {

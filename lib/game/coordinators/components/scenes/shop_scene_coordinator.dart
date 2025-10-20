@@ -26,7 +26,7 @@ class ShopSceneCoordinator {
   TeamCoordinator get teamCoordinator => _teamCoordinator;
 
   void _onCardBought(ShopCardCoordinator cardCoordinator) {
-    _teamCoordinator.activePlayer.playerInfoCoordinator.adjustCredits(
+    _teamCoordinator.activePlayer.adjustCredits(
       -cardCoordinator.cost,
     );
 

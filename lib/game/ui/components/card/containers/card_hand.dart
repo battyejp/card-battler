@@ -5,10 +5,8 @@ import 'package:card_battler/game/ui/components/common/reactive_position_compone
 import 'package:flame/components.dart';
 
 class CardHand extends ReactivePositionComponent<CardListCoordinator> {
-  CardHand(super.coordinator, {GamePhaseManager? gamePhaseManager})
-    : _gamePhaseManager = gamePhaseManager;
+  CardHand(super.coordinator, {GamePhaseManager? gamePhaseManager});
 
-  final GamePhaseManager? _gamePhaseManager;
   final cardWidth = 864.0;
   final cardHeight = 1184.0;
   final totalCardsInRow = 5;

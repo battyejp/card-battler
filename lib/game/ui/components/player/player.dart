@@ -8,7 +8,6 @@ import 'package:card_battler/game/ui/components/shared/icon_stat.dart';
 import 'package:card_battler/game/ui/components/shared/turn_button_component.dart';
 import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
-import 'package:flame_svg/svg_component.dart';
 
 class Player extends PositionComponent {
   Player(PlayerCoordinator coordinator) : _coordinator = coordinator;

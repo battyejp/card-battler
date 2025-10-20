@@ -1,5 +1,4 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/models/shared/play_effects_model.dart';
@@ -14,8 +13,6 @@ class MockCardModel extends Mock implements CardModel {}
 class MockGamePhaseManager extends Mock implements GamePhaseManager {}
 
 class MockActivePlayerManager extends Mock implements ActivePlayerManager {}
-
-class MockPlayerInfoCoordinator extends Mock implements PlayerInfoCoordinator {}
 
 void main() {
   group('CardCoordinator', () {

@@ -1,13 +1,12 @@
-import 'package:card_battler/game/coordinators/components/team/team_mate_coordinator.dart';
-import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
+import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class TeamMate extends PositionComponent {
-  TeamMate(TeamMateCoordinator coordinator) : _coordinator = coordinator;
+  TeamMate(PlayerCoordinator coordinator) : _coordinator = coordinator;
 
-  final TeamMateCoordinator _coordinator;
+  final PlayerCoordinator _coordinator;
   final double margin = 5.0;
 
   @override
@@ -16,7 +15,7 @@ class TeamMate extends PositionComponent {
     removeWhere((component) => true);
 
     final playerInfo =
-        PlayerInfo(_coordinator.playerInfoCoordinator, isActivePlayer: false)
+        PlayerInfo(_coordinator, isActivePlayer: false)
           ..size = Vector2(size.x, size.y)
           ..position = Vector2(0, 0);
 

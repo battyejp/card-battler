@@ -18,8 +18,8 @@ class ShopCardCoordinator extends CardCoordinator {
 
   int get cost => _cardModel.cost;
   int get creditsAvailable =>
-      activePlayerManager.activePlayer!.playerInfoCoordinator.credits;
+      activePlayerManager.activePlayer!.credits;
 
   bool isActionDisabled() =>
-      activePlayerManager.activePlayer!.playerInfoCoordinator.credits < cost;
+      activePlayerManager.activePlayer!.credits < cost;
 }

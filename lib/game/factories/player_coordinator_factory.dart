@@ -1,7 +1,6 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
-import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/stat_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
@@ -36,10 +35,6 @@ class PlayerCoordinatorFactory {
       ),
       discardCardsCoordinator: CardListCoordinator<CardCoordinator>(
         cardCoordinators: [],
-      ),
-      playerInfoCoordinator: PlayerInfoCoordinator(
-        player,
-        handCardsCoordinator,
       ),
       gamePhaseManager: gamePhaseManager,
       effectProcessor: effectProcessor,

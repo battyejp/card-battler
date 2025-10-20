@@ -1,4 +1,4 @@
-import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
@@ -6,7 +6,8 @@ import 'package:flame_svg/svg_component.dart';
 import 'package:flutter/material.dart';
 
 //TODO look at hardcode layout parameters in hear and base on screen size
-class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
+@Deprecated('This class is legacy and should not be used in new code')
+class PlayerInfo extends ReactivePositionComponent<PlayerCoordinator> {
   PlayerInfo(
     super.coordinator, {
     bool isActivePlayer = true,
@@ -34,7 +35,7 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
 
     // Name at top, left-aligned
     final nameLabel = TextComponent(
-      text: coordinator.name,
+      text: "name",
       position: Vector2(padding, padding),
       anchor: Anchor.topLeft,
       textRenderer: TextPaint(
@@ -54,7 +55,7 @@ class PlayerInfo extends ReactivePositionComponent<PlayerInfoCoordinator> {
     add(healthIcon);
 
     final healthLabel = TextComponent(
-      text: coordinator.healthDisplay,
+      text: coordinator.health.toString(),
       position: Vector2(healthIcon.position.x + iconGap, healthY),
       anchor: Anchor.topLeft,
       textRenderer: TextPaint(

@@ -16,7 +16,7 @@ class ShopScene extends PositionComponent {
     removeWhere((component) => true);
 
     final creditsText = ShopCredits(
-      _coordinator.teamCoordinator.activePlayer.playerInfoCoordinator,
+      _coordinator.teamCoordinator.activePlayer,
     )..position = Vector2(0, 0 - size.y / 2 + _titleHeight / 2);
     add(creditsText);
 

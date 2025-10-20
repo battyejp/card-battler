@@ -21,4 +21,9 @@ class StatCoordinator with ReactiveCoordinator<StatCoordinator> {
 
     notifyChange();
   }
+
+  void resetValue() {
+    _value = 0;
+    notifyChange();
+  }
 }

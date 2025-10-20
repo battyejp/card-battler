@@ -18,7 +18,7 @@ class PlayerTurnLifecycleManager {
   }
 
   void handleTurnEnd() {
-    _playerCoordinator.playerInfoCoordinator.resetCreditsAndAttack();
+    _playerCoordinator.resetCreditsAndAttack();
     _shopCoordinator.refillShop();
 
     final cards = _playerCoordinator.handCardsCoordinator.removeAllCards();
