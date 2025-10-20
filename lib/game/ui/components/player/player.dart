@@ -1,20 +1,22 @@
+import 'dart:async';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_hand.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
-import 'package:card_battler/game/ui/components/player/player_info.dart';
 import 'package:card_battler/game/ui/components/shared/turn_button_component.dart';
 import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
-import 'package:flame/game.dart';
 import 'package:flame_svg/svg_component.dart';
+import 'package:flutter/painting.dart';
 
 class Player extends PositionComponent {
   Player(PlayerCoordinator coordinator) : _coordinator = coordinator;
 
   final PlayerCoordinator _coordinator;
+  late StreamSubscription _healthSubscription;
+  late TextComponent _healthText;
   final topMargin = 10.0;
   final cardOffesetInDeck = 10.0;
   final minCardTopMargin = 20.0;
@@ -92,6 +94,24 @@ class Player extends PositionComponent {
         discardPile.position.y,
       );
     add(healthIcon);
+
+    // Add health text component to bottom right corner of health icon
+    _healthText = TextComponent(
+      text: '${_coordinator.playerInfoCoordinator.health}',
+      position: Vector2(
+        healthIcon.size.x,
+        healthIcon.size.y,
+      ),
+      anchor: Anchor.bottomRight,
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontSize: 24,
+          color: Color(0xFFFFFFFF),
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+    healthIcon.add(_healthText);
 
     // const playerInfoHeight = 30.0;
     // final playerInfo = PlayerInfo(_coordinator.playerInfoCoordinator)

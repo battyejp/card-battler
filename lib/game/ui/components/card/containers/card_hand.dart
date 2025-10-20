@@ -3,7 +3,6 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:flame/components.dart';
-import 'package:flame/game.dart';
 
 class CardHand extends ReactivePositionComponent<CardListCoordinator> {
   CardHand(super.coordinator, {GamePhaseManager? gamePhaseManager})

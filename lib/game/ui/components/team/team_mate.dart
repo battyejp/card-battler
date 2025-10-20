@@ -22,13 +22,13 @@ class TeamMate extends PositionComponent {
 
     add(playerInfo);
 
-    final cardFan = CardFan(
-      _coordinator.handCardsCoordinator,
-      mini: true,
-      fanRadius: 50.0,
-    )..position = Vector2(size.x / 2, playerInfo.size.y);
+    // final cardFan = CardFan(
+    //   _coordinator.handCardsCoordinator,
+    //   mini: true,
+    //   fanRadius: 50.0,
+    // )..position = Vector2(size.x / 2, playerInfo.size.y);
 
-    add(cardFan);
+    // add(cardFan);
   }
 
   @override
