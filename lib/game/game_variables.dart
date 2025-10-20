@@ -21,4 +21,6 @@ class GameVariables {
   static const fractionOfScreenForTeamComponent = 0.3;
   static const fractionOfScreenForEnemyComponent = 0.3;
   static const fractionOfScreenForPlayerComponent = 0.4;
+
+  static const double activePlayerStatsSize = 64; 
 }

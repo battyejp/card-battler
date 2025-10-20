@@ -2,6 +2,7 @@ import 'package:card_battler/game/coordinators/components/cards/card_coordinator
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/player/player_info_coordinator.dart';
+import 'package:card_battler/game/coordinators/components/player/stat_coordinator.dart';
 import 'package:card_battler/game/coordinators/components/shared/turn_button_component_coordinator.dart';
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/services/card/effects/effect_processor.dart';
@@ -43,6 +44,12 @@ class PlayerCoordinatorFactory {
       gamePhaseManager: gamePhaseManager,
       effectProcessor: effectProcessor,
       turnButtonComponentCoordinator: turnButtonComponentCoordinator,
+      healthStatCoordinator: StatCoordinator(
+        player.healthModel.currentHealth,
+        maxValue: player.healthModel.maxHealth,
+      ),
+      creditsStatCoordinator: StatCoordinator(player.credits),
+      attackStatCoordinator: StatCoordinator(player.attack),
     );
   }).toList();
 }

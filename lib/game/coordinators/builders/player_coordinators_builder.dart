@@ -32,7 +32,7 @@ class PlayerCoordinatorsBuilder {
           gamePhaseManager: gamePhaseManager,
           activePlayerManager: activePlayerManager,
           effectProcessor: effectProcessor,
-          turnButtonComponentCoordinator: turnButtonComponentCoordinator,
+          turnButtonComponentCoordinator: turnButtonComponentCoordinator
         );
     final teamCoordinator = TeamCoordinatorFactory.createTeamCoordinator(
       playerCoordinators: playerCoordinators,

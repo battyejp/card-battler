@@ -4,6 +4,7 @@ import 'package:card_battler/game/coordinators/components/common/actor_coordinat
 import 'package:card_battler/game/models/player/player_model.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
 
+@Deprecated('This class is legacy and should not be used in new code')
 class PlayerInfoCoordinator extends ActorCoordinator<PlayerInfoCoordinator> {
   PlayerInfoCoordinator(
     super.model,

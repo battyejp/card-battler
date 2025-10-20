@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
@@ -10,15 +9,11 @@ import 'package:card_battler/game/ui/components/shared/turn_button_component.dar
 import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
 import 'package:flame_svg/svg_component.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 class Player extends PositionComponent {
   Player(PlayerCoordinator coordinator) : _coordinator = coordinator;
 
   final PlayerCoordinator _coordinator;
-  late StreamSubscription _healthSubscription;
-  late TextComponent _healthText;
   final topMargin = 10.0;
   final cardOffesetInDeck = 10.0;
   final minCardTopMargin = 20.0;
@@ -73,27 +68,44 @@ class Player extends PositionComponent {
 
     add(discardPile);
 
-    final attackIcon = SvgComponent(svg: IconManager.target())
-      ..size = Vector2.all(64)
-      ..position = Vector2(
-        size.x / 2 + GameVariables.sideMargin,
-        discardPile.position.y,
-      );
+    final attackIcon =
+        IconStat(
+            _coordinator.attackStatCoordinator,
+            IconManager.target(),
+            GameVariables.activePlayerStatsSize,
+          )
+          ..position = Vector2(
+            size.x / 2 -
+                GameVariables.activePlayerStatsSize / 2 +
+                GameVariables.activePlayerStatsSize,
+            discardPile.position.y,
+          );
     add(attackIcon);
 
-    final rupeeIcon = SvgComponent(svg: IconManager.rupee())
-      ..size = Vector2.all(64)
-      ..position = Vector2(
-        size.x / 2 - GameVariables.sideMargin - attackIcon.size.x,
-        discardPile.position.y,
-      );
+    final rupeeIcon =
+        IconStat(
+            _coordinator.creditsStatCoordinator,
+            IconManager.rupee(),
+            GameVariables.activePlayerStatsSize,
+          )
+          ..position = Vector2(
+            size.x / 2 -
+                GameVariables.activePlayerStatsSize / 2 -
+                GameVariables.activePlayerStatsSize,
+            discardPile.position.y,
+          );
     add(rupeeIcon);
 
-    final healthIcon = IconStat(IconManager.heart(), 64)
-      ..position = Vector2(
-        rupeeIcon.position.x - GameVariables.sideMargin - rupeeIcon.size.x,
-        discardPile.position.y,
-      );
+    final healthIcon =
+        IconStat(
+            _coordinator.healthStatCoordinator,
+            IconManager.heart(),
+            GameVariables.activePlayerStatsSize,
+          )
+          ..position = Vector2(
+            rupeeIcon.position.x - GameVariables.activePlayerStatsSize,
+            discardPile.position.y,
+          );
     add(healthIcon);
 
     // // Add health text component to bottom right corner of health icon
@@ -122,9 +134,8 @@ class Player extends PositionComponent {
           ..size = Vector2(64, 64)
           ..position = Vector2(
             attackIcon.position.x +
-                attackIcon.size.x +
-                32 +
-                GameVariables.sideMargin,
+                GameVariables.activePlayerStatsSize / 2 +
+                GameVariables.activePlayerStatsSize,
             discardPile.position.y + 64 / 2,
           );
     add(turnBtn);

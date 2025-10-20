@@ -1,6 +1,7 @@
 import 'package:card_battler/game/coordinators/common/reactive_coordinator.dart';
 import 'package:card_battler/game/models/common/actor_model.dart';
 
+@Deprecated('This class is deprecated and should not be used in new code')
 class ActorCoordinator<T extends ActorCoordinator<T>>
     with ReactiveCoordinator<T> {
   ActorCoordinator(ActorModel model) : _model = model;
