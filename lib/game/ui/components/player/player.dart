@@ -5,10 +5,12 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_hand.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
+import 'package:card_battler/game/ui/components/shared/icon_stat.dart';
 import 'package:card_battler/game/ui/components/shared/turn_button_component.dart';
 import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
 import 'package:flame_svg/svg_component.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
 class Player extends PositionComponent {
@@ -87,31 +89,27 @@ class Player extends PositionComponent {
       );
     add(rupeeIcon);
 
-    final healthIcon = SvgComponent(svg: IconManager.heart())
-      ..size = Vector2.all(64)
+    final healthIcon = IconStat(IconManager.heart(), 64)
       ..position = Vector2(
         rupeeIcon.position.x - GameVariables.sideMargin - rupeeIcon.size.x,
         discardPile.position.y,
       );
     add(healthIcon);
 
-    // Add health text component to bottom right corner of health icon
-    _healthText = TextComponent(
-      text: '${_coordinator.playerInfoCoordinator.health}',
-      position: Vector2(
-        healthIcon.size.x,
-        healthIcon.size.y,
-      ),
-      anchor: Anchor.bottomRight,
-      textRenderer: TextPaint(
-        style: const TextStyle(
-          fontSize: 24,
-          color: Color(0xFFFFFFFF),
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-    healthIcon.add(_healthText);
+    // // Add health text component to bottom right corner of health icon
+    // _healthText = TextComponent(
+    //   text: '${_coordinator.playerInfoCoordinator.health}',
+    //   position: Vector2(healthIcon.size.x, healthIcon.size.y),
+    //   anchor: Anchor.bottomRight,
+    //   textRenderer: TextPaint(
+    //     style: const TextStyle(
+    //       fontSize: 24,
+    //       color: Color(0xFFFFFFFF),
+    //       fontWeight: FontWeight.bold,
+    //     ),
+    //   ),
+    // );
+    // healthIcon.add(_healthText);
 
     // const playerInfoHeight = 30.0;
     // final playerInfo = PlayerInfo(_coordinator.playerInfoCoordinator)
