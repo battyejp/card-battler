@@ -1,22 +1,20 @@
-import 'package:card_battler/game/coordinators/components/player/stat_coordinator.dart';
-import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:flame/components.dart';
 import 'package:flame_svg/svg.dart';
 import 'package:flame_svg/svg_component.dart';
 import 'package:flutter/material.dart';
 
-class IconStat extends ReactivePositionComponent<StatCoordinator> {
-  IconStat(super.coordinator, Svg icon, double size)
+class IconStat extends PositionComponent {
+  IconStat(Svg icon, double size, int value)
     : _icon = icon,
-      _size = size;
+      _size = size,
+      _value = value;
 
   final Svg _icon;
   final double _size;
+  final int _value;
 
   @override
-  void updateDisplay() {
-    super.updateDisplay();
-
+  void onMount() {
     // final border = RectangleComponent(
     //   size: Vector2(_size, _size),
     //   position: Vector2.zero(),
@@ -30,15 +28,15 @@ class IconStat extends ReactivePositionComponent<StatCoordinator> {
     final healthIcon = SvgComponent(svg: _icon)..size = Vector2.all(_size);
 
     final healthText = TextComponent(
-      text: '${coordinator.value}',
+      text: _value.toString(),
       position: Vector2(healthIcon.size.x, healthIcon.size.y),
       anchor: Anchor.bottomRight,
       textRenderer: TextPaint(
-        style: const TextStyle(
-          fontSize: 24,
-          color: Color(0xFFFFFFFF),
+        style: TextStyle(
+          fontSize: _size * 0.5,
+          color: const Color(0xFFFFFFFF),
           fontWeight: FontWeight.bold,
-          shadows: [Shadow(offset: Offset(2, 2), blurRadius: 4)],
+          shadows: const [Shadow(offset: Offset(2, 2), blurRadius: 4)],
         ),
       ),
     );

@@ -1,9 +1,12 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
+import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/models/card/card_model.dart';
+import 'package:card_battler/game/models/shared/effect_model.dart';
+import 'package:card_battler/game/ui/components/common/icon_stat.dart';
+import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
-import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
-import 'package:flutter/material.dart';
+import 'package:flame_svg/svg.dart';
 
 class CardSprite extends SpriteComponent {
   CardSprite(CardCoordinator cardCoordinator, bool isMini)
@@ -45,50 +48,42 @@ class CardSprite extends SpriteComponent {
   @override
   void onMount() {
     super.onMount();
-    final imageSize = sprite!.image.size;
 
-    if (!_isMini && _cardCoordinator.isFaceUp) {
-      final name = _cardCoordinator.name;
-      final spaceCount = name.split(' ').length - 1;
+    if (!_cardCoordinator.isFaceUp) {
+      return;
+    }
 
-      if (spaceCount > 1) {
-        final words = name.split(' ');
-        final midpoint = (words.length / 2).ceil();
-        final firstLine = words.take(midpoint).join(' ');
-        final secondLine = words.skip(midpoint).join(' ');
-
-        final firstTextComponent = TextComponent(
-          text: firstLine,
-          position: Vector2(imageSize.x / 2, imageSize.y - imageSize.y * 0.25),
-          anchor: Anchor.center,
-          textRenderer: TextPaint(
-            style: const TextStyle(fontSize: 32, color: Color(0xFFFFFFFF)),
-          ),
-        );
-
-        final secondTextComponent = TextComponent(
-          text: secondLine,
-          position: Vector2(imageSize.x / 2, imageSize.y - imageSize.y * 0.15),
-          anchor: Anchor.center,
-          textRenderer: TextPaint(
-            style: const TextStyle(fontSize: 32, color: Color(0xFFFFFFFF)),
-          ),
-        );
-
-        add(firstTextComponent);
-        add(secondTextComponent);
-      } else {
-        final textComponent = TextComponent(
-          text: name,
-          position: Vector2(imageSize.x / 2, imageSize.y - imageSize.y * 0.2),
-          anchor: Anchor.center,
-          textRenderer: TextPaint(
-            style: const TextStyle(fontSize: 40, color: Color(0xFFFFFFFF)),
-          ),
-        );
-
-        add(textComponent);
+    var count = 0;
+    for (final effect in _cardCoordinator.playEffects.effects) {
+      Svg svg;
+      switch (effect.type) {
+        case EffectType.heal:
+          svg = IconManager.heart();
+          break;
+        case EffectType.damage:
+          svg = IconManager.target();
+          break;
+        case EffectType.attack:
+          svg = IconManager.target();
+          break;
+        case EffectType.credits:
+          svg = IconManager.rupee();
+          break;
+        case EffectType.drawCard:
+          svg = IconManager.drawCard();
+          break;
+        case EffectType.maxDamage:
+          svg = IconManager.shield();
+          break;
       }
+
+      final icon = IconStat(svg, GameVariables.cardIconSize, effect.value)
+        ..position = Vector2(
+          (count * GameVariables.cardIconSize) + GameVariables.cardIconSize / 2,
+          GameVariables.cardIconSize / 2,
+        );
+      add(icon);
+      count += 1;
     }
   }
 }

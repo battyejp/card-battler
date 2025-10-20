@@ -4,7 +4,7 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_hand.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
-import 'package:card_battler/game/ui/components/shared/icon_stat.dart';
+import 'package:card_battler/game/ui/components/shared/icon_stat_component.dart';
 import 'package:card_battler/game/ui/components/shared/turn_button_component.dart';
 import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
@@ -68,7 +68,7 @@ class Player extends PositionComponent {
     add(discardPile);
 
     final attackIcon =
-        IconStat(
+        IconStatComponent(
             _coordinator.attackStatCoordinator,
             IconManager.target(),
             GameVariables.activePlayerStatsSize,
@@ -82,7 +82,7 @@ class Player extends PositionComponent {
     add(attackIcon);
 
     final rupeeIcon =
-        IconStat(
+        IconStatComponent(
             _coordinator.creditsStatCoordinator,
             IconManager.rupee(),
             GameVariables.activePlayerStatsSize,
@@ -96,7 +96,7 @@ class Player extends PositionComponent {
     add(rupeeIcon);
 
     final healthIcon =
-        IconStat(
+        IconStatComponent(
             _coordinator.healthStatCoordinator,
             IconManager.heart(),
             GameVariables.activePlayerStatsSize,
