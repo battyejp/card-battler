@@ -1,7 +1,7 @@
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/models/shared/play_effects_model.dart';
 import 'package:card_battler/game/services/card/card_fan_draggable_service.dart';
-import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_fan.dart';
@@ -21,7 +21,7 @@ class CardFanDraggableArea extends PositionComponent
       _gamePhaseManager = gamePhaseManager,
       _onCardPlayed = onCardPlayed {
     // Initialize services directly
-    _cardSelectionService = CardFanSelectionService();
+    _cardSelectionService = CardSelectionService();
     _cardDraggableService = CardFanDraggableService(
       _cardSelectionService,
       _gamePhaseManager!,
@@ -30,7 +30,7 @@ class CardFanDraggableArea extends PositionComponent
     );
   }
 
-  late CardFanSelectionService _cardSelectionService;
+  late CardSelectionService _cardSelectionService;
   late CardFanDraggableService _cardDraggableService;
   final CardFan _cardFan;
 

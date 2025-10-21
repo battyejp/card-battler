@@ -1,4 +1,4 @@
-import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ class InteractiveCardSprite extends CardSprite with TapCallbacks {
     this._cardSelectionService,
   );
 
-  final CardFanSelectionService _cardSelectionService;
+  final CardSelectionService _cardSelectionService;
 
   bool isSelected = false;
   bool isDraggable = false;

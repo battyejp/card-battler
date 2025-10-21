@@ -1,6 +1,6 @@
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
-import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
@@ -9,11 +9,11 @@ import 'package:flame/components.dart';
 class CardHand extends ReactivePositionComponent<CardListCoordinator> {
   CardHand(
     super.coordinator, {
-    required CardFanSelectionService cardSelectionService,
+    required CardSelectionService cardSelectionService,
     GamePhaseManager? gamePhaseManager,
   }) : _cardSelectionService = cardSelectionService;
 
-  final CardFanSelectionService _cardSelectionService;
+  final CardSelectionService _cardSelectionService;
 
   final cardWidth = 864.0;
   final cardHeight = 1184.0;

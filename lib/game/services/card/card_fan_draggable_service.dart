@@ -1,4 +1,4 @@
-import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
@@ -8,7 +8,7 @@ import 'package:flame/events.dart';
 
 class CardFanDraggableService {
   CardFanDraggableService(
-    CardFanSelectionService cardSelectionService,
+    CardSelectionService cardSelectionService,
     GamePhaseManager gamePhaseManager,
     Function(InteractiveCardSprite) onCardPlayed,
     Function(SpriteComponent) onRemoveCardAtCenter,
@@ -17,7 +17,7 @@ class CardFanDraggableService {
       _onCardPlayed = onCardPlayed,
       _onRemoveCardAtCenter = onRemoveCardAtCenter;
 
-  final CardFanSelectionService _cardSelectionService;
+  final CardSelectionService _cardSelectionService;
   final GamePhaseManager _gamePhaseManager;
   final Function(InteractiveCardSprite) _onCardPlayed;
   final Function(SpriteComponent) _onRemoveCardAtCenter;

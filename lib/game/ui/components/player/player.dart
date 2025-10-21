@@ -1,6 +1,6 @@
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
-import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_hand.dart';
@@ -13,12 +13,12 @@ import 'package:flame/components.dart';
 class Player extends PositionComponent {
   Player(
     PlayerCoordinator coordinator,
-    CardFanSelectionService cardSelectionService,
+    CardSelectionService cardSelectionService,
   ) : _coordinator = coordinator,
       _cardSelectionService = cardSelectionService;
 
   final PlayerCoordinator _coordinator;
-  final CardFanSelectionService _cardSelectionService;
+  final CardSelectionService _cardSelectionService;
   final topMargin = 10.0;
   final cardOffesetInDeck = 10.0;
   final minCardTopMargin = 20.0;

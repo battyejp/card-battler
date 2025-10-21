@@ -1,4 +1,4 @@
-import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/painting.dart';
@@ -6,13 +6,13 @@ import 'package:flutter/painting.dart';
 class DarkeningOverlay extends PositionComponent
     with HasVisibility, TapCallbacks {
   DarkeningOverlay({
-    required CardFanSelectionService cardSelectionService,
+    required CardSelectionService cardSelectionService,
     double opacity = 0.8,
   }) : _opacity = opacity,
        _cardSelectionService = cardSelectionService;
 
   final double _opacity;
-  final CardFanSelectionService _cardSelectionService;
+  final CardSelectionService _cardSelectionService;
 
   @override
   void render(Canvas canvas) {

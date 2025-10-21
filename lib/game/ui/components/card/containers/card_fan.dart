@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
-import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_draggable_area.dart';
@@ -64,8 +64,11 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
 
       final card = _mini
           ? CardSprite(cardCoordinator, _mini)
-          : InteractiveCardSprite(cardCoordinator, false, 
-              CardFanSelectionService());
+          : InteractiveCardSprite(
+              cardCoordinator,
+              false,
+              CardSelectionService(),
+            );
 
       card
         ..position = Vector2(cardX, cardY)

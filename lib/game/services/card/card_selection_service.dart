@@ -4,9 +4,8 @@ import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 
-//TODO rename to CardSelectionService
-class CardFanSelectionService {
-  CardFanSelectionService();
+class CardSelectionService {
+  CardSelectionService();
 
   late CardBattlerGame game;
   InteractiveCardSprite? selectedCard;

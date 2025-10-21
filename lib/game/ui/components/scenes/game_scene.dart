@@ -1,6 +1,6 @@
 import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
-import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
+import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
 import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
@@ -48,7 +48,7 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
       ..position = Vector2(startX, enemies.position.y + enemies.size.y);
     add(team);
 
-    final cardSelectionService = CardFanSelectionService();
+    final cardSelectionService = CardSelectionService();
     final darkeningOverlay =
         DarkeningOverlay(cardSelectionService: cardSelectionService)
           ..size = size
