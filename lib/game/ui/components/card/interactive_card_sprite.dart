@@ -1,8 +1,16 @@
+import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
+import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 
-class InteractiveCardSprite extends CardSprite {
-  InteractiveCardSprite(super.fileName, super.isMini);
+class InteractiveCardSprite extends CardSprite with TapCallbacks {
+  InteractiveCardSprite(
+    super.fileName,
+    super.isMini,
+    this._cardSelectionService,
+  );
+
+  final CardFanSelectionService _cardSelectionService;
 
   bool isSelected = false;
   bool isDraggable = false;
@@ -55,5 +63,11 @@ class InteractiveCardSprite extends CardSprite {
       final rect = Rect.fromLTWH(0, 0, size.x, size.y);
       canvas.drawRect(rect, paint);
     }
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    super.onTapUp(event);
+    _cardSelectionService.selectCard(this);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:card_battler/game/coordinators/components/scenes/game_scene_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
+import 'package:card_battler/game/services/card/card_fan_selection_service.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
 import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
@@ -12,7 +13,6 @@ import 'package:flame/components.dart';
 class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
   GameScene(super.coordinator);
 
-  late DarkeningOverlay darkeningOverlay;
   late CardDropAreaTable dropAreaTable;
 
   //TODO could we just update the player component and enemy visibility instead of rebuilding everything?
@@ -49,11 +49,19 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
     add(team);
 
     // Add darkening overlay (should be above most components but below dragged card)
-    darkeningOverlay = DarkeningOverlay()
+    final darkeningOverlay = DarkeningOverlay()
       ..size = size
       ..position = Vector2(startX, startY)
       ..priority = 50;
     darkeningOverlay.isVisible = false;
+
+    final cardSelectionService = CardFanSelectionService(size, add, remove);
+    cardSelectionService.darkeningOverlay = darkeningOverlay;
+
+    final player = Player(coordinator.playerCoordinator, cardSelectionService)
+      ..size = Vector2(size.x, availableHeightForPlayer)
+      ..position = Vector2(startX, team.position.y + team.size.y);
+    add(player);
     add(darkeningOverlay);
 
     // Create unified drop area table
@@ -70,11 +78,5 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
       ..priority = 100; // Same as player to appear above darkening overlay
     dropAreaTable.isVisible = false;
     add(dropAreaTable);
-
-    final player = Player(coordinator.playerCoordinator)
-      ..size = Vector2(size.x, availableHeightForPlayer)
-      ..position = Vector2(startX, team.position.y + team.size.y)
-      ..priority = 100;
-    add(player);
   }
 }

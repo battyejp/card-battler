@@ -4,6 +4,7 @@ import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 
+//TODO rename to CardSelectionService
 class CardFanSelectionService {
   CardFanSelectionService(
     Vector2 size,
@@ -22,6 +23,7 @@ class CardFanSelectionService {
   SpriteComponent? duplicateCard;
   DarkeningOverlay? darkeningOverlay;
 
+  //TODO not needed anymore if not using a fan
   void findHighestPriorityCardSpriteAndSelect(Vector2 position) {
     final components = game.componentsAtPoint(position);
     final cardSprites = components.whereType<InteractiveCardSprite>().toList();
@@ -84,21 +86,19 @@ class CardFanSelectionService {
     card.isSelected = true;
 
     final image = Flame.images.fromCache(card.getFileName);
-    const scale = 0.75;
+    const scale = 0.5;
 
     duplicateCard = SpriteComponent(sprite: Sprite(image))
       ..scale = Vector2.all(scale)
       ..priority = 150; // Above the darkening overlay
 
-    duplicateCard!.position = Vector2(
-      _size.x / 2 - duplicateCard!.size.x * scale / 2,
-      -duplicateCard!.size.y * scale,
-    );
-    _onShowCardAtCenter.call(duplicateCard!);
+    duplicateCard!.position = Vector2(0, 0);
+    //_onShowCardAtCenter.call(duplicateCard!);
 
     // Show darkening overlay when card is shown at center
     if (darkeningOverlay != null) {
       darkeningOverlay!.isVisible = true;
+      darkeningOverlay!.add(duplicateCard!);
     }
   }
 }
