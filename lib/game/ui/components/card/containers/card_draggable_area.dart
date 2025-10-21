@@ -11,6 +11,7 @@ import 'package:card_battler/game/ui/components/scenes/game_scene.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
+@Deprecated('Use CardHand with CardFanSelectionService instead')
 class CardFanDraggableArea extends PositionComponent
     with DragCallbacks, TapCallbacks {
   CardFanDraggableArea(

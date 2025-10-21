@@ -1,6 +1,5 @@
 import 'package:card_battler/game/coordinators/components/cards/card_coordinator.dart';
 import 'package:card_battler/game/game_variables.dart';
-import 'package:card_battler/game/models/card/card_model.dart';
 import 'package:card_battler/game/models/shared/effect_model.dart';
 import 'package:card_battler/game/ui/components/common/icon_stat.dart';
 import 'package:card_battler/game/ui/icon_manager.dart';

@@ -8,6 +8,7 @@ import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dar
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:flame/components.dart';
 
+@Deprecated('Use CardHand with CardFanSelectionService instead')
 class CardFan extends ReactivePositionComponent<CardListCoordinator> {
   CardFan(
     super.coordinator, {

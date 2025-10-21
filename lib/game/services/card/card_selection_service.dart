@@ -1,4 +1,6 @@
 import 'package:card_battler/game/card_battler_game.dart';
+import 'package:card_battler/game/game_variables.dart';
+import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:flame/components.dart';
@@ -48,15 +50,18 @@ class CardSelectionService {
 
   void _showDuplicateCardAtCenter(InteractiveCardSprite card) {
     card.isSelected = true;
-
-    final image = Flame.images.fromCache(card.getFileName);
     const scale = 0.5;
 
-    duplicateCard = SpriteComponent(sprite: Sprite(image))
-      ..scale = Vector2.all(scale)
+    duplicateCard = CardSprite(card.coordinator)
+      ..size = Vector2(
+        GameVariables.originalCardSizeWidth * scale,
+        GameVariables.originalCardSizeHeight * scale,
+      )
+      ..position = Vector2(
+        darkeningOverlay!.width / 2,
+        darkeningOverlay!.height / 2,
+      )
       ..priority = 150; // Above the darkening overlay
-
-    duplicateCard!.position = Vector2(0, 0);
 
     if (darkeningOverlay != null) {
       darkeningOverlay!.isVisible = true;
