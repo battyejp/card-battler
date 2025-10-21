@@ -9,27 +9,23 @@ import 'package:flame/flame.dart';
 import 'package:flame_svg/svg.dart';
 
 class CardSprite extends SpriteComponent {
-  CardSprite(CardCoordinator cardCoordinator, bool isMini)
+  CardSprite(CardCoordinator cardCoordinator)
     : _cardCoordinator = cardCoordinator,
-      _isMini = isMini,
       super(anchor: Anchor.center);
 
   final CardCoordinator _cardCoordinator;
-  final bool _isMini;
 
   String get getFileName {
     if (!_cardCoordinator.isFaceUp) {
-      return _cardCoordinator.type == CardType.enemy
-          ? 'cards/dark/enemy_card_back_560.png'
-          : 'cards/light/card_face_down_0.08.png';
+      return 'card_back.png';
     }
 
-    final filename = _cardCoordinator.filename.replaceAll(
-      'size',
-      _isMini ? '60' : '560',
-    );
+    // final filename = _cardCoordinator.filename.replaceAll(
+    //   'size',
+    //   _isMini ? '60' : '560',
+    // );
 
-    return filename;
+    return _cardCoordinator.filename;
   }
 
   CardCoordinator get coordinator => _cardCoordinator;
@@ -61,7 +57,9 @@ class CardSprite extends SpriteComponent {
           svg = IconManager.heart();
           break;
         case EffectType.damage:
-          svg = IconManager.target();
+          svg = effect.target == EffectTarget.activePlayer
+              ? IconManager.damage()
+              : IconManager.multipleDamage();
           break;
         case EffectType.attack:
           svg = IconManager.target();

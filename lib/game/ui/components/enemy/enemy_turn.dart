@@ -17,10 +17,10 @@ class EnemyTurn extends PositionComponent with HasVisibility {
   }
 
   void _loadGameComponents() {
-    const scale = 0.3;
+    const scale = 0.15;
     final deckSize = Vector2(
-      GameVariables.defaultCardSizeWidth * scale,
-      GameVariables.defaultCardSizeHeight * scale,
+      GameVariables.originalCardSizeWidth * scale,
+      GameVariables.originalCardSizeHeight * scale,
     );
 
     final deck =
@@ -28,7 +28,6 @@ class EnemyTurn extends PositionComponent with HasVisibility {
             _coordinator.drawCardsFromDeck,
             _coordinator.deckCardsCoordinator,
             scale: scale,
-            isMini: false,
           )
           ..position = Vector2(
             size.x / 4 - deckSize.x / 2,
@@ -43,7 +42,6 @@ class EnemyTurn extends PositionComponent with HasVisibility {
             _coordinator.playedCardsCoordinator,
             showTopCard: true,
             scale: scale,
-            isMini: false,
           )
           ..position = Vector2(
             (3 * size.x / 4) - deckSize.x / 2,

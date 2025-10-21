@@ -18,8 +18,8 @@ class ShopDisplay extends ReactivePositionComponent<ShopDisplayCoordinator> {
   }
 
   void _addCards() {
-    final cardWidth = GameVariables.defaultCardSizeWidth * _spacing;
-    final cardHeight = GameVariables.defaultCardSizeHeight * _spacing;
+    final cardWidth = GameVariables.originalCardSizeWidth * _spacing;
+    final cardHeight = GameVariables.originalCardSizeHeight * _spacing;
     final itemsPerRow = coordinator.itemsPerRow;
     final numberOfRows = coordinator.numberOfRows;
     final totalWidth = itemsPerRow * cardWidth;
@@ -37,7 +37,7 @@ class ShopDisplay extends ReactivePositionComponent<ShopDisplayCoordinator> {
           final x = col * cardWidth;
           final y = row * cardHeight;
 
-          final card = ShopCard(cardCoordinator, false)
+          final card = ShopCard(cardCoordinator)
             ..position = Vector2(
               x - size.x / 2 + cardWidth / 2 + hSpacing * (col + 1),
               y - size.y / 2 + cardHeight / 2 + vSpacing * (row + 1),

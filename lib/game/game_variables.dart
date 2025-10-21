@@ -1,14 +1,14 @@
 class GameVariables {
   static const numberOfCardsDrawnByPlayer = 10;
 
-  static const int defaultCardSizeWidth = 329;
-  static const int defaultCardSizeHeight = 560;
+  // static const int defaultCardSizeWidth = 329;
+  // static const int defaultCardSizeHeight = 560;
 
-  static const int defaultMiniCardSizeWidth = 35;
-  static const int defaultMiniCardSizeHeight = 60;
+  // static const int defaultMiniCardSizeWidth = 35;
+  // static const int defaultMiniCardSizeHeight = 60;
 
-  static const int defaultCardBackSizeWidth = 51;
-  static const int defaultCardBackSizeHeight = 74;
+  // static const int defaultCardBackSizeWidth = 51;
+  // static const int defaultCardBackSizeHeight = 74;
 
   static const int shopDisplayNumberOfColumns = 2;
   static const int shopDisplayNumberOfRows = 3;
@@ -25,4 +25,7 @@ class GameVariables {
   static const double activePlayerStatsSize = 64;
 
   static double cardIconSize = 24;
+
+  static const int originalCardSizeWidth = 864;
+  static const int originalCardSizeHeight = 1184;
 }

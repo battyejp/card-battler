@@ -6,18 +6,12 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class CardPile extends ReactivePositionComponent<CardListCoordinator> {
-  CardPile(
-    super.coordinator, {
-    required bool isMini,
-    bool showTopCard = false,
-    double scale = 1.0,
-  }) : _showTopCard = showTopCard,
-       _scale = scale,
-       _isMini = isMini;
+  CardPile(super.coordinator, {required double scale, bool showTopCard = false})
+    : _showTopCard = showTopCard,
+      _scale = scale;
 
   final bool _showTopCard;
   final double _scale;
-  final bool _isMini;
 
   @override
   bool containsLocalPoint(Vector2 point) =>
@@ -29,10 +23,13 @@ class CardPile extends ReactivePositionComponent<CardListCoordinator> {
 
     for (var i = 0; i < coordinator.cardCoordinators.length; i++) {
       final cardCoordinator = coordinator.cardCoordinators[i];
-      final cardSprite = CardSprite(cardCoordinator, _isMini)
+      final cardSprite = CardSprite(cardCoordinator)
+        ..size = Vector2(
+          GameVariables.originalCardSizeWidth * _scale,
+          GameVariables.originalCardSizeHeight * _scale,
+        )
         ..position = Vector2(-i * 1.0 + size.x / 2, -i * 1.0 + size.y / 2)
-        ..anchor = Anchor.center
-        ..scale = Vector2.all(_scale);
+        ..anchor = Anchor.center;
       cardSprite.coordinator.isFaceUp = _showTopCard;
       add(cardSprite);
     }
@@ -40,12 +37,8 @@ class CardPile extends ReactivePositionComponent<CardListCoordinator> {
     if (coordinator.cardCoordinators.isEmpty) {
       final emptyIndicator = RectangleComponent(
         size: Vector2(
-          _isMini
-              ? GameVariables.defaultCardBackSizeWidth * _scale
-              : GameVariables.defaultCardSizeWidth * _scale,
-          _isMini
-              ? GameVariables.defaultCardBackSizeHeight * _scale
-              : GameVariables.defaultCardSizeHeight * _scale,
+          GameVariables.originalCardSizeWidth * _scale,
+          GameVariables.originalCardSizeHeight * _scale,
         ),
         position: Vector2(size.x / 2, size.y / 2),
         anchor: Anchor.center,

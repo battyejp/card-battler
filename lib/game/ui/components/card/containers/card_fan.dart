@@ -63,10 +63,9 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
       final cardY = -_fanRadius * math.cos(angle);
 
       final card = _mini
-          ? CardSprite(cardCoordinator, _mini)
+          ? CardSprite(cardCoordinator)
           : InteractiveCardSprite(
               cardCoordinator,
-              false,
               CardSelectionService(),
             );
 

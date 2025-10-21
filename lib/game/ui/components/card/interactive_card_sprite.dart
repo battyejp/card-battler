@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 class InteractiveCardSprite extends CardSprite with TapCallbacks {
   InteractiveCardSprite(
     super.fileName,
-    super.isMini,
     this._cardSelectionService,
   );
 

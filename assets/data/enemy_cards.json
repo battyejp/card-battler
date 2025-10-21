@@ -2,7 +2,7 @@
   {
     "name": "Active Player Hurt 2",
     "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
+    "filename": "enemy.png",
     "quantity": 8,
     "playEffects": {
       "operator": "And",
@@ -18,7 +18,7 @@
   {
     "name": "Active Player Hurt 2 and Others 1",
     "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
+    "filename": "enemy.png",
     "quantity": 8,
     "playEffects": {
       "operator": "And",
@@ -39,7 +39,7 @@
   {
     "name": "All Players Hurt",
     "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
+    "filename": "enemy.png",
     "quantity": 8,
     "playEffects": {
       "operator": "And",
@@ -55,7 +55,7 @@
   {
     "name": "Damage Base",
     "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
+    "filename": "enemy.png",
     "quantity": 3,
     "playEffects": {
       "operator": "And",
@@ -71,7 +71,7 @@
   {
     "name": "Damage Base And Active Player",
     "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
+    "filename": "enemy.png",
     "quantity": 3,
     "playEffects": {
       "operator": "And",
@@ -92,7 +92,7 @@
   {
     "name": "Damage Active Player And Another Turn",
     "type": "Enemy",
-    "filename": "cards/dark/card_enemy_560.png",
+    "filename": "enemy.png",
     "quantity": 2,
     "playEffects": {
       "operator": "And",

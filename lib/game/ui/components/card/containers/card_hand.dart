@@ -112,7 +112,7 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
     for (var i = 0; i < count; i++) {
       final cardCoordinator = coordinator.cardCoordinators[startIndex + i];
       final cardSprite =
-          InteractiveCardSprite(cardCoordinator, false, _cardSelectionService)
+          InteractiveCardSprite(cardCoordinator, _cardSelectionService)
             ..position = Vector2(
               rowOffset + i * cardSpacing + cardSpacing / 2,
               yPosition,

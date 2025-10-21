@@ -5,8 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class ShopCard extends CardSprite {
-  ShopCard(ShopCardCoordinator super.coordinator, super.isMini)
-    : _coordinator = coordinator;
+  ShopCard(ShopCardCoordinator super.coordinator) : _coordinator = coordinator;
 
   final ShopCardCoordinator _coordinator;
 

@@ -3,17 +3,13 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
 class CardDeck extends CardPile with TapCallbacks {
-  CardDeck(
-    this.onTap,
-    coordinator, {
-    required bool isMini, double scale = 1.0,
-  }) : super(coordinator, scale: scale, isMini: isMini);
+  CardDeck(this.onTap, coordinator, {required scale})
+    : super(coordinator, scale: scale);
 
   final void Function() onTap;
 
   @override
   bool onTapUp(TapUpEvent event) {
-    print('CardDeck.onTapUp called at ${event.localPosition}');
     onTap();
     return true;
   }
@@ -21,7 +17,6 @@ class CardDeck extends CardPile with TapCallbacks {
   @override
   bool containsLocalPoint(Vector2 point) {
     final result = super.containsLocalPoint(point);
-    print('CardDeck.containsLocalPoint($point) = $result, size=$size, position=$position');
     return result;
   }
 }

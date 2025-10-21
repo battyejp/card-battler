@@ -37,8 +37,9 @@ class Player extends PositionComponent {
     // );
     // add(border);
 
-    final deckHeight = GameVariables.defaultCardBackSizeHeight.toDouble();
-    final deckWidth = GameVariables.defaultCardBackSizeWidth.toDouble();
+    const scale = 0.075;
+    final deckHeight = GameVariables.originalCardSizeHeight.toDouble() * scale;
+    final deckWidth = GameVariables.originalCardSizeWidth.toDouble() * scale;
 
     final deck =
         CardDeck(
@@ -51,7 +52,7 @@ class Player extends PositionComponent {
               }
             },
             _coordinator.deckCardsCoordinator,
-            isMini: true,
+            scale: scale,
           )
           ..size = Vector2(deckWidth, deckHeight)
           ..position = Vector2(
@@ -64,7 +65,7 @@ class Player extends PositionComponent {
     add(deck);
 
     final discardPile =
-        CardPile(_coordinator.discardCardsCoordinator, isMini: true)
+        CardPile(_coordinator.discardCardsCoordinator, scale: scale)
           ..size = Vector2(deckWidth, deckHeight)
           ..position = Vector2(
             size.x - deckWidth - GameVariables.sideMargin,
