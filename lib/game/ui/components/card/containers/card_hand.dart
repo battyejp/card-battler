@@ -28,6 +28,9 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
   }
 
   @override
+  bool containsLocalPoint(Vector2 point) => false; // Don't block hits in empty space - only where child components are
+
+  @override
   void updateDisplay() {
     super.updateDisplay();
 

@@ -20,6 +20,10 @@ class CardPile extends ReactivePositionComponent<CardListCoordinator> {
   final bool _isMini;
 
   @override
+  bool containsLocalPoint(Vector2 point) =>
+      size.toRect().contains(point.toOffset());
+
+  @override
   void updateDisplay() async {
     super.updateDisplay();
 

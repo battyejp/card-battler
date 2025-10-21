@@ -65,7 +65,7 @@ class CardFan extends ReactivePositionComponent<CardListCoordinator> {
       final card = _mini
           ? CardSprite(cardCoordinator, _mini)
           : InteractiveCardSprite(cardCoordinator, false, 
-              CardFanSelectionService(size, add, remove));
+              CardFanSelectionService());
 
       card
         ..position = Vector2(cardX, cardY)

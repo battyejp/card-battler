@@ -46,9 +46,9 @@ class CardFanDraggableService {
       );
     } else if (deltaX.abs() > 15) {
       _dragStartPosition = event.canvasStartPosition;
-      _cardSelectionService.findHighestPriorityCardSpriteAndSelect(
-        event.canvasStartPosition,
-      );
+      // _cardSelectionService.findHighestPriorityCardSpriteAndSelect(
+      //   event.canvasStartPosition,
+      // );
     } else if (deltaY.abs() > 30 &&
         !_isBeingDragged &&
         _cardSelectionService.selectedCard != null &&

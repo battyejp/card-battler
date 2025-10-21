@@ -11,8 +11,10 @@ import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {
-  Player(PlayerCoordinator coordinator, CardFanSelectionService cardSelectionService)
-    : _coordinator = coordinator,
+  Player(
+    PlayerCoordinator coordinator,
+    CardFanSelectionService cardSelectionService,
+  ) : _coordinator = coordinator,
       _cardSelectionService = cardSelectionService;
 
   final PlayerCoordinator _coordinator;
@@ -149,7 +151,7 @@ class Player extends PositionComponent {
             cardSelectionService: _cardSelectionService,
             gamePhaseManager: _coordinator.gamePhaseManager,
           )
-          ..size = Vector2(size.x, size.y)
+          ..size = Vector2(size.x, size.y - (deckHeight + minCardTopMargin))
           ..position = Vector2(
             0,
             deck.position.y + deckHeight + minCardTopMargin,

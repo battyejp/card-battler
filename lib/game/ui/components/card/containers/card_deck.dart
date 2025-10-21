@@ -1,4 +1,5 @@
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
+import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
 class CardDeck extends CardPile with TapCallbacks {
@@ -12,7 +13,15 @@ class CardDeck extends CardPile with TapCallbacks {
 
   @override
   bool onTapUp(TapUpEvent event) {
+    print('CardDeck.onTapUp called at ${event.localPosition}');
     onTap();
     return true;
+  }
+
+  @override
+  bool containsLocalPoint(Vector2 point) {
+    final result = super.containsLocalPoint(point);
+    print('CardDeck.containsLocalPoint($point) = $result, size=$size, position=$position');
+    return result;
   }
 }

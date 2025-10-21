@@ -6,46 +6,12 @@ import 'package:flame/flame.dart';
 
 //TODO rename to CardSelectionService
 class CardFanSelectionService {
-  CardFanSelectionService(
-    Vector2 size,
-    Function(SpriteComponent) onShowCardAtCenter,
-    Function(SpriteComponent) onRemoveCardAtCenter,
-  ) : _size = size,
-      _onShowCardAtCenter = onShowCardAtCenter,
-      _onRemoveCardAtCenter = onRemoveCardAtCenter;
-
-  final Vector2 _size;
-  final Function(SpriteComponent) _onShowCardAtCenter;
-  final Function(SpriteComponent) _onRemoveCardAtCenter;
+  CardFanSelectionService();
 
   late CardBattlerGame game;
   InteractiveCardSprite? selectedCard;
   SpriteComponent? duplicateCard;
   DarkeningOverlay? darkeningOverlay;
-
-  //TODO not needed anymore if not using a fan
-  void findHighestPriorityCardSpriteAndSelect(Vector2 position) {
-    final components = game.componentsAtPoint(position);
-    final cardSprites = components.whereType<InteractiveCardSprite>().toList();
-
-    if (cardSprites.isEmpty) {
-      return;
-    }
-
-    var highestPriority = -1;
-    final comps = cardSprites.whereType<PositionComponent>();
-    for (final comp in comps) {
-      if (comp.priority > highestPriority) {
-        highestPriority = comp.priority;
-      }
-    }
-
-    // Return the topmost card (last in the list)
-    final card = cardSprites.lastWhere(
-      (card) => card.priority == highestPriority,
-    );
-    selectCard(card);
-  }
 
   void selectCard(InteractiveCardSprite? card) {
     if (card == null || card == selectedCard) {
@@ -74,11 +40,10 @@ class CardFanSelectionService {
 
   void _removeDuplicateCardAtCenter(InteractiveCardSprite card) {
     card.isSelected = false;
-    _onRemoveCardAtCenter.call(duplicateCard!);
 
-    // Hide darkening overlay when card is removed
     if (darkeningOverlay != null) {
       darkeningOverlay!.isVisible = false;
+      darkeningOverlay!.add(duplicateCard!);
     }
   }
 
@@ -93,9 +58,7 @@ class CardFanSelectionService {
       ..priority = 150; // Above the darkening overlay
 
     duplicateCard!.position = Vector2(0, 0);
-    //_onShowCardAtCenter.call(duplicateCard!);
 
-    // Show darkening overlay when card is shown at center
     if (darkeningOverlay != null) {
       darkeningOverlay!.isVisible = true;
       darkeningOverlay!.add(duplicateCard!);

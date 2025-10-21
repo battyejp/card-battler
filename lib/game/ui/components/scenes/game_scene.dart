@@ -48,14 +48,13 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
       ..position = Vector2(startX, enemies.position.y + enemies.size.y);
     add(team);
 
-    // Add darkening overlay (should be above most components but below dragged card)
-    final darkeningOverlay = DarkeningOverlay()
-      ..size = size
-      ..position = Vector2(startX, startY)
-      ..priority = 50;
+    final cardSelectionService = CardFanSelectionService();
+    final darkeningOverlay =
+        DarkeningOverlay(cardSelectionService: cardSelectionService)
+          ..size = size
+          ..position = Vector2(startX, startY)
+          ..priority = 50;
     darkeningOverlay.isVisible = false;
-
-    final cardSelectionService = CardFanSelectionService(size, add, remove);
     cardSelectionService.darkeningOverlay = darkeningOverlay;
 
     final player = Player(coordinator.playerCoordinator, cardSelectionService)

@@ -21,7 +21,7 @@ class CardFanDraggableArea extends PositionComponent
       _gamePhaseManager = gamePhaseManager,
       _onCardPlayed = onCardPlayed {
     // Initialize services directly
-    _cardSelectionService = CardFanSelectionService(_cardFan.size, add, remove);
+    _cardSelectionService = CardFanSelectionService();
     _cardDraggableService = CardFanDraggableService(
       _cardSelectionService,
       _gamePhaseManager!,
@@ -90,9 +90,9 @@ class CardFanDraggableArea extends PositionComponent
   @override
   void onTapDown(TapDownEvent event) {
     super.onTapDown(event);
-    _cardSelectionService.findHighestPriorityCardSpriteAndSelect(
-      event.canvasPosition,
-    );
+    // _cardSelectionService.findHighestPriorityCardSpriteAndSelect(
+    //   event.canvasPosition,
+    // );
   }
 
   @override
