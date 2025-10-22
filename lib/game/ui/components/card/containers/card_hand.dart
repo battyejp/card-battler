@@ -1,6 +1,6 @@
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
-import 'package:card_battler/game/services/card/card_fan_draggable_service.dart';
+import 'package:card_battler/game/services/card/card_draggable_service.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
@@ -14,8 +14,8 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
     required CardSelectionService cardSelectionService,
     required CardDropAreaTable cardDropAreaTable,
     GamePhaseManager? gamePhaseManager,
-  })  : _cardSelectionService = cardSelectionService,
-        _cardDropAreaTable = cardDropAreaTable;
+  }) : _cardSelectionService = cardSelectionService,
+       _cardDropAreaTable = cardDropAreaTable;
 
   final CardSelectionService _cardSelectionService;
   final CardDropAreaTable _cardDropAreaTable;
@@ -117,7 +117,7 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
     for (var i = 0; i < count; i++) {
       final cardCoordinator = coordinator.cardCoordinators[startIndex + i];
 
-      final cardFanDraggableService = CardFanDraggableService(
+      final cardFanDraggableService = CardDraggableService(
         cardCoordinator.gamePhaseManager,
         _cardDropAreaTable,
         (card) {
@@ -126,7 +126,12 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
       );
 
       final cardSprite =
-          InteractiveCardSprite(cardCoordinator, _cardSelectionService, cardFanDraggableService, _cardDropAreaTable)
+          InteractiveCardSprite(
+              cardCoordinator,
+              _cardSelectionService,
+              cardFanDraggableService,
+              _cardDropAreaTable,
+            )
             ..position = Vector2(
               rowOffset + i * cardSpacing + cardSpacing / 2,
               yPosition,

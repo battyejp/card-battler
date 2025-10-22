@@ -4,8 +4,8 @@ import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dar
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
-class CardFanDraggableService {
-  CardFanDraggableService(
+class CardDraggableService {
+  CardDraggableService(
     GamePhaseManager gamePhaseManager,
     CardDropAreaTable dropArea,
     Function(InteractiveCardSprite) onCardPlayed,
@@ -24,7 +24,9 @@ class CardFanDraggableService {
       return;
     }
 
-    _setupForDraggings(card);
+    _originalPositionBeforeDrag = card.position.clone();
+    card.isPerspectiveMode = true;
+    _dropArea.isVisible = true;
   }
 
   void onDragUpdate(DragUpdateEvent event, InteractiveCardSprite card) {
@@ -42,8 +44,7 @@ class CardFanDraggableService {
     }
 
     if (_dropArea.isLeftZoneHighlighted || _dropArea.isRightZoneHighlighted) {
-      final selectedZone = _dropArea.highlightedZone;
-      card.coordinator.selectedEffectIndex = selectedZone;
+      card.coordinator.selectedEffectIndex = _dropArea.highlightedZone;
       _dropArea.isLeftZoneHighlighted = false;
       _dropArea.isRightZoneHighlighted = false;
       _onCardPlayed.call(card);
@@ -52,12 +53,6 @@ class CardFanDraggableService {
     }
 
     _dropArea.isVisible = false;
-  }
-
-  void _setupForDraggings(InteractiveCardSprite card) {
-    _originalPositionBeforeDrag = card.position.clone();
-    card.isPerspectiveMode = true;
-    _dropArea.isVisible = true;
   }
 
   void _returnDragedCardToOriginalPosition(InteractiveCardSprite card) {

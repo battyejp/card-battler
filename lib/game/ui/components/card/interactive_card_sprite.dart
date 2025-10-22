@@ -1,5 +1,5 @@
 import 'package:card_battler/game/models/shared/play_effects_model.dart';
-import 'package:card_battler/game/services/card/card_fan_draggable_service.dart';
+import 'package:card_battler/game/services/card/card_draggable_service.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
@@ -16,7 +16,7 @@ class InteractiveCardSprite extends CardSprite
   );
 
   final CardSelectionService _cardSelectionService;
-  final CardFanDraggableService _cardFanDraggableService;
+  final CardDraggableService _cardFanDraggableService;
   final CardDropAreaTable _cardDropAreaTable;
 
   bool isSelected = false;
