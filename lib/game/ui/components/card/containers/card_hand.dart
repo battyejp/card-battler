@@ -1,7 +1,9 @@
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
+import 'package:card_battler/game/services/card/card_fan_draggable_service.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:card_battler/game/ui/components/common/reactive_position_component.dart';
 import 'package:flame/components.dart';
@@ -10,10 +12,13 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
   CardHand(
     super.coordinator, {
     required CardSelectionService cardSelectionService,
+    required CardDropAreaTable cardDropAreaTable,
     GamePhaseManager? gamePhaseManager,
-  }) : _cardSelectionService = cardSelectionService;
+  })  : _cardSelectionService = cardSelectionService,
+        _cardDropAreaTable = cardDropAreaTable;
 
   final CardSelectionService _cardSelectionService;
+  final CardDropAreaTable _cardDropAreaTable;
 
   final cardWidth = 864.0;
   final cardHeight = 1184.0;
@@ -111,8 +116,17 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
 
     for (var i = 0; i < count; i++) {
       final cardCoordinator = coordinator.cardCoordinators[startIndex + i];
+
+      final cardFanDraggableService = CardFanDraggableService(
+        cardCoordinator.gamePhaseManager,
+        _cardDropAreaTable,
+        (card) {
+          card.coordinator.handleCardPlayed();
+        },
+      );
+
       final cardSprite =
-          InteractiveCardSprite(cardCoordinator, _cardSelectionService)
+          InteractiveCardSprite(cardCoordinator, _cardSelectionService, cardFanDraggableService, _cardDropAreaTable)
             ..position = Vector2(
               rowOffset + i * cardSpacing + cardSpacing / 2,
               yPosition,

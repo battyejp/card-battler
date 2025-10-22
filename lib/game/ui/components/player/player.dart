@@ -2,6 +2,7 @@ import 'package:card_battler/game/coordinators/components/player/player_coordina
 import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
+import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_deck.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_hand.dart';
 import 'package:card_battler/game/ui/components/card/containers/card_pile.dart';
@@ -14,11 +15,14 @@ class Player extends PositionComponent {
   Player(
     PlayerCoordinator coordinator,
     CardSelectionService cardSelectionService,
+    CardDropAreaTable cardDropAreaTable
   ) : _coordinator = coordinator,
-      _cardSelectionService = cardSelectionService;
+      _cardSelectionService = cardSelectionService,
+      _cardDropAreaTable = cardDropAreaTable;
 
   final PlayerCoordinator _coordinator;
   final CardSelectionService _cardSelectionService;
+  final CardDropAreaTable _cardDropAreaTable;
   final topMargin = 10.0;
   final cardOffesetInDeck = 10.0;
   final minCardTopMargin = 20.0;
@@ -119,6 +123,7 @@ class Player extends PositionComponent {
             _coordinator.handCardsCoordinator,
             cardSelectionService: _cardSelectionService,
             gamePhaseManager: _coordinator.gamePhaseManager,
+            cardDropAreaTable: _cardDropAreaTable
           )
           ..size = Vector2(size.x, size.y - (deckHeight + minCardTopMargin))
           ..position = Vector2(

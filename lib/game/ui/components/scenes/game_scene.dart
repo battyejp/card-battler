@@ -57,12 +57,6 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
     darkeningOverlay.isVisible = false;
     cardSelectionService.darkeningOverlay = darkeningOverlay;
 
-    final player = Player(coordinator.playerCoordinator, cardSelectionService)
-      ..size = Vector2(size.x, availableHeightForPlayer)
-      ..position = Vector2(startX, team.position.y + team.size.y);
-    add(player);
-    add(darkeningOverlay);
-
     // Create unified drop area table
     final tableWidth = size.x * 0.9; // 80% of screen width
     final tableHeight = size.y * 0.3; // 15% of screen height
@@ -76,6 +70,18 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
       )
       ..priority = 100; // Same as player to appear above darkening overlay
     dropAreaTable.isVisible = false;
+
+    final player =
+        Player(
+            coordinator.playerCoordinator,
+            cardSelectionService,
+            dropAreaTable,
+          )
+          ..size = Vector2(size.x, availableHeightForPlayer)
+          ..position = Vector2(startX, team.position.y + team.size.y);
+
+    add(player);
+    add(darkeningOverlay);
     add(dropAreaTable);
   }
 }

@@ -1,105 +1,69 @@
-import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
 import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
-import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
 class CardFanDraggableService {
   CardFanDraggableService(
-    CardSelectionService cardSelectionService,
     GamePhaseManager gamePhaseManager,
+    CardDropAreaTable dropArea,
     Function(InteractiveCardSprite) onCardPlayed,
-    Function(SpriteComponent) onRemoveCardAtCenter,
-  ) : _cardSelectionService = cardSelectionService,
-      _gamePhaseManager = gamePhaseManager,
-      _onCardPlayed = onCardPlayed,
-      _onRemoveCardAtCenter = onRemoveCardAtCenter;
+  ) : _gamePhaseManager = gamePhaseManager,
+      _dropArea = dropArea,
+      _onCardPlayed = onCardPlayed;
 
-  final CardSelectionService _cardSelectionService;
   final GamePhaseManager _gamePhaseManager;
   final Function(InteractiveCardSprite) _onCardPlayed;
-  final Function(SpriteComponent) _onRemoveCardAtCenter;
+  final CardDropAreaTable _dropArea;
 
-  late CardDropAreaTable dropArea;
-  DarkeningOverlay? darkeningOverlay;
-
-  Vector2 _dragStartPosition = Vector2.zero();
-  bool _isBeingDragged = false;
   Vector2 _originalPositionBeforeDrag = Vector2.zero();
-  double _originalAngleBeforeDrag = 0.0;
 
-  void onDragStart(Vector2 position) {
-    _dragStartPosition = position;
-  }
-
-  void onDragUpdate(DragUpdateEvent event) {
-    final deltaY = _dragStartPosition.y - event.canvasStartPosition.y;
-    final deltaX = _dragStartPosition.x - event.canvasStartPosition.x;
-
-    if (_isBeingDragged) {
-      _cardSelectionService.selectedCard?.position += event.canvasDelta;
-      _checkTableZoneIntersection(
-        _cardSelectionService.selectedCard!,
-        dropArea,
-      );
-    } else if (deltaX.abs() > 15) {
-      _dragStartPosition = event.canvasStartPosition;
-      // _cardSelectionService.findHighestPriorityCardSpriteAndSelect(
-      //   event.canvasStartPosition,
-      // );
-    } else if (deltaY.abs() > 30 &&
-        !_isBeingDragged &&
-        _cardSelectionService.selectedCard != null &&
-        _gamePhaseManager.currentPhase == GamePhase.playerTakeActionsTurn) {
-      _setupForDraggings(event);
+  void onDragStart(InteractiveCardSprite card) {
+    if (_gamePhaseManager.currentPhase != GamePhase.playerTakeActionsTurn) {
+      return;
     }
+
+    _setupForDraggings(card);
   }
 
-  void onDragEnd() {
-    _dragStartPosition = Vector2.zero();
+  void onDragUpdate(DragUpdateEvent event, InteractiveCardSprite card) {
+    if (_gamePhaseManager.currentPhase != GamePhase.playerTakeActionsTurn) {
+      return;
+    }
 
-    if (_isBeingDragged) {
-      if (dropArea.isLeftZoneHighlighted || dropArea.isRightZoneHighlighted) {
-        // Store which zone was selected for effect processing
-        final selectedZone = dropArea.highlightedZone;
-        _cardSelectionService.selectedCard?.coordinator.selectedEffectIndex =
-            selectedZone;
-        dropArea.isLeftZoneHighlighted = false;
-        dropArea.isRightZoneHighlighted = false;
-        _onCardPlayed.call(_cardSelectionService.selectedCard!);
-      } else {
-        _returnDragedCardToOriginalPosition();
-      }
+    card.position += event.canvasDelta;
+    _checkTableZoneIntersection(card, _dropArea);
+  }
 
-      dropArea.isVisible = false;
-      darkeningOverlay?.isVisible = false;
+  void onDragEnd(InteractiveCardSprite card) {
+    if (_gamePhaseManager.currentPhase != GamePhase.playerTakeActionsTurn) {
+      return;
+    }
+
+    if (_dropArea.isLeftZoneHighlighted || _dropArea.isRightZoneHighlighted) {
+      final selectedZone = _dropArea.highlightedZone;
+      card.coordinator.selectedEffectIndex = selectedZone;
+      _dropArea.isLeftZoneHighlighted = false;
+      _dropArea.isRightZoneHighlighted = false;
+      _onCardPlayed.call(card);
     } else {
-      _cardSelectionService.deselectCard();
+      _returnDragedCardToOriginalPosition(card);
     }
+
+    _dropArea.isVisible = false;
   }
 
-  void _setupForDraggings(DragUpdateEvent event) {
-    _onRemoveCardAtCenter.call(_cardSelectionService.duplicateCard!);
-    _originalPositionBeforeDrag = _cardSelectionService.selectedCard!.position
-        .clone();
-    _originalAngleBeforeDrag = _cardSelectionService.selectedCard!.angle;
-    _cardSelectionService.selectedCard?.angle = 0;
-    _cardSelectionService.selectedCard?.isPerspectiveMode = true;
-    _isBeingDragged = true;
-    _cardSelectionService.selectedCard?.position += event.canvasDelta;
-    dropArea.isVisible = true;
-    darkeningOverlay?.isVisible = true;
+  void _setupForDraggings(InteractiveCardSprite card) {
+    _originalPositionBeforeDrag = card.position.clone();
+    card.isPerspectiveMode = true;
+    _dropArea.isVisible = true;
   }
 
-  void _returnDragedCardToOriginalPosition() {
-    _isBeingDragged = false;
-    _cardSelectionService.selectedCard?.position = _originalPositionBeforeDrag;
-    _cardSelectionService.selectedCard?.angle = _originalAngleBeforeDrag;
-    _cardSelectionService.selectedCard?.isPerspectiveMode = false;
-    _cardSelectionService.selectedCard?.isSelected = false;
-    _cardSelectionService.selectedCard = null;
+  void _returnDragedCardToOriginalPosition(InteractiveCardSprite card) {
+    card.position = _originalPositionBeforeDrag;
+    card.isPerspectiveMode = false;
+    card.isSelected = false;
   }
 
   /// Checks if a point is within the perspective-adjusted drop area

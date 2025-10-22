@@ -1,15 +1,23 @@
+import 'package:card_battler/game/models/shared/play_effects_model.dart';
+import 'package:card_battler/game/services/card/card_fan_draggable_service.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
+import 'package:card_battler/game/ui/components/card/card_drop_area_table.dart';
 import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 
-class InteractiveCardSprite extends CardSprite with TapCallbacks {
+class InteractiveCardSprite extends CardSprite
+    with DragCallbacks, TapCallbacks {
   InteractiveCardSprite(
-    super.fileName,
+    super.cardCoordinator,
     this._cardSelectionService,
+    this._cardFanDraggableService,
+    this._cardDropAreaTable,
   );
 
   final CardSelectionService _cardSelectionService;
+  final CardFanDraggableService _cardFanDraggableService;
+  final CardDropAreaTable _cardDropAreaTable;
 
   bool isSelected = false;
   bool isDraggable = false;
@@ -68,5 +76,37 @@ class InteractiveCardSprite extends CardSprite with TapCallbacks {
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
     _cardSelectionService.selectCard(this);
+  }
+
+  @override
+  void onDragStart(DragStartEvent event) {
+    super.onDragStart(event);
+
+    // TODO put into draggable service
+    if (_cardSelectionService.selectedCard != null) {
+      final operator =
+          _cardSelectionService.selectedCard!.coordinator.playEffects.operator;
+
+      // Set number of zones based on operator
+      if (operator == EffectsOperator.or) {
+        _cardDropAreaTable.setNumberOfZones(2);
+      } else {
+        _cardDropAreaTable.setNumberOfZones(1);
+      }
+    }
+
+    _cardFanDraggableService.onDragStart(this);
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    super.onDragUpdate(event);
+    _cardFanDraggableService.onDragUpdate(event, this);
+  }
+
+  @override
+  void onDragEnd(DragEndEvent event) {
+    super.onDragEnd(event);
+    _cardFanDraggableService.onDragEnd(this);
   }
 }

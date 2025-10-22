@@ -24,10 +24,9 @@ class CardFanDraggableArea extends PositionComponent
     // Initialize services directly
     _cardSelectionService = CardSelectionService();
     _cardDraggableService = CardFanDraggableService(
-      _cardSelectionService,
       _gamePhaseManager!,
+      _findDropAreaTable()!,
       _onCardPlayed,
-      remove,
     );
   }
 
@@ -44,11 +43,10 @@ class CardFanDraggableArea extends PositionComponent
 
     final game = findGame() as CardBattlerGame;
     _cardSelectionService.game = game;
-    _cardDraggableService.dropArea = _findDropAreaTable()!;
+    //_cardDraggableService.dropArea = _findDropAreaTable()!;
 
     // Wire darkening overlay to both services
     final overlay = _findDarkeningOverlay();
-    _cardDraggableService.darkeningOverlay = overlay;
     _cardSelectionService.darkeningOverlay = overlay;
   }
 
@@ -88,7 +86,6 @@ class CardFanDraggableArea extends PositionComponent
     return null;
   }
 
-
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
@@ -109,19 +106,19 @@ class CardFanDraggableArea extends PositionComponent
       }
     }
 
-    _cardDraggableService.onDragStart(event.canvasPosition);
+    //_cardDraggableService.onDragStart(event.canvasPosition);
   }
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
-    _cardDraggableService.onDragUpdate(event);
+    //_cardDraggableService.onDragUpdate(event);
   }
 
   @override
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
-    _cardDraggableService.onDragEnd();
+    //_cardDraggableService.onDragEnd();
   }
 
   @override
