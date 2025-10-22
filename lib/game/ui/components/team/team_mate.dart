@@ -1,5 +1,7 @@
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
 import 'package:card_battler/game/ui/components/player/player_info.dart';
+import 'package:card_battler/game/ui/components/shared/icon_stat_component.dart';
+import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
@@ -12,14 +14,21 @@ class TeamMate extends PositionComponent {
   @override
   void onMount() {
     super.onMount();
-    removeWhere((component) => true);
+    //removeWhere((component) => true);
 
-    final playerInfo =
-        PlayerInfo(_coordinator, isActivePlayer: false)
-          ..size = Vector2(size.x, size.y)
-          ..position = Vector2(0, 0);
+    final healthIcon = IconStatComponent(
+      _coordinator.healthStatCoordinator,
+      IconManager.heart(),
+      24,
+    )..position = Vector2.zero();
+    add(healthIcon);
 
-    add(playerInfo);
+    // final playerInfo =
+    //     PlayerInfo(_coordinator, isActivePlayer: false)
+    //       ..size = Vector2(size.x, size.y)
+    //       ..position = Vector2(0, 0);
+
+    // add(playerInfo);
 
     // final cardFan = CardFan(
     //   _coordinator.handCardsCoordinator,
