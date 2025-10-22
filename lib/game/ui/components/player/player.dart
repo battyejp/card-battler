@@ -27,16 +27,6 @@ class Player extends PositionComponent {
   void onMount() {
     super.onMount();
 
-    // final border = RectangleComponent(
-    //   size: size,
-    //   position: Vector2.zero(),
-    //   paint: Paint()
-    //     ..color = const Color.fromARGB(255, 255, 255, 255)
-    //     ..style = PaintingStyle.stroke
-    //     ..strokeWidth = 1.0,
-    // );
-    // add(border);
-
     const scale = 0.075;
     final deckHeight = GameVariables.originalCardSizeHeight.toDouble() * scale;
     final deckWidth = GameVariables.originalCardSizeWidth.toDouble() * scale;
@@ -81,9 +71,7 @@ class Player extends PositionComponent {
             GameVariables.activePlayerStatsSize,
           )
           ..position = Vector2(
-            size.x / 2 -
-                GameVariables.activePlayerStatsSize / 2 +
-                GameVariables.activePlayerStatsSize,
+            size.x / 2 - GameVariables.activePlayerStatsSize / 2,
             discardPile.position.y,
           );
     add(attackIcon);
@@ -114,33 +102,13 @@ class Player extends PositionComponent {
           );
     add(healthIcon);
 
-    // // Add health text component to bottom right corner of health icon
-    // _healthText = TextComponent(
-    //   text: '${_coordinator.playerInfoCoordinator.health}',
-    //   position: Vector2(healthIcon.size.x, healthIcon.size.y),
-    //   anchor: Anchor.bottomRight,
-    //   textRenderer: TextPaint(
-    //     style: const TextStyle(
-    //       fontSize: 24,
-    //       color: Color(0xFFFFFFFF),
-    //       fontWeight: FontWeight.bold,
-    //     ),
-    //   ),
-    // );
-    // healthIcon.add(_healthText);
-
-    // const playerInfoHeight = 30.0;
-    // final playerInfo = PlayerInfo(_coordinator.playerInfoCoordinator)
-    //   ..size = Vector2(size.x, playerInfoHeight)
-    //   ..position = Vector2(0, topMargin);
-    // add(playerInfo);
-
     final turnBtn =
         TurnButtonComponent(_coordinator.turnButtonComponentCoordinator)
           ..size = Vector2(64, 64)
           ..position = Vector2(
             attackIcon.position.x +
                 GameVariables.activePlayerStatsSize / 2 +
+                GameVariables.activePlayerStatsSize +
                 GameVariables.activePlayerStatsSize,
             discardPile.position.y + 64 / 2,
           );

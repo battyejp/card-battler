@@ -30,7 +30,11 @@ class TurnButtonComponent
       "End",
       size: Vector2(size.x, size.y),
       position: Vector2(0, 0),
-      onReleased: coordinator.handleTurnButtonPressed,
+      onReleased: () {
+        if (coordinator.buttonVisible) {
+          coordinator.handleTurnButtonPressed();
+        }
+      },
     );
 
     _turnButton.isVisible = coordinator.buttonVisible;

@@ -14,7 +14,7 @@ class GameVariables {
   static const int selectedCardScalePriority = 150;
 
   static const double teamMateIconSize = 24;
-  static const double teamMateNameFontSize = 12;
+  static const double teamMateNameFontSize = 24;
 
   // Game Setup Variables
   static const numberOfCardsDrawnByPlayer = 10;

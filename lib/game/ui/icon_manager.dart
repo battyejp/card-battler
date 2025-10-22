@@ -12,6 +12,7 @@ class IconManager {
     _icons['damage'] = await Svg.load('icons/damage.svg');
     _icons['multiple-damage'] = await Svg.load('icons/multiple-damage.svg');
     _icons['card-pile'] = await Svg.load('icons/card_pile.svg');
+    _icons['bomb-base'] = await Svg.load('icons/bomb.svg');
   }
 
   static Svg shield() => _icons['shield']!;
@@ -22,4 +23,5 @@ class IconManager {
   static Svg damage() => _icons['damage']!;
   static Svg multipleDamage() => _icons['multiple-damage']!;
   static Svg cardPile() => _icons['card-pile']!;
+  static Svg bombBase() => _icons['bomb-base']!;
 }

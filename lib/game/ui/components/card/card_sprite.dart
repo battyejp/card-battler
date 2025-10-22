@@ -53,6 +53,8 @@ class CardSprite extends SpriteComponent {
         case EffectType.damage:
           svg = effect.target == EffectTarget.activePlayer
               ? IconManager.damage()
+              : effect.target == EffectTarget.base
+              ? IconManager.bombBase()
               : IconManager.multipleDamage();
           break;
         case EffectType.attack:

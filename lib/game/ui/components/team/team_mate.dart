@@ -4,6 +4,7 @@ import 'package:card_battler/game/ui/components/common/icon_stat.dart';
 import 'package:card_battler/game/ui/components/shared/icon_stat_component.dart';
 import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
+import 'package:flame_svg/svg_component.dart';
 import 'package:flutter/material.dart';
 
 class TeamMate extends PositionComponent {
@@ -65,18 +66,15 @@ class TeamMate extends PositionComponent {
     add(iconStat);
   }
 
-  // void addCardHandAbilities(TextComponent label, String key) {
-  //   if (key == 'name' && coordinator.hasAMaxDamageCard()) {
-  //     add(
-  //       SvgComponent(svg: IconManager.shield())
-  //         ..position = Vector2(
-  //           label.position.x + label.size.x + 10,
-  //           label.position.y,
-  //         )
-  //         ..size = Vector2.all(16),
-  //     );
-  //   }
-  // }
+  void addCardHandAbilities(double xPosition) {
+    if (_coordinator.hasAMaxDamageCard()) {
+      add(
+        SvgComponent(svg: IconManager.shield())
+          ..position = Vector2(xPosition, 0)
+          ..size = Vector2.all(GameVariables.teamMateIconSize),
+      );
+    }
+  }
 
   @override
   void render(Canvas canvas) {
