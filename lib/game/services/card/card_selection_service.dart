@@ -4,7 +4,6 @@ import 'package:card_battler/game/ui/components/card/card_sprite.dart';
 import 'package:card_battler/game/ui/components/card/interactive_card_sprite.dart';
 import 'package:card_battler/game/ui/components/common/darkening_overlay.dart';
 import 'package:flame/components.dart';
-import 'package:flame/flame.dart';
 
 class CardSelectionService {
   CardSelectionService();
@@ -44,7 +43,7 @@ class CardSelectionService {
 
     if (darkeningOverlay != null) {
       darkeningOverlay!.isVisible = false;
-      darkeningOverlay!.add(duplicateCard!);
+      darkeningOverlay!.remove(duplicateCard!);
     }
   }
 

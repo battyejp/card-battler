@@ -88,13 +88,6 @@ class CardFanDraggableArea extends PositionComponent
     return null;
   }
 
-  @override
-  void onTapDown(TapDownEvent event) {
-    super.onTapDown(event);
-    // _cardSelectionService.findHighestPriorityCardSpriteAndSelect(
-    //   event.canvasPosition,
-    // );
-  }
 
   @override
   void onDragStart(DragStartEvent event) {
