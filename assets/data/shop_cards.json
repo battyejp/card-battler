@@ -2,7 +2,7 @@
   {
     "name": "Example Card 1",
     "type": "Ally",
-    "filename": "cards/light/ally/size/alien-commander.png",
+    "filename": "item.png",
     "cost": 4,
     "quantity": 20,
     "playEffects": {

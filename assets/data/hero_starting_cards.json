@@ -19,7 +19,7 @@
     "name": "Orb of Life and Death",
     "type": "Item",
     "filename": "item.png",
-    "quantity": 8,
+    "quantity": 1,
     "playEffects": {
       "operator": "Or",
       "effects": [
