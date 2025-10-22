@@ -9,6 +9,7 @@ class GameVariables {
   static const int originalCardSizeHeight = 1184;
 
   static const double cardIconSize = 24;
+  static const double teamMateIconSize = 24;
   static const double activePlayerStatsSize = 64;
   static const double selectedCardScale = 0.5;
   static const int selectedCardScalePriority = 150;

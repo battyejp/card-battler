@@ -1,5 +1,6 @@
 import 'package:card_battler/game/coordinators/components/player/player_coordinator.dart';
-import 'package:card_battler/game/ui/components/player/player_info.dart';
+import 'package:card_battler/game/game_variables.dart';
+import 'package:card_battler/game/ui/components/common/icon_stat.dart';
 import 'package:card_battler/game/ui/components/shared/icon_stat_component.dart';
 import 'package:card_battler/game/ui/icon_manager.dart';
 import 'package:flame/components.dart';
@@ -14,29 +15,40 @@ class TeamMate extends PositionComponent {
   @override
   void onMount() {
     super.onMount();
-    //removeWhere((component) => true);
 
     final healthIcon = IconStatComponent(
       _coordinator.healthStatCoordinator,
       IconManager.heart(),
-      24,
+      GameVariables.teamMateIconSize,
     )..position = Vector2.zero();
     add(healthIcon);
 
-    // final playerInfo =
-    //     PlayerInfo(_coordinator, isActivePlayer: false)
-    //       ..size = Vector2(size.x, size.y)
-    //       ..position = Vector2(0, 0);
+    final creditsIcon = IconStatComponent(
+      _coordinator.creditsStatCoordinator,
+      IconManager.rupee(),
+      GameVariables.teamMateIconSize,
+    )..position = Vector2(GameVariables.teamMateIconSize + margin, 0);
+    add(creditsIcon);
 
-    // add(playerInfo);
+    final attackIcon = IconStatComponent(
+      _coordinator.attackStatCoordinator,
+      IconManager.target(),
+      GameVariables.teamMateIconSize,
+    )..position = Vector2((GameVariables.teamMateIconSize + margin) * 2, 0);
+    add(attackIcon);
 
-    // final cardFan = CardFan(
-    //   _coordinator.handCardsCoordinator,
-    //   mini: true,
-    //   fanRadius: 50.0,
-    // )..position = Vector2(size.x / 2, playerInfo.size.y);
-
-    // add(cardFan);
+    final iconStat =
+        IconStat(
+            IconManager.cardPile(),
+            GameVariables.teamMateIconSize,
+            _coordinator.handCardsCoordinator.cardCoordinators.length,
+          )
+          ..size = Vector2.all(GameVariables.teamMateIconSize)
+          ..position = Vector2(
+            (GameVariables.teamMateIconSize + margin) * 3,
+            0,
+          );
+    add(iconStat);
   }
 
   @override
