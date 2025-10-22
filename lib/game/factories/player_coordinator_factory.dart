@@ -21,6 +21,7 @@ class PlayerCoordinatorFactory {
     );
 
     return PlayerCoordinator(
+      name: player.name,
       handCardsCoordinator: handCardsCoordinator,
       deckCardsCoordinator: CardListCoordinator<CardCoordinator>(
         cardCoordinators: player.deckCards.allCards

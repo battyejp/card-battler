@@ -10,6 +10,7 @@ import 'package:card_battler/game/services/game/game_phase_manager.dart';
 
 class PlayerCoordinator with ReactiveCoordinator<PlayerCoordinator> {
   PlayerCoordinator({
+    required String name,
     required CardListCoordinator<CardCoordinator> handCardsCoordinator,
     required CardListCoordinator<CardCoordinator> deckCardsCoordinator,
     required CardListCoordinator<CardCoordinator> discardCardsCoordinator,
@@ -21,6 +22,7 @@ class PlayerCoordinator with ReactiveCoordinator<PlayerCoordinator> {
     required StatCoordinator attackStatCoordinator,
     this.isActive = false,
   }) : _handCardsCoordinator = handCardsCoordinator,
+       _name = name,
        _deckCardsCoordinator = deckCardsCoordinator,
        _discardCardsCoordinator = discardCardsCoordinator,
        _gamePhaseManager = gamePhaseManager,
@@ -33,7 +35,7 @@ class PlayerCoordinator with ReactiveCoordinator<PlayerCoordinator> {
          deckCardsCoordinator: deckCardsCoordinator,
          discardCardsCoordinator: discardCardsCoordinator,
          gamePhaseManager: gamePhaseManager,
-         effectProcessor: effectProcessor
+         effectProcessor: effectProcessor,
        ) {
     _deckCardsCoordinator.shuffle();
   }
@@ -47,6 +49,7 @@ class PlayerCoordinator with ReactiveCoordinator<PlayerCoordinator> {
   final StatCoordinator _healthStatCoordinator;
   final StatCoordinator _creditsStatCoordinator;
   final StatCoordinator _attackStatCoordinator;
+  final String _name;
 
   CardListCoordinator<CardCoordinator> get handCardsCoordinator =>
       _handCardsCoordinator;
@@ -91,6 +94,7 @@ class PlayerCoordinator with ReactiveCoordinator<PlayerCoordinator> {
   int get attack => _attackStatCoordinator.value;
   int get credits => _creditsStatCoordinator.value;
   int get health => _healthStatCoordinator.value;
+  String get name => _name;
 
   bool isActive;
 }
