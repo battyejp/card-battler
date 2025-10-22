@@ -1,31 +1,22 @@
 class GameVariables {
-  static const numberOfCardsDrawnByPlayer = 10;
-
-  // static const int defaultCardSizeWidth = 329;
-  // static const int defaultCardSizeHeight = 560;
-
-  // static const int defaultMiniCardSizeWidth = 35;
-  // static const int defaultMiniCardSizeHeight = 60;
-
-  // static const int defaultCardBackSizeWidth = 51;
-  // static const int defaultCardBackSizeHeight = 74;
-
-  static const int shopDisplayNumberOfColumns = 2;
-  static const int shopDisplayNumberOfRows = 3;
-
-  static const double activePlayerCardFanScale = 0.25;
-
+  // Layout Variables
   static const double sideMargin = 10.0;
-  static const double bottomMargin = 30.0;
-
   static const fractionOfScreenForTeamComponent = 0.3;
   static const fractionOfScreenForEnemyComponent = 0.3;
   static const fractionOfScreenForPlayerComponent = 0.4;
 
-  static const double activePlayerStatsSize = 64;
-
-  static double cardIconSize = 24;
-
   static const int originalCardSizeWidth = 864;
   static const int originalCardSizeHeight = 1184;
+
+  static const double cardIconSize = 24;
+  static const double activePlayerStatsSize = 64;
+  static const double selectedCardScale = 0.5;
+  static const int selectedCardScalePriority = 150;
+
+
+  // Game Setup Variables
+  static const numberOfCardsDrawnByPlayer = 10;
+
+  static const int shopDisplayNumberOfColumns = 2;
+  static const int shopDisplayNumberOfRows = 3;
 }

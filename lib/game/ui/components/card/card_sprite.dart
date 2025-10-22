@@ -19,11 +19,6 @@ class CardSprite extends SpriteComponent {
       return 'card_back.png';
     }
 
-    // final filename = _cardCoordinator.filename.replaceAll(
-    //   'size',
-    //   _isMini ? '60' : '560',
-    // );
-
     return _cardCoordinator.filename;
   }
 

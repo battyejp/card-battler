@@ -49,18 +49,17 @@ class CardSelectionService {
 
   void _showDuplicateCardAtCenter(InteractiveCardSprite card) {
     card.isSelected = true;
-    const scale = 0.5;
 
     duplicateCard = CardSprite(card.coordinator)
       ..size = Vector2(
-        GameVariables.originalCardSizeWidth * scale,
-        GameVariables.originalCardSizeHeight * scale,
+        GameVariables.originalCardSizeWidth * GameVariables.selectedCardScale,
+        GameVariables.originalCardSizeHeight * GameVariables.selectedCardScale,
       )
       ..position = Vector2(
         darkeningOverlay!.width / 2,
         darkeningOverlay!.height / 2,
       )
-      ..priority = 150; // Above the darkening overlay
+      ..priority = GameVariables.selectedCardScalePriority;
 
     if (darkeningOverlay != null) {
       darkeningOverlay!.isVisible = true;
