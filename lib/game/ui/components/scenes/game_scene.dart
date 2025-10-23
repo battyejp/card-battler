@@ -20,8 +20,8 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
   void updateDisplay() {
     super.updateDisplay();
 
-    final startY = 0 - size.y / 2;
-    final startX = 0 - size.x / 2;
+    final startY = -size.y / 2;
+    final startX = -size.x / 2;
     final availableHeightForTeam =
         size.y * GameVariables.fractionOfScreenForTeamComponent;
     final enemiesAvailableHeight =
@@ -53,14 +53,15 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
         DarkeningOverlay(cardSelectionService: cardSelectionService)
           ..size = size
           ..position = Vector2(startX, startY)
-          ..priority = 50;
+          ..priority = GameVariables.darkenOverlayPriority;
     darkeningOverlay.isVisible = false;
     cardSelectionService.darkeningOverlay = darkeningOverlay;
 
     // Create unified drop area table
-    final tableWidth = size.x * 0.9; // 80% of screen width
-    final tableHeight = size.y * 0.3; // 15% of screen height
-    final dropAreaY = team.position.y + team.size.y * 0.4;
+    final tableWidth = size.x * GameVariables.dropAreaWidthFractionOfScreen;
+    final tableHeight = size.y * GameVariables.dropAreaHeightFractionOfScreen;
+    final dropAreaY =
+        team.position.y + team.size.y * GameVariables.dropAreaHeightRatio;
 
     dropAreaTable = CardDropAreaTable()
       ..size = Vector2(tableWidth, tableHeight)
@@ -68,7 +69,8 @@ class GameScene extends ReactivePositionComponent<GameSceneCoordinator> {
         (size.x - tableWidth) / 2 + startX, // Center horizontally
         dropAreaY,
       )
-      ..priority = 100; // Same as player to appear above darkening overlay
+      ..priority = GameVariables
+          .dropAreaTablePriority; // Same as player to appear above darkening overlay
     dropAreaTable.isVisible = false;
 
     final player =

@@ -2,7 +2,7 @@
   {
     "name": "Credits",
     "type": "Item",
-    "filename": "item.png",
+    "filename": "credits.png",
     "quantity": 7,
     "playEffects": {
       "operator": "And",
@@ -18,7 +18,7 @@
   {
     "name": "Orb of Life and Death",
     "type": "Item",
-    "filename": "item.png",
+    "filename": "orb.png",
     "quantity": 1,
     "playEffects": {
       "operator": "Or",
@@ -37,9 +37,9 @@
     }
   },
   {
-    "name": "Laser Pistol",
+    "name": "Attack Spell",
     "type": "Item",
-    "filename": "item.png",
+    "filename": "attack_spell.png",
     "quantity": 1,
     "playEffects": {
       "operator": "And",
@@ -55,7 +55,7 @@
   {
     "name": "Shield",
     "type": "Item",
-    "filename": "item.png",
+    "filename": "shield.png",
     "quantity": 1,
     "playEffects": {
       "operator": "And",

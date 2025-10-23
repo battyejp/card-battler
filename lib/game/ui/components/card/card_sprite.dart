@@ -44,7 +44,10 @@ class CardSprite extends SpriteComponent {
     }
 
     var count = 0;
-    for (final effect in _cardCoordinator.playEffects.effects) {
+    final allEffects = _cardCoordinator.playEffects.effects
+      ..addAll(_cardCoordinator.handEffects.effects);
+
+    for (final effect in allEffects) {
       Svg svg;
       switch (effect.type) {
         case EffectType.heal:
