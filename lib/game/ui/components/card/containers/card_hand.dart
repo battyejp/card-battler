@@ -1,5 +1,6 @@
 import 'package:card_battler/game/card_battler_game.dart';
 import 'package:card_battler/game/coordinators/components/cards/card_list_coordinator.dart';
+import 'package:card_battler/game/game_variables.dart';
 import 'package:card_battler/game/services/card/card_draggable_service.dart';
 import 'package:card_battler/game/services/card/card_selection_service.dart';
 import 'package:card_battler/game/services/game/game_phase_manager.dart';
@@ -19,10 +20,7 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
 
   final CardSelectionService _cardSelectionService;
   final CardDropAreaTable _cardDropAreaTable;
-
-  final cardWidth = 864.0;
-  final cardHeight = 1184.0;
-  final totalCardsInRow = 5;
+  final totalCardsInRow = GameVariables.maxNumberOfCardsInPlayerHand / 2;
 
   @override
   void onMount() {
@@ -33,16 +31,14 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
   }
 
   @override
-  bool containsLocalPoint(Vector2 point) => false; // Don't block hits in empty space - only where child components are
-
-  @override
   void updateDisplay() {
     super.updateDisplay();
 
     final cardCount = coordinator.cardCoordinators.length;
     final cardSpaceAvailablePreCard = size.x / totalCardsInRow;
-    final scaleFactor = cardSpaceAvailablePreCard / cardWidth;
-    final cardScaledHeight = cardHeight * scaleFactor;
+    final scaleFactor =
+        cardSpaceAvailablePreCard / GameVariables.originalCardSizeWidth;
+    final cardScaledHeight = GameVariables.originalCardSizeHeight * scaleFactor;
 
     if (cardCount >= 5) {
       _layoutTwoRows(
@@ -136,7 +132,10 @@ class CardHand extends ReactivePositionComponent<CardListCoordinator> {
               rowOffset + i * cardSpacing + cardSpacing / 2,
               yPosition,
             )
-            ..size = Vector2(cardWidth * scaleFactor, cardScaledHeight)
+            ..size = Vector2(
+              GameVariables.originalCardSizeWidth * scaleFactor,
+              cardScaledHeight,
+            )
             ..anchor = Anchor.topCenter;
 
       add(cardSprite);

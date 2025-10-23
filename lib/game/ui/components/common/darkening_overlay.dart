@@ -21,6 +21,7 @@ class DarkeningOverlay extends PositionComponent
     canvas.drawRect(size.toRect(), paint);
   }
 
+  // This is needed to allow taps to pass through to child components
   @override
   bool containsLocalPoint(Vector2 point) {
     final result = isVisible ? super.containsLocalPoint(point) : false;
